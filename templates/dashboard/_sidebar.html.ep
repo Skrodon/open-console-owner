@@ -71,6 +71,5 @@
         </a>
       </li>
     </ul>
-%= include '_left'
   </div>
 </nav>

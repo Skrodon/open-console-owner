@@ -1,3 +1,9 @@
+
+LI.nav-item {
+	background: none !important;
+	padding-left: 0;
+}
+
 UL {
 	list-style-type: none;
 	margin: 0 0 1em 0;
@@ -10,4 +16,13 @@ LI {
 	margin-top: 0px;
 	padding-left: 30px;
 	list-style: none outside none;
+}
+
+div#login_card td,
+div#login_card th {
+	padding: 10px;
+}
+
+div#login_card {
+	width: 40rem;
 }
