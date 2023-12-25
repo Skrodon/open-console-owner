@@ -73,7 +73,7 @@ Once the connection is accepted, the Person will see the Producer in the Dashboa
 
 The Producer MAY offer more than one Service per registration.
 
-The Person can organize the Producers he registered for: there can be many.
+The Person can sort the Producers he registered for: there can be many.
 
 The Producer can send messages to the Identities.
   * message have an urgency
@@ -87,4 +87,13 @@ The Person can configure how to receive the messages, dependent on urgency
 
 ## Dashboard
 
+When logged-in, the Person sees a Dashboard, the central page to configure
+and display facts.
 
+In the left column, we will see configuration links:
+  * identity management
+  * ownership prove
+
+In the main block, we can find
+  * local configuration pages, related to the choices on the left
+  * "Producer service selector"
