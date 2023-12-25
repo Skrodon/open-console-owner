@@ -1,0 +1,6 @@
+% layout 'outsider';
+% title 'Logout Page';
+
+<center>
+<h6>You have successfully logged out of the website. Thank you for visiting. If you want to login again, please <a href="/">click here</a></h6>
+</center>

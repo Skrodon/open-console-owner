@@ -1,0 +1,38 @@
+% layout 'outsider';
+
+<h2>Please Login to Access the Website</h2>
+
+<style>
+td, th { padding: 10px }
+</style>
+
+<div class="container">
+  <div class="card" style="width: 40rem">
+    <h5 class="card-header">User Sign In</h5>
+    <div class="card-body">
+      <form method="post" action="login">
+        <table cellspacing="10">
+        <tr><th>Username</th>
+            <td><input class="form-control" 
+                 id="username" 
+                 name="username" 
+                 type="email" size="40"
+                 placeholder="Your email address"
+                 required
+           /></td></tr>
+        <tr><th>Password</th>
+            <td><input class="form-control" 
+                 id="password" 
+                 name="password" 
+                 type="password" 
+                 size="40" 
+                 placeholder="Enter Password" 
+                 required
+           /></td></tr>
+        <tr><th>&nbsp;</th>
+            <td><input class="btn btn-primary" type="submit" value="Sign In"></td></tr>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,13 @@
+UL {
+	list-style-type: none;
+	margin: 0 0 1em 0;
+	padding: 0px;
+}
+
+LI {
+	display: list-item;
+	background: url(/style/bullet-1.png) no-repeat scroll 0 7px transparent !important;
+	margin-top: 0px;
+	padding-left: 30px;
+	list-style: none outside none;
+}
