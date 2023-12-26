@@ -27,8 +27,8 @@
 				 placeholder="Enter Password" 
 				 required
 		   /></td></tr>
-		<tr><th>Confrim Password</th>
-		<td><input class="form-control" 
+		<tr><th>Confirm Password</th>
+			<td><input class="form-control" 
 				id="confirm_password" 
 				name="confirm_password" 
 				type="password" 
