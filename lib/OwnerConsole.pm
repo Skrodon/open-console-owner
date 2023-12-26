@@ -24,6 +24,9 @@ sub startup {
 	$r->get('/login')->to('login#index');
 	$r->get('/logout')->to('login#logout');
 
+	### Register button redirect to /login/register
+	$r->get('/login/register')->to('register#index');
+
 	my $authorized = $r->under('/dashboard')->to('Login#mustBeLoggedIn');
 	$r->post('/login')->to('login#isValidUser');
 }
