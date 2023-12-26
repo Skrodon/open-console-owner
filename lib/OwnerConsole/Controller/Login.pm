@@ -19,6 +19,16 @@ sub logout
 	$self->render(template => 'login/logout');
 }
 
+sub register
+{
+	my $self = shift;
+
+	# Get the user name and password from the page
+	my $user     = uc $self->param('username') =~ s/\@.*//r;
+	my $password = $self->param('password');
+    my $confirmPassword = $self->param('confirm_password');
+}
+
 sub isValidUser
 {	my $self = shift;
 
