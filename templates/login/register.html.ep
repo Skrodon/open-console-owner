@@ -53,8 +53,12 @@
                 />
                 <i id="toggleConfirmPassword" class="fa-solid fa-eye" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
               </div>
-              <i id="password_match_warning" class="fa-solid fa-triangle-exclamation" style="color: red; display: none;"></i>
-              <span id="password_match_message" style="color: red; display: none;">Confirm passwords do not match!</span>
+              <div id="password_length_warning" style="color: red; display: none;">
+                <i class="fa-solid fa-triangle-exclamation"></i> Password must be at least 6 characters long.
+              </div>
+              <div id="password_match_warning" style="color: red; display: none;">
+                <i class="fa-solid fa-triangle-exclamation"></i> Confirm passwords do not match!
+              </div>
             </td>
           </tr>
           <tr>
@@ -71,4 +75,4 @@
   </div>
 </div>
 
-<script src="../assets/js/register.js"></script>
+<script src="../assets/login.js"></script>
