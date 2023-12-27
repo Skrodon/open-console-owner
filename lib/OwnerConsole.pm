@@ -23,6 +23,7 @@ sub startup {
 	$r->get('/')->to('outsider#frontpage');
 	$r->get('/login')->to('login#index');
 	$r->get('/logout')->to('login#logout');
+	$r->get('/login/register')->to('login#register');
 
 	my $authorized = $r->under('/dashboard')->to('Login#mustBeLoggedIn');
 	$r->post('/login')->to('login#isValidUser');

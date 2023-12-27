@@ -1,0 +1,78 @@
+% layout 'outsider';
+
+<h2>Please fill in the form to register</h2>
+
+<p>Welcome back to Open Console.</p>
+
+<div class="container">
+  <div class="card" id="login_card">
+    <h5 class="card-header">User Register</h5>
+    <div class="card-body">
+      <form method="post" action="register">
+        <table cellspacing="10">
+          <tr>
+            <th>Username</th>
+            <td>
+              <input class="form-control" 
+                     id="username" 
+                     name="username" 
+                     type="email" 
+                     size="40"
+                     placeholder="Your email address"
+                     required
+               />
+            </td>
+          </tr>
+          <tr>
+            <th>Password</th>
+            <td>
+              <div style="position: relative;">
+                <input class="form-control" 
+                       id="password" 
+                       name="password" 
+                       type="password" 
+                       size="40" 
+                       placeholder="Enter Password" 
+                       required
+                />
+                <i id="togglePassword" class="fa-solid fa-eye" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Confirm Password</th>
+            <td>
+              <div style="position: relative;">
+                <input class="form-control" 
+                       id="confirm_password" 
+                       name="confirm_password" 
+                       type="password" 
+                       size="40"
+                       placeholder="Your confirm password"
+                       required
+                />
+                <i id="toggleConfirmPassword" class="fa-solid fa-eye" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+              </div>
+              <div id="password_length_warning" style="color: red; display: none;">
+                <i class="fa-solid fa-triangle-exclamation"></i> Password must be at least 6 characters long.
+              </div>
+              <div id="password_match_warning" style="color: red; display: none;">
+                <i class="fa-solid fa-triangle-exclamation"></i> Confirm passwords do not match!
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>&nbsp;</th>
+            <td>
+              <button class="btn btn-primary" type="submit" onclick="return validatePassword()">
+                <i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp; Register
+              </button>
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="../assets/login.js"></script>
