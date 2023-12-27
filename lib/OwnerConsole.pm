@@ -1,6 +1,12 @@
 package OwnerConsole;
 use Mojo::Base 'Mojolicious';
 
+#use Mango;
+#use feature 'state';
+ 
+#sub dbserver { state $m = Mango->new('mongodb://localhost:27017') }
+#sub users    { state $u = dbserver->db('users') }
+
 # This method will run once at server start
 
 sub startup {
@@ -15,7 +21,6 @@ sub startup {
 	$self->plugin('BootstrapAlerts');
 
 	my $mongodb = $config->{mongodb};
-	$self->plugin('Mango', { mango => $mongodb, default_db => 'oc' });
 
 	### Routes
 

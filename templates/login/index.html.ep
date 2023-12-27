@@ -1,4 +1,5 @@
 % layout 'outsider';
+<script src="/assets/login.js"></script>
 
 <h2>Please Login to Access the Website</h2>
 
@@ -8,7 +9,7 @@
   <div class="card" id="login_card">
 	<h5 class="card-header">User Sign In</h5>
 	<div class="card-body">
-	  <form method="post" action="login">
+		<form id="login" method="post" action="login">
 		<table cellspacing="10">
 		<tr><th>Username</th>
 			<td><input class="form-control" 
@@ -17,7 +18,7 @@
 				 type="email" size="40"
 				 placeholder="Your email address"
 				 required
-		   /></td></tr>
+			 /></td></tr>
 		<tr><th>Password</th>
 			<td><input class="form-control" 
 				 id="password" 
@@ -26,14 +27,14 @@
 				 size="40" 
 				 placeholder="Enter Password" 
 				 required
-		   /></td></tr>
+			 /></td></tr>
 		<tr><th>&nbsp;</th>
 			<td><button class="btn btn-primary" type="submit">
-				  <i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp; Sign In
+					<i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp; Sign In
 				</button>
 			</td></tr>
 		</table>
-	  </form>
+		</form>
 	</div>
 	<div class="card-body">
 		<a href="/login/register" class="card-link">Register</a>

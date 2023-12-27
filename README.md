@@ -7,5 +7,4 @@
 	* Mango
     * Mojolicious
     * Mojolicious::Plugin::BootstrapAlerts
-    * Mojolicious::Plugin::Mango
   
