@@ -37,7 +37,7 @@ sub tryLogin()
 	}
 
 	# Validating the password of the registered user
-	unless($crypt->verify($user->{password}, $password))
+	unless($crypt->generate($password) eq $user->{password})
 	{	$self->notify(error => "Invalid password, please try again");
 		return $self->index;
 	}
