@@ -1,10 +1,10 @@
 % layout 'outsider';
+
 <script src="/assets/login.js"></script>
 
 <h2>Please fill in the form to register</h2>
 
-<p>Welcome to Open Console.  Open Console is a single interface to various services
-of internet which know something about your websites, domain-names, or networks.</p>
+<p>Welcome back to Open Console.</p>
 
 <div class="container">
   <div class="card" id="login_card">
@@ -76,3 +76,5 @@ of internet which know something about your websites, domain-names, or networks.
     </div>
   </div>
 </div>
+
+

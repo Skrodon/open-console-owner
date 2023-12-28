@@ -1,4 +1,5 @@
 % layout 'outsider';
+
 <script src="/assets/login.js"></script>
 
 <h2>Please Login to Access the Website</h2>
@@ -20,14 +21,20 @@
 				 required
 			 /></td></tr>
 		<tr><th>Password</th>
-			<td><input class="form-control" 
-				 id="password" 
-				 name="password" 
-				 type="password" 
-				 size="40" 
-				 placeholder="Enter Password" 
-				 required
-			 /></td></tr>
+			<td>
+				<div style="position: relative;">
+					<input class="form-control" 
+						id="password" 
+						name="password" 
+						type="password" 
+						size="40" 
+						placeholder="Enter Password" 
+						required
+					/>
+					<i id="toggleLoginPassword" class="fa-solid fa-eye" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+				</div>
+			</td>
+		</tr>
 		<tr><th>&nbsp;</th>
 			<td><button class="btn btn-primary" type="submit">
 					<i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp; Sign In

@@ -44,9 +44,28 @@ function verify_register_fields(form)
 	});
 }
 
+function toggle_login_password_field() {
+    var loginPassword = $('#password');
+    var toggleLoginPassword = $('#toggleLoginPassword');
+
+    toggleLoginPassword.on('click', function() {
+        togglePasswordField(loginPassword, toggleLoginPassword);
+    });
+
+    function togglePasswordField(field, toggleButton) {
+        var type = field.attr('type') === 'password' ? 'text' : 'password';
+        field.attr('type', type);
+        toggleButton.removeClass().addClass(type === 'password' ? 'fa-solid fa-eye' : 'fa-solid fa-eye-slash');
+    }
+}
+
 $(document).ready(function() {
+	var loginForm = $("form#login");
+	if(loginForm.length) {toggle_login_password_field()}
+
 	//XXX Should only run for register form
 	var form = $("form#register");
 	if(form.length) { verify_register_fields(form) }
+
 })
 
