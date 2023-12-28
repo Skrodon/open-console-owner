@@ -29,7 +29,8 @@ sub startup {
 	$self->plugin('BootstrapAlerts');
 
 	$dbconfig{users} = $config->{users};
-	$self->helper(users => \&users);
+	$self->helper(dbserver => \&dbserver);
+	$self->helper(users    => \&users);
 
 	### Routes
 
@@ -39,6 +40,7 @@ sub startup {
 	$r->post('/login')->to('login#tryLogin');
 	$r->get('/logout')->to('login#logout');
 	$r->get('/login/register')->to('login#register');
+	$r->post('/login/register')->to('login#tryRegister');
 
 	my $authorized = $r->under('/dashboard')->to('Login#mustBeLoggedIn');
 	$authorized->get('/dashboard')->to('dashboard#index');
