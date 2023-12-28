@@ -3,7 +3,7 @@ use Mojo::Base 'Mojolicious';
 
 use Mango;
 use feature 'state';
- 
+
 my (%dbconfig, %dbservers);
 sub dbserver($)  # server connections shared, when databases on same server
 {	my $server = $_[1] || 'mongodb://localhost:27017';
@@ -42,8 +42,10 @@ sub startup {
 	$r->get('/login/register')->to('login#register');
 	$r->post('/login/register')->to('login#tryRegister');
 
-	my $authorized = $r->under('/dashboard')->to('Login#mustBeLoggedIn');
-	$authorized->get('/dashboard')->to('dashboard#index');
+	my $authorized = $r->under('/dashboard')->to('login#mustBeLoggedIn');
+warn "AUTHORIZED $authorized";
+	$authorized->get('/')->to('dashboard#index');
+#	$r->get('/dashboard')->to('dashboard#index');
 }
 
 1;

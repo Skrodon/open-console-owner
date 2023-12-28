@@ -13,9 +13,8 @@ use constant {
 
 ###### Login
 
-sub index($)
-{	my ($self, $error) = @_;
-	$self->notify(error => $error) if defined $error;
+sub index()
+{	my $self = shift;
 
 	if($self->session('is_auth'))
 	{	$self->redirect_to('/dashboard');
@@ -56,7 +55,9 @@ sub login($)
 
 sub mustBeLoggedIn($)
 {	my $self = shift;
+warn "IS AUTH?";
 	return 1 if $self->session('is_auth');
+warn "NO";
 
 	$self->notify(error => "You are not logged in, please login to access this.");
 	$self->index;
@@ -89,7 +90,8 @@ sub tryRegister()
 		->insert({ user => lc $email, email => $email, password => $encr_passwd });
 
 	$self->notify(warning => 'User is created successfully');
-	$self->login(lc $email)
+	$self->login(lc $email);
+	$self->redirect_to('/dashboard');
 }
 
 1;
