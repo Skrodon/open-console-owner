@@ -1,5 +1,5 @@
 
-$(window).on('load', function() {
+$(document).ready({
 
 	// make alerts closeable
 	var alertList = document.querySelectorAll('.alert');
