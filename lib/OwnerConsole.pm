@@ -42,10 +42,8 @@ sub startup {
 	$r->get('/login/register')->to('login#register');
 	$r->post('/login/register')->to('login#tryRegister');
 
-	my $authorized = $r->under('/dashboard')->to('login#mustBeLoggedIn');
-warn "AUTHORIZED $authorized";
-	$authorized->get('/')->to('dashboard#index');
-#	$r->get('/dashboard')->to('dashboard#index');
+	my $dashboard = $r->under('/dashboard')->to('login#mustBeLoggedIn');
+	$dashboard->get('/')->to('dashboard#index');
 }
 
 1;

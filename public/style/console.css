@@ -26,3 +26,16 @@ div#login_card th {
 div#login_card {
 	width: 40rem;
 }
+
+.eye_toggle {
+	position: absolute;
+	right: 5px;
+	top: 50%;
+	transform: translateY(-50%);
+	cursor: pointer;
+}
+
+.warning {
+	color: red;
+	display: none;
+}

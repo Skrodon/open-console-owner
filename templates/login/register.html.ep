@@ -15,13 +15,8 @@ of internet which know something about your websites, domain-names, or networks.
           <tr>
             <th>Username</th>
             <td>
-              <input class="form-control" 
-                     id="username" 
-                     name="username" 
-                     type="email" 
-                     size="40"
-                     placeholder="Your email address"
-                     required
+              <input class="form-control" id="username" name="username" required
+                type="email" size="40" placeholder="Your email address"
                />
             </td>
           </tr>
@@ -29,15 +24,13 @@ of internet which know something about your websites, domain-names, or networks.
             <th>Password</th>
             <td>
               <div style="position: relative;">
-                <input class="form-control" 
-                       id="password" 
-                       name="password" 
-                       type="password" 
-                       size="40" 
-                       placeholder="Enter Password" 
-                       required
+                <input class="form-control" id="password" name="password" required
+                  type="password" size="40" placeholder="Enter Password" 
                 />
-                <i id="togglePassword" class="fa-solid fa-eye" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                <i id="togglePassword" class="fa-solid fa-eye eye_toggle"></i>
+              </div>
+              <div id="password_length_warning" class="warning">
+                <i class="fa-solid fa-triangle-exclamation"></i> Password must be at least 6 characters long.
               </div>
             </td>
           </tr>
@@ -45,21 +38,13 @@ of internet which know something about your websites, domain-names, or networks.
             <th>Confirm Password</th>
             <td>
               <div style="position: relative;">
-                <input class="form-control" 
-                       id="confirm_password" 
-                       name="confirm_password" 
-                       type="password" 
-                       size="40"
-                       placeholder="Your confirm password"
-                       required
+                <input class="form-control" id="confirm_password" name="confirm_password" required
+                  type="password" size="40" placeholder="Repeat your password"
                 />
-                <i id="toggleConfirmPassword" class="fa-solid fa-eye" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+                <i id="toggleConfirmPassword" class="fa-solid fa-eye eye_toggle"></i>
               </div>
-              <div id="password_length_warning" style="color: red; display: none;">
-                <i class="fa-solid fa-triangle-exclamation"></i> Password must be at least 6 characters long.
-              </div>
-              <div id="password_match_warning" style="color: red; display: none;">
-                <i class="fa-solid fa-triangle-exclamation"></i> Confirm passwords do not match!
+              <div id="password_match_warning" class="warning">
+                <i class="fa-solid fa-triangle-exclamation"></i> The passwords do not match!
               </div>
             </td>
           </tr>
