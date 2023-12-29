@@ -51,6 +51,47 @@ function activate_register(form)
 	});
 }
 
+// dashboard/user script
+
+function activate_user_setting(form) {
+	const currentUserEmail = 'fetchedMail@example.com';
+	const emailInput = $('#user_change_email_input');
+	const changeEmailButton = $('#change_email_button');
+	const deleteAccountButton = $('#delete_account_button');
+
+	emailInput.val(currentUserEmail);
+	const originalEmail = currentUserEmail;
+
+	emailInput.on('input', function () {
+		const isEmailChanged = emailInput.val() !== originalEmail;
+
+		changeEmailButton.toggleClass('changed', isEmailChanged);
+	});
+
+	changeEmailButton.click(function (event) {
+		if (changeEmailButton.hasClass('changed')) {
+			// prevent page to reload when form clicked
+			event.preventDefault();
+		
+			// Must make AJAX to call server API later
+			alert('Change email button clicked');
+		}
+	});
+
+	deleteAccountButton.click(function()  {
+		const confirmDelete = confirm("Are you sure you want to delete your account?");
+		if (confirmDelete) {
+			// Must call server API to delete user account later
+
+			// Implement account deletion logic here
+			alert("Account deleted successfully!");
+		}
+	});
+}
+
+////////
+
+
 $(document).ready(function() {
 	//XXX Should only run for register form
 	var form = $("form#register");
@@ -58,5 +99,13 @@ $(document).ready(function() {
 
 	form = $("form#login");
 	if(form.length) { activate_login(form) }
+
+	// user page check if change mail and delete button is loaded
+	var changeEmailForm = $('form#change_email_form');
+	var deleteAccountButton = $('#delete_account_button');
+
+	if ( changeEmailForm.length && deleteAccountButton.length) {
+		activate_user_setting(changeEmailForm);
+	}
 })
 
