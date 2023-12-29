@@ -54,21 +54,16 @@ function activate_register(form)
 // dashboard/account script
 
 function activate_account_settings(form) {
-	const currentUserEmail = 'fetchedMail@example.com';
-	const emailInput = $('#user_change_email_input');
-	const changeEmailButton = $('#change_email_button');
-	const deleteAccountButton = $('#delete_account_button');
-
-	emailInput.val(currentUserEmail);
-	const originalEmail = currentUserEmail;
+	const emailInput    = $('#user_change_email_input');
+	const originalEmail = emailInput.val();
 
 	emailInput.on('input', function () {
 		const isEmailChanged = emailInput.val() !== originalEmail;
 		changeEmailButton.toggleClass('changed', isEmailChanged);
 	});
 
-	changeEmailButton.click(function (event) {
-		if (changeEmailButton.hasClass('changed')) {
+	$('#change_email_button').on('click', function (event) {
+		if(changeEmailButton.hasClass('changed')) {
 			// prevent page to reload when form clicked
 			event.preventDefault();
 		
@@ -77,9 +72,8 @@ function activate_account_settings(form) {
 		}
 	});
 
-	deleteAccountButton.click(function()  {
-		const confirmDelete = confirm("Are you sure you want to delete your account?");
-		if (confirmDelete) {
+	$('#delete_account_button').on('click', function()  {
+		if(confirm("Are you sure you want to delete your account?")) {
 			// Must call server API to delete user account later
 
 			// Implement account deletion logic here
@@ -97,6 +91,6 @@ $(document).ready(function() {
 	if(form.length) { activate_login(form) }
 
 	form = $("form#change_account");
-	if(form.length) { activate_acount_settings(form) }
+	if(form.length) { activate_account_settings(form) }
 })
 
