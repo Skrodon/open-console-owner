@@ -4,6 +4,8 @@ use Mojo::Base 'Mojolicious';
 use Mango;
 use feature 'state';
 
+use OwnerConsole::Model::Users ();
+
 my (%dbconfig, %dbservers);
 sub dbserver($)  # server connections shared, when databases on same server
 {	my $server = $_[1] || 'mongodb://localhost:27017';
@@ -12,7 +14,8 @@ sub dbserver($)  # server connections shared, when databases on same server
 
 sub users() {
 	my $config = $dbconfig{users};
-	state $u   = $_[0]->dbserver($config->{server})->db($config->{dbname} || 'users');
+	state $u   = OwnerConsole::Model::Users->new(db =>
+		$_[0]->dbserver($config->{server})->db($config->{dbname} || 'users'));
 }
 
 # This method will run once at server start

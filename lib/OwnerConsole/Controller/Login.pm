@@ -4,9 +4,6 @@ use Mojo::Base 'Mojolicious::Controller';
 use Crypt::PBKDF2 ();
 my $crypt = Crypt::PBKDF2->new;
 
-#XXX $self->users->collection('users') will be move to OpenConsole::Model::Users
-#XXX when this works.
-
 use constant {
 	EXPIRE_SESSION => 600,  # seconds of inactivity
 };
@@ -30,24 +27,26 @@ sub tryLogin()
 	my $password = $self->param('password');
 
 	# First check if the user exists
-	my $user = $self->users->collection('users')->find_one({user => lc $email});
+	my $user = $self->users->user(lc $email);
 	unless(defined $user)
 	{	$self->notify(error => "You are not a registered user");
 		return $self->index;
 	}
 
 	# Validating the password of the registered user
-	unless($crypt->generate($password) eq $user->{password})
+	unless($crypt->validate($user->password, $password))
 	{	$self->notify(error => "Invalid password, please try again");
 		return $self->index;
 	}
 
-	$self->login($user);  # Creating session cookies
-	$self->redirect_to('/dashboard');     # Re-direct to home page
+	$self->login($user);
+	$self->redirect_to('/dashboard');
 }
 
 sub login($)
 {	my ($self, $user) = @_;
+
+	# Create session cookie
 	$self->session(is_auth => 1);		# set the logged_in flag
 	$self->session(username => $user);
 	$self->session(expiration => EXPIRE_SESSION);
@@ -55,9 +54,7 @@ sub login($)
 
 sub mustBeLoggedIn($)
 {	my $self = shift;
-warn "IS AUTH?";
 	return 1 if $self->session('is_auth');
-warn "NO";
 
 	$self->notify(error => "You are not logged in, please login to access this.");
 	$self->index;
@@ -67,7 +64,7 @@ warn "NO";
 
 sub logout()
 {	my $self = shift;
-	$self->session(expires => 1);  # Kill the Session
+	$self->session(expires => 1);  # Kill the Session cookie
 	$self->render(template => 'login/logout');
 }
 
@@ -85,9 +82,15 @@ sub tryRegister()
 	#XXX use Email::Valid to check email, otherwise return with notify(error)
 	#XXX check password length
 
+	if($self->users->user(lc $email))
+	{	$self->notify(error => 'Username already exist. Please start the password-reset procedure.');
+		return $self->register;
+	}
+
 	my $encr_passwd = $crypt->generate($password);
-	$self->users->collection('users')
-		->insert({ user => lc $email, email => $email, password => $encr_passwd });
+#	$self->users->collection('users')
+#		->insert({ user => lc $email, email => $email, password => $encr_passwd });
+	$self->users->createUser({ email => $email, password => $encr_passwd });
 
 	$self->notify(warning => 'User is created successfully');
 	$self->login(lc $email);
