@@ -1,1 +1,21 @@
-% layout 'dashboard'
+% layout 'dashboard';
+% title 'Continue configuration';
+
+<h1>Welcome to Open Console</h1>
+
+<p>We hope you have a good day.  You made your first move to use Open Console.  To become
+usefull, you need to continue the configuration by adding Idenities and proves of Ownership.</p>
+
+<table cellpadding="10px">
+<tr><td><i class="fa-solid fa-check"></i></td>
+    <td>registered an Account for use of Open Console.</td>
+<tr><td><i class="fa-solid fa-arrow-right"></i></td>
+    <td><a href="create_identity">create at least one Identity.</a></td></tr>
+<tr><td><i class="fa-regular fa-clock"></i></td>
+    <td>you may wish to declare Identities to be part of a Group, for instance
+        a department or organization.</td></tr>
+<tr><td><i class="fa-regular fa-clock"></i></td>
+    <td>add at least one proof of Ownership for an Identity or Group.</td></tr>
+<tr><td><i class="fa-regular fa-clock"></i></td>
+    <td>add Services to the websites and domains you own.</td></tr>
+</table>

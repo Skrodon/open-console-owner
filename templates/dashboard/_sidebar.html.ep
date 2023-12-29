@@ -1,21 +1,27 @@
-<nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
-  <div class="position-sticky pt-3">
-    <ul class="nav flex-column">
-      <li class="nav-item">
-        <a class="nav-link active" aria-current="page" href="#">
-          <i class="fa-solid fa-user"></i> Login
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link href="#">
-          <i class="fa-solid fa-address-card"></i> Identities
-        </a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#">
-		  <i class="fa-solid fa-suitcase"></i> Ownership
-        </a>
-      </li>
-    </ul>
-  </div>
-</nav>
+<ul class="nav flex-column">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#">
+      <i class="fa-solid fa-user"></i> Account
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link href="#">
+      <i class="fa-solid fa-address-card"></i> Identities
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <i class="fa-solid fa-suitcase"></i> Ownerships
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <i class="fa-solid fa-people-group"></i> Groups
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <i class="fa-solid fa-wrench"></i> Services
+    </a>
+  </li>
+</ul>
