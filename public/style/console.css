@@ -39,3 +39,23 @@ div#login_card {
 	color: red;
 	display: none;
 }
+
+/* dashboard/user css */
+
+#user_change_email_input {
+    width: 70%;
+}
+
+#change_email_button {
+    padding: 6px;
+    cursor: pointer;
+    background-color: grey;
+    pointer-events: none;
+    border: none;
+}
+
+#change_email_button.changed {
+    background-color: DodgerBlue;
+    pointer-events: auto;
+}
+/*-----------*/

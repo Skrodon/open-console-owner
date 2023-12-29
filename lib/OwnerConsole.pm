@@ -45,6 +45,9 @@ sub startup {
 	$r->get('/login/register')->to('login#register');
 	$r->post('/login/register')->to('login#tryRegister');
 
+	# route for user page test - must be checked with login later
+	$r->get('/dashboard/user')->to('user#index');
+
 	my $dashboard = $r->under('/dashboard')->to('login#mustBeLoggedIn');
 	$dashboard->get('/')->to('dashboard#index');
 }
