@@ -19,10 +19,10 @@ collections:
 has db => undef;
 
 sub createAccount($%)
-{	my ($self, $account, %args) = @_;
-	$account or return;
+{	my ($self, $insert, %args) = @_;
+	$insert or return;
 
-	$account->{user} //= lc $account->{email};
+	my $account = OwnerConsole::Account->create($insert);
 	$self->db->collection('accounts')->insert($account);
 
 	$self;   # call account() to get the ::Account object: db will add stuff

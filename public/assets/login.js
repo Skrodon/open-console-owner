@@ -13,6 +13,27 @@ function activate_login(form)
 	});
 }
 
+function validatePassword(passwordField, confirmField)
+{	var password = passwordField.val();
+	var confirmPassword = confirmField.val();
+	var lengthWarning = $('#password_length_warning');
+	var matchWarning  = $('#password_match_warning');
+
+	if (password.length < 6) {
+		lengthWarning.show();
+		matchWarning.hide();
+		return false;
+	} if (password !== confirmPassword) {
+		lengthWarning.hide();
+		matchWarning.show();
+		return false;
+	} else {
+		lengthWarning.hide();
+		matchWarning.hide();
+		return true;
+	}
+}
+
 function activate_register(form)
 {	var passwordField = $('#password');
 	var confirmField  = $('#confirm_password');
@@ -25,35 +46,14 @@ function activate_register(form)
 		togglePasswordField(confirmField, $(this));
 	});
 
-	function validatePassword() {
-		var password = passwordField.val();
-		var confirmPassword = confirmField.val();
-		var lengthWarning = $('#password_length_warning');
-		var matchWarning  = $('#password_match_warning');
-
-		if (password.length < 6) {
-			lengthWarning.show();
-			matchWarning.hide();
-			return false;
-		} if (password !== confirmPassword) {
-			lengthWarning.hide();
-			matchWarning.show();
-			return false;
-		} else {
-			lengthWarning.hide();
-			matchWarning.hide();
-			return true;
-		}
-	}
-
 	form.on('submit', function() {
-		return validatePassword();
+		return validatePassword(passwordField, confirmField);
 	});
 }
 
-// dashboard/user script
+// dashboard/account script
 
-function activate_user_setting(form) {
+function activate_account_settings(form) {
 	const currentUserEmail = 'fetchedMail@example.com';
 	const emailInput = $('#user_change_email_input');
 	const changeEmailButton = $('#change_email_button');
@@ -64,7 +64,6 @@ function activate_user_setting(form) {
 
 	emailInput.on('input', function () {
 		const isEmailChanged = emailInput.val() !== originalEmail;
-
 		changeEmailButton.toggleClass('changed', isEmailChanged);
 	});
 
@@ -89,23 +88,15 @@ function activate_user_setting(form) {
 	});
 }
 
-////////
-
 
 $(document).ready(function() {
-	//XXX Should only run for register form
 	var form = $("form#register");
 	if(form.length) { activate_register(form) }
 
 	form = $("form#login");
 	if(form.length) { activate_login(form) }
 
-	// user page check if change mail and delete button is loaded
-	var changeEmailForm = $('form#change_email_form');
-	var deleteAccountButton = $('#delete_account_button');
-
-	if ( changeEmailForm.length && deleteAccountButton.length) {
-		activate_user_setting(changeEmailForm);
-	}
+	form = $("form#change_account");
+	if(form.length) { activate_acount_settings(form) }
 })
 

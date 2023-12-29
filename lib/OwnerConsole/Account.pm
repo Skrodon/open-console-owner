@@ -37,7 +37,7 @@ sub correctPassword($)
 
 sub changePassword($)
 {	my ($self, $password) = @_;
-	$self->data->{password} = +{
+	$self->_data->{password} = +{
 		encrypted => $crypt->generate($password),
 		algorithm => 'PBKDF2',
 	};

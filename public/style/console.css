@@ -40,13 +40,13 @@ div#login_card {
 	display: none;
 }
 
-/* dashboard/user css */
+/* dashboard/account css */
 
-#user_change_email_input {
+FORM#change_account #user_change_email_input {
     width: 70%;
 }
 
-#change_email_button {
+FORM#change_account #change_email_button {
     padding: 6px;
     cursor: pointer;
     background-color: grey;
@@ -54,8 +54,7 @@ div#login_card {
     border: none;
 }
 
-#change_email_button.changed {
+FORM#change_account #change_email_button.changed {
     background-color: DodgerBlue;
     pointer-events: auto;
 }
-/*-----------*/
