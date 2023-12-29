@@ -1,7 +1,7 @@
 package OwnerConsole::Model::Users;
 use Mojo::Base -base;
 
-use OwnerConsole::User ();
+use OwnerConsole::Account  ();
 use OwnerConsole::Identity ();
 
 =section DESCRIPTION
@@ -10,32 +10,32 @@ which related to perticular people with a login.
 
 collections:
 =over 4
-=item * 'user': the login of a user
+=item * 'account': the login of a user
 =item * 'identity': the public representation of a Person
 =back
 
 =cut
 
-has db => undef, weak => 1;
+has db => undef;
 
-sub createUser($%)
-{	my ($self, $user, %args) = @_;
-	$user or return;
+sub createAccount($%)
+{	my ($self, $account, %args) = @_;
+	$account or return;
 
-	$user->{user} //= lc $user->{email};
-	$self->db->collection('user')->insert($user);
+	$account->{user} //= lc $account->{email};
+	$self->db->collection('accounts')->insert($account);
 
-	$self;   # call user() to get the user object: db will add stuff
+	$self;   # call account() to get the ::Account object: db will add stuff
 }
 
-sub user($)
+sub account($)
 {	my ($self, $user) = @_;
-	my $data = $self->db->collection('user')->find_one({user => $user})
+	my $data = $self->db->collection('accounts')->find_one({user => $user})
 		or return;
 
 use Data::Dumper;
-warn "getUser: ", Dumper $data;
-	OwnerConsole::User->fromDB($data);
+warn "get account: ", Dumper $data;
+	OwnerConsole::Account->fromDB($data);
 }
 
 1;

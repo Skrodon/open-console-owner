@@ -22,16 +22,16 @@ sub tryLogin()
 {	my $self = shift;
 	my $email    = $self->param('username');
 	my $password = $self->param('password');
+	my $user     = lc $email;
 
 	# First check if the user exists
-	my $user = $self->users->user(lc $email);
-	unless(defined $user)
+	my $account = $self->users->account($user);
+	unless(defined $account)
 	{	$self->notify(error => "You are not a registered user");
 		return $self->index;
 	}
 
-	# Validating the password of the registered user
-	unless($user->correctPassword($password))
+	unless($account->correctPassword($password))
 	{	$self->notify(error => "Invalid password, please try again");
 		return $self->index;
 	}
@@ -76,18 +76,19 @@ sub tryRegister()
 {	my $self = shift;
 	my $email    = $self->param('username');
 	my $password = $self->param('password');
+	my $user     = lc $email;
 	#XXX use Email::Valid to check email, otherwise return with notify(error)
 	#XXX check password length
 
-	if($self->users->user(lc $email))
+	if($self->users->account($user))
 	{	$self->notify(error => 'Username already exist. Please start the password-reset procedure.');
 		return $self->register;
 	}
 
-	$self->users->createUser({ email => $email, password => $password });
+	$self->users->createAccount({ user => $user, email => $email, password => $password });
 
 	$self->notify(warning => 'User is created successfully');
-	$self->login(lc $email);
+	$self->login($user);
 	$self->redirect_to('/dashboard');
 }
 

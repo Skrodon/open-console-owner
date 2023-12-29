@@ -1,5 +1,4 @@
-# Abstract one User away from storage issues
-package OwnerConsole::User;
+package OwnerConsole::Account;
 use Mojo::Base 'OwnerConsole::Mango::Object';
 
 use Crypt::PBKDF2 ();
@@ -15,7 +14,7 @@ sub create($%)
 
 	my $self = $class->SUPER::create($insert, %args);
 
-	$self->log("created user");
+	$self->log("created account");
 	$self->changePassword($password);
 	$self;
 }
@@ -23,18 +22,13 @@ sub create($%)
 =section Attributes
 =cut
 
-sub user()   { $_[0]->_data->{user} }      # lower-cased email
+sub user()   { $_[0]->_data->{user}  }      # lower-cased email
+sub email()  { $_[0]->_data->{email} }
 
 =section Actions
 =cut
 
-sub encryptedPassword {
-#XXX workaround to upgrade
-my $p = $_[0]->_data->{password};
-$_[0]->_data->{password} = { encrypted => $p, algorithm => 'PBKDF2' };
-
-	 $_[0]->_data->{password}{encrypted};
-}
+sub encryptedPassword { $_[0]->_data->{password}{encrypted} }
 
 sub correctPassword($)
 {	my ($self, $password) = @_;

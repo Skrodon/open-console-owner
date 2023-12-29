@@ -13,7 +13,7 @@ usefull, you need to continue the configuration by adding Idenities and proves o
     <td><a href="create_identity">create at least one Identity.</a></td></tr>
 <tr><td><i class="fa-regular fa-clock"></i></td>
     <td>you may wish to declare Identities to be part of a Group, for instance
-        a department or organization.</td></tr>
+        a department or organization you belong to.</td></tr>
 <tr><td><i class="fa-regular fa-clock"></i></td>
     <td>add at least one proof of Ownership for an Identity or Group.</td></tr>
 <tr><td><i class="fa-regular fa-clock"></i></td>
