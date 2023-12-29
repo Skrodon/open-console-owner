@@ -1,5 +1,4 @@
 % layout 'outsider';
-
 <script src="/assets/login.js"></script>
 
 <h2>Please Login to Access the Website</h2>
@@ -13,28 +12,17 @@
 		<form id="login" method="post" action="login">
 		<table cellspacing="10">
 		<tr><th>Username</th>
-			<td><input class="form-control" 
-				 id="username" 
-				 name="username" 
-				 type="email" size="40"
-				 placeholder="Your email address"
-				 required
+			<td><input class="form-control" id="username" name="username" required
+				 type="email" size="40" placeholder="Your email address"
 			 /></td></tr>
 		<tr><th>Password</th>
-			<td>
-				<div style="position: relative;">
-					<input class="form-control" 
-						id="password" 
-						name="password" 
-						type="password" 
-						size="40" 
-						placeholder="Enter Password" 
-						required
-					/>
-					<i id="toggleLoginPassword" class="fa-solid fa-eye" style="position: absolute; right: 5px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+			<td><div style="position: relative">
+					<input class="form-control" id="password" name="password" required
+				 	type="password" size="40" placeholder="Enter Password" 
+			 		/>
+					<i id="toggleLoginPassword" class="fa-solid fa-eye eye_toggle"></i>
 				</div>
-			</td>
-		</tr>
+			</td></tr>
 		<tr><th>&nbsp;</th>
 			<td><button class="btn btn-primary" type="submit">
 					<i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp; Sign In

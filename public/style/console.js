@@ -1,5 +1,4 @@
-
-$(document).ready(function(){
+$(document).ready(function() {
 
 	// make alerts closeable
 	var alertList = document.querySelectorAll('.alert');
