@@ -19,9 +19,9 @@ sub users() {
 }
 
 # This method will run once at server start
-
-sub startup {
-	my $self = shift;
+sub startup
+{	my $self = shift;
+	$main::app = $self;  #XXX probably not the right way
 
 	### Load configuration from hash returned by config file
 	my $config = $self->plugin('Config');
@@ -34,6 +34,11 @@ sub startup {
 	$dbconfig{users} = $config->{users};
 	$self->helper(dbserver => \&dbserver);
 	$self->helper(users    => \&users);
+#$self->users->db->collection('accounts')->remove({});  #XXX hack clean whole accounts table
+
+	# 'user' is the logged-in user, the admin can select to show a different 'account'
+	$self->helper(user     => sub { state $u = $_[0]->users->account($_[0]->session('user')) });
+	$self->helper(account  => sub { state $a = $_[0]->users->account($_[0]->session('account') or return $_[0]->user) });
 
 	### Routes
 

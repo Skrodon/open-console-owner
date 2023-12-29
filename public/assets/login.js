@@ -54,7 +54,7 @@ function activate_register(form)
 // dashboard/account script
 
 function activate_account_settings(form) {
-	const emailInput    = $('#user_change_email_input');
+	const emailInput    = $('#change_email_input');
 	const originalEmail = emailInput.val();
 
 	emailInput.on('input', function () {

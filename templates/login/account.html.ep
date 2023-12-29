@@ -8,7 +8,7 @@
     <div class="card-body">
       <form id="change_account">
         <h5>Email</h5>
-        <input type="text" id="user_change_email_input" value="user@example.com">
+        <input type="text" id="change_email_input" value="<%= $account->email %>">
         <button type="submit" id="change_email_button" class="btn btn-primary">Change Email</button>
 
       <hr>

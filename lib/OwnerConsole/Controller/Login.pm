@@ -27,12 +27,12 @@ sub tryLogin()
 	# First check if the user exists
 	my $account = $self->users->account($user);
 	unless(defined $account)
-	{	$self->notify(error => "You are not a registered user");
+	{	$self->notify(error => "You are not registered.");
 		return $self->index;
 	}
 
 	unless($account->correctPassword($password))
-	{	$self->notify(error => "Invalid password, please try again");
+	{	$self->notify(error => "Invalid password, please try again.");
 		return $self->index;
 	}
 
@@ -45,7 +45,7 @@ sub login($)
 
 	# Create session cookie
 	$self->session(is_auth => 1);		# set the logged_in flag
-	$self->session(username => $user);
+	$self->session(user    => $user);
 	$self->session(expiration => EXPIRE_SESSION);
 }
 

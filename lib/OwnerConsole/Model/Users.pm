@@ -23,7 +23,7 @@ sub createAccount($%)
 	$insert or return;
 
 	my $account = OwnerConsole::Account->create($insert);
-	$self->db->collection('accounts')->insert($account);
+	$self->db->collection('accounts')->insert($account->toDB);
 
 	$self;   # call account() to get the ::Account object: db will add stuff
 }
@@ -33,9 +33,13 @@ sub account($)
 	my $data = $self->db->collection('accounts')->find_one({user => $user})
 		or return;
 
-use Data::Dumper;
-warn "get account: ", Dumper $data;
 	OwnerConsole::Account->fromDB($data);
+}
+
+sub removeAccount($)
+{	my ($self, $user) = @_;
+	$self->db->collection('accounts')->remove({user => $user})
+		or return;
 }
 
 1;

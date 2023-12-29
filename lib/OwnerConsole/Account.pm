@@ -22,8 +22,8 @@ sub create($%)
 =section Attributes
 =cut
 
-sub user()   { $_[0]->_data->{user}  }      # lower-cased email
-sub email()  { $_[0]->_data->{email} }
+sub username() { $_[0]->_data->{user}  }   # user() already taken by helper
+sub email()    { $_[0]->_data->{email} }
 
 =section Actions
 =cut

@@ -6,6 +6,8 @@ has '_data';
 =section Constructors
 =cut
 
+use Data::Dumper;
+$Data::Dumper::Indent = 1;
 sub fromDB($)
 {	my ($class, $data) = @_;
 	$class->new(_data => $data);
@@ -13,7 +15,7 @@ sub fromDB($)
 
 sub create($%)
 {	my ($class, $insert, %args) = @_;
-	$class->new(_data => $insert, logging => []);
+	$class->new(_data => $insert);
 }
 
 sub toDB() { $_[0]->_data }  #XXX might become more complex later
@@ -44,6 +46,7 @@ sub log($)
 {	my ($self, $insert) = @_;
 	$insert = { text => $insert } unless ref $insert eq 'HASH';
 	$insert->{timestamp} //= Mango::BSON::Time->new;
+#	$insert->{user}      //= $::app->user->username;
 	push @{$self->_data->{logging}}, $insert;
 }
 
