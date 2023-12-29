@@ -59,3 +59,4 @@ $(document).ready(function() {
 	form = $("form#login");
 	if(form.length) { activate_login(form) }
 })
+
