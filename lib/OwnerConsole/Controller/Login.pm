@@ -1,9 +1,6 @@
 package OwnerConsole::Controller::Login;
 use Mojo::Base 'Mojolicious::Controller';
 
-use Crypt::PBKDF2 ();
-my $crypt = Crypt::PBKDF2->new;
-
 use constant {
 	EXPIRE_SESSION => 600,  # seconds of inactivity
 };
@@ -34,7 +31,7 @@ sub tryLogin()
 	}
 
 	# Validating the password of the registered user
-	unless($crypt->validate($user->password, $password))
+	unless($user->correctPassword($password))
 	{	$self->notify(error => "Invalid password, please try again");
 		return $self->index;
 	}
@@ -87,10 +84,7 @@ sub tryRegister()
 		return $self->register;
 	}
 
-	my $encr_passwd = $crypt->generate($password);
-#	$self->users->collection('users')
-#		->insert({ user => lc $email, email => $email, password => $encr_passwd });
-	$self->users->createUser({ email => $email, password => $encr_passwd });
+	$self->users->createUser({ email => $email, password => $password });
 
 	$self->notify(warning => 'User is created successfully');
 	$self->login(lc $email);
