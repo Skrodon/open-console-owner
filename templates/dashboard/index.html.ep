@@ -3,6 +3,11 @@
 
 <h1>Welcome to Open Console</h1>
 
+<div class="container">
+  <div class="card" id="config_card" style="width: 50%">
+    <h5 class="card-header">Continue configuration</h5>
+    <div class="card-body">
+
 <p>We hope you have a good day.  You made your first move to use Open Console.  To become
 usefull, you need to continue the configuration by adding Idenities and proves of Ownership.</p>
 
@@ -19,3 +24,17 @@ usefull, you need to continue the configuration by adding Idenities and proves o
 <tr><td><i class="fa-regular fa-clock"></i></td>
     <td>add Services to the websites and domains you own.</td></tr>
 </table>
+
+    </div>
+  </div>
+
+  <div class="card" id="config_card" style="width: 50%">
+    <h5 class="card-header">Explain</h5>
+    <div class="card-body">
+
+<p>This needs to be right next to the "Continue Configuration", and then explains its next configuration step.</p>
+
+    </div>
+  </div>
+</div>
+
