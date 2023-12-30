@@ -7,17 +7,17 @@ function togglePasswordField(field, toggleButton) {
 }
 
 function activate_login(form)
-{	var loginPassword = $('#password');
-	$('#toggleLoginPassword').on('click', function() {
+{	var loginPassword = $('#password', form);
+	$('#toggleLoginPassword', form).on('click', function() {
 		togglePasswordField(loginPassword, $(this));
 	});
 }
 
-function validatePassword(passwordField, confirmField)
+function validatePassword(form, passwordField, confirmField)
 {	var password = passwordField.val();
 	var confirmPassword = confirmField.val();
-	var lengthWarning = $('#password_length_warning');
-	var matchWarning  = $('#password_match_warning');
+	var lengthWarning = $('#password_length_warning', form);
+	var matchWarning  = $('#password_match_warning', form);
 
 	if (password.length < 6) {
 		lengthWarning.show();
@@ -35,26 +35,26 @@ function validatePassword(passwordField, confirmField)
 }
 
 function activate_register(form)
-{	var passwordField = $('#password');
-	var confirmField  = $('#confirm_password');
+{	var passwordField = $('#password', form);
+	var confirmField  = $('#confirm_password', form);
 
-	$('#togglePassword').on('click', function() {
+	$('#togglePassword', form).on('click', function() {
 		togglePasswordField(passwordField, $(this));
 	});
 
-	$('#toggleConfirmPassword').on('click', function() {
+	$('#toggleConfirmPassword', form).on('click', function() {
 		togglePasswordField(confirmField, $(this));
 	});
 
 	form.on('submit', function() {
-		return validatePassword(passwordField, confirmField);
+		return validatePassword(form, passwordField, confirmField);
 	});
 }
 
 // dashboard/account script
 
 function activate_account_settings(form) {
-	const emailInput    = $('#change_email_input');
+	const emailInput    = $('#change_email_input', form);
 	const originalEmail = emailInput.val();
 
 	emailInput.on('input', function () {
@@ -62,7 +62,7 @@ function activate_account_settings(form) {
 		changeEmailButton.toggleClass('changed', isEmailChanged);
 	});
 
-	$('#change_email_button').on('click', function (event) {
+	$('#change_email_button', form).on('click', function (event) {
 		if(changeEmailButton.hasClass('changed')) {
 			// prevent page to reload when form clicked
 			event.preventDefault();
@@ -72,7 +72,7 @@ function activate_account_settings(form) {
 		}
 	});
 
-	$('#delete_account_button').on('click', function()  {
+	$('#delete_account_button', form).on('click', function()  {
 		if(confirm("Are you sure you want to delete your account?")) {
 			// Must call server API to delete user account later
 
@@ -84,13 +84,8 @@ function activate_account_settings(form) {
 
 
 $(document).ready(function() {
-	var form = $("form#register");
-	if(form.length) { activate_register(form) }
-
-	form = $("form#login");
-	if(form.length) { activate_login(form) }
-
-	form = $("form#change_account");
-	if(form.length) { activate_account_settings(form) }
+	$("form#register").map(function () { activate_register($(this)) });
+	$("form#login").map(function () { activate_login($(this)) });
+	$("form#change_account").map(function () { activate_account_settings($(this)) });
 })
 
