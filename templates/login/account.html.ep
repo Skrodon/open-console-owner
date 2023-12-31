@@ -47,6 +47,11 @@
 
 <hr>
 
+  <h5>Avatar</h5>
+  <p>Upload your default picture here.</p>
+
+<hr>
+
   <h5>Delete account</h5>
   <p>Once you delete your account, there is no going back. Please be certain.</p>
   <button type="submit" id="delete_account_button" class="btn btn-danger">
@@ -62,16 +67,24 @@
       <h5 class="card-header">Configuring your Account</h5>
       <div class="card-body">
 
-<p>The <strong>email</strong>-address is used to Sign-in, but also for Open Console to
-communicate with you.  When you change this, your ownership proves, service registration,
-and other configuration will <i>not</i> be lost.</p>
+<p>The <strong>email</strong>-address is used to Sign-in, but also
+for Open Console to communicate with you.  When you change this, your
+ownership proves, service registration, and other configuration will
+<i>not</i> be lost.</p>
 
-<p>By default, the <strong>languages</strong> are taken from your browser settings.
-It is not always possible to produce text in your preferred language: when available,
-your alternatives are used.  Otherwise, the language which is provided by the service.</p>
+<p>By default, the <strong>languages</strong> are taken from your browser
+settings.  It is not always possible to produce text in your preferred
+language: when available, your alternatives are used.  Otherwise, the
+language which is provided by the service.</p>
 
 <p>When possible, the selected <strong>time-zone</strong> will be used in reports
 you receive.</p>
+
+<p>When you wish, you can upload a picture which represents you,
+to be displayed by services (like social media).  This is an
+<strong>Avatar</strong>, which means that it does not require to be a
+formal passport photograph.  However, some services may not appreciate
+it.</p>
 
 <p>When you decide to <strong style="background-color: red; color: white">&nbsp;delete
 your account&nbsp;</strong>, then there is really no way back: all

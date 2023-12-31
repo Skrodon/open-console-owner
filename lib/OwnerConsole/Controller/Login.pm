@@ -53,8 +53,10 @@ sub mustBeLoggedIn($)
 {	my $self = shift;
 	return 1 if $self->session('is_auth');
 
+warn "NOT LOGGED IN";
 	$self->notify(error => "You are not logged in, please login to access this.");
 	$self->redirect_to('/login');
+	undef;
 }
 
 ###### Logout
