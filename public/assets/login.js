@@ -56,31 +56,42 @@ function activate_register(form)
 function activate_account_settings(form) {
 	const emailInput    = $('#change_email_input', form);
 	const originalEmail = emailInput.val();
-
+	const deleteModal = $('#delete_account_confirmation_modal');
+  
+	// prevent page to reload when form clicked
+	$(this).on("submit", function(event) {
+	  event.preventDefault();
+	});
+  
 	emailInput.on('input', function () {
-		const isEmailChanged = emailInput.val() !== originalEmail;
-		changeEmailButton.toggleClass('changed', isEmailChanged);
+	  const isEmailChanged = emailInput.val() !== originalEmail;
+	  changeEmailButton.toggleClass('changed', isEmailChanged);
+	});
+  
+	$('#change_email_button', form).on('click', function () {
+	  if(changeEmailButton.hasClass('changed')) {
+	  
+		// Must make AJAX to call server API later
+		alert('Change email button clicked');
+	  }
+	});
+  
+	$('#delete_account_button').on('click', function () {
+		deleteModal.show();
 	});
 
-	$('#change_email_button', form).on('click', function (event) {
-		if(changeEmailButton.hasClass('changed')) {
-			// prevent page to reload when form clicked
-			event.preventDefault();
-		
-			// Must make AJAX to call server API later
-			alert('Change email button clicked');
-		}
+	$('#cancel_delete_button').on('click', function () {
+		deleteModal.hide();
 	});
 
-	$('#delete_account_button', form).on('click', function()  {
-		if(confirm("Are you sure you want to delete your account?")) {
-			// Must call server API to delete user account later
+	$('#confirm_delete_button').on('click', function () {
 
-			// Implement account deletion logic here
-			alert("Account deleted successfully!");
-		}
+		// Must call server API to delete user account later
+
+		alert('Account deleted successfully');
+		deleteModal.hide();
 	});
-}
+  }
 
 
 $(document).ready(function() {
