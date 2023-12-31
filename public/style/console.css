@@ -18,9 +18,9 @@ LI {
 	list-style: none outside none;
 }
 
-div#login_card td,
-div#login_card th {
+TD, TH {
 	padding: 10px;
+	vertical-align: top;
 }
 
 div#login_card {

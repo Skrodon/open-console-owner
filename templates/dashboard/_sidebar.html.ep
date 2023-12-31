@@ -1,27 +1,39 @@
+Identification:
 <ul class="nav flex-column">
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="/dashboard/account">
-      <i class="fa-solid fa-user"></i> Account
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link href="#">
-      <i class="fa-solid fa-address-card"></i> Identities
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">
-      <i class="fa-solid fa-suitcase"></i> Ownerships
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">
-      <i class="fa-solid fa-people-group"></i> Groups
-    </a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">
-      <i class="fa-solid fa-wrench"></i> Services
-    </a>
-  </li>
+<li class="nav-item">
+  <a class="nav-link active" aria-current="page" href="/dashboard/account">
+    <i class="fa-solid fa-user"></i> Account
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link href="#">
+    <i class="fa-solid fa-address-card"></i> Identities
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#">
+    <i class="fa-solid fa-people-group"></i> Groups
+  </a>
+</li>
+</ul>
+<br />
+Ownership:
+<ul class="nav flex-column">
+<li class="nav-item">
+  <a class="nav-link" href="#">
+    <i class="fa-solid fa-suitcase"></i> Ownerships
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="#">
+    <i class="fa-solid fa-wrench"></i> Using services
+  </a>
+</li>
+</ul>
+<br />
+Provider:
+<ul class="nav flex-column">
+  <a class="nav-link" href="#">
+    <i class="fa-solid fa-wrench"></i> Providing services
+  </a>
 </ul>

@@ -3,22 +3,65 @@
 <script src="/assets/login.js"></script>
 
 <div class="container">
-  <div class="card" id="login_card">
-    <h5 class="card-header">User Account</h5>
-    <div class="card-body">
-      <form id="change_account">
-        <h5>Email</h5>
-        <input type="email" id="change_email_input" value="<%= $account->email %>">
-        <button type="submit" id="change_email_button" class="btn btn-primary">Change Email</button>
+  <div class="row">
+    <div class="card" id="account_card" style="width: 45%">
+      <h5 class="card-header">Your Account</h5>
+      <div class="card-body">
 
-      <hr>
+<form id="change_account">
+  <h5>Email</h5>
+  <p>Configure your default email-address, which is also used for signing in to
+  the Open Console website.</p>
+  <input type="email" id="change_email_input" value="<%= $account->email %>">
+  <button type="submit" id="change_email_button" class="btn btn-primary">Change Email</button>
 
-         <h5>Delete account</h5>
-         <p>Once you delete your account, there is no going back. Please be certain.</p>
-         <button type="submit" id="delete_account_button" class="btn btn-danger">
-           Delete your account <i class="fa fa-trash" aria-hidden="true"></i>
-         </button>
-      </form>
+<hr>
+
+  <h5>Languages</h5>
+  <p>Specify the languages you can read.  Order them from best to worst.
+
+<hr>
+
+  <h5>Time-Zone</h5>
+  <p>Configure your default time-zone.</p>
+
+<hr>
+
+  <h5>Delete account</h5>
+  <p>Once you delete your account, there is no going back. Please be certain.</p>
+  <button type="submit" id="delete_account_button" class="btn btn-danger">
+  Delete your account <i class="fa fa-trash" aria-hidden="true"></i>
+  </button>
+
+</form>
+
+      </div>
+    </div>
+
+    <div class="card" id="account_explain" style="width: 45%">
+      <h5 class="card-header">Explanation</h5>
+      <div class="card-body">
+
+<p>The <strong>email</strong>-address is used to Sign-in, but also for Open Console to
+communicate with you.  When you change this, your ownership proves, service registration,
+and other configuration will <i>not</i> be lost.</p>
+
+<p>By default, the <strong>languages</strong> are taken from your browser settings.
+It is not always possible to produce text in your preferred language: when available,
+your alternatives are used.  Otherwise, the language which is provided by the service.</p>
+
+<p>When possible, the selected <strong>time-zone</strong> will be used in reports
+you receive.</p>
+
+<p>When you decide to <strong style="background-color: red; color: white">&nbsp;delete
+your account&nbsp;</strong>, then there is really no way back: all
+information about you will be removed from our administration.  You will
+loose all ownership proves which relate to your personal Identities.
+When you are the last member of a Group, than all that related information
+will be lost as well.  The only fact we register, is how this account
+got removed, by whome, when, and why.</p>
+
+      </div>
     </div>
   </div>
 </div>

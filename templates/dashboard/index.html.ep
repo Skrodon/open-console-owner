@@ -4,36 +4,60 @@
 <h1>Welcome to Open Console</h1>
 
 <div class="container">
-  <div class="card" id="config_card" style="width: 50%">
-    <h5 class="card-header">Continue configuration</h5>
-    <div class="card-body">
+  <div class="row">
+    <div class="card" id="config_card" style="width: 45%">
+      <h5 class="card-header">Continue configuration</h5>
+      <div class="card-body">
+
+<form>
+<table cellpadding="10px">
+<tr><th colspan="2">Create your identifications (OpenID)</th></tr>
+<tr><td><i class="fa-solid fa-check"></i></td>
+    <td>Registered an Account for use of Open Console.</td>
+<tr><td><i class="fa-solid fa-check"></i></td>
+    <td>Continue configuring <a href="/dashboard/account">your Account</a> with defaults.</td>
+<tr><td><i class="fa-solid fa-arrow-right"></i></td>
+    <td><a href="create_identity">Create at least one Identity.</a></td></tr>
+<tr><td><i class="fa-regular fa-clock"></i></td>
+    <td>You may wish to declare Identities to be part of a Group, for instance
+        a department or organization you belong to.</td></tr>
+<tr><th colspan="2">Proof your website-, domain-, or network ownership (optional)</th></tr>
+<tr><td><input type="checkbox"></td>
+    <td>(At the moment) I only use the OpenID without proven ownerships.</td></tr>
+<tr><td><i class="fa-regular fa-clock"></i></td>
+    <td>Add at least one proof of Ownership for an Identity or Group.</td></tr>
+<tr><td><i class="fa-regular fa-clock"></i></td>
+    <td>Add Services to the websites and domains you own.</td></tr>
+<tr><th colspan="2">Provide services (optional)</th></tr>
+<tr><td><input type="checkbox"></td>
+    <td>(At the moment) I have no plans to provide services to other
+        website owners.</td></tr>
+<tr><td><i class="fa-regular fa-clock"></i></td>
+    <td>Configure services provided to other website-, domain-, and network owners.</td></tr>
+</table>
+</form>
+
+      </div>
+    </div>
+
+    <div class="card" id="config_card" style="width: 45%">
+      <h5 class="card-header">Explain configuration</h5>
+      <div class="card-body">
 
 <p>We hope you have a good day.  You made your first move to use Open Console.  To become
 usefull, you need to continue the configuration by adding Idenities and proves of Ownership.</p>
 
-<table cellpadding="10px">
-<tr><td><i class="fa-solid fa-check"></i></td>
-    <td>registered an Account for use of Open Console.</td>
-<tr><td><i class="fa-solid fa-arrow-right"></i></td>
-    <td><a href="create_identity">create at least one Identity.</a></td></tr>
-<tr><td><i class="fa-regular fa-clock"></i></td>
-    <td>you may wish to declare Identities to be part of a Group, for instance
-        a department or organization you belong to.</td></tr>
-<tr><td><i class="fa-regular fa-clock"></i></td>
-    <td>add at least one proof of Ownership for an Identity or Group.</td></tr>
-<tr><td><i class="fa-regular fa-clock"></i></td>
-    <td>add Services to the websites and domains you own.</td></tr>
-</table>
+<p>One Account can be used for different things.  Please go through all steps once.</p>
+<ul>
+<li>step 1: create yourself one or more "Identities", which you can use to identify yourself
+    to external parties, like service providers.  Open Console can be used as OpenID provider.<br />&nbsp;</li>
+<li>step 2: (optional) proof your ownership of some websites, domain-names, or network ranges.
+    You can tell service providers that you are interested receiving information about them.<br />&nbsp;</li>
+<li>step 3: (optional) use your Account to configure the offering of services to (website)
+    owners.<br />&nbsp;</li>
+</ul>
 
-    </div>
-  </div>
-
-  <div class="card" id="config_card" style="width: 50%">
-    <h5 class="card-header">Explain</h5>
-    <div class="card-body">
-
-<p>This needs to be right next to the "Continue Configuration", and then explains its next configuration step.</p>
-
+      </div>
     </div>
   </div>
 </div>
