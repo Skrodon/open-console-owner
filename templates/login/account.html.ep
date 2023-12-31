@@ -8,22 +8,42 @@
       <h5 class="card-header">Your Account</h5>
       <div class="card-body">
 
+  <button type="submit" id="save_button" class="btn btn-primary">Save</button>
+  <button type="submit" id="done_button" class="btn btn-primary">Cancel</button>
+<br />&nbsp;
+
 <form id="change_account">
   <h5>Email</h5>
   <p>Configure your default email-address, which is also used for signing in to
   the Open Console website.</p>
   <input type="email" id="change_email_input" value="<%= $account->email %>">
-  <button type="submit" id="change_email_button" class="btn btn-primary">Change Email</button>
 
 <hr>
 
   <h5>Languages</h5>
-  <p>Specify the languages you can read.  Order them from best to worst.
+  <p>Specify the languages you can read.  Order them from best to worst.</p>
+  <!-- https://www.internationalphoneticalphabet.org/languages/language-names-in-native-language/ -->
+  <!-- only the languages which have any kind of translation in Open Console.  Value=https://datatracker.ietf.org/doc/html/rfc5646 -->
+  <select multiple>
+  <option value="en_EN">English</option>
+  <option value="nl_NL" selected>Nederlands</option>
+  <option value="ru">Русский язык</option>
+  <option value="vie">Tiếng Việt</option>
+  </select>
+
+  <p>Interface language:
+  <select>
+  <option value="en_EN">English</option>
+  </select>
 
 <hr>
 
   <h5>Time-Zone</h5>
-  <p>Configure your default time-zone.</p>
+  <p>Your default time-zone:
+  <select>
+  <!-- to be generated from /usr/share/zoneinfo/posix/ -->
+  <option>Europe/Amsterdam</option>
+  </select>
 
 <hr>
 
@@ -39,7 +59,7 @@
     </div>
 
     <div class="card" id="account_explain" style="width: 45%">
-      <h5 class="card-header">Explanation</h5>
+      <h5 class="card-header">Configuring your Account</h5>
       <div class="card-body">
 
 <p>The <strong>email</strong>-address is used to Sign-in, but also for Open Console to

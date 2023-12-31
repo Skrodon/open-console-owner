@@ -21,7 +21,7 @@
 <tr><td><i class="fa-regular fa-clock"></i></td>
     <td>You may wish to declare Identities to be part of a Group, for instance
         a department or organization you belong to.</td></tr>
-<tr><th colspan="2">Proof your website-, domain-, or network ownership (optional)</th></tr>
+<tr><th colspan="2">Proof your Ownership (optional)</th></tr>
 <tr><td><input type="checkbox"></td>
     <td>(At the moment) I only use the OpenID without proven ownerships.</td></tr>
 <tr><td><i class="fa-regular fa-clock"></i></td>
@@ -51,7 +51,7 @@ usefull, you need to continue the configuration by adding Idenities and proves o
 <ul>
 <li>step 1: create yourself one or more "Identities", which you can use to identify yourself
     to external parties, like service providers.  Open Console can be used as OpenID provider.<br />&nbsp;</li>
-<li>step 2: (optional) proof your ownership of some websites, domain-names, or network ranges.
+<li>step 2: (optional) proof your Ownership of some websites, domain-names, or network ranges.
     You can tell service providers that you are interested receiving information about them.<br />&nbsp;</li>
 <li>step 3: (optional) use your Account to configure the offering of services to (website)
     owners.<br />&nbsp;</li>
