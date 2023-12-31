@@ -37,8 +37,8 @@ sub startup
 #$self->users->db->collection('accounts')->remove({});  #XXX hack clean whole accounts table
 
 	# 'user' is the logged-in user, the admin can select to show a different 'account'
-	$self->helper(user     => sub { state $u = $_[0]->users->account($_[0]->session('user')) });
-	$self->helper(account  => sub { state $a = $_[0]->users->account($_[0]->session('account') or return $_[0]->user) });
+	$self->helper(user     => sub { $_[0]->{user}    ||= $_[0]->users->account($_[0]->session('user')) });
+	$self->helper(account  => sub { $_[0]->{account} ||= $_[0]->users->account($_[0]->session('account') or return $_[0]->user) });
 
 	### Routes
 

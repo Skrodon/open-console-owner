@@ -58,6 +58,23 @@
   Delete your account <i class="fa fa-trash" aria-hidden="true"></i>
   </button>
 
+  <div id="delete_account_confirmation_modal" class="modal" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 id="confirm_delete_title" class="modal-title">Confirm Deletion</h5>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete your account?</p>
+        </div>
+        <div class="modal-footer">
+          <button id="cancel_delete_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button id="confirm_delete_button" type="button" class="btn btn-danger">Yes, Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </form>
 
       </div>

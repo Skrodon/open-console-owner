@@ -73,12 +73,18 @@ function activate_account_settings(form) {
 	});
 
 	$('#delete_account_button', form).on('click', function()  {
-		if(confirm("Are you sure you want to delete your account?")) {
-			// Must call server API to delete user account later
+		deleteModal.show();
+	});
 
-			// Implement account deletion logic here
-			alert("Account deleted successfully!");
-		}
+	$('#cancel_delete_button', form).on('click', function () {
+		deleteModal.hide();
+	});
+
+	$('#confirm_delete_button', form).on('click', function () {
+		// Must call server API to delete user account later
+		// Implement account deletion logic here
+		alert('Account deleted successfully');
+		deleteModal.hide();
 	});
 }
 
