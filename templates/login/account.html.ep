@@ -65,7 +65,8 @@
           <h5 id="confirm_delete_title" class="modal-title">Confirm Deletion</h5>
         </div>
         <div class="modal-body">
-          <p>Are you sure you want to delete your account?</p>
+          <p>Are you sure you want to delete your account?  We cannot restore your current configuration after
+          deletion.</p>
         </div>
         <div class="modal-footer">
           <button id="cancel_delete_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

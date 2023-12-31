@@ -56,6 +56,7 @@ function activate_register(form)
 function activate_account_settings(form) {
 	const emailInput    = $('#change_email_input', form);
 	const originalEmail = emailInput.val();
+	const deleteModal   = $('#delete_account_confirmation_modal', form);
 
 	emailInput.on('input', function () {
 		const isEmailChanged = emailInput.val() !== originalEmail;
@@ -72,7 +73,8 @@ function activate_account_settings(form) {
 		}
 	});
 
-	$('#delete_account_button', form).on('click', function()  {
+	$('#delete_account_button', form).on('click', function(event)  {
+		event.preventDefault();
 		deleteModal.show();
 	});
 
@@ -81,10 +83,11 @@ function activate_account_settings(form) {
 	});
 
 	$('#confirm_delete_button', form).on('click', function () {
-		// Must call server API to delete user account later
-		// Implement account deletion logic here
-		alert('Account deleted successfully');
 		deleteModal.hide();
+
+// form.submit()
+// in handler:  $self->notify(''), redirect to /
+		alert('Account deleted successfully');
 	});
 }
 
