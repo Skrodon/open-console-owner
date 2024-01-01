@@ -1,0 +1,93 @@
+% layout 'dashboard';
+% title 'Overview of configured Identities';
+
+<div class="container">
+  <div class="row">
+    <div class="card col-sm-6" id="identity_card">
+      <h5 class="card-header">Personal Identity</h5>
+      <div class="card-body">
+
+<form id="identity">
+
+  <h5>Role</h5>
+  <input type="text" size="50" placeholder="A (short) descriptive hint" required />
+<br>&nbsp;
+
+  <h5>Name</h5>
+  <input type="text" size="50" placeholder="Your name in this context" required />
+<br>&nbsp;
+
+  <h5>Email</h5>
+  <input name="email" type="radio">&nbsp;Use default address, currently "<tt>mark@overmeer.net</tt>"<br />
+  <input name="email" type="radio" checked>&nbsp;Use <input type="email" value="mark@open-console.eu" size="40" />
+<br>&nbsp;
+
+  <h5>Language</h5>
+  <select>
+  <option value="en" selected>English</option>
+  <option value="nl" selected>Nederlands</option>
+  </select>
+<br>&nbsp;
+
+  <h5>Avatar</h5>
+  <input name="avatar" type="radio" value="account" checked>&nbsp;As configured in Account<br />
+  <input name="avatar" type="radio" value="none">&nbsp;No image<br />
+  <input name="avatar" type="radio" value="role">&nbsp;&lt;select image here&gt;
+<br>&nbsp;
+
+  <h5>Phone-number</h5>
+  <input type="text" size="50" placeholder="International phone-number" value="+31 6 52 17 58 28" />
+<br>&nbsp;
+
+  <h5>Postal Address</h5>
+  <textarea rows="4" cols="50">
+Sweelincklaan 8
+6815 BH  Arnhem
+The Netherlands
+  </textarea>
+<br>&nbsp;
+
+  <h5>Security keys</h5>
+  <button class="btn btn-secondary">Generate PGP</button>
+  <button class="btn btn-secondary">Generate certificate</button>
+<br/>&nbsp;
+<br/>&nbsp;
+
+  <button type="submit" id="save_button" class="btn btn-primary">Save</button>
+  <button type="submit" id="done_button" class="btn btn-primary">Cancel</button>
+</form>
+
+      </div>
+   </div>
+
+    <div class="card col-sm-6" id="identity_explain">
+      <h5 class="card-header">Configuring this Identity</h5>
+      <div class="card-body">
+
+<p>You express your separate roles in separate Identities.  These
+<strong>Role</strong names will not be shared with anyone.</p>
+
+<p>As <strong>Name</strong>, fill-in your name as suits to this role.
+For instance, when you use this Identity for OpenID, then this will be
+passed to the website you login to.  This is also the Name as shown in
+identity Groups.</p>
+
+<p>When you connect to Service, later, you can decide to hide your
+<strong>email-address</strong> to that provider.  In that case, emails
+will get directed via an Open Console proxy.</p>
+
+<p>You can only select from <strong>Languages</strong> which are selected
+in your <a href="/dashboard/account">Account</a>.</p>
+
+<p>When you proved a <strong>Phone-number</strong>, be sure to specify
+it as international number: starting with a "<tt>+</tt>" and your
+country code.  This value may include business internal extension numbers.</p>
+
+<p>As <strong>Postal Address</strong>, please fill-in address information
+which can be written down on an enveloppe and posted to you, from anywhere
+on this planet.  The country name can best be given in English.</p>
+
+      </div>
+    </div>
+  </div>
+</div>

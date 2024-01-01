@@ -1,0 +1,52 @@
+% layout 'dashboard';
+% title 'Overview of configured Identities';
+
+<ascript src="/assets/login.js"></script>
+
+<div class="container">
+  <div class="row">
+    <div class="card col-sm-6" id="identities_card">
+      <h5 class="card-header">Personal Identities</h5>
+      <div class="card-body">
+
+<form id="identity_list">
+  <table>
+  <tr><th>Role</th><th>Edit</th></tr>
+  <tr><td>Private Dutch</td><td><i class="fa-solid fa-pen"></i></tr>
+  <tr><td>Private English</td><td><i class="fa-solid fa-pen"></i></tr>
+  <tr><td>CPAN Developer</td><td><i class="fa-solid fa-pen"></i></tr>
+  <tr><td>Open Console Project</td><td><a href="/dashboard/identity?OpenConsole"><i class="fa-solid fa-pen"></i></a></tr>
+  <tr><td>Secretary NLUUG</td><td><i class="fa-solid fa-pen"></i></tr>
+  <tr><td>Secretary NINJA</td><td><i class="fa-solid fa-pen"></i></tr>
+  <tr><td style="text-align: right"><b>create new:</b></td>
+      <td><i class="fa-solid fa-circle-plus"></i></td></tr>
+  </table>
+</form>
+
+      </div>
+   </div>
+
+    <div class="card col-sm-6" id="identities_explain">
+      <h5 class="card-header">Configuring your Identities</h5>
+      <div class="card-body">
+
+<p>Your activities are related to some role you play in life: sometimes you are a
+private person, sometimes a part within an organization.  Sometimes you want to
+tell a lot about yourself, sometimes hide behind a nickname only.  You can express
+your separate roles in separate Identities.</p>
+
+<p>You can connect your Identities to organizations (Indentity Groups)>  As person
+or for a Group, you can proof (website) Ownership, or use or provide a Service.</p>
+
+<p>Although you may share an Identity to use or provide different Services, they
+will not be able to detect you reuse your Identy: you do <i>not need</i> to set-up
+a different Identity for each Service.</p>
+
+<p>When using your Account for <strong>OpenID</strong>, you can relate a single
+Identity to every Server you want to login to.  It will be remembered which Identity
+you use where.</p>
+
+      </div>
+    </div>
+  </div>
+</div>

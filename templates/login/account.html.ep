@@ -4,7 +4,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="card" id="account_card" style="width: 45%">
+    <div class="card col-sm-6" id="account_card">
       <h5 class="card-header">Your Account</h5>
       <div class="card-body">
 
@@ -17,8 +17,7 @@
   <p>Configure your default email-address, which is also used for signing in to
   the Open Console website.</p>
   <input type="email" id="change_email_input" value="<%= $account->email %>">
-
-<hr>
+<br>&nbsp;
 
   <h5>Languages</h5>
   <p>Specify the languages you can read.  Order them from best to worst.</p>
@@ -30,22 +29,24 @@
   <option value="ru">Русский язык</option>
   <option value="vie">Tiếng Việt</option>
   </select>
+<br>&nbsp;
 
   <p>Interface language:
   <select>
   <option value="en_EN">English</option>
   </select>
+<br>&nbsp;
 
-<hr>
-
-  <h5>Time-Zone</h5>
-  <p>Your default time-zone:
+  <h5>Default Time-Zone</h5>
   <select>
   <!-- to be generated from /usr/share/zoneinfo/posix/ -->
   <option>Europe/Amsterdam</option>
   </select>
+<br>&nbsp;
 
-<hr>
+  <h5>Birth-date</h5>
+  <input type="text" value="1966/05/04" />
+<br>&nbsp;
 
   <h5>Avatar</h5>
   <p>Upload your default picture here.</p>
@@ -81,7 +82,7 @@
       </div>
     </div>
 
-    <div class="card" id="account_explain" style="width: 45%">
+    <div class="card col-sm-6" id="account_explain">
       <h5 class="card-header">Configuring your Account</h5>
       <div class="card-body">
 
