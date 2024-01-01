@@ -58,3 +58,38 @@ FORM#change_account #change_email_button.changed {
     background-color: DodgerBlue;
     pointer-events: auto;
 }
+
+.avatar-container {
+	width: 100px;
+	height: 100px;
+	border-radius: 50%;
+	overflow: hidden;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+#avatar_image {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+#avatar_input {
+	position: absolute;
+	opacity: 0;
+	width: 100%;
+	height: 100%;
+	cursor: pointer;
+	z-index: 2;
+}
+
+.choose-file-btn {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 1;
+	cursor: pointer;
+}

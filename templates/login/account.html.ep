@@ -4,114 +4,94 @@
 
 <div class="container">
   <div class="row">
-    <div class="card col-sm-6" id="account_card">
+    <div class="card col-md-6">
       <h5 class="card-header">Your Account</h5>
       <div class="card-body">
 
-  <button type="submit" id="save_button" class="btn btn-primary">Save</button>
-  <button type="submit" id="done_button" class="btn btn-primary">Cancel</button>
-<br />&nbsp;
+        <form id="change_account">
 
-<form id="change_account">
-  <h5>Email</h5>
-  <p>Configure your default email-address, which is also used for signing in to
-  the Open Console website.</p>
-  <input type="email" id="change_email_input" value="<%= $account->email %>">
-<br>&nbsp;
+          <button type="submit" id="save_button" class="btn btn-primary">Save</button>
+          <button type="submit" id="done_button" class="btn btn-secondary">Cancel</button>
 
-  <h5>Languages</h5>
-  <p>Specify the languages you can read.  Order them from best to worst.</p>
-  <!-- https://www.internationalphoneticalphabet.org/languages/language-names-in-native-language/ -->
-  <!-- only the languages which have any kind of translation in Open Console.  Value=https://datatracker.ietf.org/doc/html/rfc5646 -->
-  <select multiple>
-  <option value="en_EN">English</option>
-  <option value="nl_NL" selected>Nederlands</option>
-  <option value="ru">Русский язык</option>
-  <option value="vie">Tiếng Việt</option>
-  </select>
-<br>&nbsp;
+          <br>&nbsp;
 
-  <p>Interface language:
-  <select>
-  <option value="en_EN">English</option>
-  </select>
-<br>&nbsp;
+          <h5>Email</h5>
+          <p>Configure your default email-address, which is also used for signing in to the Open Console website.</p>
+          <input type="email" id="change_email_input" class="form-control" value="<%= $account && $account->email ? $account->email : '' %>">
 
-  <h5>Default Time-Zone</h5>
-  <select>
-  <!-- to be generated from /usr/share/zoneinfo/posix/ -->
-  <option>Europe/Amsterdam</option>
-  </select>
-<br>&nbsp;
+          <br>
 
-  <h5>Birth-date</h5>
-  <input type="text" value="1966/05/04" />
-<br>&nbsp;
+          <h5>Languages</h5>
+          <p>Specify the languages you can read. Order them from best to worst.</p>
+          <!-- https://www.internationalphoneticalphabet.org/languages/language-names-in-native-language/ -->
+          <!-- only the languages which have any kind of translation in Open Console.  Value=https://datatracker.ietf.org/doc/html/rfc5646 -->
+          <table class="table table-striped table-bordered">
+            % for my $i (0 .. $#{$long_language_names}) {
+            <tr>
+              <td><%= $long_language_names->[$i] %></td>
+              <td><a href="#" class="btn btn-danger remove-link">Remove</a></td>
+              <td><a href="#" class="btn btn-secondary move-up-link">Move Up</a></td>
+              <td><a href="#" class="btn btn-secondary move-down-link">Move Down</a></td>
+            </tr>
+            % }
+          </table>
 
-  <h5>Avatar</h5>
-  <p>Upload your default picture here.</p>
 
-<hr>
+          <br>
 
-  <h5>Delete account</h5>
-  <p>Once you delete your account, there is no going back. Please be certain.</p>
-  <button type="submit" id="delete_account_button" class="btn btn-danger">
-  Delete your account <i class="fa fa-trash" aria-hidden="true"></i>
-  </button>
+          <h5>Time-Zone</h5>
+          <p>Your default time-zone:</p>
+          <select class="form-select">
+            <!-- to be generated from /usr/share/zoneinfo/posix/ -->
+            <option>Europe/Amsterdam</option>
+          </select>
 
-  <div id="delete_account_confirmation_modal" class="modal" style="display: none;">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 id="confirm_delete_title" class="modal-title">Confirm Deletion</h5>
-        </div>
-        <div class="modal-body">
-          <p>Are you sure you want to delete your account?  We cannot restore your current configuration after
-          deletion.</p>
-        </div>
-        <div class="modal-footer">
-          <button id="cancel_delete_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button id="confirm_delete_button" type="button" class="btn btn-danger">Yes, Delete</button>
-        </div>
-      </div>
-    </div>
-  </div>
+          <br>
 
-</form>
+          <h5>Birth-date</h5>
+          <input id="user_birth_date" type="text" value="1966/05/04" />
+          <br>&nbsp;
+
+          <h5>Avatar</h5>
+          <p>Upload your default picture here.</p>
+          <div class="row" style="position: relative">
+            <div class="col">
+              <div class="avatar-container">
+                <img class="avatar-image" src="/style/avatar_placeholder.jpg" alt="Avatar">
+              </div>
+            </div>
+            <div class="col">
+              <label for="avatar_input" class="choose-file-btn btn btn-primary">Choose File</label>
+              <input type="file" id="avatar_input" name="avatar" accept="image/*" class="avatar-input form-control">
+            </div>
+          </div>
+
+          <hr class="my-2">
+
+          <h5>Delete account</h5>
+          <p>Once you delete your account, there is no going back. Please be certain.</p>
+          <button type="submit" id="delete_account_button" class="btn btn-danger">
+            Delete your account <i class="fa fa-trash" aria-hidden="true"></i>
+          </button>
+
+        </form>
 
       </div>
     </div>
 
-    <div class="card col-sm-6" id="account_explain">
+    <div class="card col-md-6">
       <h5 class="card-header">Configuring your Account</h5>
       <div class="card-body">
 
-<p>The <strong>email</strong>-address is used to Sign-in, but also
-for Open Console to communicate with you.  When you change this, your
-ownership proves, service registration, and other configuration will
-<i>not</i> be lost.</p>
+        <p>The <strong>email</strong>-address is used to Sign-in, but also for Open Console to communicate with you. When you change this, your ownership proves, service registration, and other configuration will <i>not</i> be lost.</p>
 
-<p>By default, the <strong>languages</strong> are taken from your browser
-settings.  It is not always possible to produce text in your preferred
-language: when available, your alternatives are used.  Otherwise, the
-language which is provided by the service.</p>
+        <p>By default, the <strong>languages</strong> are taken from your browser settings. It is not always possible to produce text in your preferred language: when available, your alternatives are used. Otherwise, the language which is provided by the service.</p>
 
-<p>When possible, the selected <strong>time-zone</strong> will be used in reports
-you receive.</p>
+        <p>When possible, the selected <strong>time-zone</strong> will be used in reports you receive.</p>
 
-<p>When you wish, you can upload a picture which represents you,
-to be displayed by services (like social media).  This is an
-<strong>Avatar</strong>, which means that it does not require to be a
-formal passport photograph.  However, some services may not appreciate
-it.</p>
+        <p>When you wish, you can upload a picture which represents you, to be displayed by services (like social media). This is an <strong>Avatar</strong>, which means that it does not require to be a formal passport photograph. However, some services may not appreciate it.</p>
 
-<p>When you decide to <strong style="background-color: red; color: white">&nbsp;delete
-your account&nbsp;</strong>, then there is really no way back: all
-information about you will be removed from our administration.  You will
-loose all ownership proves which relate to your personal Identities.
-When you are the last member of a Group, than all that related information
-will be lost as well.  The only fact we register, is how this account
-got removed, by whome, when, and why.</p>
+        <p>When you decide to <strong style="background-color: red; color: white">&nbsp;delete your account&nbsp;</strong>, then there is really no way back: all information about you will be removed from our administration. You will lose all ownership proves which relate to your personal Identities. When you are the last member of a Group, then all that related information will be lost as well. The only fact we register, is how this account got removed, by whom, when, and why.</p>
 
       </div>
     </div>

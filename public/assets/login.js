@@ -57,6 +57,8 @@ function activate_account_settings(form) {
 	const emailInput    = $('#change_email_input', form);
 	const originalEmail = emailInput.val();
 	const deleteModal   = $('#delete_account_confirmation_modal', form);
+	// get user birthday for later send to sever
+	const userBirthDate = $('#user_birth_date');
 
 	emailInput.on('input', function () {
 		const isEmailChanged = emailInput.val() !== originalEmail;
@@ -72,6 +74,47 @@ function activate_account_settings(form) {
 			alert('Change email button clicked');
 		}
 	});
+
+	// languages table
+    $(document).on('click', '.remove-link', function (event) {
+		event.preventDefault();
+		$(this).closest('tr').remove();
+	});
+
+	$(document).on('click', '.move-up-link', function (event) {
+		event.preventDefault();
+		var row = $(this).closest('tr');
+		if (row.prev().length > 0) {
+			row.insertBefore(row.prev());
+		}
+	});
+
+	$(document).on('click', '.move-down-link', function (event) {
+		event.preventDefault();
+		var row = $(this).closest('tr');
+		if (row.next().length > 0) {
+			row.insertAfter(row.next());
+		}
+	});
+
+	// update avatar
+	$('.choose-file-btn').on('click', function (event) {
+        event.preventDefault();
+        $('#avatar_input').click();
+    });
+
+    $('#avatar_input').on('change', function () {
+        if (this.files && this.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('.avatar-image').attr('src', e.target.result);
+            };
+
+            reader.readAsDataURL(this.files[0]);
+        }
+    });
+
 
 	$('#delete_account_button', form).on('click', function(event)  {
 		event.preventDefault();
