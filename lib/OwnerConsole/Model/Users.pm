@@ -6,8 +6,6 @@ use Mango::BSON ':bson';
 use OwnerConsole::Account  ();
 use OwnerConsole::Identity ();
 
-use constant USERDB_VERSION => '1';
-
 =section DESCRIPTION
 This object handles the "users" database, which contains all information
 which related to perticular people with a login.
@@ -74,6 +72,11 @@ sub removeAccount($)
 {	my ($self, $userid) = @_;
 	$self->accounts->remove({userid => $userid})
 		or return;
+}
+
+sub saveAccount($)
+{	my ($self, $account) = @_;
+	$self->accounts->save($account->toDB);
 }
 
 1;
