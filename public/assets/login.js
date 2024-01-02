@@ -98,22 +98,18 @@ function activate_account_settings(form) {
 	});
 
 	function isLanguageExists(language) {
-		var exists = false;
-		$('table.table td:first-child').each(function () {
-			if ($(this).text() === language) {
-				exists = true;
-				return false;
-			}
+		return $('table.table td:first-child').toArray().some(function (element) {
+			return $(element).text() === language;
 		});
-		return exists;
 	}
 	
 	$('#common_languages').change(function () {
 		var selectedLanguages = $(this).find('option:selected').map(function() {
 			return $(this).text();
 		}).get();
+
 	
-		if (selectedLanguages) {
+		if (selectedLanguages.length > 0) {
 			$.each(selectedLanguages, function(index, selectedLanguage) {
 				if (!isLanguageExists(selectedLanguage)) {
 					var newRow = '<tr>' +
@@ -123,6 +119,9 @@ function activate_account_settings(form) {
 						'<td><a href="#" class="btn btn-secondary move-down-link">Move Down</a></td>' +
 						'</tr>';
 					$('table.table').append(newRow);
+
+					$('#common_languages option:contains("' + selectedLanguage + '")').prop('selected', false);
+					
 				}
 			});
 		}

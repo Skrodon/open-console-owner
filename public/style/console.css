@@ -1,3 +1,10 @@
+.admin {
+	background: #CCFFCC;
+}
+
+FORM > DIV {
+	margin-bottom: 3ex;
+}
 
 LI.nav-item {
 	background: none !important;
@@ -28,10 +35,6 @@ div#login_card {
 }
 
 .eye_toggle {
-	position: absolute;
-	right: 5px;
-	top: 50%;
-	transform: translateY(-50%);
 	cursor: pointer;
 }
 

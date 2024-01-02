@@ -9,12 +9,12 @@ my $crypt = Crypt::PBKDF2->new;
 
 sub create($%)
 {	my ($class, $insert, %args) = @_;
-	$insert->{user} //= lc $insert->{email};
-	my $password      = delete $insert->{password};
+	my $userid   = $insert->{userid} = $::app->newUnique;
+	my $password = delete $insert->{password};
 
 	my $self = $class->SUPER::create($insert, %args);
 
-	$self->log("created account");
+	$self->log("created account $userid");
 	$self->changePassword($password);
 	$self;
 }
@@ -22,8 +22,11 @@ sub create($%)
 =section Attributes
 =cut
 
-sub username() { $_[0]->_data->{user}  }   # user() already taken by helper
-sub email()    { $_[0]->_data->{email} }
+sub userId()    { $_[0]->_data->{userid} }
+sub email()     { $_[0]->_data->{email}  }
+sub birthDate() { $_[0]->_data->{birth_date} }
+
+sub isAdmin()   { $::app->isAdmin($_[0]) }
 
 =section Actions
 =cut

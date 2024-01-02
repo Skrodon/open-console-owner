@@ -1,8 +1,9 @@
 package OwnerConsole::Controller::Login;
 use Mojo::Base 'Mojolicious::Controller';
 
-use constant {
-	EXPIRE_SESSION => 600,  # seconds of inactivity
+use constant
+{
+	EXPIRE_SESSION => 600,  # seconds of inactivity, now 10 minutes
 };
 
 ###### Login
@@ -20,12 +21,11 @@ sub index()
 
 sub tryLogin()
 {	my $self = shift;
-	my $email    = $self->param('username');
+	my $email    = $self->param('email');
 	my $password = $self->param('password');
-	my $user     = lc $email;
 
 	# First check if the user exists
-	my $account = $self->users->account($user);
+	my $account = $self->users->accountByEmail($email);
 	unless(defined $account)
 	{	$self->notify(error => "You are not registered.");
 		return $self->index;
@@ -36,16 +36,16 @@ sub tryLogin()
 		return $self->index;
 	}
 
-	$self->login($user);
+	$self->login($account);
 	$self->redirect_to('/dashboard');
 }
 
 sub login($)
-{	my ($self, $user) = @_;
+{	my ($self, $account) = @_;
 
 	# Create session cookie
-	$self->session(is_auth => 1);		# set the logged_in flag
-	$self->session(user    => $user);
+	$self->session(is_auth    => 1);
+	$self->session(userid     => $account->userId);
 	$self->session(expiration => EXPIRE_SESSION);
 }
 
@@ -53,7 +53,6 @@ sub mustBeLoggedIn($)
 {	my $self = shift;
 	return 1 if $self->session('is_auth');
 
-warn "NOT LOGGED IN";
 	$self->notify(error => "You are not logged in, please login to access this.");
 	$self->redirect_to('/login');
 	undef;
@@ -63,7 +62,7 @@ warn "NOT LOGGED IN";
 
 sub logout()
 {	my $self = shift;
-	$self->session(expires => 1);  # Kill the Session cookie
+	$self->session(is_auth => 0, expires => 1);  # Kill the Session cookie
 	$self->render(template => 'login/logout');
 }
 
@@ -76,21 +75,20 @@ sub register()
 
 sub tryRegister()
 {	my $self = shift;
-	my $email    = $self->param('username');
+	my $email    = $self->param('email');
 	my $password = $self->param('password');
-	my $user     = lc $email;
 	#XXX use Email::Valid to check email, otherwise return with notify(error)
 	#XXX check password length
 
-	if($self->users->account($user))
+	if($self->users->accountByEmail($email))
 	{	$self->notify(error => 'Username already exist. Please start the password-reset procedure.');
 		return $self->register;
 	}
 
-	$self->users->createAccount({ user => $user, email => $email, password => $password });
+	my $account = $self->users->createAccount({ email => $email, password => $password });
+	$self->login($account);
 
-	$self->notify(warning => 'User is created successfully');
-	$self->login($user);
+	$self->notify(warning => 'The user account is created.');
 	$self->redirect_to('/dashboard');
 }
 
