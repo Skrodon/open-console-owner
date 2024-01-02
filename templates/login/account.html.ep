@@ -36,6 +36,21 @@
             % }
           </table>
 
+          <div class="mt-3">
+            <label for="common_languages" class="form-label">Select your preferred language:</label>
+            <select id="common_languages" class="form-select">
+              <option value="English">English</option>
+              <option value="Français">French</option>
+              <option value="Tiếng Việt">Vietnamese</option>
+            </select>
+          </div>
+
+          <br>
+
+          <p>Interface language:
+          <select>
+            <option value="en_EN">English</option>
+          </select>
 
           <br>
 
