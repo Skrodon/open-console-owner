@@ -8,7 +8,6 @@
       <div class="card-body">
 
 <form id="identity">
-
   <div>
 	<label for="role" class="form-label">Role</label>
     <input name="role" type="text" id="role" class="form-control" placeholder="Purpose" aria-describedby="role_explain" required />
@@ -40,7 +39,7 @@
     <option value="en" selected>English</option>
     <option value="nl">Nederlands</option>
     </select>
-	<div id="language_explain" class="form-text">Which of the languages (configured in Account) do you prefer for this identity.</div>
+	<div id="language_explain" class="form-text">Which of the languages (as pre-selected in your Account) do you prefer for this identity.</div>
   </div>
 
   <div>

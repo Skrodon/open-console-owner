@@ -17,7 +17,7 @@
 <tr><td><i class="fa-solid fa-check"></i></td>
     <td>Continue configuring <a href="/dashboard/account">your Account</a> with defaults.</td>
 <tr><td><i class="fa-solid fa-arrow-right"></i></td>
-    <td><a href="create_identity">Create at least one Identity.</a></td></tr>
+    <td><a href="/dashboard/identity">Create at least one Identity.</a></td></tr>
 <tr><td><i class="fa-regular fa-clock"></i></td>
     <td>You may wish to declare Identities to be part of a Group, for instance
         a department or organization you belong to.</td></tr>
