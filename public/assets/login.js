@@ -33,7 +33,7 @@ function validatePassword(form, passwordField, confirmField)
 
 function activate_register(form)
 {	var passwordField = $('#password', form);
-	var confirmField  = $('#confirm_password', form);
+	var confirmField  = $('#confirm', form);
 
 	$('#togglePassword', form).on('click', function() {
 		togglePasswordField(passwordField, $(this));

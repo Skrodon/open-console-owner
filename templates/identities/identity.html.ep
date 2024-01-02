@@ -9,48 +9,72 @@
 
 <form id="identity">
 
-  <h5>Role</h5>
-  <input type="text" size="50" placeholder="A hint about the purpose of this Identity" required />
-<br>&nbsp;
+  <div>
+	<label for="role" class="form-label">Role</label>
+    <input name="role" type="text" id="role" class="form-control" placeholder="Purpose" aria-describedby="role_explain" required />
+    <div id="role_explain" class="form-text">A hint about the purpose of this Identity</div>
+  </div>
 
-  <h5>Name</h5>
-  <input type="text" size="50" placeholder="Your name in this context" required />
-<br>&nbsp;
+  <div>
+	<label for="name" class="form-label">Name</label>
+    <input name="name" type="text" id="name" class="form-control" placeholder="Name" aria-describedby="name_explain" required />
+    <div id="role_explain" class="form-text">Your name in this context</div>
+  </div>
 
-  <h5>Email</h5>
-  <input name="email" type="radio">&nbsp;Use default address, currently "<tt>mark@overmeer.net</tt>"<br />
-  <input name="email" type="radio" checked>&nbsp;Use <input type="email" value="mark@open-console.eu" size="40" />
-<br>&nbsp;
+  <div>
+	<label for="email" class="form-label">Email</label>
+    <div class="form-check">
+      <input name="email" type="radio" id="email-generic" value="generic">
+      <label class="form-check-label" for="email-generic">Use default address, currently "<tt>mark@overmeer.net</tt>"</label>
+    </div>
+    <div class="form-check">
+      <input name="email" type="radio" id="email-other" value="other" checked>
+      <label class="form-check-label" for="email-other">Use other address:</label>
+	  <input type="email" value="mark@open-console.eu" class="form-control" />
+    </div>
+  </div>
 
-  <h5>Language</h5>
-  <select>
-  <option value="en" selected>English</option>
-  <option value="nl" selected>Nederlands</option>
-  </select>
-<br>&nbsp;
+  <div>
+    <label for="language" class="form-label">Language</label>
+    <select class="form-select" id="language" aria-label="identity language preference" aria-describedby="language_explain">
+    <option value="en" selected>English</option>
+    <option value="nl">Nederlands</option>
+    </select>
+	<div id="language_explain" class="form-text">Which of the languages (configured in Account) do you prefer for this identity.</div>
+  </div>
 
-  <h5>Avatar</h5>
-  <input name="avatar" type="radio" value="account" checked>&nbsp;As configured in Account<br />
-  <input name="avatar" type="radio" value="none">&nbsp;No image<br />
-  <input name="avatar" type="radio" value="role">&nbsp;&lt;select image here&gt;
-<br>&nbsp;
+  <div>
+    <label for="avatar" class="form-label">Avatar</label>
+    <div class="form-check">
+      <input name="avatar" type="radio" id="avatar-account" value="account" checked>
+      <label type="form-check-label" for="avatar-account">As configured in Account</label>
+    </div>
+    <div class="form-check">
+      <input name="avatar" type="radio" id="avatar-none" value="none">
+      <label type="form-check-label" for="avatar-none">No image</label>
+    </div>
+    <div class="form-check">
+      <input name="avatar" type="radio" id="avatar-role" value="role">
+      <label type="form-check-label" for="avatar-role">&lt;select image here&gt;</label>
+    </div>
+  </div>
 
-  <h5>Phone-number</h5>
-  <input type="text" size="50" placeholder="International phone-number" value="+31 6 52 17 58 28" />
-<br>&nbsp;
+  <div>
+   <label for="phone" class="form-label">Phone number</label>
+   <input name="phone" type="text" id="phone" class="form-control" placeholder="+31 ..." value="+31 6 52 17 58 28" aria-describedby="phone-explain" />
+   <div id="phone_explain" class="form-text">Preferrable an international phone-number.</div>
+  </div>
 
-  <h5>Postal Address</h5>
-  <textarea rows="4" cols="50">
+  <div>
+    <label for="postal" class="form-label">Postal address</label>
+    <textarea name="postal" id="postal" class="form-control" rows="4" aria-describedby="postal_explain">
 Sweelincklaan 8
 6815 BH  Arnhem
 The Netherlands
-  </textarea>
-<br>&nbsp;
+    </textarea>
+    <div id="postal_explain" class="form-text">What is needed to get post delivered to you.</div>
+  </div>
 
-  <h5>Security keys</h5>
-  <button class="btn btn-secondary">Generate PGP</button>
-  <button class="btn btn-secondary">Generate certificate</button>
-<br/>&nbsp;
 <br/>&nbsp;
 
   <button type="submit" id="save_button" class="btn btn-primary">Save</button>

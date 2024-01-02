@@ -3,37 +3,46 @@
 
 <h2>Please Login to Access the Website</h2>
 
-<p>Welcome back to Open Console.</p>
-
 <div class="container">
   <div class="card" id="login_card">
-	<h5 class="card-header">User Sign In</h5>
-	<div class="card-body">
-		<form id="login" method="post" action="login">
-		<table cellspacing="10">
-		<tr><th>Username</th>
-			<td><input class="form-control" id="email" name="email" required
-				 type="email" size="40" placeholder="Your email address"
-			 /></td></tr>
-		<tr><th>Password</th>
-			<td><div style="position: relative">
-					<input class="form-control" id="password" name="password" required
-				 	type="password" size="40" placeholder="Enter Password" 
-			 		/>
-					<i id="toggleLoginPassword" class="fa-solid fa-eye eye_toggle"></i>
-				</div>
-			</td></tr>
-		<tr><th>&nbsp;</th>
-			<td><button class="btn btn-primary" type="submit">
-					<i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp; Sign In
-				</button>
-			</td></tr>
-		</table>
-		</form>
-	</div>
-	<div class="card-body">
-		<a href="/login/register" class="card-link">Register</a>
-		<a href="/login/reset" class="card-link">Reset password</a>
-	</div>
+    <h5 class="card-header">User Sign In</h5>
+    <div class="card-body">
+
+      <p>Welcome back to Open Console.</p>
+
+      <form id="login" method="post" action="login">
+
+        <div class="row align-items-center">
+          <div class="col-4">
+            <label for="email" class="col-form-label">Username</label>
+          </div>
+          <div class="col">
+            <input name="email" type="email" class="form-control" id="email" required placeholder="Your email address" />
+          </div>
+          <div class="col-1">
+          </div>
+        </div>
+
+        <div class="row align-items-center">
+          <div class="col-4">
+            <label for="password" class="col-form-label">Password</label>
+          </div>
+          <div class="col">
+            <input name="password" type="password" id="password" class="form-control" required placeholder="Enter Password" />
+          </div>
+          <div class="col-1">
+            <i id="toggleLoginPassword" class="fa-solid fa-eye eye_toggle"></i>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" type="submit">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp; Sign In
+        </button>
+      </form>
+    </div>
+    <div class="card-body">
+        <a href="/login/register" class="card-link">Register</a>
+        <a href="/login/reset" class="card-link">Reset password</a>
+    </div>
   </div>
 </div>
