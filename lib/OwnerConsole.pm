@@ -4,6 +4,9 @@ use Mojo::Base 'Mojolicious';
 use Mango;
 use feature 'state';
 
+use Data::UUID    ();
+my $ug    = Data::UUID->new;
+
 use OwnerConsole::Model::Users ();
 
 my (%dbconfig, %dbservers);
@@ -44,8 +47,9 @@ sub startup
 #$self->users->db->accounts->remove({});  #XXX hack clean whole accounts table
 
 	# 'user' is the logged-in user, the admin can select to show a different 'account'
-	$self->helper(user     => sub { $_[0]->{user}    ||= $_[0]->users->account($_[0]->session('userid')) });
-	$self->helper(account  => sub { $_[0]->{account} ||= $_[0]->users->account($_[0]->session('account') or return $_[0]->user) });
+	$self->helper(user      => sub { $_[0]->{user}    ||= $_[0]->users->account($_[0]->session('userid')) });
+	$self->helper(account   => sub { $_[0]->{account} ||= $_[0]->users->account($_[0]->session('account') or return $_[0]->user) });
+	$self->helper(newUnique => sub { $config->{instance} . ':' . $ug->create_str });
 
 	### Routes
 
