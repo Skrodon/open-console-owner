@@ -51,7 +51,7 @@ of internet which know something about your websites, domain-names, or networks.
           <tr>
             <th>&nbsp;</th>
             <td>
-              <button class="btn btn-primary" type="submit" onclick="return validatePassword()">
+              <button class="btn btn-primary" type="submit">
                 <i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp; Register
               </button>
             </td>

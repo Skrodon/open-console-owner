@@ -16,22 +16,19 @@ function activate_login(form)
 function validatePassword(form, passwordField, confirmField)
 {	var password = passwordField.val();
 	var confirmPassword = confirmField.val();
-	var lengthWarning = $('#password_length_warning', form);
-	var matchWarning  = $('#password_match_warning', form);
 
-	if (password.length < 6) {
-		lengthWarning.show();
-		matchWarning.hide();
+	$(".warning", form).hide();
+
+	if(password.length < 6) {
+		$('#password_length_warning', form).show();
 		return false;
-	} if (password !== confirmPassword) {
-		lengthWarning.hide();
-		matchWarning.show();
-		return false;
-	} else {
-		lengthWarning.hide();
-		matchWarning.hide();
-		return true;
 	}
+	if(password !== confirmPassword) {
+		$('#password_match_warning', form).show();
+		return false;
+	}
+
+	return true;
 }
 
 function activate_register(form)
@@ -84,13 +81,11 @@ function activate_account_settings(form) {
 
 	$('#confirm_delete_button', form).on('click', function () {
 		deleteModal.hide();
-
 // form.submit()
 // in handler:  $self->notify(''), redirect to /
 		alert('Account deleted successfully');
 	});
 }
-
 
 $(document).ready(function() {
 	$("form#register").map(function () { activate_register($(this)) });

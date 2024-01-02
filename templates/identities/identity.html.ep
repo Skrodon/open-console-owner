@@ -10,7 +10,7 @@
 <form id="identity">
 
   <h5>Role</h5>
-  <input type="text" size="50" placeholder="A (short) descriptive hint" required />
+  <input type="text" size="50" placeholder="A hint about the purpose of this Identity" required />
 <br>&nbsp;
 
   <h5>Name</h5>
@@ -64,8 +64,8 @@ The Netherlands
       <h5 class="card-header">Configuring this Identity</h5>
       <div class="card-body">
 
-<p>You express your separate roles in separate Identities.  These
-<strong>Role</strong> names will not be shared with anyone.</p>
+<p>You express your separate roles in life as separate Identities.
+These <strong>Role</strong> names will not be shared with anyone.</p>
 
 <p>As <strong>Name</strong>, fill-in your name as suits to this role.
 For instance, when you use this Identity for OpenID, then this will be
