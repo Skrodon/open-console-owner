@@ -38,10 +38,12 @@
 
           <div class="mt-3">
             <label for="common_languages" class="form-label">Select your preferred language:</label>
-            <select id="common_languages" class="form-select">
-              <option value="English">English</option>
-              <option value="Français">French</option>
-              <option value="Tiếng Việt">Vietnamese</option>
+            <select id="common_languages" class="form-select" multiple>
+              <option value="en">English</option>
+              <option value="fr">Français</option>
+              <option value="nl" selected>Nederlands</option>
+              <option value="ru">Русский язык</option>
+              <option value="vi">Tiếng Việt</option>
             </select>
           </div>
 

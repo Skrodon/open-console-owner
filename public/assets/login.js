@@ -100,24 +100,31 @@ function activate_account_settings(form) {
 	function isLanguageExists(language) {
 		var exists = false;
 		$('table.table td:first-child').each(function () {
-		  if ($(this).text() === language) {
-			exists = true;
-			return false;
-		  }
+			if ($(this).text() === language) {
+				exists = true;
+				return false;
+			}
 		});
 		return exists;
 	}
-
+	
 	$('#common_languages').change(function () {
-		var selectedLanguage = $(this).val();
-		if (selectedLanguage && !isLanguageExists(selectedLanguage)) {
-			var newRow = '<tr>' +
-			  '<td>' + selectedLanguage + '</td>' +
-			  '<td><a href="#" class="btn btn-danger remove-link">Remove</a></td>' +
-			  '<td><a href="#" class="btn btn-secondary move-up-link">Move Up</a></td>' +
-			  '<td><a href="#" class="btn btn-secondary move-down-link">Move Down</a></td>' +
-			  '</tr>';
-			$('table.table').append(newRow);
+		var selectedLanguages = $(this).find('option:selected').map(function() {
+			return $(this).text();
+		}).get();
+	
+		if (selectedLanguages) {
+			$.each(selectedLanguages, function(index, selectedLanguage) {
+				if (!isLanguageExists(selectedLanguage)) {
+					var newRow = '<tr>' +
+						'<td>' + selectedLanguage + '</td>' +
+						'<td><a href="#" class="btn btn-danger remove-link">Remove</a></td>' +
+						'<td><a href="#" class="btn btn-secondary move-up-link">Move Up</a></td>' +
+						'<td><a href="#" class="btn btn-secondary move-down-link">Move Down</a></td>' +
+						'</tr>';
+					$('table.table').append(newRow);
+				}
+			});
 		}
 	});
 

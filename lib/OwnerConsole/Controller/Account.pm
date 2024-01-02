@@ -7,7 +7,6 @@ sub index($) {
 
     my $preferred_languages = $self->get_preferred_languages || ['default'];
     my $long_language_names = $self->get_long_language_names($preferred_languages);
-
     $self->render(
         template            => 'login/account',
         account             => $self->account,
