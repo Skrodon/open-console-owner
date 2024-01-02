@@ -1,9 +1,6 @@
 package OwnerConsole::Account;
 use Mojo::Base 'OwnerConsole::Mango::Object';
 
-use Data::UUID    ();
-my $ug    = Data::UUID->new;
-
 use Crypt::PBKDF2 ();
 my $crypt = Crypt::PBKDF2->new;
 
@@ -12,12 +9,12 @@ my $crypt = Crypt::PBKDF2->new;
 
 sub create($%)
 {	my ($class, $insert, %args) = @_;
-	$insert->{userid} = my $uuid = lc $ug->create_str;
-	my $password      = delete $insert->{password};
+	my $userid   = $insert->{userid} = $::app->newUnique;
+	my $password = delete $insert->{password};
 
 	my $self = $class->SUPER::create($insert, %args);
 
-	$self->log("created account $uuid");
+	$self->log("created account $userid");
 	$self->changePassword($password);
 	$self;
 }
@@ -25,10 +22,8 @@ sub create($%)
 =section Attributes
 =cut
 
-sub userId()    { $_[0]->_data->{userid}
-|| $ug->create_str;   #XXX until upgrade
-  }
-sub email()     { $_[0]->_data->{email} }
+sub userId()    { $_[0]->_data->{userid} }
+sub email()     { $_[0]->_data->{email}  }
 sub birthDate() { $_[0]->_data->{birth_date} }
 
 sub isAdmin()   { $::app->isAdmin($_[0]) }
