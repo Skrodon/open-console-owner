@@ -32,7 +32,12 @@ sub upgrade
 
 	# We can run this as often as we want
 	$self->accounts->ensure_index({ userid => 1 }, { unique => bson_true });
-	$self->accounts->ensure_index({ email  => 1 }, { unique => bson_true });   # should be case-insensitive search
+
+# $self->accounts->drop_index('email');
+	$self->accounts->ensure_index({ email  => 1 }, {
+		unique    => bson_true,
+		collation => { locale => 'en', strength => 2 },
+	});
 	$self;
 }
 
