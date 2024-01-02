@@ -1,8 +1,12 @@
 package OwnerConsole::Model::Users;
 use Mojo::Base -base;
 
+use Mango::BSON ':bson';
+
 use OwnerConsole::Account  ();
 use OwnerConsole::Identity ();
+
+use constant USERDB_VERSION => '1';
 
 =section DESCRIPTION
 This object handles the "users" database, which contains all information
@@ -17,28 +21,53 @@ collections:
 =cut
 
 has db => undef;
+has accounts => sub { $_[0]->db->collection('accounts') };
+
+#---------------------
+=section UserDB configuration
+=cut
+
+sub upgrade
+{	my $self = shift;
+
+	# We can run this as often as we want
+	$self->accounts->ensure_index({ userid => 1 }, { unique => bson_true });
+	$self->accounts->ensure_index({ email  => 1 }, { unique => bson_true });   # should be case-insensitive search
+	$self;
+}
+
+#---------------------
+=section The "account" table
+=cut
 
 sub createAccount($%)
 {	my ($self, $insert, %args) = @_;
 	$insert or return;
 
 	my $account = OwnerConsole::Account->create($insert);
-	$self->db->collection('accounts')->insert($account->toDB);
-
-	$self;   # call account() to get the ::Account object: db will add stuff
+	$self->accounts->insert($account->toDB);
+	$account;  # Does not contain all info, like db object_id
 }
 
 sub account($)
-{	my ($self, $user) = @_;
-	my $data = $self->db->collection('accounts')->find_one({user => $user})
+{	my ($self, $userid) = @_;
+	my $data = $self->accounts->find_one({userid => $userid})
+		or return;
+
+	OwnerConsole::Account->fromDB($data);
+}
+
+sub accountByEmail($)
+{	my ($self, $email) = @_;
+	my $data = $self->accounts->find_one({email => $email})
 		or return;
 
 	OwnerConsole::Account->fromDB($data);
 }
 
 sub removeAccount($)
-{	my ($self, $user) = @_;
-	$self->db->collection('accounts')->remove({user => $user})
+{	my ($self, $userid) = @_;
+	$self->accounts->remove({userid => $userid})
 		or return;
 }
 

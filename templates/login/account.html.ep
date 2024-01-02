@@ -12,6 +12,11 @@
   <button type="submit" id="done_button" class="btn btn-primary">Cancel</button>
 <br />&nbsp;
 
+% my $account = $c->account;
+% if($account->isAdmin) {
+<p class="admin">UserID = <%= $account->userId %></p>
+% }
+
 <form id="change_account">
   <h5>Email</h5>
   <p>Configure your default email-address, which is also used for signing in to
@@ -45,7 +50,7 @@
 <br>&nbsp;
 
   <h5>Birth-date</h5>
-  <input type="text" value="1966/05/04" />
+  <input type="text" value="1966-05-04" />
 <br>&nbsp;
 
   <h5>Avatar</h5>
