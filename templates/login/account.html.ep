@@ -73,20 +73,23 @@
   <!-- https://www.internationalphoneticalphabet.org/languages/language-names-in-native-language/ -->
   <!-- only the languages which have any kind of translation in Open Console.  Value=https://datatracker.ietf.org/doc/html/rfc5646 -->
     <select name="languages" id="languages" class="form-select" multiple aria-describedby="lang_explain">
-    <option value="en_EN">English</option>
-    <option value="nl_NL" selected>Nederlands</option>
-    <option value="ru">Русский язык</option>
-    <option value="vie">Tiếng Việt</option>
+% use OwnerConsole::Tables 'language_table';
+% foreach my $lang (@{language_table()}) {
+    <option value="<%= $lang->[0] %>"><%= $lang->[1] %></option>
+% }
     </select>
     <div id="lang_explain" class="form-text">Specify the languages you can read.  Order them from best to worst.</div>
   </div>
 
   <div>
-    <label for="preflang" class="form-label">Interface language</label>
-    <select name="preflang" id="preflang" class="form-select" aria-describedby="preflang_explain">
-    <option value="en_EN">English</option>
+    <label for="iflang" class="form-label">Interface language</label>
+    <select name="iflang" id="iflang" class="form-select" aria-describedby="iflang_explain">
+% my $iflang = $account->ifLang;
+% foreach my $lang ($c->ifLanguages) {
+    <option value="<%= $lang->[0] %>"<%= $lang->[0] eq $iflang ? ' selected' : ''%>><%= $lang->[1] %></option>
+%}
     </select>
-    <div id="preflang_explain" class="form-text">The languages used for this Open Console website (changes
+    <div id="iflang_explain" class="form-text">The languages used for this Open Console website (changes
     after "Save")</div>
   </div>
 

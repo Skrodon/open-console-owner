@@ -11,12 +11,10 @@ use constant
 sub index()
 {	my $self = shift;
 
-	if($self->session('is_auth'))
-	{	$self->redirect_to('/dashboard');
-	}
-	else
-	{	$self->render(template => 'login/index');
-	}
+	return $self->redirect_to('/dashboard')
+		if $self->session('is_auth');
+
+	$self->render(template => 'login/index');
 }
 
 sub tryLogin()
@@ -85,7 +83,12 @@ sub tryRegister()
 		return $self->register;
 	}
 
-	my $account = $self->users->createAccount({ email => $email, password => $password });
+	my $account = $self->users->createAccount({
+		email       => $email,
+		password    => $password,
+		if_language => $self->language,
+	 });
+
 	$self->login($account);
 
 	$self->notify(warning => 'The user account is created.');

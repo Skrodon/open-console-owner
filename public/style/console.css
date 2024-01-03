@@ -6,30 +6,6 @@ FORM > DIV {
 	margin-bottom: 3ex;
 }
 
-LI.nav-item {
-	background: none !important;
-	padding-left: 0;
-}
-
-UL {
-	list-style-type: none;
-	margin: 0 0 1em 0;
-	padding: 0px;
-}
-
-LI {
-	display: list-item;
-	background: url(/style/bullet-1.png) no-repeat scroll 0 7px transparent !important;
-	margin-top: 0px;
-	padding-left: 30px;
-	list-style: none outside none;
-}
-
-TD, TH {
-	padding: 10px;
-	vertical-align: top;
-}
-
 div#login_card {
 	width: 40rem;
 }

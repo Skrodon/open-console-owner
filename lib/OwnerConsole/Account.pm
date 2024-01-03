@@ -4,6 +4,8 @@ use Mojo::Base 'OwnerConsole::Mango::Object';
 use Crypt::PBKDF2 ();
 my $crypt = Crypt::PBKDF2->new;
 
+use OwnerConsole::Tables qw(language_name);
+
 use constant COLL_SCHEMA => '20240102';
 
 =section Constructors
@@ -40,6 +42,8 @@ sub userId()    { $_[0]->_data->{userid} }
 sub email()     { $_[0]->_data->{email}  }
 sub birthDate() { $_[0]->_data->{birth_date} }
 sub schema()    { $_[0]->_data->{schema} }
+sub ifLang()    { $_[0]->_data->{iflang} }
+sub ifLanguage  { language_name($_[0]->ifLang) }
 
 sub isAdmin()   { $::app->isAdmin($_[0]) }
 
