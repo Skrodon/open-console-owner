@@ -1,0 +1,56 @@
+%# this is a very dirty hack to shared this template between pages: Mojo
+%# does strict variable name encapsulation, and there is no way to pass
+%# data from an included file to its caller.  AFAIK
+
+% $::tabbed = begin
+%   my ($block_id, $pages) = @_;
+
+<div class="d-flex align-items-start">
+  <div class="nav flex-column nav-pills me-3" id="<%== $block_id %>" role="tablist" aria-orientation="vertical">
+
+%# XXX $active can disappear once we use Javascript
+% my $active = 'active';
+% foreach my $page (@$pages) {
+%   my ($label, $name) = @$page;
+    <button class="nav-link <%== $active %>" id="<%== $label %>-tab" data-bs-toggle="pill" data-bs-target="#<%== $label %>"
+     type="button" role="tab" aria-controls="<%== $label %>" ><%== $name %></button>
+%   $active = '';
+% }
+
+    <br />&nbsp;
+    <br />&nbsp;
+    <button type="submit" id="save_button" class="btn btn-outline-primary">Save</button>
+    <button type="submit" id="done_button" class="btn btn-outline-primary">Cancel</button>
+
+  </div>
+
+  <div class="tab-content" id="<%== $block_id %>-content" style="width: 800px">
+
+% $active = 'show active';
+% foreach my $page (@$pages) {
+%   my ($label, $name, $form, $explain) = @$page;
+
+    <div class="tab-pane fade <%= $active %>" id="<%= $label %>" role="tabpanel" aria-labelledby="<%== $label %>-tab">
+      <div class="container">
+        <div class="row">
+          <div class="col-xs-12 col-md-6">
+
+%= $form->();
+
+          </div>
+          <div class="col-xl-6 hidden-lg-down d-md-none d-lg-block">
+
+%= $explain->();
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+%   $active = '';
+% }
+
+  </div>
+</div>
+
+% end
