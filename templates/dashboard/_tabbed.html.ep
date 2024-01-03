@@ -1,6 +1,6 @@
 %# this is a very dirty hack to shared this template between pages: Mojo
 %# does strict variable name encapsulation, and there is no way to pass
-%# data from an included file to its caller.  AFAIK
+%# data from an included file to its caller.  AFAIK (MO)
 
 % $::tabbed = begin
 %   my ($block_id, $pages) = @_;
@@ -19,8 +19,8 @@
 
     <br />&nbsp;
     <br />&nbsp;
-    <button type="submit" id="save_button" class="btn btn-outline-primary">Save</button>
-    <button type="submit" id="done_button" class="btn btn-outline-primary">Cancel</button>
+    <button type="submit" id="save_button"   class="btn btn-outline-primary">Save</button>
+    <button type="submit" id="cancel_button" class="btn btn-outline-primary">Cancel</button>
 
   </div>
 
@@ -33,12 +33,12 @@
     <div class="tab-pane fade <%= $active %>" id="<%= $label %>" role="tabpanel" aria-labelledby="<%== $label %>-tab">
       <div class="container">
         <div class="row">
-          <div class="col-xs-12 col-md-6">
+          <div class="col-xs-12 col-md-7">
 
 %= $form->();
 
           </div>
-          <div class="col-xl-6 hidden-lg-down d-md-none d-lg-block">
+          <div class="col-xl-5 hidden-lg-down d-md-none d-lg-block">
 
 %= $explain->();
 
