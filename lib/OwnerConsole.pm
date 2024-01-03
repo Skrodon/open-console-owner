@@ -41,8 +41,8 @@ sub _detectLanguage($$)
 
 	unless($code)
 	{	my @langs = map language_name($_), @wants;
-		$c->notify(warning => "WARN");# __x("None of the languages configured in your browser ({langs}) is supported for the Open Console interface at the moment.", langs => \@langs));
-warn "OVERRULE TO $default";
+#XXX notify is not shows
+		$c->notify(warning => __x("None of the languages configured in your browser ({langs}) is supported for the Open Console interface at the moment.", langs => \@langs));
 		$code = $default;
 	}
 

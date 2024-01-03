@@ -19,6 +19,13 @@ div#login_card {
 	display: none;
 }
 
+#account-delete-tab { color: red }
+#account-delete-tab.active { color: white; background-color: red }
+LABEL.form-label { margin-top: 2ex }
+#save_button { margin-bottom: 1ex }
+FORM DIV.row > DIV { border-left: 1px solid; border-color: #0d6efd }
+
+
 /* dashboard/account css */
 
 FORM#change_account #user_change_email_input {

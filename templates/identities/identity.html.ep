@@ -1,13 +1,15 @@
 % layout 'dashboard';
 % title 'Overview of configured Identities';
 
-<div class="container">
-  <div class="row">
-    <div class="card col-sm-6" id="identity_card">
-      <h5 class="card-header">Personal Identity</h5>
-      <div class="card-body">
 
-<form id="identity">
+% my $account = $c->account;
+% if($account->isAdmin) {
+%#   <p class="admin">IdentID = <%= $identity->identityId %></p>
+% }
+
+% my @pages;
+% my $person_form = begin
+
   <div>
 	<label for="role" class="form-label">Role</label>
     <input name="role" type="text" id="role" class="form-control" placeholder="Purpose" aria-describedby="role_explain" required />
@@ -21,25 +23,51 @@
   </div>
 
   <div>
-	<label for="email" class="form-label">Email</label>
-    <div class="form-check">
-      <input name="email" type="radio" id="email-generic" value="generic">
-      <label class="form-check-label" for="email-generic">Use default address, currently "<tt>mark@overmeer.net</tt>"</label>
-    </div>
-    <div class="form-check">
-      <input name="email" type="radio" id="email-other" value="other" checked>
-      <label class="form-check-label" for="email-other">Use other address:</label>
-	  <input type="email" value="mark@open-console.eu" class="form-control" />
-    </div>
-  </div>
-
-  <div>
     <label for="language" class="form-label">Language</label>
     <select class="form-select" id="language" aria-label="identity language preference" aria-describedby="language_explain">
     <option value="en" selected>English</option>
     <option value="nl">Nederlands</option>
     </select>
 	<div id="language_explain" class="form-text">Which of the languages (as pre-selected in your Account) do you prefer for this identity.</div>
+  </div>
+
+% end
+
+% my $person_explain = begin
+
+  <p>You express your separate roles in life as separate Identities.
+  These <strong>Role</strong> names will not be shared with anyone.</p>
+
+  <p>As <strong>Name</strong>, fill-in your name as suits to this role.
+  For instance, when you use this Identity for OpenID, then this will be
+  passed to the website you login to.  This is also the Name as shown in
+  identity Groups.</p>
+
+  <p>You can only select from <strong>Languages</strong> which are selected
+  in your <a href="/dashboard/account">Account</a>.</p>
+
+% end
+
+% push @pages, [
+%    'identity-person',
+%    'Person',
+%    $person_form,
+%    $person_explain,
+% ];
+
+% my $personal_form = begin
+
+  <div>
+	<label for="email" class="form-label">Email</label>
+    <div class="form-check">
+      <input name="email" type="radio" id="email-generic" value="generic">
+      <label class="form-check-label" for="email-generic">Use address from Account.</label>
+    </div>
+    <div class="form-check">
+      <input name="email" type="radio" id="email-other" value="other" checked>
+      <label class="form-check-label" for="email-other">Use other address:</label>
+	  <input type="email" value="mark@open-console.eu" class="form-control" />
+    </div>
   </div>
 
   <div>
@@ -58,6 +86,25 @@
     </div>
   </div>
 
+% end
+
+% my $personal_explain = begin
+
+  <p>When you connect to Service, later, you can decide to hide your
+  <strong>email-address</strong> to that provider.  In that case, emails
+  will get directed via an Open Console proxy.</p>
+
+% end
+
+% push @pages, [
+%    'identity-personal',
+%    'Personal',
+%    $personal_form,
+%    $personal_explain,
+% ];
+
+% my $location_form = begin
+
   <div>
    <label for="phone" class="form-label">Phone number</label>
    <input name="phone" type="text" id="phone" class="form-control" placeholder="+31 ..." value="+31 6 52 17 58 28" aria-describedby="phone-explain" />
@@ -74,43 +121,31 @@ The Netherlands
     <div id="postal_explain" class="form-text">What is needed to get post delivered to you.</div>
   </div>
 
-<br/>&nbsp;
+% end
 
-  <button type="submit" id="save_button" class="btn btn-primary">Save</button>
-  <button type="submit" id="done_button" class="btn btn-primary">Cancel</button>
+% my $location_explain = begin
+
+  <p>When you provide a <strong>Phone-number</strong>, be sure to specify
+  it as international number: starting with a "<tt>+</tt>" and your
+  country code.  This value may include business internal extension numbers.</p>
+
+  <p>As <strong>Postal Address</strong>, please fill-in address information
+  which can be written down on an enveloppe and posted to you, from anywhere
+  on this planet.  The country name can best be given in English.</p>
+
+% end
+
+% push @pages, [
+%    'identity-location',
+%    'Location',
+%    $location_form,
+%    $location_explain,
+% ];
+
+<form id="config_identity">
+
+% include 'dashboard/_tabbed';
+%= $::tabbed->('identity-tabs' => \@pages);
+
 </form>
 
-      </div>
-   </div>
-
-    <div class="card col-sm-6" id="identity_explain">
-      <h5 class="card-header">Configuring this Identity</h5>
-      <div class="card-body">
-
-<p>You express your separate roles in life as separate Identities.
-These <strong>Role</strong> names will not be shared with anyone.</p>
-
-<p>As <strong>Name</strong>, fill-in your name as suits to this role.
-For instance, when you use this Identity for OpenID, then this will be
-passed to the website you login to.  This is also the Name as shown in
-identity Groups.</p>
-
-<p>When you connect to Service, later, you can decide to hide your
-<strong>email-address</strong> to that provider.  In that case, emails
-will get directed via an Open Console proxy.</p>
-
-<p>You can only select from <strong>Languages</strong> which are selected
-in your <a href="/dashboard/account">Account</a>.</p>
-
-<p>When you proved a <strong>Phone-number</strong>, be sure to specify
-it as international number: starting with a "<tt>+</tt>" and your
-country code.  This value may include business internal extension numbers.</p>
-
-<p>As <strong>Postal Address</strong>, please fill-in address information
-which can be written down on an enveloppe and posted to you, from anywhere
-on this planet.  The country name can best be given in English.</p>
-
-      </div>
-    </div>
-  </div>
-</div>

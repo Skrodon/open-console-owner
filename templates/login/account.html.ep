@@ -2,16 +2,6 @@
 
 <script src="/assets/login.js"></script>
 
-<style>
-  #account-delete-tab { color: red }
-  #account-delete-tab.active { color: white; background-color: red }
-  LABEL.form-label { margin-top: 2ex }
-  #save_button { margin-bottom: 1ex }
-  DIV.row > DIV { border-left: 1px solid; border-color: #0d6efd }
-</style>
-
-<form id="change_account">
-
 % my $account = $c->account;
 % if($account->isAdmin) {
 %#   <p class="admin">UserID = <%= $account->userId %></p>
@@ -50,13 +40,16 @@
       <i class="fa-solid fa-triangle-exclamation"></i> The passwords do not match!
     </div>
   </div>
+
 % end
 
 % my $login_explain = begin
+
   <p>The <strong>email</strong>-address is used to Sign-in, but also
   for Open Console to communicate with you.  When you change this, your
   ownership proves, service registration, and other configuration will
   <i>not</i> be lost.</p>
+
 % end
 
 % push @pages, [
@@ -170,7 +163,7 @@
   <p>Once you delete your account, there is no going back. Please, be certain.</p>
 
   <button type="submit" id="delete_account_button" class="btn btn-danger">
-  Delete your account <i class="fa fa-trash" aria-hidden="true"></i>
+  Delete your account <i class="fa fa-skull" aria-hidden="true"></i>
   </button>
 
   <div id="delete_account_confirmation_modal" class="modal" style="display: none;">
@@ -197,14 +190,14 @@
 
  <p>When you decide to
  <strong style="background-color: red; color: white">&nbsp;delete your account&nbsp;</strong>,
- then there is really no way back: all information about you will be
- removed from our administration.  You will loose all ownership proves
- which relate to your personal Identities.</p>
+ then there is really <strong>no way back:</strong> all information
+ about you will be removed from our administration.  You will loose all
+ ownership proves which relate to your personal Identities.</p>
 
  <p>When you are the last member of a Group, than all that related
  information will be lost as well.</p>
 
- <p>The only fact we register, is how this account got removed, by whome,
+ <p>The only fact we note, is how this account got removed, by whom,
  when, and why.</p>
 
 % end
@@ -215,6 +208,8 @@
 %    $delete_form,
 %    $delete_explain,
 % ];
+
+<form id="config_account">
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('account-tabs' => \@pages);
