@@ -23,6 +23,11 @@ Identification:
   </a>
 </li>
 <li class="nav-item">
+  <a class="nav-link" href="/dashboard/account2">
+    <i class="fa-solid fa-user"></i> Account NEW
+  </a>
+</li>
+<li class="nav-item">
   <a class="nav-link" href="/dashboard/identities">
     <i class="fa-solid fa-address-card"></i> Identities
   </a>

@@ -64,6 +64,7 @@ sub startup
 	my $dashboard = $r->under('/dashboard')->to('login#mustBeLoggedIn');
 	$dashboard->get('/')->to('dashboard#index');
 	$dashboard->get('/account')->to('account#index');
+	$dashboard->get('/account2')->to('account#index2');
 	$dashboard->get('/identities')->to('identities#index');
 	$dashboard->get('/identity')->to('identities#identity');
 }

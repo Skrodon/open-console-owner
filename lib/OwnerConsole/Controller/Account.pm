@@ -6,4 +6,9 @@ sub index($)
 	$self->render(template => 'login/account');
 }
 
+sub index2($)
+{	my $self = shift;
+	$self->render(template => 'login/account2');
+}
+
 1;
