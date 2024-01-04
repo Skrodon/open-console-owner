@@ -6,6 +6,7 @@ our @EXPORT_OK = qw(language_name language_table);
 my %language_names = (
 	'en'    => 'English',
 	'en-US' => 'American',
+	'fr'    => 'Français',
 	'gr'    => 'Ελληνικά',
 	'nl'    => 'Nederlands',
 	'nl-BE' => 'Vlaams',
@@ -18,7 +19,7 @@ my %language_names = (
 
 sub language_name($)
 {	my $code = shift;
-	$language_names{$code} || $code;
+	$language_names{$code} || $language_names{$code =~ s/\-.*//r} || $code;
 }
 
 my @language_table = sort { $a->[1] cmp $b->[1] } map +[ $_ => $language_names{$_} ], keys %language_names;
