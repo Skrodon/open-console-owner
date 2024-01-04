@@ -142,7 +142,7 @@ The Netherlands
 %    $location_explain,
 % ];
 
-<form id="config_identity">
+<form id="config_identity" class="config_form">
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('identity-tabs' => \@pages);

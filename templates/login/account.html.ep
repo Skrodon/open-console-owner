@@ -209,7 +209,7 @@
 %    $delete_explain,
 % ];
 
-<form id="config_account">
+<form id="config_account" class="config_form">
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('account-tabs' => \@pages);

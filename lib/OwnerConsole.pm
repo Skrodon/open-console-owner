@@ -103,6 +103,8 @@ sub startup
 	$dashboard->get('/account')->to('account#index');
 	$dashboard->get('/identities')->to('identities#index');
 	$dashboard->get('/identity')->to('identities#identity');
+	$dashboard->get('/groups')->to('groups#index');
+	$dashboard->get('/group')->to('groups#group');
 }
 
 1;

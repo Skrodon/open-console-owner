@@ -1,0 +1,41 @@
+% layout 'dashboard';
+% title 'Overview of configured identity Groups';
+
+<ascript src="/assets/login.js"></script>
+
+<div class="container">
+  <div class="row">
+    <div class="card col-sm-6" id="identities_card">
+      <h5 class="card-header">Group Identities</h5>
+      <div class="card-body">
+
+<form id="identity_list">
+  <table>
+  <tr><th>Organization</th><th>Identity</th><th>Edit</th></tr>
+  <tr><td>Perl Community</td><td>CPAN Developer</td><td><i class="fa-solid fa-pen"></i></tr>
+  <tr><td>Open Console</td><td>Team Open Console</td><td><a href="/dashboard/group?OpenConsole"><i class="fa-solid fa-pen"></i></a></tr>
+  <tr><td>Foundation NLUUG</td><td>Secretary NLUUG</td><td><i class="fa-solid fa-pen"></i></tr>
+  <tr><td>Association NINJA</td><td>Secretary NINJA</td><td><i class="fa-solid fa-pen"></i></tr>
+  <tr><td style="text-align: right"><b>create new:</b></td>
+      <td><i class="fa-solid fa-circle-plus"></i></td></tr>
+  </table>
+</form>
+
+      </div>
+   </div>
+
+    <div class="card col-sm-6" id="identities_explain">
+      <h5 class="card-header">Configuring Group Identities</h5>
+      <div class="card-body">
+
+<p>You may need to organize your activities as part of an organization, a company, or
+any other group of people.  Therefore, you can create Group identities, where you can
+specify such cooperation.</p>
+
+<p>Usually, both personal and Group identities can be used to contact to Services.  In
+some cases, the Service may require a personal identification.</p>
+
+      </div>
+    </div>
+  </div>
+</div>

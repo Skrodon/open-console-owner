@@ -28,7 +28,7 @@ Identification:
   </a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="#">
+  <a class="nav-link" href="/dashboard/groups">
     <i class="fa-solid fa-people-group"></i> Groups
   </a>
 </li>

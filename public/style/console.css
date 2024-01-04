@@ -2,6 +2,10 @@
 	background: #CCFFCC;
 }
 
+TH, TD {
+	padding: 10px;
+}
+
 FORM > DIV {
 	margin-bottom: 3ex;
 }
@@ -19,28 +23,13 @@ div#login_card {
 	display: none;
 }
 
-#account-delete-tab { color: red }
-#account-delete-tab.active { color: white; background-color: red }
 LABEL.form-label { margin-top: 2ex }
-#save_button { margin-bottom: 1ex }
-FORM DIV.row > DIV { border-left: 1px solid; border-color: #0d6efd }
 
 
-/* dashboard/account css */
+FORM#config_account #account-delete-tab { color: red }
 
-FORM#change_account #user_change_email_input {
-    width: 70%;
-}
+FORM#config_account #account-delete-tab.active { color: white; background-color: red }
 
-FORM#change_account #change_email_button {
-    padding: 6px;
-    cursor: pointer;
-    background-color: grey;
-    pointer-events: none;
-    border: none;
-}
+FORM.config_form #save_button { margin-bottom: 1ex }
 
-FORM#change_account #change_email_button.changed {
-    background-color: DodgerBlue;
-    pointer-events: auto;
-}
+FORM.config_form DIV.row > DIV { border-left: 1px solid; border-color: #0d6efd }

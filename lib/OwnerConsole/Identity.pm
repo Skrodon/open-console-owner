@@ -21,7 +21,7 @@ these facts.  Work in progress.
 
 sub create($%)
 {	my ($class, $insert, %args) = @_;
-	my $identid = $insert->{identid} = $::app->newUnique;
+	my $identid = $insert->{ident_id} = $::app->newUnique;
 	my $self = $class->SUPER::create($insert, %args);
 
 	$self->log("created identity $identid");
@@ -32,7 +32,7 @@ sub create($%)
 =section Attributes
 =cut
 
-sub identityId() { $_[0]->_data->{identid} }
+sub identityId() { $_[0]->_data->{ident_id} }
 
 #-------------
 =section Actions
