@@ -25,11 +25,41 @@ div#login_card {
 
 LABEL.form-label { margin-top: 2ex }
 
-
 FORM#config_account #account-delete-tab { color: red }
 
 FORM#config_account #account-delete-tab.active { color: white; background-color: red }
 
-FORM.config_form #save_button { margin-bottom: 1ex }
+FORM.config_form #save_button {
+	margin-bottom: 1ex;
+}
 
-FORM.config_form DIV.row > DIV { border-left: 1px solid; border-color: #0d6efd }
+FORM.config_form DIV.row > DIV {
+	border-left: 1px solid; border-color: #0d6efd
+}
+
+FORM LABEL.has-changed {
+	padding: 0 10px;
+	background-color: orange;
+	border-radius: 1ex;
+}
+
+FIELDSET.history {
+	width:90%;
+	margin: 2em auto;
+	border: 2px solid orange;
+	border-radius: 5px;
+	padding: 20px;
+	position: relative;
+}
+FIELDSET.history LEGEND {
+	font-size: 1rem;
+	position: absolute;
+	left: 10px;
+	top: -1.1em;
+	height: 2em;
+	line-height: 2em;
+	padding: 0 10px;
+	width: auto;
+	background-color: orange;
+	border-radius: 1ex;
+}

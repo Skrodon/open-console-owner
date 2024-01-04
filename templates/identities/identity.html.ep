@@ -94,6 +94,20 @@
   <strong>email-address</strong> to that provider.  In that case, emails
   will get directed via an Open Console proxy.</p>
 
+  <div class="history history-new" for="email" data-schema="20240101" data-reason="new">
+    First test, just because I can.
+  </div>
+  <div class="history history-change" for="email" data-schema="20240102" data-reason="change">
+    The possibilities of this field have been extended.  Also, the email address gets a more
+    strict validation.
+  </div>
+  <div class="history history-deprecate" for="email" data-schema="20240102" data-reason="deprecated">
+    This field will disappear soon.  Messages will be send via WhatsApp from now on.
+  </div>
+
+  <div class="history history-new" for="avatar" data-schema="20230101">
+    Don't show this.
+  </div>
 % end
 
 % push @pages, [
@@ -143,6 +157,7 @@ The Netherlands
 % ];
 
 <form id="config_identity" class="config_form">
+  <input id="object_version" type="hidden" value="20231010" />
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('identity-tabs' => \@pages);
