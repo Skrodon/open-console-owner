@@ -11,7 +11,14 @@ FORM > DIV {
 }
 
 div#login_card {
-	width: 40rem;
+	width: auto;
+    height: auto;
+    max-width: 40rem;
+    max-height: 60rem;
+}
+
+.card-body{
+	margin-bottom: auto;
 }
 
 .eye_toggle {
