@@ -1,16 +1,16 @@
 function togglePasswordField(field, toggleButton) {
-    var type = field.attr('type') === 'password' ? 'text' : 'password';
-    field.attr('type', type);
-    toggleButton.removeClass().addClass(type === 'password'
-      ? 'fa-solid fa-eye eye_toggle'
-      : 'fa-solid fa-eye-slash eye_toggle');
+	var type = field.attr('type') === 'password' ? 'text' : 'password';
+	field.attr('type', type);
+	toggleButton.removeClass().addClass(type === 'password'
+	  ? 'fa-solid fa-eye eye_toggle'
+	  : 'fa-solid fa-eye-slash eye_toggle');
   }
 
   function activate_login(form) {
-    var loginPassword = $('#password', form);
-    $('#toggle_login_password', form).on('click', function() {
-      togglePasswordField(loginPassword, $(this));
-    });
+	var loginPassword = $('#password', form);
+	$('#toggle_login_password', form).on('click', function() {
+	  togglePasswordField(loginPassword, $(this));
+	});
   }
 
 function validatePassword(form, passwordField, confirmField)
@@ -51,7 +51,7 @@ function activate_register(form)
 // dashboard/account script
 
 function activate_account_settings(form) {
-	const emailInput    = $('#change_email_input', form);
+	const emailInput	= $('#change_email_input', form);
 	const originalEmail = emailInput.val();
 	const deleteModal   = $('#delete_account_confirmation_modal', form);
 
