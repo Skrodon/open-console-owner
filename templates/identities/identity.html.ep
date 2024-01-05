@@ -17,9 +17,15 @@
   </div>
 
   <div>
-	<label for="name" class="form-label">Name</label>
+	<label for="name" class="form-label">Fullname</label>
     <input name="name" type="text" id="name" class="form-control" placeholder="Name" aria-describedby="name_explain" required />
     <div id="role_explain" class="form-text">Your name in this context</div>
+  </div>
+
+  <div>
+	<label for="nick" class="form-label">Nickname</label>
+    <input name="nick" type="text" id="nick" class="form-control" placeholder="Nickname" aria-describedby="nick_explain" required />
+    <div id="nick_explain" class="form-text">Your caller name.</div>
   </div>
 
   <div>
@@ -38,10 +44,13 @@
   <p>You express your separate roles in life as separate Identities.
   These <strong>Role</strong> names will not be shared with anyone.</p>
 
-  <p>As <strong>Name</strong>, fill-in your name as suits to this role.
+  <p>As <strong>Fullname</strong>, fill-in your name as suits to this role.
   For instance, when you use this Identity for OpenID, then this will be
   passed to the website you login to.  This is also the Name as shown in
   identity Groups.</p>
+
+  <p>Some Services support <strong>Nicknames</strong>: an abstract, short
+  name you like to use for yourself.</p>
 
   <p>You can only select from <strong>Languages</strong> which are selected
   in your <a href="/dashboard/account">Account</a>.</p>
