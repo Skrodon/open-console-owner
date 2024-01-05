@@ -94,9 +94,36 @@ function cancel_without_saving(form) {
 	$('#cancel_confirm', modal).on('click', function () { modal.hide(); form.submit() });
 };
 
+function save_validate_form(form)
+{	$('#save_button', form).on('click', function (event) {
+		var missing = 0;
+		$('[required]', form).each(function () {
+			if($(this).val() === '') {
+				add_val_message(form, $(this).attr('id'), 'error', 'Field is required');
+				missing++;
+			}
+		});
+
+		if(missing) {
+			event.preventDefault();
+			update_form_status(form);
+		} else {
+			// AJAX Call to do server-side validation.
+			// May return errors and warnings
+event.preventDefault();
+		}
+	});
+};
+
 function install_form(form) {
+	$('[required]').each(function () {
+		var p = $(this).attr('placeholder');
+		$(this).attr('placeholder', p + ' (required)');
+	});
+
 	create_field_versioning(form);
 	cancel_without_saving(form);
+	save_validate_form(form);
 	monitor_form_changes(form);
 	remove_val_messages(form);
 	add_val_message(form, 'email', 'error', 'no such place');
