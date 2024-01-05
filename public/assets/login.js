@@ -70,6 +70,9 @@ function activate_account_settings(form) {
 // in handler:  $self->notify(''), redirect to frontpage
 		alert('Account deleted successfully');
 	});
+
+	// Browsers fill in a password, copy it to confirm
+	$('[id="confirm"]').val($('[id="password"]').val());
 }
 
 $(document).ready(function() {

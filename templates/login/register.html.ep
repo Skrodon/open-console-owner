@@ -32,7 +32,7 @@ an account to be able to contact them.</p>
           </div>
           <div class="col">
             <input name="password" type="password" id="password" class="form-control" required placeholder="Enter a new password" aria-describedby="password_explain" />
-            <div id="password_explain" class="form-text">Do everyone a favor: pick a good pasword!</div>
+            <div id="password_explain" class="form-text">Do everyone a favor: pick a good password!</div>
             <div id="password_length_warning" class="warning">
               <i class="fa-solid fa-triangle-exclamation"></i> Password must be at least 6 characters long.
             </div>

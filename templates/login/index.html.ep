@@ -17,7 +17,7 @@
               <span class="input-group-text">
                 <i class="fas fa-user"></i>
               </span>
-              <input name="email" id="email" type="text" class="form-control" placeholder="Your email address">
+              <input name="email" id="email" type="text" class="form-control" placeholder="Your email-address">
             </div>
           </div>
           <div class="col-12">
@@ -25,7 +25,7 @@
               <span class="input-group-text"">
                 <i class="fas fa-lock"></i>
               </span>
-              <input name="password" type="password" value="" class="form-control" id="password" placeholder="Enter Password" required="true"/>
+              <input name="password" type="password" value="" class="form-control" id="password" placeholder="Enter Password" required />
               <span class="input-group-text">
                 <i id="toggle_login_password" class="fa-solid fa-eye eye_toggle"></i>
               </span>

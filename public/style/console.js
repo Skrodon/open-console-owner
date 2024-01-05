@@ -99,7 +99,7 @@ function save_validate_form(form)
 		var missing = 0;
 		$('[required]', form).each(function () {
 			if($(this).val() === '') {
-				add_val_message(form, $(this).attr('id'), 'error', 'Field is required');
+				add_val_message(form, $(this).attr('id'), 'error', 'Field is required'); //XXX translation
 				missing++;
 			}
 		});
@@ -118,16 +118,17 @@ event.preventDefault();
 function install_form(form) {
 	$('[required]').each(function () {
 		var p = $(this).attr('placeholder');
-		$(this).attr('placeholder', p + ' (required)');
+		$(this).attr('placeholder', p + ' (required)');  //XXX translation
 	});
+	$('[id="confirm"]').val($('[id="password"]').val());  //XXX only form 'account'
 
 	create_field_versioning(form);
 	cancel_without_saving(form);
 	save_validate_form(form);
-	monitor_form_changes(form);
 	remove_val_messages(form);
 	add_val_message(form, 'email', 'error', 'no such place');
 	update_form_status(form);
+	monitor_form_changes(form);
 };
 
 $(document).ready(function() {
