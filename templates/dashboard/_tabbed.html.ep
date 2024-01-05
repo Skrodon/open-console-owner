@@ -13,14 +13,18 @@
 % foreach my $page (@$pages) {
 %   my ($label, $name) = @$page;
     <button class="nav-link <%== $active %>" id="<%== $label %>-tab" data-bs-toggle="pill" data-bs-target="#<%== $label %>"
-     type="button" role="tab" aria-controls="<%== $label %>" ><%== $name %></button>
+     type="button" role="tab" aria-controls="<%== $label %>" ><%== $name %>
+       <span class="badge rounded-pill bg-danger  show_errors">0</span>
+       <span class="badge rounded-pill bg-warning show_warns">0</span>
+       <span class="badge rounded-pill bg-info    show_hints">0</span>
+    </button>
 %   $active = '';
 % }
 
     <br />&nbsp;
     <br />&nbsp;
     <button type="submit" id="save_button"   class="btn btn-outline-primary">Save</button>
-    <button type="submit" id="cancel_button" class="btn btn-outline-primary">Cancel</button>
+    <button type="submit" id="cancel_button" class="btn btn-outline-primary bg-success">Cancel</button>
 
   </div>
 

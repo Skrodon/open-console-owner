@@ -1,3 +1,8 @@
+
+.bg-warning { color: black }
+.bg-danger  { color: white }
+.bg-info    { color: black }
+
 .admin {
 	background: #CCFFCC;
 }
@@ -25,9 +30,14 @@ div#login_card {
 	cursor: pointer;
 }
 
-.warning {
+.val-error::before {
+    font-family: "Font Awesome 6 Free";
+    font-weight: 900;
+    content: "\f071  ";
+}
+
+.val-error {
 	color: red;
-	display: none;
 }
 
 LABEL.form-label { margin-top: 2ex }
@@ -40,20 +50,41 @@ FORM.config_form #save_button {
 	margin-bottom: 1ex;
 }
 
+FORM.config_form #save_button.bg-danger:hover {
+	background-color: white !important;
+	color: var(--bs-nav-pills-link-active-bg);
+}
+
+FORM.config_form #save_button.bg-success {
+	color: white !important;
+}
+
+FORM.config_form #save_button.bg-success:hover {
+	background-color: var(--bs-nav-pills-link-active-bg) !important;
+}
+
+FORM.config_form #cancel_button.bg-success {
+	color: white !important;
+}
+
+FORM.config_form #cancel_button.bg-success:hover {
+	background-color: blue !important;
+}
+
 FORM.config_form DIV.row > DIV {
 	border-left: 1px solid; border-color: #0d6efd
 }
 
 FORM LABEL.has-changed {
 	padding: 0 10px;
-	background-color: orange;
+	background-color: rgba(var(--bs-info-rgb));
 	border-radius: 1ex;
 }
 
 FIELDSET.history {
 	width:90%;
 	margin: 2em auto;
-	border: 2px solid orange;
+	border: 2px solid rgba(var(--bs-info-rgb));
 	border-radius: 5px;
 	padding: 20px;
 	position: relative;
@@ -67,6 +98,6 @@ FIELDSET.history LEGEND {
 	line-height: 2em;
 	padding: 0 10px;
 	width: auto;
-	background-color: orange;
+	background-color: rgba(var(--bs-info-rgb));
 	border-radius: 1ex;
 }
