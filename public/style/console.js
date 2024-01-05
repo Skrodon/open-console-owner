@@ -94,16 +94,17 @@ function cancel_without_saving(form) {
 	$('#cancel_confirm', modal).on('click', function () { modal.hide(); form.submit() });
 };
 
+function install_form(form) {
+	create_field_versioning(form);
+	cancel_without_saving(form);
+	monitor_form_changes(form);
+	remove_val_messages(form);
+	add_val_message(form, 'email', 'error', 'no such place');
+	update_form_status(form);
+};
+
 $(document).ready(function() {
-	$("form").each( function () {
-		var form = $(this);
-		create_field_versioning(form);
-		remove_val_messages(form);
-		add_val_message(form, 'email', 'error', 'no such place');
-		update_form_status(form);
-		monitor_form_changes(form);
-		cancel_without_saving(form);
-	});
+	$("form").each( function () { install_form($(this)) } );
 
 	// make alerts closeable
 	var alertList = document.querySelectorAll('.alert');

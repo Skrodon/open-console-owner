@@ -18,13 +18,13 @@
 
   <div>
 	<label for="name" class="form-label">Fullname</label>
-    <input name="name" type="text" id="name" class="form-control" placeholder="Name" aria-describedby="name_explain" required />
+    <input name="name" type="text" id="name" class="form-control" placeholder="Name" aria-describedby="name_explain" />
     <div id="role_explain" class="form-text">Your name in this context</div>
   </div>
 
   <div>
 	<label for="nick" class="form-label">Nickname</label>
-    <input name="nick" type="text" id="nick" class="form-control" placeholder="Nickname" aria-describedby="nick_explain" required />
+    <input name="nick" type="text" id="nick" class="form-control" placeholder="Nickname" aria-describedby="nick_explain" />
     <div id="nick_explain" class="form-text">Your caller name.</div>
   </div>
 
