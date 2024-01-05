@@ -65,10 +65,33 @@ function update_form_status(form) {
 
 	var save   = $('#save_button', form);
 	var cancel = $('#cancel_button', form);
-	save.removeClass('bg-danger');
-	save.removeClass('bg-success');
+	save.removeClass('bg-danger').removeClass('bg-success');
+
 	if(sum_errors) { save.addClass('bg-danger') }
-	else if(form.hasClass('changed')) { save.addClass('bg-success'); cancel.removeClass('bg-success') }
+	else if(form.hasClass('changed') || sum_hints) {
+		save.addClass('bg-success');
+		cancel.removeClass('bg-success');
+	}
+};
+
+function monitor_form_changes(form) {
+	$('input, textarea, select', form).on('change', function () {
+		form.addClass('changed');
+	 	update_form_status(form);
+	});
+}
+
+function cancel_without_saving(form) {
+	var modal = $('#cancel_without_saving', form);
+	$('#cancel_button', form).on('click', function (event) {
+		if(form.hasClass('changed')) {
+			event.preventDefault();
+       		modal.show();
+		}
+	});
+
+	$('#cancel_oops',    modal).on('click', function () { modal.hide() });
+	$('#cancel_confirm', modal).on('click', function () { modal.hide(); form.submit() });
 };
 
 $(document).ready(function() {
@@ -78,11 +101,8 @@ $(document).ready(function() {
 		remove_val_messages(form);
 		add_val_message(form, 'email', 'error', 'no such place');
 		update_form_status(form);
-
-		$("input, textarea, select", form).on('change', function () {
-			form.addClass('changed');
-		 	update_form_status(form);
-		});
+		monitor_form_changes(form);
+		cancel_without_saving(form);
 	});
 
 	// make alerts closeable
