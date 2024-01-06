@@ -22,23 +22,19 @@
 
   <h5>Change password</h5>
 
+  <p>When you wish to change your login password, type a new one here.</p>
+
   <div>
     <label for="password" class="col-form-label">Password</label>
-    <input name="password" type="password" id="password" class="form-control" required placeholder="Enter a new password" aria-describedby="password_explain" />
-    <div id="password_explain" class="form-text">Do everyone a favor: pick a good pasword!</div>
-    <div id="password_length_warning" class="warning">
-      <i class="fa-solid fa-triangle-exclamation"></i> Password must be at least 6 characters long.
-    </div>
+    <input name="password" type="password" id="password" class="form-control" placeholder="Enter a new password" aria-describedby="password_explain" />
+    <div id="password_explain" class="form-text">Do everyone a favor: pick a good password!</div>
     <i id="togglePassword" class="fa-solid fa-eye eye_toggle"></i>
   </div>
 
   <div>
     <label for="confirm" class="col-form-label">Confirm password</label>
-    <input name="confirm" type="password" id="confirm" class="form-control" required placeholder="Repeat your password" />
+    <input name="confirm" type="password" id="confirm" class="form-control" placeholder="Repeat your new password" />
     <i id="toggleConfirmPassword" class="fa-solid fa-eye eye_toggle"></i>
-    <div id="password_match_warning" class="warning">
-      <i class="fa-solid fa-triangle-exclamation"></i> The passwords do not match!
-    </div>
   </div>
 
 % end

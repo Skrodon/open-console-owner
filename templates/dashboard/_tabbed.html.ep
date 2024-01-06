@@ -13,14 +13,36 @@
 % foreach my $page (@$pages) {
 %   my ($label, $name) = @$page;
     <button class="nav-link <%== $active %>" id="<%== $label %>-tab" data-bs-toggle="pill" data-bs-target="#<%== $label %>"
-     type="button" role="tab" aria-controls="<%== $label %>" ><%== $name %></button>
+     type="button" role="tab" aria-controls="<%== $label %>" ><%== $name %>
+       <span class="badge rounded-pill bg-danger  show_errors">0</span>
+       <span class="badge rounded-pill bg-warning show_warns">0</span>
+       <span class="badge rounded-pill bg-info    show_hints">0</span>
+    </button>
 %   $active = '';
 % }
 
     <br />&nbsp;
     <br />&nbsp;
     <button type="submit" id="save_button"   class="btn btn-outline-primary">Save</button>
-    <button type="submit" id="cancel_button" class="btn btn-outline-primary">Cancel</button>
+    <button type="submit" id="cancel_button" class="btn btn-outline-primary bg-success">Cancel</button>
+
+  <div id="cancel_without_saving" class="modal" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Cancelling Changes</h5>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to cancel the changes made in this form?</p>
+        </div>
+        <div class="modal-footer">
+          <button id="cancel_oops" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Oops! No</button>
+          <button id="cancel_confirm" type="button" class="btn btn-danger">Yes, forget them</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   </div>
 
