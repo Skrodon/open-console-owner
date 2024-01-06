@@ -44,7 +44,7 @@
             <span class="input-group-text">
               <i class="fas fa-lock"></i>
             </span>
-            <input name="password" type="password" value="" class="form-control" id="confirm" placeholder="Repeat your password" required="true">
+            <input name="password" type="password" value="" class="form-control" id="confirm" placeholder="Repeat your password" required>
             <span class="input-group-text">
               <i id="toggle_confirm_password" class="fa-solid fa-eye eye_toggle"></i>
             </span>
