@@ -11,7 +11,7 @@
 % my $login_form = begin
 
   <div>
-    <h5>Email</h5>
+    <label for="email" class="form-label">Email</label>
     <div class="input-group">
       <span class="input-group-text">
         <i class="fa fa-envelope" aria-hidden="true"></i>
@@ -26,7 +26,7 @@
   <hr>
 
   <div class="col-12 mb-3">
-    <h5>Change password</h5>
+    <label for="password" class="form-label">Change password</label>
     <p>When you wish to change your login password, type a new one here.</p>
     <div class="input-group">
       <span class="input-group-text">

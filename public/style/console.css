@@ -36,7 +36,11 @@ div#login_card {
 	color: red;
 }
 
-LABEL.form-label { margin-top: 2ex }
+label.form-label { 
+	margin-top: 2ex;
+	font-size: 17px; 
+	font-weight: bold;
+}
 
 FORM#config_account #account-delete-tab { color: red }
 
