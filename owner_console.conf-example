@@ -1,0 +1,39 @@
+#XXX Copy this file to owner_console.conf and fill in the fields
+
+{
+	# This instance name must be unique within the network.  It is used
+	# as prefix in userid's
+
+	instance => 'oc001',
+
+	# The email addresses of the administrators: they get more pages in the
+	# dashboard.
+
+	admins   => [ 'email1' ],
+
+	# Secrets are used to encrypt cookies.  Multiple secrets can be active
+	# at the same time, for seemless changes.
+	# You may decide you use https://metacpan.org/pod/Mojolicious::Command::secret
+	# to bake your cookie secrets.
+
+    #       XXXvvvv replace this one, with any hex string vvvXXX
+	secrets  => [ '9ed5714761d3c28ee83f2fb20d2991a3fe282b93' ],
+
+	# Select which interface languages you want to show to the end user.  When a
+	# translation is not ready yet, then you can better only add it in the test
+	# setup, not production.
+
+	interface_languages => [ 'en' ],
+
+	#### Databases
+	#    various components are coded as if their data is location in different
+	#    database instances.  This may be the case once Open Console grows huge.
+	#    When the databases use the same server URL, then they will share the
+    #    connections.
+
+	# Where is the user's database
+	users    => {
+		server => 'mongodb://localhost:27017',  # this is the default for mongodb
+		dbname => 'users',
+	},
+}
