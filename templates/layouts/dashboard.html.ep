@@ -5,6 +5,9 @@
 	<meta name="description" content="">
 	%= include '_standard_header'
 
+	<!-- https://urin.github.io/jquery.balloon.js/  MIT & GPL license -->
+	<script src="/balloon/jquery.balloon.min.js"></script>
+
     <style>
       .bd-placeholder-img {
         font-size: 1.125rem;

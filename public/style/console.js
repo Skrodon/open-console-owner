@@ -67,6 +67,12 @@ function update_form_status(form) {
 	var cancel = $('#cancel_button', form);
 	save.removeClass('bg-danger').removeClass('bg-success');
 
+	var balloon = $('.save_balloon');
+console.log("BALLOONS=" + balloon.length);
+	$('#sum_hints',  balloon).text(sum_hints);
+	$('#sum_errors', balloon).text(sum_errors);
+	$('#sum_warns',  balloon).text(sum_warns);
+
 	if(sum_errors) { save.addClass('bg-danger') }
 	else if(form.hasClass('changed') || sum_hints) {
 		save.addClass('bg-success');
@@ -95,7 +101,8 @@ function cancel_without_saving(form) {
 };
 
 function save_validate_form(form)
-{	$('#save_button', form).on('click', function (event) {
+{	var save = $('#save_button', form);
+	save.on('click', function (event) {
 		var missing = 0;
 		$('[required]', form).each(function () {
 			if($(this).val() === '') {
@@ -113,17 +120,30 @@ function save_validate_form(form)
 event.preventDefault();
 		}
 	});
-};
+
+	save.on('mouseenter', function () {
+		// https://urin.github.io/jquery.balloon.js/
+		$('#save_button', form).balloon({
+			html: true,
+			contents: $('#save_balloon', form).clone().css('display', 'block'),
+			hideDuration: 1000,
+			tipSize: 20,
+			css: { 'font-size': '100%', 'width': '30em', 'border-radius': '1em' },
+		}).show;
+	});
+}
+// function create_save_balloon(form) {
 
 function install_form(form) {
 	$('[required]').each(function () {
 		var p = $(this).attr('placeholder');
-		$(this).attr('placeholder', p + ' (required)');  //XXX translation
+		$(this).attr('placeholder', p + ' (required)');   //XXX translation
 	});
 	$('[id="confirm"]').val($('[id="password"]').val());  //XXX only form 'account'
 
 	create_field_versioning(form);
 	cancel_without_saving(form);
+//	create_save_balloon(form);
 	save_validate_form(form);
 	remove_val_messages(form);
 	add_val_message(form, 'email', 'error', 'no such place');
