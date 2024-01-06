@@ -11,30 +11,45 @@
 % my $login_form = begin
 
   <div>
-    <label for="email" class="form-label">Email</label>
-    <input name="email" type="text" id="email" class="form-control" placeholder="Your login"
-       aria-describedby="email_explain" required value="<%= $account->email %>" />
-    <div id="email_explain" class="form-text">Configure your default email-address, which is also used for signing in to
-      the Open Console website.</div>
+    <h5>Email</h5>
+    <div class="input-group">
+      <span class="input-group-text">
+        <i class="fa fa-envelope" aria-hidden="true"></i>
+      </span>
+      <input name="email" type="text" id="email" class="form-control" placeholder="Your login"
+        aria-describedby="email_explain" required value="<%= $account->email %>" />
+      <div id="email_explain" class="form-text">Configure your default email-address, which is also used for signing in to
+        the Open Console website.</div>
+    </div>
   </div>
 
   <hr>
 
-  <h5>Change password</h5>
-
-  <p>When you wish to change your login password, type a new one here.</p>
-
-  <div>
-    <label for="password" class="col-form-label">Password</label>
-    <input name="password" type="password" id="password" class="form-control" placeholder="Enter a new password" aria-describedby="password_explain" />
+  <div class="col-12 mb-3">
+    <h5>Change password</h5>
+    <p>When you wish to change your login password, type a new one here.</p>
+    <div class="input-group">
+      <span class="input-group-text">
+        <i class="fas fa-lock"></i>
+      </span>
+      <input name="password" type="password" id="password" class="form-control" placeholder="Enter a new password" aria-describedby="password_explain" />
+      <span class="input-group-text">
+        <i id="togglePassword" class="fa-solid fa-eye eye_toggle"></i>
+      </span>
+    </div>
     <div id="password_explain" class="form-text">Do everyone a favor: pick a good password!</div>
-    <i id="togglePassword" class="fa-solid fa-eye eye_toggle"></i>
   </div>
 
-  <div>
-    <label for="confirm" class="col-form-label">Confirm password</label>
-    <input name="confirm" type="password" id="confirm" class="form-control" placeholder="Repeat your new password" />
-    <i id="toggleConfirmPassword" class="fa-solid fa-eye eye_toggle"></i>
+  <div class="col-12 mb-3">
+    <div class="input-group">
+      <span class="input-group-text">
+        <i class="fas fa-lock"></i>
+      </span>
+      <input name="confirm" type="password" id="confirm" class="form-control" placeholder="Repeat your new password" />
+      <span class="input-group-text">
+        <i id="togglePassword" class="fa-solid fa-eye eye_toggle"></i>
+      </span>
+    </div>
   </div>
 
 % end
@@ -82,12 +97,18 @@
     after "Save")</div>
   </div>
 
+
   <div>
-    <label for="timezone" class="form-label">Default Time-zone</label>
-    <select name="timezone" id="timezone" class="form-select" aria-describedby="timezone_explain">
-    <!-- to be generated from /usr/share/zoneinfo/posix/ -->
-    <option>Europe/Amsterdam</option>
-    </select>
+    <label for="timezone" class="form-label">Default Time-zone</h5>    
+    <div class="input-group">
+      <span class="input-group-text">
+        <i class="fas fa-clock" aria-hidden="true"></i>
+      </span>
+      <select name="timezone" id="timezone" class="form-select" aria-describedby="timezone_explain">
+      <!-- to be generated from /usr/share/zoneinfo/posix/ -->
+      <option>Europe/Amsterdam</option>
+      </select>
+    </div>
     <div id="timezone_explain" class="form-text">Usually the Time-Zone you live in.</div>
   </div>
 
@@ -118,8 +139,13 @@
 
   <div>
     <label for="birth" class="form-label">Birth-date</label>
-    <input name="birth" type="text" id="birth" class="form-control" placeholder="YYYY-MM-DD" aria-describedby="birth_explain"
-      required value="1966-05-04" />
+    <div class="input-group">
+      <span class="input-group-text">
+        <i class="fa-regular fa-calendar-days"></i>
+      </span>
+      <input name="birth" type="text" id="birth" class="form-control" placeholder="YYYY-MM-DD" aria-describedby="birth_explain"
+        required value="1966-05-04" />
+    </div>
     <div id="birth_explain" class="form-text">Some Services may want an age indication.</div>
   </div>
 
