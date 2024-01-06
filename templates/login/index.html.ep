@@ -5,41 +5,46 @@
 
 <div class="container">
   <div class="card" id="login_card">
-    <div class="card-header">
-      <h5>User Sign in</h5>
-    </div>
-    <div class="row d-flex justify-content-center m-0">
-      <form action="" method="post" id="login" class="bg-light border p-3">
-        <div class="form-row">
-          <p>Welcome back to Open Console<p>
-          <div class="col-12">
-            <div class="input-group mb-3">
-              <span class="input-group-text">
-                <i class="fas fa-user"></i>
-              </span>
-              <input id="email" type="text" class="form-control" placeholder="Your email address">
-            </div>
-          </div>
-          <div class="col-12">
-            <div class="input-group mb-3">
-              <span class="input-group-text"">
-                <i class="fas fa-lock"></i>
-              </span>
-              <input name="password" type="password" value="" class="form-control" id="password" placeholder="Enter Password" required="true"/>
-              <span class="input-group-text">
-                <i id="toggle_login_password" class="fa-solid fa-eye eye_toggle"></i>
-              </span>
-            </div>
+    <h5 class="card-header">User Sign in</h5>
+    <div class="card-body">
+      <form method="post" id="login">
+
+        <p>Welcome back to Open Console</p>
+
+        <div class="col-12">
+          <div class="input-group mb-3">
+            <span class="input-group-text">
+              <i class="fas fa-user"></i>
+            </span>
+            <input id="email" type="text" class="form-control" placeholder="Your email address">
           </div>
         </div>
 
-        <button class="btn btn-primary" type="submit">
-          <i class="fas fa-arrow-right-to-bracket"></i>&nbsp; Sign In
-        </button>
-        <div class="card-body">
+        <div class="col-12">
+          <div class="input-group mb-3">
+            <span class="input-group-text">
+              <i class="fas fa-lock"></i>
+            </span>
+            <input name="password" type="password" value="" class="form-control" id="password" placeholder="Enter Password" required="true">
+            <span class="input-group-text">
+              <i id="toggle_login_password" class="fa-solid fa-eye eye_toggle"></i>
+            </span>
+          </div>
+        </div>
+
+        <div class="col-6">
+          <div class="col-12">
+            <button class="btn btn-primary" type="submit">
+              <i class="fas fa-arrow-right-to-bracket"></i>&nbsp; Sign In
+            </button>
+          </div>
+        </div>
+
+        <div class="col-12">
           <a href="/login/register" class="card-link">Register</a>
           <a href="/login/reset" class="card-link">Reset password</a>
         </div>
+
       </form>
     </div>
   </div>
