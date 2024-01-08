@@ -1,6 +1,6 @@
 % layout 'dashboard';
 
-<script src="/assets/login.js"></script>
+<script src="/assets/account.js"></script>
 
 % my $account = $c->account;
 % if($account->isAdmin) {
@@ -75,6 +75,22 @@
     </select>
     <div id="lang_explain" class="form-text">Specify the languages you can read.  Order them from best to worst.</div>
   </div>
+
+<br>&nbsp;
+<br>&nbsp;
+<h5><font color="red">OR is the next one better</font> (after some more styling)</h5>
+
+  <table id="langtab" class="table table-striped table-bordered">
+% foreach my $lang (@{language_table()}) {
+%   my ($code, $name) = @$lang;
+  <tr>
+    <td><%= $name %></td>
+    <td><a href="#" class="btn btn-danger remove-link">x</a></td>
+    <td><a href="#" class="btn btn-secondary move-up-link">^</a></td>
+    <td><a href="#" class="btn btn-secondary move-down-link">v</a></td>
+  </tr>
+% }
+   </table>
 
   <div>
     <label for="iflang" class="form-label">Interface language</label>
