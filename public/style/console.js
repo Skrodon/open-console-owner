@@ -13,9 +13,11 @@ function add_val_message(form, input, level, message) {
 	});
 }
 
-function remove_val_messages(form) {
+function process_errors_and_warnings(form, data) {
 	$('DIV.val-msg', form).remove();
-};
+	data.errors.forEach( function(error) { add_val_message(form, error.at(0), 'error', error.at(1)) });
+	data.warnings.forEach(function(warn) { add_val_message(form, warn.at(0),  'warn',   warn.at(1)) });
+}
 
 function create_field_versioning(form) {
 	var version = $('#object_version', form).val();
@@ -99,9 +101,38 @@ function cancel_without_saving(form) {
 	$('#cancel_confirm', modal).on('click', function () { modal.hide(); form.submit() });
 };
 
-function save_validate_form(form) {
+function accept_form_data(form, how) {
+	var data = form.serialize();
+	data.how = how;
+	var action = '/dashboard/' + form.attr('id');
+console.log("AJAX: " + action);
+console.log(data);
+
+	$.ajax({
+		type: 'POST',
+		url: action,
+		data: data,
+		dataType: 'json',
+		success: function (response) {
+			console.log('Submission was successful.');
+			console.log(response);
+ 			process_errors_and_warnings(form, response);
+			update_form_status(form);
+			if(errors==0) { form.submit(); }
+		},
+		error: function (response) {
+			console.log('Form ' + form.attr('id') + ' delivery error: ' + response.status);
+			alert('The server could not be reached: ' + response.status);  //XXX translation
+			console.log(response);
+		},
+	});
+}
+
+function save_validated_form(form) {
 	var save = $('#save_button', form);
 	save.on('click', function (event) {
+		event.preventDefault();
+
 		var missing = 0;
 		$('[required]', form).each(function () {
 			if($(this).val() === '') {
@@ -111,16 +142,13 @@ function save_validate_form(form) {
 		});
 
 		if(missing) {
-			event.preventDefault();
+			// missing before real validation, to have less work on the server
 			update_form_status(form);
 		} else {
-			// AJAX Call to do server-side validation.
-			// May return errors and warnings
-event.preventDefault();
+			accept_form_data(form, 'save_when_ok');
 		}
 	});
 }
-
 
 function install_form(form) {
 	$('[required]').each(function () {
@@ -130,10 +158,8 @@ function install_form(form) {
 
 	create_field_versioning(form);
 	cancel_without_saving(form);
-	save_validate_form(form);
-	remove_val_messages(form);
-	add_val_message(form, 'email', 'error', 'no such place');
-	update_form_status(form);
+	save_validated_form(form);
+	accept_form_data(form, 'validate');
 	monitor_form_changes(form);
 };
 

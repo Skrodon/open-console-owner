@@ -69,6 +69,7 @@ sub startup
 	$self->secrets($config->{secrets});
 	%admins = map +(lc($_) => 1), @{$config->{admins} || []};
 
+#	$self->plugin('CSRFProtect');
 	$self->plugin('BootstrapAlerts');
 	$self->plugin('I18NUtils');
 
@@ -100,7 +101,10 @@ sub startup
 
 	my $dashboard = $r->under('/dashboard')->to('login#mustBeLoggedIn');
 	$dashboard->get('/')->to('dashboard#index');
+
 	$dashboard->get('/account')->to('account#index');
+	$dashboard->post('/config_account')->to('account#submit');
+
 	$dashboard->get('/identities')->to('identities#index');
 	$dashboard->get('/identity')->to('identities#identity');
 	$dashboard->get('/groups')->to('groups#index');

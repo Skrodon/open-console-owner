@@ -77,4 +77,5 @@ sub save()
 	$::app->users->saveAccount($self);
 }
 
+
 1;

@@ -30,15 +30,20 @@ div#login_card {
 	cursor: pointer;
 }
 
-.val-error::before {
+.val-error::before,
+.val-warn::before {
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
     content: "\f071  ";
 }
 
 .val-error {
-	color: red;
+	color: rgba(var(--bs-danger-rgb));
 }
+.val-warn {
+	color: rgba(var(--bs-warning-rgb));
+}
+
 
 LABEL.form-label { margin-top: 2ex }
 

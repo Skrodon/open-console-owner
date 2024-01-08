@@ -13,6 +13,8 @@ WriteMakefile
 	'List::Util'	=> '0',
 	'Log::Report'	=> '0',
 	'Mango'			=> '0',
+	'Mojolicious'                      => '9.35',
+	'Mojolicious::Plugin::CSRFProtect' => '0.16',
    }
  , EXE_FILES    => []
  , AUTHOR       => 'Open Console <team@open-console.eu>'

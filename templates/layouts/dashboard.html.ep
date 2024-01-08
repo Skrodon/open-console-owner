@@ -4,6 +4,7 @@
 	<title><%= title %></title>
 	<meta name="description" content="">
 	%= include '_standard_header'
+	%# = jquery_ajax_csrf_protection
 
 </head>
 <body>
