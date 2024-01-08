@@ -22,10 +22,6 @@ div#login_card {
     max-height: 60rem;
 }
 
-.card-body{
-	margin-bottom: auto;
-}
-
 .eye_toggle {
 	cursor: pointer;
 }
@@ -45,7 +41,11 @@ div#login_card {
 }
 
 
-LABEL.form-label { margin-top: 2ex }
+LABEL.form-label {
+	margin-top: 2ex;
+	font-size: larger;
+	font-weight: bold;
+ }
 
 FORM#config_account #account-delete-tab { color: red }
 

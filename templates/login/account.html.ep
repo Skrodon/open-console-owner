@@ -18,24 +18,28 @@
       the Open Console website.</div>
   </div>
 
-  <hr>
-
-  <h5>Change password</h5>
-
+  <label for="password" class="form-label">Change password</label>
   <p>When you wish to change your login password, type a new one here.</p>
 
   <div>
     <label for="password" class="col-form-label">Password</label>
-    <input name="password" type="password" id="password" class="form-control" placeholder="Enter a new password" aria-describedby="password_explain" />
-    <div id="password_explain" class="form-text">Do everyone a favor: pick a good password!</div>
-    <i id="togglePassword" class="fa-solid fa-eye eye_toggle"></i>
+    <div class="input-group">
+      <span class="input-group-text"><i class="fas fa-lock"></i></span>
+      <input name="password" type="password" value="" class="form-control" id="password" placeholder="Enter a new password" aria-describedby="password_explain">
+      <span class="input-group-text"><i class="fa-solid fa-eye eye_toggle"></i></span>
+    </div>
+    <div id="password_explain" class="form-text">Do everyone a favor: pick a good pasword!</div>
   </div>
 
   <div>
     <label for="confirm" class="col-form-label">Confirm password</label>
-    <input name="confirm" type="password" id="confirm" class="form-control" placeholder="Repeat your new password" />
-    <i id="toggleConfirmPassword" class="fa-solid fa-eye eye_toggle"></i>
+    <div class="input-group">
+	  <span class="input-group-text"><i class="fas fa-lock"></i></span>
+      <input name="confirm" type="password" value="" class="form-control" id="confirm" placeholder="Repeat your password">
+      <span class="input-group-text"><i class="fa-solid fa-eye eye_toggle"></i></span>
+    </div>
   </div>
+
 
 % end
 
@@ -123,8 +127,7 @@
 
   <div>
     <label for="birth" class="form-label">Birth-date</label>
-    <input name="birth" type="text" id="birth" class="form-control" placeholder="YYYY-MM-DD" aria-describedby="birth_explain"
-      required value="<%= $account->birth %>" />
+    <input name="birth" type="text" id="birth" class="form-control" placeholder="YYYY-MM-DD" aria-describedby="birth_explain" value="<%= $account->birth %>" />
     <div id="birth_explain" class="form-text">Some Services may want an age indication.</div>
   </div>
 

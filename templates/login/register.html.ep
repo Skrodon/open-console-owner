@@ -1,67 +1,69 @@
 % layout 'outsider';
 <script src="/assets/login.js"></script>
 
-<h2>Please fill in the form to register</h2>
+<h1>Registration for Open Console</h1>
+
+<p>Please, fill in this form to gain access to this Website.</p>
 
 <div class="container">
   <div class="card" id="login_card">
     <h5 class="card-header">User Register</h5>
     <div class="card-body">
-      <form id="register" method="post" action="register">
+      <form id="register" method="post">
 
-<p>Welcome to Open Console.  Open Console is a single interface to various services
-of internet which know something about your websites, domain-names, or networks.  Create
-an account to be able to contact them.</p>
-<br />
+        <p>Welcome to Open Console.  Open Console is a single interface
+        to various services of internet which know something about your
+        websites, domain-names, or networks.  Create an account to be
+        able to contact them.</p>
 
-        <div class="row align-items-top">
-          <div class="col-4">
-            <label for="email" class="col-form-label">Username</label>
+        <div class="col-12 mb-3">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-user"></i>
+            </span>
+            <input id="email" type="text" class="form-control" placeholder="Your email-address">
           </div>
-          <div class="col">
-            <input name="email" type="email" class="form-control" id="email" required placeholder="Your email address" aria-describedby="email_explain" />
-            <div id="email_explain" class="form-text">Your email-address will identify your account, but it can be changed later.</div>
+          <div id="email_explain" class="form-text">Your email-address will identify your account, but it can be changed later.</div>
+        </div>
+
+        <div class="col-12 mb-3">
+          <div class="input-group">
+            <span class="input-group-text">
+              <i class="fas fa-lock"></i>
+            </span>
+            <input name="password" type="password" value="" class="form-control" id="password" placeholder="Enter a new password" required="true">
+            <span class="input-group-text">
+              <i class="fa-solid fa-eye eye_toggle"></i>
+            </span>
           </div>
-          <div class="col-1">
+          <div id="password_explain" class="form-text">Do everyone a favor: pick a good pasword!</div>
+          <div id="password_length_warning" class="warning">
+            <i class="fa-solid fa-triangle-exclamation"></i> Password must be at least 6 characters long.
           </div>
         </div>
 
-        <div class="row">
-          <div class="col-4">
-            <label for="password" class="col-form-label">Password</label>
+        <div class="col-12">
+          <div class="input-group mb-3">
+            <span class="input-group-text">
+              <i class="fas fa-lock"></i>
+            </span>
+            <input name="confirm" type="password" value="" class="form-control" id="confirm" placeholder="Repeat your password" required>
+            <span class="input-group-text">
+              <i class="fa-solid fa-eye eye_toggle"></i>
+            </span>
           </div>
-          <div class="col">
-            <input name="password" type="password" id="password" class="form-control" required placeholder="Enter a new password" aria-describedby="password_explain" />
-            <div id="password_explain" class="form-text">Do everyone a favor: pick a good password!</div>
-            <div id="password_length_warning" class="warning">
-              <i class="fa-solid fa-triangle-exclamation"></i> Password must be at least 6 characters long.
-            </div>
-          </div>
-          <div class="col-1">
-            <i id="togglePassword" class="fa-solid fa-eye eye_toggle"></i>
-          </div>
-        </div>
-
-        <div class="row">
-          <div class="col-4">
-            <label for="confirm" class="col-form-label">Confirm password</label>
-          </div>
-          <div class="col">
-            <input name="confirm" type="password" id="confirm" class="form-control" required placeholder="Repeat your password" />
-            <div id="password_match_warning" class="warning">
-              <i class="fa-solid fa-triangle-exclamation"></i> The passwords do not match!
-            </div>
-          </div>
-          <div class="col-1">
-            <i id="toggleConfirmPassword" class="fa-solid fa-eye eye_toggle"></i>
+          <div id="password_match_warning" class="warning">
+            <i class="fa-solid fa-triangle-exclamation"></i> The passwords do not match!
           </div>
         </div>
 
-        <button class="btn btn-primary" type="submit">
-          <i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp;Register
-        </button>
-
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit">
+            <i class="fas fa-arrow-right-to-bracket"></i>&nbsp; Register
+          </button>
+        </div>
       </form>
     </div>
   </div>
 </div>
+
