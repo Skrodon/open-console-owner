@@ -6,6 +6,7 @@
 	%= include '_standard_header'
 	%# = jquery_ajax_csrf_protection
 
+    <script src="/assets/config_form.js"></script>
 </head>
 <body>
     

@@ -6,12 +6,12 @@ function togglePasswordField(field, toggleButton) {
 	  : 'fa-solid fa-eye-slash eye_toggle');
   }
 
-  function activate_login(form) {
+function activate_login(form) {
 	var loginPassword = $('#password', form);
 	$('#toggle_login_password', form).on('click', function() {
-	  togglePasswordField(loginPassword, $(this));
+		togglePasswordField(loginPassword, $(this));
 	});
-  }
+}
 
 function validatePassword(form, passwordField, confirmField)
 {	var password = passwordField.val();
@@ -50,10 +50,12 @@ function activate_register(form)
 
 // dashboard/account script
 
-function activate_account_settings(form) {
+function activate_account_config(form) {
 	const emailInput	= $('#change_email_input', form);
 	const originalEmail = emailInput.val();
 	const deleteModal   = $('#delete_account_confirmation_modal', form);
+
+	activate_register(form);
 
 	$('#delete_account_button', form).on('click', function(event)  {
 		event.preventDefault();
@@ -70,14 +72,11 @@ function activate_account_settings(form) {
 // in handler:  $self->notify(''), redirect to frontpage
 		alert('Account deleted successfully');
 	});
-
-	// Browsers fill in a password, copy it to confirm
-	$('[id="confirm"]').val($('[id="password"]').val());
 }
 
 $(document).ready(function() {
 	$("form#register").map(function () { activate_register($(this)) });
 	$("form#login").map(function () { activate_login($(this)) });
-	$("form#config_account").map(function () { activate_account_settings($(this)) });
+	$("form#config_account").map(function () { activate_account_config($(this)) });
 })
 
