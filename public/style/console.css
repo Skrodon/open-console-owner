@@ -72,8 +72,19 @@ FORM.config_form #cancel_button.bg-success:hover {
 }
 
 FORM.config_form DIV.row > DIV {
-	border-left: 1px solid; border-color: #0d6efd
+	border-left: 1px solid;
+	border-color: #0d6efd;
 }
+
+FORM.config_form DIV#form-summary {
+	max-width: 15rem;
+	margin-top: 2ex;
+}
+
+FORM.config_form #form-summary TD,
+FORM.config_form #form-summary TH {
+	padding: 3px;
+}	
 
 FORM LABEL.has-changed {
 	padding: 0 10px;

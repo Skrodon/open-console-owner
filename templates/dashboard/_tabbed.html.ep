@@ -23,7 +23,9 @@
 
     <br />&nbsp;
     <br />&nbsp;
-    <button type="submit" id="save_button"   class="btn btn-outline-primary">Save</button>
+    <button type="submit" id="save_button"   class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom">
+       Save
+    </button>
     <button type="submit" id="cancel_button" class="btn btn-outline-primary bg-success">Cancel</button>
 
     <div id="cancel_without_saving" class="modal" style="display: none">
@@ -43,14 +45,15 @@
       </div>
     </div>
 
-    <div class="save_balloon" id="save_balloon" style="display: none">
+    <div id="form-summary">
       <p>When there are errors, you will not be able to save this form, to avoid inconsistent data.</p>
       <table>
       <tr><td><span id="sum_errors" class="badge rounded-pill bg-danger  show_errors">0</span></td><td>errors</td></tr>
       <tr><td><span id="sum_warns"  class="badge rounded-pill bg-warning show_warns">0</span></td><td>warnings</td></tr>
-      <tr><td><span id="sum_hints"  class="badge rounded-pill bg-info    show_hints">0</span></td><td>form changes since last save</td></tr>
+      <tr><td><span id="sum_hints"  class="badge rounded-pill bg-info    show_hints">0</span></td><td>form history</td></tr>
       </table>
     </div>
+
   </div>
 
   <div class="tab-content" id="<%== $block_id %>-content" style="width: 800px">
