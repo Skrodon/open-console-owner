@@ -139,7 +139,6 @@ function install_form(form) {
 		var p = $(this).attr('placeholder');
 		$(this).attr('placeholder', p + ' (required)');   //XXX translation
 	});
-	$('[id="confirm"]').val($('[id="password"]').val());  //XXX only form 'account'
 
 	create_field_versioning(form);
 	cancel_without_saving(form);
