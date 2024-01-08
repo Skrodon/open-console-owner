@@ -14,7 +14,10 @@ use constant COLL_SCHEMA => '20240102';
 sub create($%)
 {	my ($class, $insert, %args) = @_;
 	my $userid = $insert->{userid} = $::app->newUnique;
-	$insert->{schema} //= COLL_SCHEMA;
+	$insert->{schema}    //= COLL_SCHEMA;
+	$insert->{languages} //= [ 'en', 'nl' ];
+	$insert->{iflang}    //= 'en';
+	$insert->{timezone}  //= 'Europe/Amsterdam';
 
 	my $password = delete $insert->{password};
 
@@ -38,14 +41,19 @@ sub fromDB($)
 =section Attributes
 =cut
 
+#### Keep these attributes in sync with OwnerConsole::Collector::Account::submit()
+
+sub schema()    { $_[0]->_data->{schema} }
+
 sub userId()    { $_[0]->_data->{userid} }
 sub email()     { $_[0]->_data->{email}  }
-sub birthDate() { $_[0]->_data->{birth_date} }
-sub schema()    { $_[0]->_data->{schema} }
-sub ifLang()    { $_[0]->_data->{iflang} }
-sub ifLanguage  { language_name($_[0]->ifLang) }
+sub birth()     { $_[0]->_data->{birth_date} }
+sub languages() { @{$_[0]->_data->{languages} || []} }
+sub iflang()    { $_[0]->_data->{iflang} }
+sub timezone()  { $_[0]->_data->{timezone} }
 
 sub isAdmin()   { $::app->isAdmin($_[0]) }
+sub ifLanguage  { language_name($_[0]->iflang) }
 
 #------------------
 =section Password handling

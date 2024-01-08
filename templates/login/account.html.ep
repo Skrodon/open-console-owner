@@ -62,9 +62,11 @@
   <!-- https://www.internationalphoneticalphabet.org/languages/language-names-in-native-language/ -->
   <!-- only the languages which have any kind of translation in Open Console.  Value=https://datatracker.ietf.org/doc/html/rfc5646 -->
     <select name="languages" id="languages" class="form-select" multiple aria-describedby="lang_explain">
-% use OwnerConsole::Tables 'language_table';
+% use OwnerConsole::Tables qw(language_table timezone_names);
+% my %langs = map +($_ => 1), $account->languages;
 % foreach my $lang (@{language_table()}) {
-    <option value="<%= $lang->[0] %>"><%= $lang->[1] %></option>
+%   my ($code, $name) = @$lang;
+    <option value="<%= $code %>"<%= $langs{$code} ? ' selected' : ''%>><%= $name %></option>
 % }
     </select>
     <div id="lang_explain" class="form-text">Specify the languages you can read.  Order them from best to worst.</div>
@@ -73,9 +75,10 @@
   <div>
     <label for="iflang" class="form-label">Interface language</label>
     <select name="iflang" id="iflang" class="form-select" aria-describedby="iflang_explain">
-% my $iflang = $account->ifLang;
+% my $iflang = $account->iflang;
 % foreach my $lang ($c->ifLanguages) {
-    <option value="<%= $lang->[0] %>"<%= $lang->[0] eq $iflang ? ' selected' : ''%>><%= $lang->[1] %></option>
+%   my ($code, $name) = @$lang;
+    <option value="<%= $code %>"<%= $code eq $iflang ? ' selected' : ''%>><%= $name %></option>
 %}
     </select>
     <div id="iflang_explain" class="form-text">The languages used for this Open Console website (changes
@@ -85,8 +88,10 @@
   <div>
     <label for="timezone" class="form-label">Default Time-zone</label>
     <select name="timezone" id="timezone" class="form-select" aria-describedby="timezone_explain">
-    <!-- to be generated from /usr/share/zoneinfo/posix/ -->
-    <option>Europe/Amsterdam</option>
+% my $timezone = $account->timezone;
+% foreach my $tz (@{timezone_names()}) {
+    <option <%= $tz eq $timezone ? ' selected' : ''%>><%= $tz %></option>
+% }
     </select>
     <div id="timezone_explain" class="form-text">Usually the Time-Zone you live in.</div>
   </div>
@@ -119,7 +124,7 @@
   <div>
     <label for="birth" class="form-label">Birth-date</label>
     <input name="birth" type="text" id="birth" class="form-control" placeholder="YYYY-MM-DD" aria-describedby="birth_explain"
-      required value="1966-05-04" />
+      required value="<%= $account->birth %>" />
     <div id="birth_explain" class="form-text">Some Services may want an age indication.</div>
   </div>
 
