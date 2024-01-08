@@ -118,7 +118,7 @@ console.log(data);
 			console.log(response);
  			process_errors_and_warnings(form, response);
 			update_form_status(form);
-			if(errors==0) { form.submit(); }
+//			if(errors==0) { form.submit(); }
 		},
 		error: function (response) {
 			console.log('Form ' + form.attr('id') + ' delivery error: ' + response.status);

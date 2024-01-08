@@ -10,6 +10,7 @@ WriteMakefile
 	'Crypt::PBKDF2'	=> '0',
 	'Data::Dumper'	=> '0',
 	'Data::UUID'	=> '0',
+	'Email::Valid'  => '1.202',
 	'List::Util'	=> '0',
 	'Log::Report'	=> '0',
 	'Mango'			=> '0',
