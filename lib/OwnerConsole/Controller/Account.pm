@@ -93,7 +93,7 @@ warn "DATA IN =", Dumper $data;
 		{	$data->{birth_date} = "$1-$2-$3";
 		}
 		else
-		{	$answer->addError(birth => __x"Illegal date, use YYYY-MM-DD.");
+		{	$answer->addError(birth => __x"Illegal date format, use YYYY-MM-DD.");
 		}
 	}
 warn "Unprocessed parameters: ", join ', ', sort keys %$params if keys %$params ;
