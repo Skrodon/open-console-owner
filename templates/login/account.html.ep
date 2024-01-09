@@ -147,9 +147,20 @@
     <div id="birth_explain" class="form-text">Some Services may want an age indication.</div>
   </div>
 
-<br>
   <div>
-    <h5>Avatar</h5>
+    <label for="gender" class="form-label">Gender</label>
+% my $gender = $account->gender // '';
+    <select name="gender" id="gender" class="form-select">
+    <option value=""       <%= $gender eq ''       ? ' selected' : '' %>>Undisclosed</option>
+    <option value="female" <%= $gender eq 'female' ? ' selected' : '' %>>Female</option>
+    <option value="male"   <%= $gender eq 'male'   ? ' selected' : '' %>>Male</option>
+    <option value="they"   <%= $gender eq 'they'   ? ' selected' : '' %>>They/Them</option>
+    <option value="none"   <%= $gender eq 'none'   ? ' selected' : '' %>>None</option>
+	</select>
+  </div>
+	
+  <div>
+    <label class="form-label">Avatar</label>
     <p>Upload your default picture here.</p>
   </div>
 

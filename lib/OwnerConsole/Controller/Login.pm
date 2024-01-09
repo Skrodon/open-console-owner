@@ -21,6 +21,7 @@ sub tryLogin()
 {	my $self = shift;
 	my $email    = $self->param('email');
 	my $password = $self->param('password');
+warn "TRY LOGIN ($email) ($password)";
 
 	# First check if the user exists
 	my $account = $self->users->accountByEmail($email);

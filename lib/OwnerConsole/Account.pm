@@ -48,6 +48,7 @@ sub schema()    { $_[0]->_data->{schema} }
 sub userId()    { $_[0]->_data->{userid} }
 sub email()     { $_[0]->_data->{email}  }
 sub birth()     { $_[0]->_data->{birth_date} }
+sub gender()    { $_[0]->_data->{gender} }
 sub languages() { @{$_[0]->_data->{languages} || []} }
 sub iflang()    { $_[0]->_data->{iflang} }
 sub timezone()  { $_[0]->_data->{timezone} }

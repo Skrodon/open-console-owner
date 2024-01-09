@@ -23,6 +23,8 @@ sub index2($)
 
 ### Keep this logic in sync with OwnerConsole::Account attributes
 
+my %known_genders = map +($_ => 1), qw(female male they none);
+
 sub submit($)
 {   my $self = shift;
 	my $answer  = OwnerConsole::AjaxAnswer->new();
@@ -96,6 +98,15 @@ warn "DATA IN =", Dumper $data;
 		{	$answer->addError(birth => __x"Illegal date format, use YYYY-MM-DD.");
 		}
 	}
+
+	my $gender = delete $params->{gender} || '';
+	if(! length $gender || $known_genders{$gender})
+	{	$data->{gender} = $gender;
+	}
+	else
+	{	$answer->addError(gender => __x"Unknown gender type '{gender}'", gender => $gender);
+	}
+
 warn "Unprocessed parameters: ", join ', ', sort keys %$params if keys %$params ;
 #warn "DATA OUT =", Dumper $data;
 
