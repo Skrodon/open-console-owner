@@ -30,10 +30,12 @@ sub submit($)
 	my $data    = $account->_data;
 
 	my $req     = $self->req;
+	my $how     = $req->url->query;
 	my $params  = $req->json || $req->body_params->to_hash;
-#use Data::Dumper;
-#warn "PARAMS=", Dumper $params;
-#warn "DATA IN =", Dumper $data;
+use Data::Dumper;
+warn "QUERY=$how";
+warn "PARAMS=", Dumper $params;
+warn "DATA IN =", Dumper $data;
 
 	if(my $email = delete $params->{email})
 	{	if(not Email::Valid->address($email))
@@ -96,6 +98,16 @@ sub submit($)
 	}
 warn "Unprocessed parameters: ", join ', ', sort keys %$params if keys %$params ;
 #warn "DATA OUT =", Dumper $data;
+
+	if($how eq 'save' && ! $answer->hasErrors)
+	{	$answer->redirect('/dashboard');
+warn "SAVING";
+$self->users->allAccounts;
+		$account->save;
+warn "DONE SAVING";
+$self->users->allAccounts;
+	}
+
     $self->render(json => $answer->data);
 }
 

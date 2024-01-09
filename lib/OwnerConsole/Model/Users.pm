@@ -79,4 +79,11 @@ sub saveAccount($)
 	$self->accounts->save($account->toDB);
 }
 
+sub allAccounts()
+{	my $self = shift;
+my $all = $self->accounts->find->all;
+use Data::Dumper;
+warn Dumper $all;
+}
+
 1;

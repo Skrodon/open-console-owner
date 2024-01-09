@@ -77,6 +77,8 @@ sub tryRegister()
 	my $password = $self->param('password');
 	#XXX use Email::Valid to check email, otherwise return with notify(error)
 	#XXX check password length
+warn "PARAM EMAIL $email";
+warn "PARAM PASSWD $password";
 
 	if($self->users->accountByEmail($email))
 	{	$self->notify(error => 'Username already exist. Please start the password-reset procedure.');
@@ -84,9 +86,9 @@ sub tryRegister()
 	}
 
 	my $account = $self->users->createAccount({
-		email       => $email,
-		password    => $password,
-		if_language => $self->language,
+		email    => $email,
+		password => $password,
+		iflang   => $self->language,
 	 });
 
 	$self->login($account);

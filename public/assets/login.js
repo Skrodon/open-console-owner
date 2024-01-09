@@ -6,11 +6,11 @@ function validatePassword(form, passwordField, confirmField)
 	var confirmPassword = confirmField.val();
 
 	if(password.length < 6) {
-		$('#password_length_warning', form).show();
+		$('#password_length_error', form).show();
 		return false;
 	}
 	if(password !== confirmPassword) {
-		$('#password_match_warning', form).show();
+		$('#password_match_error', form).show();
 		return false;
 	}
 
@@ -21,7 +21,7 @@ function activate_register(form)
 {	var passwordField = $('#password', form);
 	var confirmField  = $('#confirm', form);
 
-	$(".warning", form).hide();
+	$(".val-error, .val-warn", form).hide();
 
 	form.on('submit', function() {
 		return validatePassword(form, passwordField, confirmField);

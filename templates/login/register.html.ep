@@ -21,7 +21,7 @@
             <span class="input-group-text">
               <i class="fas fa-user"></i>
             </span>
-            <input id="email" type="text" class="form-control" placeholder="Your email-address">
+            <input name="email" id="email" type="text" class="form-control" placeholder="Your email-address">
           </div>
           <div id="email_explain" class="form-text">Your email-address will identify your account, but it can be changed later.</div>
         </div>
@@ -37,8 +37,8 @@
             </span>
           </div>
           <div id="password_explain" class="form-text">Do everyone a favor: pick a good pasword!</div>
-          <div id="password_length_warning" class="warning">
-            <i class="fa-solid fa-triangle-exclamation"></i> Password must be at least 6 characters long.
+          <div id="password_length_error" class="val-error">
+            Password must be at least 6 characters long.
           </div>
         </div>
 
@@ -52,8 +52,8 @@
               <i class="fa-solid fa-eye eye_toggle"></i>
             </span>
           </div>
-          <div id="password_match_warning" class="warning">
-            <i class="fa-solid fa-triangle-exclamation"></i> The passwords do not match!
+          <div id="password_match_error" class="val-error">
+            The passwords do not match!
           </div>
         </div>
 

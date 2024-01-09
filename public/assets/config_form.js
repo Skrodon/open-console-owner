@@ -83,8 +83,12 @@ function update_form_status(form) {
 
 function monitor_form_changes(form) {
 	$('input, textarea, select', form).on('change', function () {
-		form.addClass('changed');
-	 	update_form_status(form);
+		if($(this).attr('id') !== 'password') {
+			// Browser changes password, gladly we trigger on confirm
+console.log("Changed by " + $(this).attr('id'));
+			form.addClass('changed');
+	 		update_form_status(form);
+		}
 	});
 }
 
@@ -101,13 +105,13 @@ function cancel_without_saving(form) {
 	$('#cancel_confirm', modal).on('click', function () { modal.hide(); form.submit() });
 };
 
-function accept_form_data(form, how) {
+function accept_form_data(form, how, success) {
 	var data = form.serialize();
-	data.how = how;
-	var action = '/dashboard/' + form.attr('id');
+	var action = '/dashboard/' + form.attr('id') + '?' + how;
 console.log("AJAX: " + action);
 console.log(data);
 
+	var success = false;
 	$.ajax({
 		type: 'POST',
 		url: action,
@@ -118,7 +122,7 @@ console.log(data);
 			console.log(response);
  			process_errors_and_warnings(form, response);
 			update_form_status(form);
-//			if(errors==0) { form.submit(); }
+			if(response.redirect) { window.location = response.redirect }
 		},
 		error: function (response) {
 			console.log('Form ' + form.attr('id') + ' delivery error: ' + response.status);
@@ -145,12 +149,14 @@ function save_validated_form(form) {
 			// missing before real validation, to have less work on the server
 			update_form_status(form);
 		} else {
-			accept_form_data(form, 'save_when_ok');
+			accept_form_data(form, 'save', function () {
+				
+			});
 		}
 	});
 }
 
-function install_form(form) {
+function install_config_form(form) {
 	$('[required]').each(function () {
 		var p = $(this).attr('placeholder');
 		$(this).attr('placeholder', p + ' (required)');   //XXX translation
@@ -164,5 +170,5 @@ function install_form(form) {
 };
 
 $(document).ready(function() {
-	$("form").each( function () { install_form($(this)) } );
+	$("form.config_form").each( function () { install_config_form($(this)) } );
 });

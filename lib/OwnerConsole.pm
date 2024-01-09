@@ -67,6 +67,7 @@ sub startup
 
 	### Configure the application
 	$self->secrets($config->{secrets});
+	$self->renderer->cache->max_keys(0);  # the forms are never the same
 	%admins = map +(lc($_) => 1), @{$config->{admins} || []};
 
 #	$self->plugin('CSRFProtect');
@@ -76,7 +77,7 @@ sub startup
 	$dbconfig{users} = $config->{users};
 	$self->helper(dbserver => \&dbserver);
 	$self->helper(users    => \&users);
-#$self->users->db->accounts->remove({});  #XXX hack clean whole accounts table
+#$self->users->db->collection('accounts')->remove({});  #XXX hack clean whole accounts table
 
 	# 'user' is the logged-in user, the admin can select to show a different 'account'
 	$self->helper(user      => sub { $self->{O_user}    ||= $_[0]->users->account($_[0]->session('userid')) });
