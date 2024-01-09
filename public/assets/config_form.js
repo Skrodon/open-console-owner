@@ -95,14 +95,19 @@ console.log("Changed by " + $(this).attr('id'));
 function cancel_without_saving(form) {
 	var modal = $('#cancel_without_saving', form);
 	$('#cancel_button', form).on('click', function (event) {
+		event.preventDefault();
 		if(form.hasClass('changed')) {
-			event.preventDefault();
        		modal.show();
 		}
+		else {	
+console.log('go to dashboard');
+			window.location.href = '/dashboard/';
+		}
+		false;
 	});
 
 	$('#cancel_oops',    modal).on('click', function () { modal.hide() });
-	$('#cancel_confirm', modal).on('click', function () { modal.hide(); form.submit() });
+	$('#cancel_confirm', modal).on('click', function () { modal.hide(); window.location.href = '/dashboard/' });
 };
 
 function accept_form_data(form, how, success) {
