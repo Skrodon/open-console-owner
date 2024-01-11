@@ -67,7 +67,10 @@ sub phone()      { $_[0]->phoneOther // $_[0]->account->phone }
 sub save(%)
 {   my ($self, %args) = @_;
 	$self->_data->{identid} = $::app->newUnique if $self->identityId eq 'new';
-    $self->_data->{schema} = IDENTITY_SCHEMA if $args{by_user};
+	if($args{by_user})
+    {	$self->_data->{schema} = IDENTITY_SCHEMA;
+		$self->log('changed identity settings');
+	}
     $::app->users->saveIdentity($self);
 }
 

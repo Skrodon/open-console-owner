@@ -64,6 +64,8 @@ sub account($)
 	my $data = $self->accounts->find_one({userid => $userid})
 		or return;
  
+use Data::Dumper;
+warn Dumper $data;
 	OwnerConsole::Account->fromDB($data);
 }
  

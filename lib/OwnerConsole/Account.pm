@@ -96,7 +96,7 @@ sub addIdentity($)  # by id or object
 
 	push @$ids, $id;
 
-	$self->log("added identity $id");
+	$self->log("Added identity $id");
 	$self->save;
 
 	delete $self->{OA_ids};  # clean cache
@@ -108,6 +108,8 @@ sub removeIdentity($)
 	my $id  = $identity->identityId;
 	$self->_data->{identities} = [ grep $_ ne $id, $self->identityIds ];
 	delete $self->{OA_ids};
+	$self->log("Removed identity $id");
+	$::app->users->saveAccount($self);
 	$self;
 }
 
@@ -118,7 +120,20 @@ sub identity($)
 
 sub identities
 {	my $self = shift;
-	$self->{OA_ids} ||= [ sort {$a->role cmp $b->role} map $self->identity($_), $self->identityIds ];
+	unless($self->{OA_ids})
+	{	# Silently remove identities which do not exist anymore (different database)
+		my @identities;
+		foreach my $id ($self->identityIds)
+		{	if(my $identity = $self->identity($id))
+			{	push @identities, $identity;
+			}
+			else
+			{	$self->log("silently removed identity which disappeared: $id");
+			}
+		}
+		$self->{OA_ids} = [ sort {$a->role cmp $b->role} @identities ];
+		$self->_data->{identities} =  [ map $_->identityId, @identities ];
+	}
 	@{$self->{OA_ids}};
 }
 
@@ -129,8 +144,10 @@ sub identities
 
 sub save(%)
 {	my ($self, %args) = @_;
-	$self->_data->{schema} = ACCOUNT_SCHEMA if $args{by_user};
-	$self->log('changed account settings');
+	if($args{by_user})
+	{	$self->_data->{schema} = ACCOUNT_SCHEMA;
+		$self->log('Changed account settings');
+	}
 	$::app->users->saveAccount($self);
 }
 
