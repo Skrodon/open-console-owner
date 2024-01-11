@@ -3,7 +3,7 @@
 <script src="/assets/account.js"></script>
 
 % my $account = $c->account;
-% if($account->isAdmin) {
+% if($c->user->isAdmin) {
 %#   <p class="admin">UserID = <%= $account->userId %></p>
 % }
 
@@ -147,18 +147,15 @@
     <div id="birth_explain" class="form-text">Some Services may want an age indication.</div>
   </div>
 
+%= include 'account/_gender', gender => $account->gender // '';
+
   <div>
-    <label for="gender" class="form-label">Gender</label>
-% my $gender = $account->gender // '';
-    <select name="gender" id="gender" class="form-select">
-    <option value=""       <%= $gender eq ''       ? ' selected' : '' %>>Undisclosed</option>
-    <option value="female" <%= $gender eq 'female' ? ' selected' : '' %>>Female</option>
-    <option value="male"   <%= $gender eq 'male'   ? ' selected' : '' %>>Male</option>
-    <option value="they"   <%= $gender eq 'they'   ? ' selected' : '' %>>They/Them</option>
-    <option value="none"   <%= $gender eq 'none'   ? ' selected' : '' %>>None</option>
-	</select>
+   <label for="phone" class="form-label">Phone number</label>
+   <input name="phone" type="text" id="phone" class="form-control" placeholder="Defaults to phone-number of Account"
+     value="<%= $account->phone || '' %>" aria-describedby="phone-explain" />
+   <div id="phone_explain" class="form-text">Use the international phone-number notation, like <tt>+31 ...</tt></div>
   </div>
-	
+
   <div>
     <label class="form-label">Avatar</label>
     <p>Upload your default picture here.</p>
@@ -168,9 +165,14 @@
 
 % my $personal_explain = begin
 
-  <p>Configuring these values here, do not automatically mean that they are shared with
-  Service providers: once you start connecting to them, you can decide whether to reveil
-  facts or hide them.</p>
+  <p>Configuring these values here, does not automatically mean that
+  they are shared with anyone: once you start sharing your identity,
+  you can decide whether to reveil facts or hide them.</p>
+
+  <p>When you provide a <strong>Phone-number</strong>, be sure to
+  specify it in international number notation: starting with a "+" and
+  your country access code. This value may include business internal
+  extension numbers.</p>
 
   <p>When you wish, you can upload a picture which represents you,
   to be displayed by services (like social media).  This is an
@@ -193,11 +195,11 @@
 
   <p>Once you delete your account, there is no going back. Please, be certain.</p>
 
-  <button type="submit" id="delete_account_button" class="btn btn-danger">
+  <button type="submit" id="delete_button" class="btn btn-danger">
   Delete your account <i class="fa fa-skull" aria-hidden="true"></i>
   </button>
 
-  <div id="delete_account_confirmation_modal" class="modal" style="display: none;">
+  <div id="delete_confirmation_modal" class="modal" style="display: none;">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -241,6 +243,8 @@
 % ];
 
 <form id="config_account" class="config_form">
+
+<input id="identifier" type="hidden" value="<%= $account->userId %>" />
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('account-tabs' => \@pages);

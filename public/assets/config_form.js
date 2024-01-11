@@ -1,10 +1,33 @@
 
 var unique_counter = 42;
 
+function activate_delete_button(form) {
+	const deleteModal   = $('#delete_confirmation_modal', form);
+
+	$('#delete_button', form).on('click', function(event)  {
+		event.preventDefault();
+		deleteModal.show();
+	});
+
+	$('#cancel_delete_button', deleteModal).on('click', function () {
+		deleteModal.hide();
+	});
+
+	$('#confirm_delete_button', deleteModal).on('click', function () {
+		deleteModal.hide();
+
+// form.submit()
+// in handler:  $self->notify(''), redirect to frontpage
+
+		alert('deleted successfully');
+	});
+}
+
 function add_val_message(form, input, level, message) {
 	var unique = unique_counter++;
 	$('LABEL[for="' + input + '"]', form).each(function() {
-		$(this).parent().append('<div id="msg-' + unique + '" class="val-msg val-' + level + '">' + message + '</div>');
+		$(this).parent().append('<div id="msg-' + unique + '" class="val-msg val-' + level + '">'
+			+ jQuery('<div />').text(message).html() + '</div>');
 	});
 
 	$('#' + input, form).on('focus', function () {
@@ -112,7 +135,7 @@ console.log('go to dashboard');
 
 function accept_form_data(form, how, success) {
 	var data = form.serialize();
-	var action = '/dashboard/' + form.attr('id') + '?' + how;
+	var action = '/dashboard/' + form.attr('id') + '/' + $('#identifier', form).val() + '?' + how;
 console.log("AJAX: " + action);
 console.log(data);
 
@@ -167,6 +190,7 @@ function install_config_form(form) {
 		$(this).attr('placeholder', p + ' (required)');   //XXX translation
 	});
 
+	activate_delete_button(form);
 	create_field_versioning(form);
 	cancel_without_saving(form);
 	save_validated_form(form);

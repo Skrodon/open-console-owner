@@ -4,26 +4,18 @@ use Mojo::Base 'Mojolicious::Controller';
 use OwnerConsole::AjaxAnswer ();
 use Log::Report 'owner-console';
 
-use Email::Valid             ();
 use OwnerConsole::Tables     qw(language_name timezone_names);
-use OwnerConsole::Util       qw(flat);
+use OwnerConsole::Util       qw(flat :validate);
 
 sub index($)
 {	my $self = shift;
-	$self->render(template => 'login/account');
-}
-
-sub index2($)
-{	my $self = shift;
-	$self->render(template => 'login/account2');
+	$self->render(template => 'account/index');
 }
 
 =subsection Update
 =cut
 
 ### Keep this logic in sync with OwnerConsole::Account attributes
-
-my %known_genders = map +($_ => 1), qw(female male they none);
 
 sub submit($)
 {   my $self = shift;
@@ -34,18 +26,21 @@ sub submit($)
 	my $req     = $self->req;
 	my $how     = $req->url->query;
 	my $params  = $req->json || $req->body_params->to_hash;
+
+	my $id      = $self->param('userid');
+	$::app->user->isAdmin || $id eq $account->userId
+		or error __x"You cannot modify the account of someone else.";
 use Data::Dumper;
 warn "QUERY=$how";
 warn "PARAMS=", Dumper $params;
 warn "DATA IN =", Dumper $data;
 
-	if(my $email = delete $params->{email})
-	{	if(not Email::Valid->address($email))
+	if(my $email = $data->{email} = delete $params->{email})
+	{	if(not is_valid_email $email)
 		{	$answer->addError(email => __x"Invalid email-address");
 		}
 		elsif($data->{email} ne $email)
 		{	#XXX start validate email process
-			$data->{email} = $email;
 		}
 	}
 
@@ -73,21 +68,13 @@ warn "DATA IN =", Dumper $data;
 	@langs = ('en') unless @langs;
 	$data->{languages} = \@langs;
 
-	my $iflang = delete $params->{iflang} || '';
-	if(grep $iflang eq $_->[0], $self->ifLanguages)
-	{	$data->{iflang} = $iflang;
-    }
-	else
-	{	$answer->addError(iflang => __x"Unsupported interface language '{code}'", code => $iflang);
-	}
+	my $iflang = $data->{iflang} = delete $params->{iflang} || '';
+	(grep $iflang eq $_->[0], $self->ifLanguages)
+		or $answer->addError(iflang => __x"Unsupported interface language '{code}'", code => $iflang);
 
-	my $tz = delete $params->{timezone} || 'Europe/Amsterdam';
-	if(grep $tz eq $_, @{timezone_names()})
-	{	$data->{timezone} = $tz;
-	}
-	else
-	{	$answer->addError(timezone => __x"Unsupported time-zone '{timezone}'", timezone => $tz);
-	}
+	my $tz = $data->{timezone} = delete $params->{timezone} || 'Europe/Amsterdam';
+	grep $tz eq $_, @{timezone_names()}
+		or $answer->addError(timezone => __x"Unsupported time-zone '{timezone}'", timezone => $tz);
 
 	my $birth = delete $params->{birth} || '';
 	if(length $birth)
@@ -99,13 +86,13 @@ warn "DATA IN =", Dumper $data;
 		}
 	}
 
-	my $gender = delete $params->{gender} || '';
-	if(! length $gender || $known_genders{$gender})
-	{	$data->{gender} = $gender;
-	}
-	else
-	{	$answer->addError(gender => __x"Unknown gender type '{gender}'", gender => $gender);
-	}
+	my $gender = $data->{gender} = delete $params->{gender} || '';
+	is_valid_gender $gender
+		or $answer->addError(gender => __x"Unknown gender type '{gender}'", gender => $gender);
+
+	my $phone = $data->{phone} = val_line delete $params->{phone};
+    ! defined $phone || is_valid_phone $phone
+        or $answer->addError(phone => __x"Invalid phone number, use '+<country><net>/<extension>'");
 
 warn "Unprocessed parameters: ", join ', ', sort keys %$params if keys %$params ;
 #warn "DATA OUT =", Dumper $data;
@@ -114,7 +101,7 @@ warn "Unprocessed parameters: ", join ', ', sort keys %$params if keys %$params 
 	{	$answer->redirect('/dashboard');
 warn "SAVING";
 $self->users->allAccounts;
-		$account->save;
+		$account->save(by_user => 1);
 warn "DONE SAVING";
 $self->users->allAccounts;
 	}

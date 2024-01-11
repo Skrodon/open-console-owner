@@ -109,11 +109,11 @@ sub startup
 	$dashboard->get('/')->to('dashboard#index');
 
 	$dashboard->get('/account')->to('account#index');
-	$dashboard->post('/config_account')->to('account#submit');
+	$dashboard->post('/config_account/:userid')->to('account#submit');
 
 	$dashboard->get('/identities')->to('identities#index');
-	$dashboard->get('/identity')->to('identities#identity');
-	$dashboard->post('/config_identity')->to('identities#submit_identity');
+	$dashboard->get('/identity/:identid')->to('identities#identity');
+	$dashboard->post('/config_identity/:identid')->to('identities#submit_identity');
 
 	$dashboard->get('/groups')->to('groups#index');
 	$dashboard->get('/group')->to('groups#group');

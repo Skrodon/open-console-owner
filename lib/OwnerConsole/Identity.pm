@@ -1,6 +1,10 @@
 package OwnerConsole::Identity;
 use Mojo::Base 'OwnerConsole::Mango::Object';
 
+use Log::Report 'open-console-owner';
+
+use constant IDENTITY_SCHEMA => '20240111';
+
 =section DESCRIPTION
 
 An Identity represents one of the ways a person wants to present
@@ -20,22 +24,51 @@ these facts.  Work in progress.
 =cut
 
 sub create($%)
-{	my ($class, $insert, %args) = @_;
-	my $identid = $insert->{ident_id} = $::app->newUnique;
-	my $self = $class->SUPER::create($insert, %args);
+{	my ($class, $account, %args) = @_;
+	my %insert  = (
+		identid  => 'new',
+		schema   => IDENTITY_SCHEMA,
+		userid   => $account->userId,
+		gender   => $account->gender,
+		language => ($account->languages)[0],
+	);
 
-	$self->log("created identity $identid");
-	$self;
+	my $self = $class->SUPER::create(\%insert, %args);
 }
 
 #-------------
 =section Attributes
 =cut
 
-sub identityId() { $_[0]->_data->{ident_id} }
+# Keep these attributes in sync with the OwnerConsole/Controller/Identities.pm
+# method submit_identity()
+
+sub identityId() { $_[0]->_data->{identid} }
+sub userId()     { $_[0]->_data->{userid} }
+sub schema()     { $_[0]->_data->{schema} }
+
+sub role()       { $_[0]->_data->{role} }
+sub fullname()   { $_[0]->_data->{fullname} }
+sub nickname()   { $_[0]->_data->{nickname} }
+sub language()   { $_[0]->_data->{language} }
+sub gender()     { $_[0]->_data->{gender} }
+sub postal()     { $_[0]->_data->{postal} }
+
+sub emailOther() { $_[0]->_data->{email} }     # Usually, the code want to get the default
+sub phoneOther() { $_[0]->_data->{phone} }
+
+sub email()      { $_[0]->emailOther // $_[0]->account->email }
+sub phone()      { $_[0]->phoneOther // $_[0]->account->phone }
 
 #-------------
 =section Actions
 =cut
+
+sub save(%)
+{   my ($self, %args) = @_;
+	$self->_data->{identid} = $::app->newUnique if $self->identityId eq 'new';
+    $self->_data->{schema} = IDENTITY_SCHEMA if $args{by_user};
+    $::app->users->saveIdentity($self);
+}
 
 1;

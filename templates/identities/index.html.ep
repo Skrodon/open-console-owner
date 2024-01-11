@@ -1,6 +1,8 @@
 % layout 'dashboard';
 % title 'Overview of configured Identities';
 
+% my $account = $c->account;
+
 <ascript src="/assets/login.js"></script>
 
 <div class="container">
@@ -10,16 +12,17 @@
       <div class="card-body">
 
 <form id="identity_list">
-  <table>
-  <tr><th>Role</th><th>Edit</th></tr>
-  <tr><td>Private Dutch</td><td><i class="fa-solid fa-pen"></i></tr>
-  <tr><td>Private English</td><td><i class="fa-solid fa-pen"></i></tr>
-  <tr><td>CPAN Developer</td><td><i class="fa-solid fa-pen"></i></tr>
-  <tr><td>Team Open Console</td><td><a href="/dashboard/identity?OpenConsole"><i class="fa-solid fa-pen"></i></a></tr>
-  <tr><td>Secretary NLUUG</td><td><i class="fa-solid fa-pen"></i></tr>
-  <tr><td>Secretary NINJA</td><td><i class="fa-solid fa-pen"></i></tr>
-  <tr><td style="text-align: right"><b>create new:</b></td>
-      <td><i class="fa-solid fa-circle-plus"></i></td></tr>
+  <table class="table table-striped table-hover">
+  <thead class="thead-light">
+    <tr><th>Role</th><th>Edit</th></tr>
+  </thead>
+  <tbody>
+% foreach my $identity ($account->identities) {
+    <tr><td><%= $identity->role %></td><td><a href="identity/<%= $identity->identityId %>"><i class="fa-solid fa-pen"></a></i></tr>
+% }
+    <tr class="table-light"><td>&nbsp;</td>
+        <td><a href="identity/new" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i>&nbsp;Create new Identity<a></td></tr>
+  </tbody>
   </table>
 </form>
 

@@ -5,8 +5,9 @@ use Crypt::PBKDF2 ();
 my $crypt = Crypt::PBKDF2->new;
 
 use OwnerConsole::Tables qw(language_name);
+use OwnerConsole::Identity ();
 
-use constant COLL_SCHEMA => '20240102';
+use constant ACCOUNT_SCHEMA => '20240102';
 
 =section Constructors
 =cut
@@ -14,7 +15,7 @@ use constant COLL_SCHEMA => '20240102';
 sub create($%)
 {	my ($class, $insert, %args) = @_;
 	my $userid = $insert->{userid} = $::app->newUnique;
-	$insert->{schema}    //= COLL_SCHEMA;
+	$insert->{schema}    //= ACCOUNT_SCHEMA;
 	$insert->{languages} //= [ 'en', 'nl' ];
 	$insert->{iflang}    //= 'en';
 	$insert->{timezone}  //= 'Europe/Amsterdam';
@@ -30,9 +31,9 @@ sub create($%)
 
 sub fromDB($)
 {   my ($class, $data) = @_;
-	if($data->{schema} < COLL_SCHEMA) {
-		#XXX We may need to upgrade the user object automatically
-	    $data->{schema} = COLL_SCHEMA;
+	if($data->{schema} < ACCOUNT_SCHEMA) {
+		# We may need to upgrade the user object partially automatically,
+		# partially with the user's help.
 	}
 	$class->SUPER::fromDB($data);
 }
@@ -50,11 +51,19 @@ sub email()     { $_[0]->_data->{email}  }
 sub birth()     { $_[0]->_data->{birth_date} }
 sub gender()    { $_[0]->_data->{gender} }
 sub languages() { @{$_[0]->_data->{languages} || []} }
+sub phone()     { $_[0]->_data->{phone} }
 sub iflang()    { $_[0]->_data->{iflang} }
 sub timezone()  { $_[0]->_data->{timezone} }
+sub identityIds() { @{$_[0]->_data->{identities} || []} }
 
 sub isAdmin()   { $::app->isAdmin($_[0]) }
 sub ifLanguage  { language_name($_[0]->iflang) }
+
+sub identities
+{	my $self = shift;
+	$self->{OA_ids} ||= [ sort {$a->role cmp $b->role} map $self->identity($_), $self->identityIds ];
+	@{$self->{OA_ids}};
+}
 
 #------------------
 =section Password handling
@@ -78,11 +87,39 @@ sub changePassword($)
 }
 
 #------------------
+=section Identities
+=cut
+
+sub addIdentity($)  # by id or object
+{	my ($self, $identity) = @_;
+	defined $identity or return;
+
+	my $ids = $self->_data->{identities} ||= [];
+	my $id  = ref $identity ? $identity->identityId : $identity;
+	return $self if grep $id eq $_, @$ids;
+
+	push @$ids, $id;
+
+	$self->log("added identity $id");
+	$self->save;
+
+	delete $self->{OA_ids};  # clean cache
+	$self;
+}
+
+sub identity($)
+{	my ($self, $id) = @_;
+	$::app->users->identity($id);
+}
+
+#------------------
 =section Actions
 =cut
 
-sub save()
-{	my $self = shift;
+sub save(%)
+{	my ($self, %args) = @_;
+	$self->_data->{schema} = ACCOUNT_SCHEMA if $args{by_user};
+	$self->log('changed account settings');
 	$::app->users->saveAccount($self);
 }
 

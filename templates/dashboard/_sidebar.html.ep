@@ -1,6 +1,6 @@
 
 <ul class="nav flex-column">
-% if($c->account->isAdmin) {
+% if($c->user->isAdmin) {
 <li class="nav-item" style="background: #CCFFCC !important">
   <a class="nav-link" href="#">
     <i class="fa-solid fa-mask"></i> Admin

@@ -46,9 +46,16 @@ LABEL.form-label {
 	font-weight: bold;
  }
 
-FORM#config_account #account-delete-tab { color: red }
+FORM#config_account  #account-delete-tab,
+FORM#config_identity #identity-delete-tab
+{	color: rgba(var(--bs-danger-rgb));
+}
 
-FORM#config_account #account-delete-tab.active { color: white; background-color: red }
+FORM#config_account #account-delete-tab.active,
+FORM#config_idenity #identity-delete-tab.active
+{	color: white;
+	background-color: red;
+}
 
 FORM.config_form #save_button {
 	margin-bottom: 1ex;
