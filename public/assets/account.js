@@ -23,11 +23,16 @@ function activate_language_selector(form) {
 	});
 }
 
+function activate_timezone_selector() {
+	$('#timezone').select2();
+}
+
 $(document).ready(function() {
 	$("form#config_account").map(function () {
 		var form = $(this);
 		activate_delete_button(form);
 		activate_language_selector(form);
+		activate_timezone_selector(form);
 	});
 })
 

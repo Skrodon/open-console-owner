@@ -107,12 +107,14 @@
 
   <div>
     <label for="timezone" class="form-label">Default Time-zone</label>
-    <select name="timezone" id="timezone" class="form-select" aria-describedby="timezone_explain">
+    <div class="col">
+    <select name="timezone" id="timezone" class="form-select" aria-describedby="timezone_explain" style="width: 100%">
 % my $timezone = $account->timezone;
 % foreach my $tz (@{timezone_names()}) {
     <option <%= $tz eq $timezone ? ' selected' : ''%>><%= $tz %></option>
 % }
     </select>
+    </div>
     <div id="timezone_explain" class="form-text">Usually the Time-Zone you live in.</div>
   </div>
 
