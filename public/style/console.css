@@ -1,8 +1,16 @@
 
+/* Bootstrap5 font colors have wrong defaults */
 .bg-warning { color: black }
 .bg-danger  { color: white }
 .bg-info    { color: black }
 
+/* badge colors need Bootstrap5 sccs? */
+NAV .badge {
+	background: rgba(var(--bs-info-rgb));
+	color: black;
+}
+
+/* Mark everything what is only available to admins */
 .admin {
 	background: #CCFFCC;
 }

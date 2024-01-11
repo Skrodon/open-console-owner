@@ -1,7 +1,7 @@
 % layout 'dashboard';
-% title 'Overview of configured Identities';
+% title 'Configure Identity';
 
-
+% my $is_new = $identity->identityId eq 'new';
 % if($c->user->isAdmin) {
 %#   <p class="admin">IdentID = <%= $identity->identityId %></p>
 % }
@@ -225,7 +225,7 @@
 %    'Delete',
 %    $delete_form,
 %    $delete_explain,
-% ];
+% ] unless $is_new;
 
 <form id="config_identity" class="config_form">
   <input id="identifier"     type="hidden" value="<%= $identity->identityId %>" />

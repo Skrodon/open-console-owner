@@ -59,11 +59,7 @@ sub identityIds() { @{$_[0]->_data->{identities} || []} }
 sub isAdmin()   { $::app->isAdmin($_[0]) }
 sub ifLanguage  { language_name($_[0]->iflang) }
 
-sub identities
-{	my $self = shift;
-	$self->{OA_ids} ||= [ sort {$a->role cmp $b->role} map $self->identity($_), $self->identityIds ];
-	@{$self->{OA_ids}};
-}
+sub nrIdentities { scalar $_[0]->identityIds }
 
 #------------------
 =section Password handling
@@ -107,10 +103,25 @@ sub addIdentity($)  # by id or object
 	$self;
 }
 
+sub removeIdentity($)
+{	my ($self, $identity) = @_;
+	my $id  = $identity->identityId;
+	$self->_data->{identities} = [ grep $_ ne $id, $self->identityIds ];
+	delete $self->{OA_ids};
+	$self;
+}
+
 sub identity($)
 {	my ($self, $id) = @_;
 	$::app->users->identity($id);
 }
+
+sub identities
+{	my $self = shift;
+	$self->{OA_ids} ||= [ sort {$a->role cmp $b->role} map $self->identity($_), $self->identityIds ];
+	@{$self->{OA_ids}};
+}
+
 
 #------------------
 =section Actions

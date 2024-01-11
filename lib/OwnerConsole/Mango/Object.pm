@@ -15,6 +15,7 @@ sub fromDB($)
 
 sub create($%)
 {	my ($class, $insert, %args) = @_;
+	$insert->{created} = Mango::BSON::Time->new;
 	$class->new(_data => $insert);
 }
 
@@ -22,6 +23,8 @@ sub toDB() { $_[0]->_data }  #XXX might become more complex later
 
 =section Attributes
 =cut
+
+sub created() { my $c = $_[0]->_data->{created}; $c ? $c->to_datetime : undef }
 
 sub logging(%)
 {	my ($self, %args) = @_;

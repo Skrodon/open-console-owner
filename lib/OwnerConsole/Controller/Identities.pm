@@ -15,7 +15,6 @@ sub identity()
 	my $identid  = $self->param('identid');
 
 	my $account  = $self->account;
-warn "ACCOUNT=$account";
 	my $identity = $identid eq 'new' ? OwnerConsole::Identity->create($account) : $account->identity($identid);
     $self->render(template => 'identities/identity', identity => $identity);
 }
@@ -28,27 +27,35 @@ sub submit_identity($)
 
 	my $req     = $self->req;
 	my $how     = $req->url->query;
-	my $params  = $req->json || $req->body_params->to_hash;
 
-use Data::Dumper;
-warn "IDENTITY QUERY=$how";
-warn "PARAMS=", Dumper $params;
+#use Data::Dumper;
+#warn "IDENTITY QUERY=$how";
 
 	my $account  = $self->account;
 	my $id       = $self->param('identid');
+
 	my $identity;
 	if($id eq 'new')
 	{	$identity = OwnerConsole::Identity->create($account);
-warn "Created new $identity";
+#warn "Created new $identity";
 	}
 	else
 	{	$identity = $account->identity($id)
 			or error __x"Tried to access identity '{id}'", id => $id;
 	}
 
-	my $data     = $identity->_data;
+	if($how eq 'delete') {
+		$::app->users->removeIdentity($identity);
+		$account->removeIdentity($identity);
+		$answer->redirect('/dashboard/identities');
+    	return $self->render(json => $answer->data);
+	}
 
-warn "DATA IN =", Dumper $data;
+	my $params = $req->json || $req->body_params->to_hash;
+	my $data   = $identity->_data;
+
+#warn "PARAMS=", Dumper $params;
+#warn "DATA IN =", Dumper $data;
 
 	my $role = $data->{role} = val_line delete $params->{role};
 	defined $role
@@ -78,14 +85,14 @@ warn "Unprocessed parameters: ", join ', ', sort keys %$params if keys %$params 
 
 	if($how eq 'save' && ! $answer->hasErrors)
 	{	$answer->redirect('/dashboard/identities');  # order browser to redirect
-warn "SAVING IDENTITY";
-warn Dumper $self->users->allIdentities;
+#warn "SAVING IDENTITY";
+#warn Dumper $self->users->allIdentities;
 		$identity->save(by_user => 1);
-warn "DONE SAVING";
-warn Dumper $self->users->allIdentities;
+#warn "DONE SAVING";
+#warn Dumper $self->users->allIdentities;
 		$account->addIdentity($identity);
 
-		$self->notify(warning => __x"New identity created") if $id eq 'new';
+		$self->notify(info => __x"New identity created") if $id eq 'new';
 	}
 
     $self->render(json => $answer->data);

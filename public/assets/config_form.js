@@ -15,11 +15,7 @@ function activate_delete_button(form) {
 
 	$('#confirm_delete_button', deleteModal).on('click', function () {
 		deleteModal.hide();
-
-// form.submit()
-// in handler:  $self->notify(''), redirect to frontpage
-
-		alert('deleted successfully');
+		accept_form_data(form, 'delete');
 	});
 }
 

@@ -104,9 +104,8 @@ sub identity($)
 }
 
 sub removeIdentity($)
-{	my ($self, $identid) = @_;
-	$self->identities->remove({identid => $identid})
-		or return;
+{	my ($self, $identity) = @_;
+	$self->identities->remove({identid => $identity->identityId});
 }
 
 sub saveIdentity($)
