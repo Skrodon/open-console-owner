@@ -4,8 +4,8 @@ use Mojo::Base 'Mojolicious';
 use Mango;
 use feature 'state';
 
-use Data::UUID    ();
-my $ug    = Data::UUID->new;
+use Session::Token ();
+my $token_generator = Session::Token->new;
 
 use List::Util  qw(first);
 
@@ -82,12 +82,17 @@ sub startup
 	# 'user' is the logged-in user, the admin can select to show a different 'account'
 	$self->helper(user      => sub { $self->{O_user}    ||= $_[0]->users->account($_[0]->session('userid')) });
 	$self->helper(account   => sub { $self->{O_account} ||= $_[0]->users->account($_[0]->session('account') or return $_[0]->user) });
-	$self->helper(newUnique => sub { $config->{instance} . ':' . $ug->create_str });
+	$self->helper(newUnique => sub { $config->{instance} . ':' . $token_generator->get });
 
 	my $iflangs = $config->{interface_languages};
 	my %langs   = map +($_ => 1), @$iflangs;
 	$self->helper(language    => sub { $self->_detectLanguage($_[0], \%langs, $iflangs->[0]) });
 	$self->helper(ifLanguages => sub { my $l = $self->{O_langs} ||= $self->_languageTable($iflangs); @$l });
+
+	# Run at start of each fork
+	Mojo::IOLoop->timer(0 => sub {
+		$token_generator = Session::Token->new;
+	});
 
 	### Routes
 
@@ -108,6 +113,8 @@ sub startup
 
 	$dashboard->get('/identities')->to('identities#index');
 	$dashboard->get('/identity')->to('identities#identity');
+	$dashboard->post('/config_identity')->to('identities#submit_identity');
+
 	$dashboard->get('/groups')->to('groups#index');
 	$dashboard->get('/group')->to('groups#group');
 }

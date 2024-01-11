@@ -7,13 +7,13 @@ WriteMakefile
  , VERSION	=> '0.01'
 
  , PREREQ_PM    => { 
-	'Crypt::PBKDF2'	=> '0',
-	'Data::Dumper'	=> '0',
-	'Data::UUID'	=> '0',
-	'Email::Valid'  => '1.202',
-	'List::Util'	=> '0',
-	'Log::Report'	=> '0',
-	'Mango'			=> '0',
+	'Crypt::PBKDF2'	 => '0',
+	'Data::Dumper'	 => '0',
+	'Session::Token' => '1.503',
+	'Email::Valid'   => '1.202',
+	'List::Util'	 => '0',
+	'Log::Report'	 => '0',
+	'Mango'			 => '0',
 	'Mojolicious'                      => '9.35',
 	'Mojolicious::Plugin::CSRFProtect' => '0.16',
    }
