@@ -1,11 +1,21 @@
 package OwnerConsole::Tables;
 use Mojo::Base 'Exporter';
 
+use Log::Report 'open-console-owner';
+
 our @EXPORT_OK = qw(
 	language_name
 	language_table
 	timezone_names
+	country_name
+	country_table
+	gender_name
+	gender_table
 );
+
+# https://www.internationalphoneticalphabet.org/languages/language-names-in-native-language/
+# Only the languages which have any kind of translation in Open Console.
+# https://datatracker.ietf.org/doc/html/rfc5646
 
 my %language_names = (
 	'en'    => 'English',
@@ -588,5 +598,25 @@ US/Samoa
 );
 
 sub timezone_names() { \@timezones }
+
+my %countries = (
+	NL => "Nederland",
+	DE => "Deutschland",
+	EN => "England",
+);
+
+sub country_table() { \%countries }
+sub country_name($) { $countries{$_[0]} }
+
+my %genders = (
+	''     => __"Undisclosed",
+	female => __"Female",
+	male   => __"Male",
+	they   => __"They/Them",
+	none   => __"None",
+);
+
+sub gender_table() { \%genders }
+sub gender_name($) { $genders{$_[0]} }
 
 1;

@@ -1,0 +1,11 @@
+% use OwnerConsole::Tables qw(language_table);
+
+    <select name="language" id="lang" class="form-select" aria-describedby="lang_explain">
+% unless($required) {
+    <option value=""<%= defined $language ? '': ' selected' %>>&mdash; unspecified &mdash;</option>
+% }
+% foreach my $lang (@{language_table()}) {
+%   my ($code, $name) = @$lang;
+    <option value="<%= $code %>"<%= $language eq $code ? ' selected' : ''%>><%= $name %></option>
+% }
+    </select>

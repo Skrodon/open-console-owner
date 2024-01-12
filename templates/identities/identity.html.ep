@@ -15,7 +15,7 @@
     <input name="role" type="text" id="role" class="form-control" 
      placeholder="Purpose" value="<%= $identity->role || '' %>"
      aria-describedby="role_explain" required />
-    <div id="role_explain" class="form-text">A hint about the purpose of this Identity</div>
+    <div id="role_explain" class="form-text">A hint about the purpose of this Identity.</div>
   </div>
 
   <div>
@@ -23,7 +23,7 @@
     <input name="fullname" type="text" id="fullname" class="form-control"
      placeholder="Name" value="<%= $identity->fullname ||'' %>"
      aria-describedby="name_explain" />
-    <div id="name_explain" class="form-text">Your name in this context</div>
+    <div id="name_explain" class="form-text">Your name in this context.</div>
   </div>
 
   <div>
@@ -88,7 +88,9 @@
     <div id="email_explain" class="form-text">When you specify a different email-address here, you will be asked to validate it.</div>
   </div>
 
-%= include 'account/_gender', gender => $identity->gender;
+  <div>
+%= include 'shared/_gender', gender => $identity->gender;
+  </div>
 
   <div>
     <label for="avatar" class="form-label">Avatar</label>

@@ -116,7 +116,8 @@ sub startup
 	$dashboard->post('/config_identity/:identid')->to('identities#submit_identity');
 
 	$dashboard->get('/groups')->to('groups#index');
-	$dashboard->get('/group')->to('groups#group');
+	$dashboard->get('/group/:groupid')->to('groups#group');
+	$dashboard->post('/config_group/:groupid')->to('groups#submit_group');
 }
 
 1;

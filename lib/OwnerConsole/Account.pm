@@ -54,12 +54,16 @@ sub languages() { @{$_[0]->_data->{languages} || []} }
 sub phone()     { $_[0]->_data->{phone} }
 sub iflang()    { $_[0]->_data->{iflang} }
 sub timezone()  { $_[0]->_data->{timezone} }
+
 sub identityIds() { @{$_[0]->_data->{identities} || []} }
+sub groupIds()    { @{$_[0]->_data->{groups} || []} }
 
 sub isAdmin()   { $::app->isAdmin($_[0]) }
 sub ifLanguage  { language_name($_[0]->iflang) }
+sub preferredLanguage { ($_[0]->languages)[0] }
 
 sub nrIdentities { scalar $_[0]->identityIds }
+sub nrGroups     { scalar $_[0]->groupIds }
 
 #------------------
 =section Password handling
@@ -83,7 +87,7 @@ sub changePassword($)
 }
 
 #------------------
-=section Identities
+=section Personal Identities
 =cut
 
 sub addIdentity($)  # by id or object
@@ -135,6 +139,62 @@ sub identities
 		$self->_data->{identities} =  [ map $_->identityId, @identities ];
 	}
 	@{$self->{OA_ids}};
+}
+
+
+#------------------
+=section Group Identities
+=cut
+
+sub addGroup($)  # by id or object
+{	my ($self, $group) = @_;
+	defined $group or return;
+
+	my $groups = $self->_data->{groups} ||= [];
+	my $id  = ref $group ? $group->groupId : $group;
+	return $self if grep $id eq $_, @$groups;
+
+	push @$groups, $id;
+
+	$self->log("Added group $id");
+	$self->save;
+
+	delete $self->{OA_groups};  # clean cache
+	$self;
+}
+
+sub removeGroup($)
+{	my ($self, $group) = @_;
+	my $id  = $group->groupId;
+	$self->_data->{groups} = [ grep $_ ne $id, $self->groupIds ];
+	delete $self->{OA_groups};
+	$self->log("Removed group $id");
+	$::app->users->saveAccount($self);
+	$self;
+}
+
+sub group($)
+{	my ($self, $id) = @_;
+	$::app->users->group($id);
+}
+
+sub groups
+{	my $self = shift;
+	unless($self->{OA_groups})
+	{	# Silently remove groups which do not exist anymore (different database)
+		my @groups;
+		foreach my $id ($self->groupIds)
+		{	if(my $group = $self->group($id))
+			{	push @groups, $group;
+			}
+			else
+			{	$self->log("silently removed group which disappeared: $id");
+			}
+		}
+		$self->{OA_groups} = [ sort {$a->role cmp $b->role} @groups ];
+		$self->_data->{groups} = [ map $_->groupId, @groups ];
+	}
+	@{$self->{OA_groups}};
 }
 
 

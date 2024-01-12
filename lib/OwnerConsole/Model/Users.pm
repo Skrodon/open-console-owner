@@ -5,6 +5,7 @@ use Mango::BSON ':bson';
 
 use OwnerConsole::Account  ();
 use OwnerConsole::Identity ();
+use OwnerConsole::Group    ();
 
 =section DESCRIPTION
 This object handles the "users" database, which contains all information
@@ -12,8 +13,9 @@ which related to perticular people with a login.
 
 collections:
 =over 4
-=item * 'account': the login of a user
-=item * 'identity': the public representation of a Person
+=item * 'accounts': the logins of a users
+=item * 'identities': the public representation of Persons
+=item * 'groups': indentity groups
 =back
 
 =cut
@@ -21,6 +23,7 @@ collections:
 has db => undef;
 has accounts   => sub { $_[0]->{OMU_account} ||= $_[0]->db->collection('accounts')   };
 has identities => sub { $_[0]->{OMU_ident}   ||= $_[0]->db->collection('identities') };
+has groups     => sub { $_[0]->{OMU_group}   ||= $_[0]->db->collection('groups') };
 
 #---------------------
 =section UserDB configuration
@@ -43,6 +46,9 @@ sub upgrade
 #$self->identities->drop_index('userid');
 	$self->identities->ensure_index({ identid => 1 }, { unique => bson_true });
 	$self->identities->ensure_index({ userid  => 1 }, { unique => bson_false });
+
+	$self->groups->ensure_index({ groupid => 1 }, { unique => bson_true });
+	$self->groups->ensure_index({ userid  => 1 }, { unique => bson_false });
 	$self;
 }
 
@@ -64,8 +70,6 @@ sub account($)
 	my $data = $self->accounts->find_one({userid => $userid})
 		or return;
  
-use Data::Dumper;
-warn Dumper $data;
 	OwnerConsole::Account->fromDB($data);
 }
  
@@ -120,5 +124,32 @@ sub allIdentities()
 	$self->identities->find->all;
 }
 
+
+#---------------------
+=section The "group" table
+=cut
+
+sub group($)
+{	my ($self, $groupid) = @_;
+	my $data = $self->groups->find_one({groupid => $groupid})
+		or return;
+
+	OwnerConsole::Group->fromDB($data);
+}
+
+sub removeGroup($)
+{	my ($self, $group) = @_;
+	$self->groups->remove({groupid => $group->groupId});
+}
+
+sub saveGroup($)
+{	my ($self, $group) = @_;
+	$self->groups->save($group->toDB);
+}
+
+sub allGroups()
+{	my $self = shift;
+	$self->groups->find->all;
+}
 
 1;
