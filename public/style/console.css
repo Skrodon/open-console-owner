@@ -132,10 +132,6 @@ FIELDSET.history LEGEND {
 	border-radius: 1ex;
 }
 
-#langtab.table .btn-secondary:hover {
-    background-color: #007FFF;
-}
-
 #langtab.table-hover tbody tr:hover {
 	background-color: #e0e0e0;
 }
