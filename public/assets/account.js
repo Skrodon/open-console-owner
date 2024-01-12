@@ -22,13 +22,24 @@ function activate_language_selector(form) {
     	helper: fixHelperModified,
 	}).disableSelection();
 
-	// Remove duplicate language
+	// Remove duplicate language get from server in table
 	$('#langtab tbody tr').each(function () {
 		var langName = $(this).find('td:first-child').text().trim();
 		if (uniqueLangs[langName]) {
 		  $(this).remove();
 		} else {
 		  uniqueLangs[langName] = true;
+		}
+	});
+
+	// Remove duplicate language get from server in languges list
+	uniqueLangs = {};
+	$('#languages option').each(function () {
+		var langName = $(this).text();
+		if (uniqueLangs[langName]) {
+			$(this).remove();
+		} else {
+			uniqueLangs[langName] = true;
 		}
 	});
 
