@@ -1,8 +1,9 @@
 package OwnerConsole::Util;
 use Mojo::Base 'Exporter';
 
-use Email::Valid             ();
-use List::Util               qw(first);
+use Email::Valid  ();
+use List::Util    qw(first);
+use DateTime      ();
 
 use OwnerConsole::Tables     qw(language_name gender_name timezone_names);
 
@@ -19,6 +20,7 @@ our @EXPORT_OK = (@is_valid, qw(
 	flat
 	val_line
 	val_text
+	bson2datetime
 ));
 
 our %EXPORT_TAGS = (
@@ -46,5 +48,10 @@ sub is_valid_timezone($) { defined first { $_ eq $_[0] } @{timezone_names()} }
 sub is_valid_email($)    { Email::Valid->address($_[0]) }
 sub is_valid_phone($)    { $_[0] =~ m!^\+[0-9 \-]{4,}(?:/.+)?! }
 sub is_valid_date($)     { $_[0] =~ s! ^\s* ([0-9]{4}) (?:[-/ ]?) ([0-9]{2}) (?:[-/ ]?)? ([0-9]{2}) \s*$ !$1-$2-$3!r }
+
+sub bson2datetime($)
+{	my $stamp = shift or return undef;
+	DateTime->from_epoch(epoch => $stamp->to_epoch)->set_time_zone($::app->user->timezone);
+}
 
 1;

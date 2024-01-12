@@ -10,13 +10,6 @@
 % my @pages;
 % my $group_form = begin
 
-% if($is_new) {
-  <div class="alert alert-info" role="alert">
-     You are creating a new Group.  You can invite members, only after the group was
-     successfully created.
-  </div>
-% }
-
   <div>
 	<label for="name" class="form-label">Short name</label>
     <input name="name" type="text" id="name" class="form-control" 
@@ -161,6 +154,13 @@
 	<div id="identity_explain" class="form-text">Which of your personal Identities is member?</div>
   </div>
 
+% if($is_new) {
+  <div class="alert alert-info" role="alert">
+     You are creating a new Group.  You can invite members, only after the group was
+     successfully created.
+  </div>
+% }
+
   <div>
     <label for="members" class="form-label">All Group members</label>
     <table class="table">
@@ -176,7 +176,14 @@
 
 % my $members_explain = begin
 
-<p>Empty</p>
+<p>It is possible to change the Identity which you use for this
+<strong>group membership</strong>.  For instance, when you later decide
+that it is wise to add a specific Identity for this task.</p>
+
+<p>You may share a Group-identity with other people: add other
+members. When you have the <strong>Rights</strong>, then you can invite
+people by sending them an email. You have no control over which Identity
+that person will present.</p>
 
 % end
 
@@ -185,7 +192,7 @@
 %    'Members',
 %    $members_form,
 %    $members_explain,
-% ] unless $is_new;
+% ];
 
 % my $invite_form = begin
 

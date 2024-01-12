@@ -98,7 +98,17 @@ warn "GROUP QUERY=$how";
     $self->render(json => $answer->data);
 }
 
-sub submit_invite($)
+sub _sendInvitation($$)
+{	my ($self, $email, $group) = @_;
+#XXX
+}
+
+has invite_expiration => sub {
+my $x =
+ ($_[0]->config->{group_invite_expiration} || 1) * 86400
+; warn "EXPIRE AFTER $x"; $x };
+
+sub submit_member($)
 {   my $self = shift;
 	my $answer  = OwnerConsole::AjaxAnswer->new();
 
@@ -115,18 +125,18 @@ use Data::Dumper;
 
    	my $group = $account->group($id);
 	if(! $group)
-	{	$answer->addError(invite_emails => __x"This group seems to have disappeared");
+	{	# or not linked to this account (anymore)
+        $answer->addError(invite_emails => __x"This group seems to have disappeared");
 	}
-	elsif($how eq 'remove')
-	{	my $email = $params->{email}
-           	or error __x"Tried to access group '{id}'", id => $id;
+	elsif($how eq 'invite_remove')
+	{	my $email = $params->{email};
 		$group->removeInvitation($email);
 		$group->log("removed invitation to $email");
 		$group->save;
 	}
-	elsif($how eq 'add')
+	elsif($how eq 'invite_new')
 	{	my @emails = split /[, ]+/, val_line($params->{emails}) || '';
-		my $expire = ($self->config->{group_invite_expiration} || 1) * 86400;
+		my $expire = $self->invite_expiration;
 		my @added;
 		foreach my $email (@emails)
 		{	unless(is_valid_email $email)
@@ -137,8 +147,16 @@ use Data::Dumper;
 			$group->inviteMember($email, expiration => $expire);
 			$group->log("invited $email");
 			$group->save;
+			$self->_sendInvitation($email, $group);
 		}
 		$answer->data->{added} = \@added;
+	}
+	elsif($how eq 'invite_resend')
+	{	my $email = $params->{email};
+		$group->extendInvitation($email, $self->invite_expiration);
+		$group->log("extended the invitation for $email");
+		$group->save;
+		$self->_sendInvitation($email, $group);
 	}
 	else
 	{	error __x"No action '{action}' for invite.", id => $id;

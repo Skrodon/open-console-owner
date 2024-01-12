@@ -5,6 +5,8 @@ use Log::Report 'open-console-owner';
 
 use List::Util   qw(first);
 
+use OwnerConsole::Util  qw(bson2datetime);
+
 use constant GROUP_SCHEMA => '20240112';
 
 =section DESCRIPTION
@@ -86,8 +88,8 @@ sub inviteMember($%)
 
 sub _invitation($)
 {	my %invite = %{$_[1]};
-	$invite{invited} = $invite{invited}->to_datetime;
-	$invite{expires} = $invite{expires}->to_datetime;
+	$invite{invited} = bson2datetime $invite{invited};
+	$invite{expires} = bson2datetime $invite{expires};
 	\%invite;
 }
 
@@ -96,7 +98,16 @@ sub invitation($)
 	defined $email or return ();
 
 	my $invite = first { lc($_->{email}) eq lc($email) } $self->invitations;
+warn "INVITE $email $invite";
 	$invite ? $self->_invitation($invite) : undef;
+}
+
+sub extendInvitation($$)
+{	my ($self, $email, $seconds) = @_;
+	my $invitation = first { lc($_->{email}) eq lc($email) } $self->invitations or return;
+
+	my $expires = time + $seconds;
+	$invitation->{expires} = Mango::BSON::Time->new($expires * 1000)
 }
 
 sub removeInvitation($)
