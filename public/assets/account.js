@@ -6,21 +6,20 @@ function activate_language_selector(form) {
 		$(this).closest('tr').remove();
 	});
 
-	$('.move-up-link', table).on('click', function (event) {
-		event.preventDefault();
-		var row = $(this).closest('tr');
-		if (row.prev().length > 0) {
-			row.insertBefore(row.prev());
-		}
-	});
+	// Helper make row not collapse when sort
+	function fixHelperModified(event, tr) {
+		var $originals = tr.children();
+		var $helper = tr.clone();
+		$helper.children().each(function(index)
+		{
+		  $(this).width($originals.eq(index).width())
+		});
+		return $helper;
+	};
 
-	$('.move-down-link', table).on('click', function (event) {
-		event.preventDefault();
-		var row = $(this).closest('tr');
-		if (row.next().length > 0) {
-			row.insertAfter(row.next());
-		}
-	});
+	$("#langtab tbody").sortable({
+    	helper: fixHelperModified,
+	}).disableSelection();
 }
 
 function activate_timezone_selector() {

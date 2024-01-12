@@ -81,6 +81,12 @@
 <div class="container mt-4">
   <h5 class="text-danger">Next improvement needs some more styling</h5>
   <table id="langtab" class="table table-hover table-striped table-bordered mt-3">
+    <thead>
+      <tr class="text-center">
+        <th scope="col">Language</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
     <tbody>
 % foreach my $lang (@{language_table()}) {
 %   my ($code, $name) = @$lang;
@@ -89,16 +95,6 @@
           <td class="text-center">
             <a href="#" class="btn btn-danger remove-link" title="Remove">
               <i class="fa fa-times" aria-hidden="true"></i>
-            </a>
-          </td>
-          <td class="text-center">
-            <a href="#" class="btn btn-secondary move-up-link" title="Move Up">
-              <i class="fa fa-arrow-up" aria-hidden="true"></i>
-            </a>
-          </td>
-          <td class="text-center">
-            <a href="#" class="btn btn-secondary move-down-link" title="Move Down">
-              <i class="fa fa-arrow-down" aria-hidden="true"></i>
             </a>
           </td>
         </tr>
