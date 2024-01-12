@@ -77,20 +77,35 @@
   </div>
 
 <br>&nbsp;
-<br>&nbsp;
-<h5><font color="red">Next improvement needs some more styling</font></h5>
 
-  <table id="langtab" class="table table-striped table-bordered">
+<div class="container mt-4">
+  <h5 class="text-danger">Next improvement needs some more styling</h5>
+  <table id="langtab" class="table table-hover table-striped table-bordered mt-3">
+    <tbody>
 % foreach my $lang (@{language_table()}) {
 %   my ($code, $name) = @$lang;
-  <tr>
-    <td><%= $name %></td>
-    <td><a href="#" class="btn btn-danger remove-link">x</a></td>
-    <td><a href="#" class="btn btn-secondary move-up-link">^</a></td>
-    <td><a href="#" class="btn btn-secondary move-down-link">v</a></td>
-  </tr>
+        <tr>
+          <td class="text-lg"><%= $name %></td>
+          <td class="text-center">
+            <a href="#" class="btn btn-danger remove-link" title="Remove">
+              <i class="fa fa-times" aria-hidden="true"></i>
+            </a>
+          </td>
+          <td class="text-center">
+            <a href="#" class="btn btn-secondary move-up-link" title="Move Up">
+              <i class="fa fa-arrow-up" aria-hidden="true"></i>
+            </a>
+          </td>
+          <td class="text-center">
+            <a href="#" class="btn btn-secondary move-down-link" title="Move Down">
+              <i class="fa fa-arrow-down" aria-hidden="true"></i>
+            </a>
+          </td>
+        </tr>
 % }
-   </table>
+    </tbody>
+  </table>
+</div>
 
   <div>
     <label for="iflang" class="form-label">Interface language</label>
