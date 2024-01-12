@@ -1,0 +1,39 @@
+    <table class="table">
+    <thead>
+      <tr><th colspan="2"><label for="invite" class="form-label">Invitations</label></th></tr>
+    </thead>
+    <tbody>
+
+% my $seq = 'inv000';
+% foreach my $invitation ( +{ email => 'thao@open-console.eu', } ) {
+%    $seq++;
+%    my $email = $invitation->{email};
+      <tr><td><%= $email %></td>
+          <td><a href="#" for="<%= $seq %>"><i class="fa-solid fa-pen"></i></a>
+
+  <div class="manage_invitation modal" id="<%= $seq %>" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Invitation</h5>
+        </div>
+        <div class="modal-body">
+          <p>Group membership invitation send to <tt><%= $email %></tt>.</p>
+        </div>
+        <div class="modal-footer">
+          <button id="close_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button id="resend_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-share-from-square"></i> Resend invitation</button>
+          <button id="remove_button" type="button" class="btn btn-danger"><i class="fa-solid fa-xmark"></i> Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+      </td></tr>
+% }
+      <tr class="table-light">
+        <td><textarea id="invite_emails" type="text" rows="3" placeholder="Email-addresses of potential members" class="form-control"></textarea></td>
+        <td><button href="group/invite" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text"></i>&nbsp;Invite</button></td>
+      </tr>
+    </tbody>
+    </table>

@@ -3,6 +3,8 @@ use Mojo::Base 'OwnerConsole::Mango::Object';
 
 use Log::Report 'open-console-owner';
 
+use List::Util   qw(first);
+
 use constant GROUP_SCHEMA => '20240112';
 
 =section DESCRIPTION
@@ -17,6 +19,9 @@ sub create($%)
 		schema   => GROUP_SCHEMA,
 		userid   => $account->userId,
 		language => $account->preferredLanguage,
+
+		members     => [],
+		invitations => [], 
 	);
 
 	my $self = $class->SUPER::create(\%insert, %args);
@@ -42,6 +47,8 @@ sub country()    { $_[0]->_data->{country} }
 sub organization() { $_[0]->_data->{organization} }
 sub language()   { $_[0]->_data->{language} }
 sub postal()     { $_[0]->_data->{postal} }
+sub members()    { @{$_[0]->_data->{members}} }
+sub invitations  { @{$_[0]->_data->{invitations}} }
 
 sub emailOther() { $_[0]->_data->{email} }     # Usually, the code want to get the default
 sub phoneOther() { $_[0]->_data->{phone} }
@@ -49,6 +56,87 @@ sub phoneOther() { $_[0]->_data->{phone} }
 sub email()      { $_[0]->emailOther // $_[0]->account->email }
 sub phone()      { $_[0]->phoneOther // $_[0]->account->phone }
 
+#-------------
+=section Invited Members
+
+Structure: ARRAY of
+
+   { email     => $email,
+     invited   => date,
+     expires   => date,
+     token     => $secret
+   }
+
+=cut
+
+sub inviteMember($%)
+{	my ($self, $email, %args) = @_;
+	my $now        = time;
+	my $expiration = $args{expiration} // 86400;
+
+	my %invitation = (
+		email    => $email,
+		invited  => Mango::BSON::Time->new($now * 1000),
+		expires  => Mango::BSON::Time->new(($now + $expiration) * 1000),
+		token    => $::app->newUnique,
+	);
+	push @{$_[0]->_data->{invitations}}, \%invitation;
+	\%invitation;
+}
+
+sub _invitation($)
+{	my %invite = %{$_[1]};
+	$invite{invited} = $invite{invited}->to_datetime;
+	$invite{expires} = $invite{expires}->to_datetime;
+	\%invite;
+}
+
+sub invitation($)
+{	my ($self, $email) = @_;
+	defined $email or return ();
+
+	my $invite = first { lc($_->{email}) eq lc($email) } $self->invitations;
+	$invite ? $self->_invitation($invite) : undef;
+}
+
+sub allInvitations() { map $_[0]->_invitation($_), $_[0]->invitations }
+
+#-------------
+=section Accepted Members
+
+Structure: ARRAY of
+
+   { identid   => $code,    # identity identifier, required after accepted
+     invited   => date,
+     accepted  => date,
+   }
+
+=cut
+
+sub isMember($)
+{	my ($self, $identid) = @_;
+	defined first { $_->{identid} eq $identid } $self->members;
+}
+
+sub _import_member($)
+{	my %member = %{$_[1]};
+	$member{invited}  = $member{invited}->to_datetime;
+	$member{accepted} = $member{accepted}->to_datetime;
+	\%member;
+}
+
+sub member($)
+{	my ($self, $identid) = @_;
+	defined $identid or return ();
+
+	my $data = first { $_->{identid} eq $identid }, $self->members;
+	defined $data ?  $self->_import_member($data) : undef;
+}
+
+sub allMembers()
+{	my $self = shift;
+	map $self->_import_member($_), $self->members;
+}
 
 #-------------
 =section Actions

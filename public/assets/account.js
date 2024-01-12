@@ -26,7 +26,6 @@ function activate_language_selector(form) {
 $(document).ready(function() {
 	$("form#config_account").map(function () {
 		var form = $(this);
-		activate_delete_button(form);
 		activate_language_selector(form);
 	});
 })

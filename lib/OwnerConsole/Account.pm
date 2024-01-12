@@ -18,7 +18,6 @@ sub create($%)
 	$insert->{schema}    //= ACCOUNT_SCHEMA;
 	$insert->{languages} //= [ 'en', 'nl' ];
 	$insert->{iflang}    //= 'en';
-	$insert->{timezone}  //= 'Europe/Amsterdam';
 
 	my $password = delete $insert->{password};
 

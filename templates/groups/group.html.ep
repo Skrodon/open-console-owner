@@ -11,7 +11,7 @@
 % my $group_form = begin
 
   <div>
-	<label for="name" class="form-label">Group short name</label>
+	<label for="name" class="form-label">Short name</label>
     <input name="name" type="text" id="name" class="form-control" 
      placeholder="Short identifier" value="<%= $group->name || '' %>"
      aria-describedby="group_explain" required />
@@ -32,12 +32,28 @@
     <div id="lang_explain" class="form-text">The (main) communication language of this group.</div>
   </div>
 
-  <div>
-    <label for="timezone" class="form-label">Default Time-zone</label>
-%= include 'shared/_timezone', timezone => $group->timezone;
-    <div id="timezone_explain" class="form-text">Usually the Time-Zone you live in.</div>
-  </div>
+% end
 
+% my $group_explain = begin
+
+  <p>This Group of people (Personal Identities) with manage Ownerships or share a login
+  somewhere.  A Group could be colleages, family members, friends, whatever.</p>
+
+  <p>The <strong>Group short name</strong> is only used for convenience, within the Open
+  Console interface.  When needed, the <strong>Full name</strong> is presented to outside
+  services.</p>
+
+% end
+
+% push @pages, [
+%    'group-group',
+%    'Group',
+%    $group_form,
+%    $group_explain,
+% ];
+
+
+% my $orga_form = begin
 
   <div>
 	<label for="orga" class="form-label">Organization</label>
@@ -55,16 +71,23 @@
     <div id="dept_explain" class="form-text">Sub-structure of the Organization.</div>
   </div>
 
+  <div>
+    <label for="country" class="form-label">Country</label>
+%= include 'shared/_country', country => $group->country;
+    <div id="country_explain" class="form-text">The Country this Organization (hence Group) is
+      legally bound to.</div>
+  </div>
+
+  <div>
+    <label for="timezone" class="form-label">Time-zone</label>
+%= include 'shared/_timezone', timezone => $group->timezone;
+    <div id="timezone_explain" class="form-text">The Time-zone the organization/group live in.</div>
+  </div>
+
+
 % end
 
-% my $group_explain = begin
-
-  <p>This Group of people (Personal Identities) with manage Ownerships or share a login
-  somewhere.  A Group could be colleages, family members, friends, whatever.</p>
-
-  <p>The <strong>Group short name</strong> is only used for convenience, within the Open
-  Console interface.  When needed, the <strong>Full name</strong> is presented to outside
-  services.</p>
+% my $orga_explain = begin
 
   <p>The <strong>Organization</strong> is the legal entity which encapsulates the
   activities of this group, like the main company name as used in your country.
@@ -73,10 +96,10 @@
 % end
 
 % push @pages, [
-%    'group-person',
-%    'Group',
-%    $group_form,
-%    $group_explain,
+%    'group-orga',
+%    'Organization',
+%    $orga_form,
+%    $orga_explain,
 % ];
 
 % my $contact_form = begin
@@ -85,23 +108,8 @@
 	<label for="email" class="form-label">Email</label>
     <input name="email" type="email" id="email" class="form-control" placeholder="Defaults to email-address of Account"
 	  value="<%= $group->emailOther || '' %>" aria-describedby="email_explain" />
-    <div id="email_explain" class="form-text">When you specify a different email-address here, you will be asked to validate it.</div>
+    <div id="email_explain" class="form-text">When you specify an email-address here, you will be asked to validate it.</div>
   </div>
-
-% end
-
-% my $contact_explain = begin
-
-% end
-
-% push @pages, [
-%    'group-contact',
-%    'Contact',
-%    $contact_form,
-%    $contact_explain,
-% ];
-
-% my $location_form = begin
 
   <div>
    <label for="phone" class="form-label">Phone number</label>
@@ -113,12 +121,13 @@
   <div>
     <label for="postal" class="form-label">Postal address</label>
     <textarea name="postal" id="postal" class="form-control" rows="4" aria-describedby="postal_explain"><%= $group->postal || '' %></textarea>
-    <div id="postal_explain" class="form-text">What is needed to get post delivered to you.</div>
+    <div id="postal_explain" class="form-text">What is needed to get post delivered to your Organization.</div>
   </div>
+
 
 % end
 
-% my $location_explain = begin
+% my $contact_explain = begin
 
   <p>When you provide a <strong>Phone-number</strong>, be sure to specify
   it as international number: starting with a "<tt>+</tt>" and your
@@ -131,10 +140,67 @@
 % end
 
 % push @pages, [
-%    'group-location',
-%    'Location',
-%    $location_form,
-%    $location_explain,
+%    'group-contact',
+%    'Contact',
+%    $contact_form,
+%    $contact_explain,
+% ];
+
+% my $members_form = begin
+
+  <div>
+	<label for="identity" class="form-label">Your Group membership</label>
+%= include 'shared/_identities', account => $account;
+	<div id="identity_explain" class="form-text">Which of your personal Identities is member?</div>
+  </div>
+
+  <div>
+    <label for="members" class="form-label">All Group members</label>
+    <table class="table">
+    <thead>
+      <tr><th>Name</th><th>Rights</th></tr>
+    </thead>
+    <tbody>
+    </tbody>
+    </table>
+  </div>
+
+% end
+
+% my $members_explain = begin
+
+<p>Empty</p>
+
+% end
+
+% push @pages, [
+%    'group-member',
+%    'Members',
+%    $members_form,
+%    $members_explain,
+% ];
+
+% my $invite_form = begin
+
+  <div>
+%= include "/groups/_invitations"
+  </div>
+
+% end
+
+% my $invite_explain = begin
+
+<p>When you <strong>invite</strong> a new member to your group, that person needs
+to get (or be) registered with Open Console.  But, at that stage, you will not know
+which Identity that user will use.</p>
+
+% end
+
+% push @pages, [
+%    'group-invite',
+%    'Invitations',
+%    $invite_form,
+%    $invite_explain,
 % ];
 
 % my $delete_form = begin
@@ -152,7 +218,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 id="confirm_delete_title" class="modal-title">Confirm Deletion</h5>
+          <h5 class="modal-title">Confirm Deletion</h5>
         </div>
         <div class="modal-body">
 
@@ -188,6 +254,7 @@
 %    $delete_explain,
 % ] unless $is_new;
 
+<script src="/assets/group.js"></script>
 <form id="config_group" class="config_form">
   <input id="identifier"     type="hidden" value="<%= $group->groupId %>" />
   <input id="object_version" type="hidden" value="<%= $group->schema %>" />

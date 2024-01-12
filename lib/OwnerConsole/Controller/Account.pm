@@ -69,8 +69,8 @@ warn "DATA IN =", Dumper $data;
 	(grep $iflang eq $_->[0], $self->ifLanguages)
 		or $answer->addError(iflang => __x"Unsupported interface language '{code}'", code => $iflang);
 
-	my $tz = $data->{timezone} = delete $params->{timezone} || 'Europe/Amsterdam';
-	is_valid_timezone($tz)
+	my $tz = $data->{timezone} = delete $params->{timezone};
+	! defined $tz || is_valid_timezone($tz)
 		or $answer->addError(timezone => __x"Unsupported time-zone '{timezone}'", timezone => $tz);
 
 	my $birth = delete $params->{birth} || '';
