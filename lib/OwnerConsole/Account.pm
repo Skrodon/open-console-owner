@@ -190,7 +190,7 @@ sub groups
 			{	$self->log("silently removed group which disappeared: $id");
 			}
 		}
-		$self->{OA_groups} = [ sort {$a->role cmp $b->role} @groups ];
+		$self->{OA_groups} = [ sort {$a->name cmp $b->name} @groups ];
 		$self->_data->{groups} = [ map $_->groupId, @groups ];
 	}
 	@{$self->{OA_groups}};

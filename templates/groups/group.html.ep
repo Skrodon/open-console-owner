@@ -10,6 +10,13 @@
 % my @pages;
 % my $group_form = begin
 
+% if($is_new) {
+  <div class="alert alert-info" role="alert">
+     You are creating a new Group.  You can invite members, only after the group was
+     successfully created.
+  </div>
+% }
+
   <div>
 	<label for="name" class="form-label">Short name</label>
     <input name="name" type="text" id="name" class="form-control" 
@@ -178,7 +185,7 @@
 %    'Members',
 %    $members_form,
 %    $members_explain,
-% ];
+% ] unless $is_new;
 
 % my $invite_form = begin
 
@@ -201,7 +208,7 @@ which Identity that user will use.</p>
 %    'Invitations',
 %    $invite_form,
 %    $invite_explain,
-% ];
+% ] unless $is_new;
 
 % my $delete_form = begin
 
