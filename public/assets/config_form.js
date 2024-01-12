@@ -32,10 +32,10 @@ function add_val_message(form, input, level, message) {
 	});
 }
 
-function process_errors_and_warnings(form, data) {
-	$('DIV.val-msg', form).remove();
-	data.errors.forEach( function(error) { add_val_message(form, error.at(0), 'error', error.at(1)) });
-	data.warnings.forEach(function(warn) { add_val_message(form, warn.at(0),  'warn',   warn.at(1)) });
+function process_errors_and_warnings(form, answer) {
+	$('DIV.val-msg', form).remove(); 
+	answer.errors.forEach( function(error) { add_val_message(form, error.at(0), 'error', error.at(1)) });
+	answer.warnings.forEach(function(warn) { add_val_message(form, warn.at(0),  'warn',   warn.at(1)) });
 }
 
 function create_field_versioning(form) {
@@ -132,26 +132,19 @@ console.log('go to dashboard');
 function accept_form_data(form, how, success) {
 	var data = form.serialize();
 	var action = '/dashboard/' + form.attr('id') + '/' + $('#identifier', form).val() + '?' + how;
-console.log("AJAX: " + action);
-console.log(data);
 
-	var success = false;
 	$.ajax({
 		type: 'POST',
 		url: action,
 		data: data,
 		dataType: 'json',
 		success: function (response) {
-			console.log('Submission was successful.');
-			console.log(response);
  			process_errors_and_warnings(form, response);
 			update_form_status(form);
 			if(response.redirect) { window.location = response.redirect }
 		},
 		error: function (response) {
-			console.log('Form ' + form.attr('id') + ' delivery error: ' + response.status);
-			alert('The server could not be reached: ' + response.status);  //XXX translation
-			console.log(response);
+			alert('Form ' + form.attr('id') + ', the server could not be reached: ' + response.status);  //XXX translation
 		},
 	});
 }

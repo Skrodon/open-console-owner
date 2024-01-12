@@ -1,17 +1,18 @@
-    <table class="table">
+    <table class="table" id="list_invitations">
     <thead>
       <tr><th colspan="2"><label for="invite" class="form-label">Invitations</label></th></tr>
     </thead>
     <tbody>
 
 % my $seq = 'inv000';
-% foreach my $invitation ( +{ email => 'thao@open-console.eu', } ) {
+% my @invitations = $group->invitations;
+% foreach my $invitation (@invitations) {
 %    $seq++;
 %    my $email = $invitation->{email};
       <tr><td><%= $email %></td>
           <td><a href="#" for="<%= $seq %>"><i class="fa-solid fa-pen"></i></a>
 
-  <div class="manage_invitation modal" id="<%= $seq %>" style="display: none;">
+  <div class="manage_invitation modal" id="<%= $seq %>" data-email="<%= $email %>" style="display: none;">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -31,9 +32,13 @@
 
       </td></tr>
 % }
+% unless(@invitations) {
+      <tr><td colspan="2">There are no pending invitations.</td></tr>
+% }
       <tr class="table-light">
-        <td><textarea id="invite_emails" type="text" rows="3" placeholder="Email-addresses of potential members" class="form-control"></textarea></td>
-        <td><button href="group/invite" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text"></i>&nbsp;Invite</button></td>
+        <td><label for="invite_emails" class="form-label">New invitations</label>
+            <textarea id="invite_emails" type="text" rows="3" placeholder="Email-addresses of potential members" class="form-control"></textarea></td>
+        <td style="vertical-align: bottom"><button id="invite" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text"></i>&nbsp;Invite</button></td>
       </tr>
     </tbody>
     </table>

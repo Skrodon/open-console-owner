@@ -36,4 +36,7 @@
 		server => 'mongodb://localhost:27017',  # this is the default for mongodb
 		dbname => 'users',
 	},
+
+	#### Group management
+	group_invite_expiration => 7,    # in days, float
 }

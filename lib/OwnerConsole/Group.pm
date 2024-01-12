@@ -47,8 +47,8 @@ sub country()    { $_[0]->_data->{country} }
 sub organization() { $_[0]->_data->{organization} }
 sub language()   { $_[0]->_data->{language} }
 sub postal()     { $_[0]->_data->{postal} }
-sub members()    { @{$_[0]->_data->{members}} }
-sub invitations  { @{$_[0]->_data->{invitations}} }
+sub members()    { @{$_[0]->_data->{members} ||= []} }
+sub invitations  { @{$_[0]->_data->{invitations} ||= []} }
 
 sub emailOther() { $_[0]->_data->{email} }     # Usually, the code want to get the default
 sub phoneOther() { $_[0]->_data->{phone} }
@@ -80,7 +80,7 @@ sub inviteMember($%)
 		expires  => Mango::BSON::Time->new(($now + $expiration) * 1000),
 		token    => $::app->newUnique,
 	);
-	push @{$_[0]->_data->{invitations}}, \%invitation;
+	push @{$self->_data->{invitations}}, \%invitation;
 	\%invitation;
 }
 
@@ -97,6 +97,12 @@ sub invitation($)
 
 	my $invite = first { lc($_->{email}) eq lc($email) } $self->invitations;
 	$invite ? $self->_invitation($invite) : undef;
+}
+
+sub removeInvitation($)
+{	my ($self, $email) = @_;
+	$self->_data->{invitations} = [ grep { $_->{email} ne $email } $self->invitations ];
+	$email;
 }
 
 sub allInvitations() { map $_[0]->_invitation($_), $_[0]->invitations }
