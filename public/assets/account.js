@@ -1,5 +1,6 @@
 function activate_language_selector(form) {
 	var table = $("#langtab", form).first();
+    var uniqueLangs = {};
 
 	$('.remove-link', table).on('click', function (event) {
 		event.preventDefault();
@@ -20,6 +21,16 @@ function activate_language_selector(form) {
 	$("#langtab tbody").sortable({
     	helper: fixHelperModified,
 	}).disableSelection();
+
+	// Remove duplicate language
+    $('#langtab tbody tr').each(function () {
+      var langName = $(this).find('td:first-child').text().trim();
+      if (uniqueLangs[langName]) {
+        $(this).remove();
+      } else {
+        uniqueLangs[langName] = true;
+      }
+    });
 }
 
 function activate_timezone_selector() {
