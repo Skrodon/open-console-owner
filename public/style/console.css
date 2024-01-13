@@ -75,6 +75,10 @@ FORM#config_idenity #identity-delete-tab.active
 	background-color: red;
 }
 
+FORM#config_account TABLE#langtab.table-hover TBODY TR:hover {
+	background-color: #e0e0e0;
+}
+
 FORM.config_form #save_button {
 	margin-bottom: 1ex;
 }

@@ -61,34 +61,33 @@
 
 % my $locale_form = begin
 
-  <div>
-    <label for="languages" class="form-label">Languages</label>
-    <select name="languages" id="languages" class="form-select" multiple aria-describedby="lang_explain">
+  <div class="container mt-4">
+    <label for="languages" class="form-label">Languages you can read</label>
+    <table id="langtab" class="table table-hover table-striped table-bordered mt-3">
+    <thead>
+      <tr class="text-center table-primary">
+        <th scope="col">Language</th>
+        <th scope="col">Delete</th>
+      </tr>
+    </thead>
+    <tbody>
+
 % use OwnerConsole::Tables qw(language_table);
-% my %langs = map +($_ => 1), $account->languages;
 % foreach my $lang (@{language_table()}) {
 %   my ($code, $name) = @$lang;
-    <option value="<%= $code %>"<%= $langs{$code} ? ' selected' : ''%>><%= $name %></option>
+      <tr>
+        <td class="text-center align-middle"><%= $name %></td>
+        <td class="text-center">
+          <a href="#" class="btn btn-danger remove-link" title="Remove">
+            <i class="fa fa-times" aria-hidden="true"></i>
+          </a>
+        </td>
+      </tr>
 % }
-    </select>
-    <div id="lang_explain" class="form-text">Specify the languages you can read.  Order them from best to worst.</div>
+      </tbody>
+    </table>
+    <div id="lang_explain" class="form-text">Drag the languages in the right order, them from best to worst.</div>
   </div>
-
-<br>&nbsp;
-<br>&nbsp;
-<h5><font color="red">Next improvement needs some more styling</font></h5>
-
-  <table id="langtab" class="table table-striped table-bordered">
-% foreach my $lang (@{language_table()}) {
-%   my ($code, $name) = @$lang;
-  <tr>
-    <td><%= $name %></td>
-    <td><a href="#" class="btn btn-danger remove-link">x</a></td>
-    <td><a href="#" class="btn btn-secondary move-up-link">^</a></td>
-    <td><a href="#" class="btn btn-secondary move-down-link">v</a></td>
-  </tr>
-% }
-   </table>
 
   <div>
     <label for="iflang" class="form-label">Interface language</label>
