@@ -1,6 +1,6 @@
 % use OwnerConsole::Tables qw(timezone_names);
 
-    <select name="timezone" id="timezone" class="form-select" aria-describedby="timezone_explain">
+    <select name="timezone" id="timezone" class="form-select search-select" aria-describedby="timezone_explain">
 % $timezone //= 'Europe/Amsterdam';
 % foreach my $tz (@{timezone_names()}) {
     <option <%= $tz eq $timezone ? ' selected' : ''%>><%= $tz %></option>

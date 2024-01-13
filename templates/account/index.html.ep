@@ -64,7 +64,7 @@
   <div>
     <label for="languages" class="form-label">Languages</label>
     <select name="languages" id="languages" class="form-select" multiple aria-describedby="lang_explain">
-% use OwnerConsole::Tables qw(language_table timezone_names);
+% use OwnerConsole::Tables qw(language_table);
 % my %langs = map +($_ => 1), $account->languages;
 % foreach my $lang (@{language_table()}) {
 %   my ($code, $name) = @$lang;
@@ -99,7 +99,9 @@
 
   <div>
     <label for="timezone" class="form-label">Default Time-zone</label>
+    <div class="col">
 %= include 'shared/_timezone', timezone => $account->timezone;
+    </div>
     <div id="timezone_explain" class="form-text">Usually the Time-Zone you live in.</div>
   </div>
 
