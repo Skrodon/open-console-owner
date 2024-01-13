@@ -26,7 +26,6 @@ my %language_names = (
 	'nl-BE' => 'Vlaams',
 	'pt'    => 'Português',
 	'pt-BR' => 'Brasileiro',
-	'pt-PT' => 'Português',
 	'ru'    => 'Русский язык',
 	'vi'    => 'Tiếng Việt',
 );
