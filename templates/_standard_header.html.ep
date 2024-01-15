@@ -18,7 +18,7 @@
  	integrity="sha256-lSjKY0/srUM9BE3dPm+c4fBo1dky2v27Gdjm2uoZaL0=" crossorigin="anonymous"></script>
 
 %# https://select2.org/  MIT license
-%# XXX this needs https://github.com/apih/select2-bootstrap5
+%# XXX this needs https://github.com/apalfrey/select2-bootstrap-5-theme
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"
 	integrity="sha384-OXVF05DQEe311p6ohU11NwlnX08FzMCsyoXzGOaL+83dKAb3qS17yZJxESl8YrJQ" crossorigin="anonymous"/>
 
