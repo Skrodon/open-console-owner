@@ -1,4 +1,55 @@
 
 % layout 'frontpage';
+%# div class="col-2"><img src="/images/monitoring data.svg" width="100%" /></div>
+%# class="col-2"><img src="/images/group%20id.svg" width="100%" /></div>
+%# div class="col-2"><img src="/images/website%20owner.svg" width="100%" /></div>
 
-BODY
+<style>
+IMG { margin: 5px }
+.col-5 { vertical-align: middle }
+</style>
+
+&nbsp;<br>
+<div class="container">
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-3"><img src="/images/webmaster.svg" width="100%" /></div>
+    <div class="col-5">
+
+<h5>Proofs of Ownership</h5>
+<p>Once you have registered, you can proof your ownership to websites,
+domain-names, ip-networks, and data sources. These proofs give you access
+to information collected by other parties about your properties.</p>
+
+    </div>
+    <div class="col-2"></div>
+  </div>
+
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-3"><img src="/images/fact%20exchange.svg" width="100%" /></div>
+    <div class="col-5">
+
+<h5>Exchange Facts about Websites</h5>
+<p>In the full project, Open Console also organizes the exchange of bulk facts
+between people who have collected knowlegde about websites.
+<a href="https://open-console.eu">More</a></p>
+
+    </div>
+    <div class="col-2"></div>
+  </div>
+
+  <div class="row">
+    <div class="col-2"></div>
+    <div class="col-3"><img src="/images/free,%20open,%20unbiased.svg" width="100%" /></div>
+    <div class="col-5">
+<h5>Free, open, and unbiased information</h5>
+<p>OC is a free to use and open infrastructure: it organizes the cooperation
+in a fair and open way, but does not judge or interpret the exchanged data.</p>
+    </div>
+    <div class="col-2"></div>
+  </div>
+</div>
+&nbsp;<br>
+&nbsp;<br>
+&nbsp;<br>

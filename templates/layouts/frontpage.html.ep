@@ -7,7 +7,12 @@
 </head>
 <body>
 
+<!-- Thao's favorit blue colors: #DAEBF4 B6D3E3 3A6275 004154 003044 -->
 <style>
+body {
+	background-color: #DAEBF4;
+}
+
 header {
     width: 100%;
     position: absolute;
@@ -25,13 +30,20 @@ header .row {
 }
 
 header nav {
-    background-color: #B6D3E3;
+    background-color: #3A6275;
+}
+
+header .form-select,
+header .nav-link {
+    background-color: #3A6275;
+	color: #DAEBF4;
+	border-color: #DAEBF4;
 }
 
 .main-box {
     background-position: center top;
     background-repeat: no-repeat;
-    background-color: #189AB4;
+    background-color: #003044;
     position: relative;
     color: white;
     text-align: center;
@@ -61,7 +73,6 @@ header nav {
 
 #logo {
 	position: absolute;
-	background: white;
 	left: 20px;
     top: 120px;
 	padding: 10px;
@@ -69,7 +80,7 @@ header nav {
 
 </style>
 
-<!-- Thao's favorit blue colors: #DAEBF4 B6D3E3 3AG275 004154 003044 -->
+<!-- Thao's favorit blue colors: #DAEBF4 B6D3E3 3A6275 004154 003044 -->
 
 <header>
   <div class="row">
@@ -103,8 +114,21 @@ header nav {
 <section class="main-box">
   <div class="row">
     <div class="box" navbar-brand>
-      <h1>Open Console</h1>
-      <p>Put here our slogan</p>
+
+<h1>Open Console</h1>
+
+<p>The Open Console project is part of <a href="https://openwebsearch.eu"
+target="_blank">OpenWebSearch.EU</a> (OWS) initiative, which<br />
+is an <a href="https://www.ngi.eu/" target="_blank">EU-sponsored NGI program</a>
+to give Open and collaborate access to
+information<br />
+found on websites, for research and search engines.</p>
+
+<p>Open Console is the point of contact for website owners, to help OWS
+index<br>
+your site better, with as reward information of your website's
+visibility.</p>
+
 	  <a class="btn btn-primary" role="button" href="/login/register">Try Open Console</a>
     </div>
   </div>
