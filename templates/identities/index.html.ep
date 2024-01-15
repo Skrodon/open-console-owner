@@ -3,8 +3,6 @@
 
 % my $account = $c->account;
 
-<ascript src="/assets/login.js"></script>
-
 <div class="container">
   <div class="row">
     <div class="card col-sm-6" id="identities_card">

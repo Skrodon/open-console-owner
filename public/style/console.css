@@ -10,6 +10,15 @@ NAV .badge {
 	color: black;
 }
 
+DIV.nav BUTTON {
+	text-align: left;
+}
+
+BUTTON[role="tab"] SPAN.badge {
+	display: none;
+	float: right;
+}
+
 /* Mark everything what is only available to admins */
 .admin {
 	background: #CCFFCC;
@@ -56,6 +65,7 @@ LABEL.form-label {
 
 FORM#config_account  #account-delete-tab,
 FORM#config_identity #identity-delete-tab
+FORM#config_group    #group-delete-tab
 {	color: rgba(var(--bs-danger-rgb));
 }
 
@@ -63,6 +73,10 @@ FORM#config_account #account-delete-tab.active,
 FORM#config_idenity #identity-delete-tab.active
 {	color: white;
 	background-color: red;
+}
+
+FORM#config_account TABLE#langtab.table-hover TBODY TR:hover {
+	background-color: #e0e0e0;
 }
 
 FORM.config_form #save_button {

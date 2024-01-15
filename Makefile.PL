@@ -9,6 +9,7 @@ WriteMakefile
  , PREREQ_PM    => { 
 	'Crypt::PBKDF2'	 => '0',
 	'Data::Dumper'	 => '0',
+	'DateTime'       => '1.50',
 	'Session::Token' => '1.503',
 	'Email::Valid'   => '1.202',
 	'List::Util'	 => '0',

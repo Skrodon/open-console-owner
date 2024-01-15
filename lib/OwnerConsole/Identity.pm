@@ -30,7 +30,7 @@ sub create($%)
 		schema   => IDENTITY_SCHEMA,
 		userid   => $account->userId,
 		gender   => $account->gender,
-		language => ($account->languages)[0],
+		language => $account->preferredLanguage,
 	);
 
 	my $self = $class->SUPER::create(\%insert, %args);

@@ -69,7 +69,7 @@ sub submit_identity($)
 		or $answer->addError(email => __x"Invalid email address");
 
 	my $gender = $data->{gender} = delete $params->{gender} || '';
-	is_valid_gender $gender
+	! length $gender || is_valid_gender $gender
 		or $answer->addError(gender => __x"Unknown gender type '{gender}'", gender => $gender);
 
 #XXX Avatar
