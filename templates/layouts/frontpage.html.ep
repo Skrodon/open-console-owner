@@ -42,18 +42,13 @@ header .nav-link {
 
 .main-box {
     background-position: center top;
-    background-repeat: no-repeat;
     background-color: #003044;
     position: relative;
     color: white;
-    text-align: center;
     min-height: 650px;
-}
-
-.main-box .box {
     width: 100%;
-    font-size: 16px;
-    padding-top: 250px;
+    font-size: 120%;
+    padding-top: 170px;
 }
 
 .box {
@@ -61,21 +56,19 @@ header .nav-link {
     position: relative;
 }
 
-.main-box .box h1 {
+.main-box h1 {
     color: white;
-    font-size: 60px;
-    font-weight: 800;
-    margin: 0 0 30px;
+    font-size: 300%;
+    font-weight: 900;
+    margin: 0 0 20px;
     letter-spacing: -1px;
     line-height: 75px;
-    text-align: center;
 }
 
-#logo {
-	position: absolute;
-	left: 20px;
-    top: 120px;
-	padding: 10px;
+.btn-primary {
+    background-color: #3A6275;
+	color: #DAEBF4;
+	border-color: #DAEBF4;
 }
 
 </style>
@@ -106,31 +99,34 @@ header .nav-link {
       </div>
     </nav>
   </div>
-  <div id="logo">
-    <img src="/style/open-console.png" />
-  </div>
 </header>
 
 <section class="main-box">
   <div class="row">
-    <div class="box" navbar-brand>
+    <div class="col-2"></div>
+    <div class="col-4">
+&nbsp;<br>
+      <div id="logo">
+        <img src="/style/open-console.png" width="80%" />
+      </div>
+    </div>
+    <div class="col-4" navbar-brand>
 
 <h1>Open Console</h1>
 
 <p>The Open Console project is part of <a href="https://openwebsearch.eu"
-target="_blank">OpenWebSearch.EU</a> (OWS) initiative, which<br />
-is an <a href="https://www.ngi.eu/" target="_blank">EU-sponsored NGI program</a>
-to give Open and collaborate access to
-information<br />
-found on websites, for research and search engines.</p>
+target="_blank">OpenWebSearch.EU</a> (OWS) initiative, which is an <a
+href="https://www.ngi.eu/" target="_blank">EU-sponsored NGI program</a>
+to give Open and collaborate access to information found on websites,
+for research and search engines.</p>
 
 <p>Open Console is the point of contact for website owners, to help OWS
-index<br>
-your site better, with as reward information of your website's
+index your site better, with as reward information of your website's
 visibility.</p>
 
 	  <a class="btn btn-primary" role="button" href="/login/register">Try Open Console</a>
     </div>
+    <div class="col-2"></div>
   </div>
 </section>
 
