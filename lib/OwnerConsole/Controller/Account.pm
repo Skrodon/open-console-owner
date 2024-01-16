@@ -4,7 +4,6 @@ use Mojo::Base 'Mojolicious::Controller';
 use OwnerConsole::AjaxAnswer ();
 use Log::Report 'owner-console';
 
-use OwnerConsole::Tables     qw(language_name timezone_names);
 use OwnerConsole::Util       qw(flat :validate);
 
 sub index($)
@@ -59,35 +58,28 @@ warn "DATA IN =", Dumper $data;
 
 	my @langs;
 	foreach my $lang (flat(delete $params->{languages}))
-	{	if(defined language_name($lang))
-		{   push @langs, $lang;
-			next;
-		}
-		$answer->addWarning(languages => __x"Ignoring unsupported language-code '{code}'", code => $lang);
+	{	is_valid_language $lang
+			or $answer->addWarning(languages => __x"Ignoring unsupported language-code '{code}'", code => $lang);
+		push @langs, $lang;
 	}
 	@langs = ('en') unless @langs;
 	$data->{languages} = \@langs;
 
-	my $iflang = $data->{iflang} = delete $params->{iflang} || '';
+	my $iflang = $data->{iflang} = delete $params->{language} || '';
 	(grep $iflang eq $_->[0], $self->ifLanguages)
 		or $answer->addError(iflang => __x"Unsupported interface language '{code}'", code => $iflang);
 
-	my $tz = $data->{timezone} = delete $params->{timezone} || 'Europe/Amsterdam';
-	grep $tz eq $_, @{timezone_names()}
+	my $tz = $data->{timezone} = delete $params->{timezone};
+	! defined $tz || is_valid_timezone($tz)
 		or $answer->addError(timezone => __x"Unsupported time-zone '{timezone}'", timezone => $tz);
 
 	my $birth = delete $params->{birth} || '';
-	if(length $birth)
-	{	if($birth =~ m!^\s*([0-9]{4})(?:[-/ ]?)([0-9]{2})(?:[-/ ]?)?([0-9]{2})\s*$!)
-		{	$data->{birth_date} = "$1-$2-$3";
-		}
-		else
-		{	$answer->addError(birth => __x"Illegal date format, use YYYY-MM-DD.");
-		}
-	}
+	$data->{birth_date} = length $birth
+	  ? (is_valid_date $birth or $answer->addError(birth => __x"Illegal date format, use YYYY-MM-DD."))
+	  : undef;
 
 	my $gender = $data->{gender} = delete $params->{gender} || '';
-	is_valid_gender $gender
+	! length $gender || is_valid_gender $gender
 		or $answer->addError(gender => __x"Unknown gender type '{gender}'", gender => $gender);
 
 	my $phone = $data->{phone} = val_line delete $params->{phone};

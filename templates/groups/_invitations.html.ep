@@ -1,0 +1,49 @@
+    <table class="table" id="list_invitations">
+    <thead>
+      <tr><th colspan="2"><label for="invite" class="form-label">Invitations</label></th></tr>
+    </thead>
+    <tbody>
+
+% my $seq = 'inv000';
+% my @invitations = $group->allInvitations;
+% foreach my $invitation (@invitations) {
+%    $seq++;
+%    my $email = $invitation->{email};
+      <tr><td><%= $email %></td>
+          <td><a href="#" for="<%= $seq %>"><i class="fa-solid fa-pen"></i></a>
+
+  <div class="manage_invitation modal" id="<%= $seq %>" data-email="<%= $email %>" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Invitation</h5>
+        </div>
+        <div class="modal-body">
+          <p>Group membership invitation:
+          <table class="table">
+          <tr><td>sent to</td><td><tt><%= $email %></tt></td></tr>
+          <tr><td>created</td><td><tt><%= $invitation->{invited} %></tt></td></tr>
+          <tr><td>expires</td><td><tt><%= $invitation->{expires} %></tt></td></tr>
+          </table>
+        </div>
+        <div class="modal-footer">
+          <button id="close_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button id="resend_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-share-from-square"></i> Resend invitation</button>
+          <button id="remove_button" type="button" class="btn btn-danger"><i class="fa-solid fa-xmark"></i> Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+      </td></tr>
+% }
+% unless(@invitations) {
+      <tr><td colspan="2">There are no pending older invitations.</td></tr>
+% }
+      <tr class="table-light">
+        <td><label for="invite_emails" class="form-label">New invitations</label>
+            <textarea id="invite_emails" type="text" rows="3" placeholder="Email-addresses of potential members" class="form-control"></textarea></td>
+        <td style="vertical-align: middle"><button id="invite" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text"></i>&nbsp;Invite</button></td>
+      </tr>
+    </tbody>
+    </table>

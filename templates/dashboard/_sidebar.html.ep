@@ -36,17 +36,21 @@ Identification:
 <li class="nav-item">
   <a class="nav-link" href="/dashboard/groups">
     <i class="fa-solid fa-people-group"></i> Groups
-  </a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="#">
-    <i class="fa-solid fa-key"></i> Security
+% my $nrGroups = $account->nrGroups;
+% if($nrGroups) {
+  <span class="badge badge-pill"><%= $nrGroups %></span>
+% }
   </a>
 </li>
 </ul>
 <br />
 Ownership:
 <ul class="nav flex-column">
+<li class="nav-item">
+  <a class="nav-link" href="#">
+    <i class="fa-solid fa-key"></i> Security keys
+  </a>
+</li>
 <li class="nav-item">
   <a class="nav-link" href="#">
     <i class="fa-solid fa-suitcase"></i> Ownerships
