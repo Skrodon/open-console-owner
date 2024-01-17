@@ -4,16 +4,10 @@
 %# class="col-2"><img src="/images/group%20id.svg" width="100%" /></div>
 %# div class="col-2"><img src="/images/website%20owner.svg" width="100%" /></div>
 
-<style>
-IMG { margin: 5px }
-.col-5 { vertical-align: middle }
-</style>
-
-&nbsp;<br>
-<div class="container">
+<div class="container" id="explain">
   <div class="row">
     <div class="col-2"></div>
-    <div class="col-3"><img src="/images/webmaster.svg" width="100%" /></div>
+    <div class="col-3"><img src="/images/webmaster.svg" /></div>
     <div class="col-5">
 
 <h5>Proofs of Ownership</h5>
@@ -27,7 +21,7 @@ to information collected by other parties about your properties.</p>
 
   <div class="row">
     <div class="col-2"></div>
-    <div class="col-3"><img src="/images/fact%20exchange.svg" width="100%" /></div>
+    <div class="col-3"><img src="/images/fact%20exchange.svg" /></div>
     <div class="col-5">
 
 <h5>Exchange Facts about Websites</h5>
@@ -41,7 +35,7 @@ between people who have collected knowlegde about websites.
 
   <div class="row">
     <div class="col-2"></div>
-    <div class="col-3"><img src="/images/free,%20open,%20unbiased.svg" width="100%" /></div>
+    <div class="col-3"><img src="/images/free,%20open,%20unbiased.svg" /></div>
     <div class="col-5">
 <h5>Free, open, and unbiased information</h5>
 <p>OC is a free to use and open infrastructure: it organizes the cooperation
@@ -50,6 +44,3 @@ in a fair and open way, but does not judge or interpret the exchanged data.</p>
     <div class="col-2"></div>
   </div>
 </div>
-&nbsp;<br>
-&nbsp;<br>
-&nbsp;<br>

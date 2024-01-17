@@ -3,86 +3,18 @@
 <head>
   <title><%= title %></title>
   <meta name="description" content="">
+
   %= include '_standard_header'
+  <link href="/assets/frontpage.css" rel="stylesheet" />
+
 </head>
 <body>
-
-<!-- Thao's favorit blue colors: #DAEBF4 B6D3E3 3A6275 004154 003044 -->
-<style>
-body {
-	background-color: #DAEBF4;
-}
-
-header {
-    width: 100%;
-    position: absolute;
-    z-index: 333;
-    left: 0;
-    top: 0;
-    padding: 38px 0;
-}
-
-header .row {
-    margin: 0 auto;
-    max-width: 1330px;
-    width: 100%;
-    padding: 0 20px;
-}
-
-header nav {
-    background-color: #3A6275;
-}
-
-header .form-select,
-header .nav-link {
-    background-color: #3A6275;
-	color: #DAEBF4;
-	border-color: #DAEBF4;
-}
-
-.main-box {
-    background-position: center top;
-    background-color: #003044;
-    position: relative;
-    color: white;
-    min-height: 650px;
-    width: 100%;
-    font-size: 120%;
-    padding-top: 170px;
-}
-
-.box {
-    display: flow-root !important;
-    position: relative;
-}
-
-.main-box h1 {
-    color: white;
-    font-size: 300%;
-    font-weight: 900;
-    margin: 0 0 20px;
-    letter-spacing: -1px;
-    line-height: 75px;
-}
-
-.btn-primary {
-    background-color: #3A6275;
-	color: #DAEBF4;
-	border-color: #DAEBF4;
-}
-
-</style>
-
-<!-- Thao's favorit blue colors: #DAEBF4 B6D3E3 3A6275 004154 003044 -->
 
 <header>
   <div class="row">
     <nav class="navbar navbar-expand-lg sticky-top">
       <div class="collapse navbar-collapse">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <!--a class="nav-link active" href="/"><i class="fa-solid fa-house"></i>&nbsp; Home</a -->
-        </li>
         </ul>
       </div>
       <form class="d-flex" method="GET" action="/set" >
@@ -90,7 +22,7 @@ header .nav-link {
 % my $iflang = $c->language;
 % foreach my $lang ($c->ifLanguages) {
 %    my ($code, $name) = @$lang;
-        <option value="<%= $code %>" <%= $code eq $iflang ? ' selected' : '' %> ><%= $name %></option>
+        <option value="<%= $code %>"<%= $code eq $iflang ? ' selected' : '' %> ><%= $name %></option>
 %}
         </select>
       </form>
@@ -101,13 +33,13 @@ header .nav-link {
   </div>
 </header>
 
-<section class="main-box">
+<section id="main-box">
   <div class="row">
     <div class="col-2"></div>
     <div class="col-4">
 &nbsp;<br>
       <div id="logo">
-        <img src="/style/open-console.png" width="80%" />
+        <img src="/images/open-console.svg" width="80%" />
       </div>
     </div>
     <div class="col-4" navbar-brand>
@@ -133,12 +65,36 @@ visibility.</p>
 <div class="container-fluid">
   <main class="col-12">
 
-<br />
 <%= notifications() %>
 <%= content %>
 
+    <div class="row">
+      <div class="col" style="text-align: center; width: 100%">
+        The only Cookie we use is a session cookie&nbsp;<i class="fa-solid fa-cookie"></i>&nbsp;when you have signed-in.
+      </div>
+    </div>
   </main>
 </div>
+
+<section class="container-fluid" id="colophon">
+  <div class="row">
+    <div class="col-1">&nbsp;</div>
+    <div class="col-2"><img src="/images/open-console.svg" width="80%" /></div>
+    <div class="col-4">
+      <h5>Contact</h5>
+      <i class="fa-solid fa-envelope"></i>&nbsp;<a href="mailto:support@open-console.eu">Ask Support</a><br />
+      <i class="fa-solid fa-envelope"></i>&nbsp;<a href="mailto:team@open-console.eu">Email development team</a><br />
+      &nbsp;<br>
+      <i class="fa-brands fa-mastodon"></i>&nbsp;<a href="#">Open Console on Mastodon</a><br />
+      <i class="fa-brands fa-patreon"></i>&nbsp;<a href="#">Become an Open Console Patreon</a><br />
+    </div>
+    <div class="col-4">
+      <h5>Part of</h5>
+      <a href="https://openwebsearch.eu" target="_blank"><img src="/images/openwebsearch.png" id="OWSimg"></a>
+    </div>
+    <div class="col-1">&nbsp;</div>
+  </div>
+</section>
 
 </body>
 </html>
