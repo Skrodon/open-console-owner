@@ -1,6 +1,8 @@
 package OwnerConsole::Account;
 use Mojo::Base 'OwnerConsole::Mango::Object';
 
+use Log::Report 'open-console-owner';
+
 use Crypt::PBKDF2 ();
 my $crypt = Crypt::PBKDF2->new;
 
@@ -63,6 +65,8 @@ sub preferredLanguage { ($_[0]->languages)[0] }
 
 sub nrIdentities { scalar $_[0]->identityIds }
 sub nrGroups     { scalar $_[0]->groupIds }
+sub link()       { '/dashboard/account/' . $_[0]->userId }
+
 
 #------------------
 =section Password handling
@@ -140,6 +144,12 @@ sub identities
 	@{$self->{OA_ids}};
 }
 
+sub preferredIdentity()
+{	my $self = shift;
+
+#XXX No way to configure this yet
+	($self->identities)[0];
+}
 
 #------------------
 =section Group Identities
@@ -149,12 +159,11 @@ sub addGroup($)  # by id or object
 {	my ($self, $group) = @_;
 	defined $group or return;
 
-	my $groups = $self->_data->{groups} ||= [];
-	my $id  = ref $group ? $group->groupId : $group;
-	return $self if grep $id eq $_, @$groups;
+	my $groupIds = $self->_data->{groups} ||= [];
+	my $id       = ref $group ? $group->groupId : $group;
+	return $self if grep $id eq $_, @$groupIds;     # avoid doubles
 
-	push @$groups, $id;
-
+	push @$groupIds, $id;
 	$self->log("Added group $id");
 	$self->save;
 
@@ -180,18 +189,30 @@ sub group($)
 sub groups
 {	my $self = shift;
 	unless($self->{OA_groups})
-	{	# Silently remove groups which do not exist anymore (different database)
-		my @groups;
+	{	# Silently remove groups which do not exist anymore (different database), or where you
+        # disappeared from the member-list.
+
+		my (@groups, @groupids);
 		foreach my $id ($self->groupIds)
-		{	if(my $group = $self->group($id))
-			{	push @groups, $group;
+		{	my $group = $::app->users->group($id);
+warn "GROUP $id = $group";
+			if(! $group)
+			{	# Someone else may have removed this group.
+				$::app->notify(info => __x"One group has disappeared.");
+				$self->log("Silently removed group which disappeared: $id");
+			}
+			elsif(! $group->hasMemberFrom($self))
+			{	# Someone else may have kicked you out.
+				$::app->notify(info => __x"You are not a member of group '{name}' anymore", name => $group->name);
+				$self->log("Group $id does not contain any of these identities anymore");
 			}
 			else
-			{	$self->log("silently removed group which disappeared: $id");
+			{	push @groups, $group;
+				push @groupids, $id;
 			}
 		}
 		$self->{OA_groups} = [ sort {$a->name cmp $b->name} @groups ];
-		$self->_data->{groups} = [ map $_->groupId, @groups ];
+		$self->_data->{groups} = \@groupids;
 	}
 	@{$self->{OA_groups}};
 }
@@ -200,6 +221,12 @@ sub groups
 #------------------
 =section Actions
 =cut
+
+sub remove()
+{	my $self = shift;
+    $_->remove for $self->groups, $self->identities;
+    $::app->emails->removeOutgoingRelatedTo($self->accountId);
+}
 
 sub save(%)
 {	my ($self, %args) = @_;

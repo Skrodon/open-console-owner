@@ -25,18 +25,24 @@
 
 	interface_languages => [ 'en' ],
 
+	#### Group management
+	group_invite_expiration => 7,    # in days, float
+
 	#### Databases
 	#    various components are coded as if their data is location in different
 	#    database instances.  This may be the case once Open Console grows huge.
 	#    When the databases use the same server URL, then they will share the
     #    connections.
 
-	# Where is the user's database
-	users    => {
+	# Where is the user's database? Contains users, identities, and groups.
+	users  => {
 		server => 'mongodb://localhost:27017',  # this is the default for mongodb
 		dbname => 'users',
 	},
 
-	#### Group management
-	group_invite_expiration => 7,    # in days, float
+	# Where is the email database?  Contains the outgoing emails
+	emails => {
+		server => 'mongodb://localhost:27017',  # this is the default for mongodb
+		dbname => 'emails',
+	},
 }

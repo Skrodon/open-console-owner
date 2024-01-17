@@ -1,6 +1,9 @@
+% use DateTime ();
+% my $now = DateTime->now;
+
     <table class="table" id="list_invitations">
     <thead>
-      <tr><th colspan="2"><label for="invite" class="form-label">Invitations</label></th></tr>
+      <tr><th colspan="3"><label for="invite" class="form-label">Invitations</label></th></tr>
     </thead>
     <tbody>
 
@@ -9,16 +12,30 @@
 % foreach my $invitation (@invitations) {
 %    $seq++;
 %    my $email = $invitation->{email};
+%    my $has_expired = 1; # $invitation->{expires} < $now;
+
       <tr><td><%= $email %></td>
-          <td><a href="#" for="<%= $seq %>"><i class="fa-solid fa-pen"></i></a>
+          <td><a href="#" for="<%= $seq %>"><i class="fa-solid fa-pen"></i></a></td>
+          <td>
+% if($has_expired) {
+             <span class="badge badge-pill badge-danger">Expired</span>
+% }
 
   <div class="manage_invitation modal" id="<%= $seq %>" data-email="<%= $email %>" style="display: none;">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Invitation</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
         </div>
         <div class="modal-body">
+% if($has_expired) {
+          <div class="alert alert-danger" role="alert">
+			This invitation has expired.  When you resend the initation, it will revive again.
+          </div>
+% }
           <p>Group membership invitation:
           <table class="table">
           <tr><td>sent to</td><td><tt><%= $email %></tt></td></tr>
@@ -27,23 +44,22 @@
           </table>
         </div>
         <div class="modal-footer">
-          <button id="close_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button id="resend_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-share-from-square"></i> Resend invitation</button>
-          <button id="remove_button" type="button" class="btn btn-danger"><i class="fa-solid fa-xmark"></i> Remove</button>
+          <button id="remove_button" type="button" class="btn btn-danger"><i class="fa-solid fa-xmark"></i> Cancel invitation</button>
         </div>
       </div>
     </div>
   </div>
 
-      </td></tr>
+          </td></tr>
 % }
 % unless(@invitations) {
-      <tr><td colspan="2">There are no pending older invitations.</td></tr>
+      <tr><td colspan="3">There are no pending older invitations.</td></tr>
 % }
       <tr class="table-light">
         <td><label for="invite_emails" class="form-label">New invitations</label>
             <textarea id="invite_emails" type="text" rows="3" placeholder="Email-addresses of potential members" class="form-control"></textarea></td>
-        <td style="vertical-align: middle"><button id="invite" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text"></i>&nbsp;Invite</button></td>
+        <td style="vertical-align: middle" colspan="2"><button id="invite" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text"></i>&nbsp;Invite</button></td>
       </tr>
     </tbody>
     </table>

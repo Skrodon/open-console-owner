@@ -49,6 +49,7 @@ sub upgrade
 
 	$self->groups->ensure_index({ groupid => 1 }, { unique => bson_true });
 	$self->groups->ensure_index({ userid  => 1 }, { unique => bson_false });
+	$self->groups->ensure_index({ identid => 1 }, { unique => bson_false });
 	$self;
 }
 
@@ -150,6 +151,11 @@ sub saveGroup($)
 sub allGroups()
 {	my $self = shift;
 	$self->groups->find->all;
+}
+
+sub groupsUsingIdentity($)
+{	my ($self, $identity) = @_;
+	map OwnerConsole::Group->fromDB($_), $self->groups->find({identid => $identity->identId});
 }
 
 1;

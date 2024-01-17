@@ -9,7 +9,8 @@ my $token_generator = Session::Token->new;
 
 use List::Util  qw(first);
 
-use OwnerConsole::Model::Users ();
+use OwnerConsole::Model::Users  ();
+use OwnerConsole::Model::Emails ();
 
 use OwnerConsole::Tables qw(language_name);
 
@@ -27,7 +28,13 @@ sub users()
 		$_[0]->dbserver($config->{server})->db($config->{dbname} || 'users'))->upgrade;
 }
 
-sub _languageTable($)
+sub emails()
+{	my $config = $dbconfig{emails};
+	state $u   = OwnerConsole::Model::Emails->new(db =>
+		$_[0]->dbserver($config->{server})->db($config->{dbname} || 'emails'))->upgrade;
+}
+
+sub _languageTable($)   #XXX probably better remove this
 {	my $langs = $_[1];
 	[ map +[ $_ => language_name($_) ], @$langs ];
 }

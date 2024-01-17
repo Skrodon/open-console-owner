@@ -3,6 +3,7 @@ use Mojo::Base 'OwnerConsole::Mango::Object';
 
 use Log::Report 'open-console-owner';
 
+use Scalar::Util qw(blessed);
 use List::Util   qw(first);
 
 use OwnerConsole::Util  qw(bson2datetime);
@@ -16,6 +17,7 @@ use constant GROUP_SCHEMA => '20240112';
 
 sub create($%)
 {	my ($class, $account, %args) = @_;
+
 	my %insert  = (
 		groupid  => 'new',
 		schema   => GROUP_SCHEMA,
@@ -27,6 +29,8 @@ sub create($%)
 	);
 
 	my $self = $class->SUPER::create(\%insert, %args);
+	$self->addMember($account->preferredIdentity);
+	$self;
 }
 
 #-------------
@@ -40,7 +44,6 @@ sub groupId()    { $_[0]->_data->{groupid} }
 sub userId()     { $_[0]->_data->{userid} }
 sub schema()     { $_[0]->_data->{schema} }
 
-sub identId()    { $_[0]->_data->{identid} }
 sub name()       { $_[0]->_data->{name} }
 sub fullname()   { $_[0]->_data->{fullname} }
 sub timezone()   { $_[0]->_data->{timezone} }
@@ -49,14 +52,15 @@ sub country()    { $_[0]->_data->{country} }
 sub organization() { $_[0]->_data->{organization} }
 sub language()   { $_[0]->_data->{language} }
 sub postal()     { $_[0]->_data->{postal} }
-sub members()    { @{$_[0]->_data->{members} ||= []} }
-sub invitations  { @{$_[0]->_data->{invitations} ||= []} }
+sub members()    { @{$_[0]->_data->{members}     ||= []} }   # HASH
+sub invitations  { @{$_[0]->_data->{invitations} ||= []} }   # HASH
 
 sub emailOther() { $_[0]->_data->{email} }     # Usually, the code want to get the default
 sub phoneOther() { $_[0]->_data->{phone} }
 
 sub email()      { $_[0]->emailOther // $_[0]->account->email }
 sub phone()      { $_[0]->phoneOther // $_[0]->account->phone }
+sub link()       { '/dashboard/group/' . $_[0]->groupId }
 
 #-------------
 =section Invited Members
@@ -76,14 +80,14 @@ sub inviteMember($%)
 	my $now        = time;
 	my $expiration = $args{expiration} // 86400;
 
-	my %invitation = (
+	my $invitation = +{
 		email    => $email,
 		invited  => Mango::BSON::Time->new($now * 1000),
 		expires  => Mango::BSON::Time->new(($now + $expiration) * 1000),
 		token    => $::app->newUnique,
-	);
-	push @{$self->_data->{invitations}}, \%invitation;
-	\%invitation;
+	};
+	push @{$self->_data->{invitations}}, $invitation;
+	$self->_invitation($invitation);
 }
 
 sub _invitation($)
@@ -107,7 +111,8 @@ sub extendInvitation($$)
 	my $invitation = first { lc($_->{email}) eq lc($email) } $self->invitations or return;
 
 	my $expires = time + $seconds;
-	$invitation->{expires} = Mango::BSON::Time->new($expires * 1000)
+	$invitation->{expires} = Mango::BSON::Time->new($expires * 1000);
+	$self->_invitation($invitation);
 }
 
 sub removeInvitation($)
@@ -130,14 +135,42 @@ Structure: ARRAY of
 
 =cut
 
+sub addMember($)
+{	my ($self, $id) = @_;
+	$id = $id->identityId if blessed $id;
+	my $gid = $self->groupId;
+
+	my $account = $::app->account;
+	my $aid     = $account->userId;
+
+	if(my $has = $self->hasMemberFrom($account))
+	{	if($has->{identid} ne $id)
+		{	$has->{identid} = $id;
+			$self->log("Changed identity of account $aid in group $gid to $id.");
+        }
+	}
+	else
+	{	push @{$self->_data->{members}}, +{
+			identid  => $id,
+			accepted => Mango::BSON::Time->new,
+		};
+	}
+	$self->log("Added identity $id of account $aid to group $gid.");
+}
+
 sub isMember($)
 {	my ($self, $identid) = @_;
 	defined first { $_->{identid} eq $identid } $self->members;
 }
 
+sub removeMember($)
+{	my ($self, $id) = @_;
+	$self->_data->{members} = [ grep { $_->{identid} ne $id } $self->members ];
+}
+
 sub _import_member($)
 {	my %member = %{$_[1]};
-	$member{invited}  = $member{invited}->to_datetime;
+	$member{invited}  = $member{invited}->to_datetime if $member{invited};
 	$member{accepted} = $member{accepted}->to_datetime;
 	\%member;
 }
@@ -146,18 +179,58 @@ sub member($)
 {	my ($self, $identid) = @_;
 	defined $identid or return ();
 
-	my $data = first { $_->{identid} eq $identid }, $self->members;
-	defined $data ?  $self->_import_member($data) : undef;
+	my $data = first { $_->{identid} eq $identid } $self->members;
+	defined $data ? $self->_import_member($data) : undef;
 }
 
-sub allMembers()
-{	my $self = shift;
-	map $self->_import_member($_), $self->members;
+sub allMembers(%)
+{	my ($self, %args) = @_;
+	my $load  = $args{get_identities};
+
+	my $gid   = $self->groupId;
+	my $users = $::app->users;
+
+	my @members;
+  MEMBER:
+	foreach my $info (map $self->_import_member($_), $self->members)
+	{	my $identid = $info->{identid};
+		if($load)
+		{	unless($info->{identity} = $users->identity($identid))
+			{	$self->log("Identity $identid disappeared from group $gid.");
+				$self->removeMember($identid);
+				next MEMBER;
+			}
+		}
+		push @members, $info;
+	}
+
+	# There must be at least one admin left
+	unless(grep $_->{is_admin}, @members)
+	{	$members[0]->{is_admin} = 1;
+		$self->log("Member ". $members[0]->{identid} ." in group $gid promoted to admin.");
+	}
+
+	@members;
+}
+
+sub hasMemberFrom($)
+{	my ($self, $account) = @_;
+	my %ids  = map +($_->identityId => 1), $account->identities;
+use Data::Dumper;
+warn "HAS MEMBER: ", Dumper \%ids, $self->_data;
+    my $data = first { $ids{$_->{identid}} } $self->members;
+    defined $data ? $self->_import_member($data) : undef;
 }
 
 #-------------
 =section Actions
 =cut
+
+sub remove()
+{	my $self = shift;
+	$::app->emails->removeOutgoingRelatedTo($self->accountId);
+#XXX Check ownerships which have to be reassigned
+}
 
 sub save(%)
 {   my ($self, %args) = @_;

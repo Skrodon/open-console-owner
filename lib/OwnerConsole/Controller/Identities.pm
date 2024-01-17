@@ -45,8 +45,7 @@ sub submit_identity($)
 	}
 
 	if($how eq 'delete') {
-		$::app->users->removeIdentity($identity);
-		$account->removeIdentity($identity);
+		$identity->remove;
 		$answer->redirect('/dashboard/identities');
     	return $self->render(json => $answer->data);
 	}

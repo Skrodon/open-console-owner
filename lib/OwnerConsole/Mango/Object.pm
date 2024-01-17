@@ -50,7 +50,7 @@ sub log($)
 	$insert = { text => $insert } unless ref $insert eq 'HASH';
 	$insert->{timestamp} //= Mango::BSON::Time->new;
 #	$insert->{user}      //= $::app->user->username;
-warn "LOGGING: ", $insert->{text};
+warn "LOGGING: ", $insert->{text}, "\n";
 	push @{$self->_data->{logging}}, $insert;
 }
 

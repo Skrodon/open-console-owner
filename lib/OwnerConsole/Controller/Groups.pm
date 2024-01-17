@@ -4,6 +4,7 @@ use Mojo::Base 'Mojolicious::Controller';
 use Log::Report 'open-console-owner';
 
 use OwnerConsole::Util   qw(flat :validate);
+use OwnerConsole::Email  ();
 
 sub index($)
 {   my $self = shift;
@@ -45,6 +46,7 @@ warn "GROUP QUERY=$how";
 
 	if($how eq 'delete') {
 		$::app->users->removeGroup($group);
+		$::app->emails->removeOutgoingRelatedTo($group->groupId);
 		$account->removeGroup($group);
 		$answer->redirect('/dashboard/groups');
     	return $self->render(json => $answer->data);
@@ -99,8 +101,19 @@ warn "GROUP QUERY=$how";
 }
 
 sub _sendInvitation($$)
-{	my ($self, $email, $group) = @_;
-#XXX
+{	my ($self, $invite, $group, %args) = @_;
+	@args{keys %$invite} = values %$invite;
+
+	my $email = OwnerConsole::Email->create(
+		templates => 'group/mail_invite',
+		text    => $self->render_to_string('group/mail_invite', format => 'txt',  %args),
+		html    => $self->render_to_string('group/mail_invite', format => 'html', %args),
+		sendto  => $args{sendto},
+		purpose => 'invite',
+		state   => $args{state},
+	);
+
+	$email;
 }
 
 has invite_expiration => sub {
@@ -144,19 +157,19 @@ use Data::Dumper;
 				next;
 			}
 			push @added, $email;
-			$group->inviteMember($email, expiration => $expire);
+			my $invite = $group->inviteMember($email, expiration => $expire);
 			$group->log("invited $email");
 			$group->save;
-			$self->_sendInvitation($email, $group);
+			$self->_sendInvitation($invite, sendto => $email, group => $group, state => 'invite_start');
 		}
 		$answer->data->{added} = \@added;
 	}
 	elsif($how eq 'invite_resend')
-	{	my $email = $params->{email};
-		$group->extendInvitation($email, $self->invite_expiration);
+	{	my $email  = $params->{email};
+		my $invite = $group->extendInvitation($email, $self->invite_expiration);
 		$group->log("extended the invitation for $email");
 		$group->save;
-		$self->_sendInvitation($email, $group);
+		$self->_sendInvitation($invite, sendto => $email, group => $group, state => 'invite_resend');
 	}
 	else
 	{	error __x"No action '{action}' for invite.", id => $id;

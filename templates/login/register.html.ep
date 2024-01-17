@@ -17,6 +17,7 @@
         able to contact them.</p>
 
         <div class="col-12 mb-3">
+          <label for="email" class="form-label">Create an account name (email-address)</label>
           <div class="input-group">
             <span class="input-group-text">
               <i class="fas fa-user"></i>
@@ -26,7 +27,9 @@
           <div id="email_explain" class="form-text">Your email-address will identify your account, but it can be changed later.</div>
         </div>
 
+		&nbsp;<br />
         <div class="col-12 mb-3">
+          <label for="password" class="form-label">Pick a good password</label>
           <div class="input-group">
             <span class="input-group-text">
               <i class="fas fa-lock"></i>
@@ -57,6 +60,13 @@
           </div>
         </div>
 
+		&nbsp;<br />
+        <div class="col-12">
+          <label for="human-check" class="form-label">Spam reducing challenge</label>
+          <input name="human-check" type="text" id="human-check" class="form-control" aria-describedby="human-explain"
+            placeholder="<%= $human_check %>" />
+          <div id="human-explain" class="form-text">Please enter the place-holder text in numeric.</div>
+        </div>
         <div class="col-12">
           <button class="btn btn-primary" type="submit">
             <i class="fas fa-arrow-right-to-bracket"></i>&nbsp; Register

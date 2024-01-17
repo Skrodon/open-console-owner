@@ -59,10 +59,24 @@ sub phoneOther() { $_[0]->_data->{phone} }
 
 sub email()      { $_[0]->emailOther // $_[0]->account->email }
 sub phone()      { $_[0]->phoneOther // $_[0]->account->phone }
+sub link()       { '/dashboard/identity/' . $_[0]->identityId }
+
+sub nameInGroup() { $_[0]->fullname || $_[0]->nickname || $_[0]->role }
 
 #-------------
 =section Actions
 =cut
+
+sub remove()
+{	my $self = shift;
+
+	my $id   = $self->identityId;
+	$::app->users->removeIdentity($self);
+	$::app->emails->removeOutgoingRelatedTo($self->identityId);
+	$self->account->removeIdentity($self);
+}
+
+sub usedForGroups() { $::app->users->groupsUsingIdentity($_[0]) }
 
 sub save(%)
 {   my ($self, %args) = @_;

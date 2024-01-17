@@ -3,20 +3,23 @@ use ExtUtils::MakeMaker;
 use 5.016;
 
 WriteMakefile
- ( NAME	 	=> 'Owner-Console'
- , VERSION	=> '0.01'
+ ( NAME     => 'Owner-Console'
+ , VERSION  => '0.01'
 
  , PREREQ_PM    => { 
-	'Crypt::PBKDF2'	 => '0',
-	'Data::Dumper'	 => '0',
-	'DateTime'       => '1.50',
-	'Session::Token' => '1.503',
-	'Email::Valid'   => '1.202',
-	'List::Util'	 => '0',
-	'Log::Report'	 => '0',
-	'Mango'			 => '0',
-	'Mojolicious'                      => '9.35',
-	'Mojolicious::Plugin::CSRFProtect' => '0.16',
+	'Crypt::PBKDF2'       => 0,
+	'Data::Dumper'        => 0,
+	'DateTime'            => 1.50,
+	'Email::Valid'        => 1.202,
+	'Lingua::EN::Numbers' => 2.03,
+	'List::Util'          => 0,
+	'Log::Report'         => 0,
+	'Mail::Message'       => 3.00,
+	'Mango'               => 0,
+	'Mojolicious'         => 9.35,
+	'Mojolicious::Plugin::CSRFProtect' => 0.16,
+	'Session::Token'      => 1.503,
+
    }
  , EXE_FILES    => []
  , AUTHOR       => 'Open Console <team@open-console.eu>'

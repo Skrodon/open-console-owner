@@ -149,8 +149,9 @@
 % my $members_form = begin
 
   <div>
-	<label for="identity" class="form-label">Your Group membership</label>
-%= include 'shared/_identities', account => $account;
+	<label for="identity" class="form-label">Your Group Membership</label>
+%  my $selected = $group->hasMemberFrom($account) || $account->preferredIdentity->identityId;
+%= include 'shared/_identities', account => $account, selected => $selected;
 	<div id="identity_explain" class="form-text">Which of your personal Identities is member?</div>
   </div>
 
@@ -168,6 +169,12 @@
       <tr><th>Name</th><th>Rights</th></tr>
     </thead>
     <tbody>
+% my %members = map +($_->{identity}->nameInGroup => $_), $group->allMembers(get_identities => 1);
+% foreach my $name (sort keys %members) {
+%	my $member   = $members{$name};
+%   my $identity = $member->{identity};
+      <tr><td><%= $name %></td><td><%== $member->{is_admin} ? '<i class="fa-solid fa-user-tie"></i>' : '' %></td></tr>
+% }
     </tbody>
     </table>
   </div>
@@ -184,6 +191,8 @@ that it is wise to add a specific Identity for this task.</p>
 members. When you have the <strong>Rights</strong>, then you can invite
 people by sending them an email. You have no control over which Identity
 that person will present.</p>
+
+<p>The administrator (<i class="fa-solid fa-user-tie"></i>) can add members.</p>
 
 % end
 

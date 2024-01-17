@@ -1,8 +1,8 @@
-%# requires $account
+%# requires $account and $selected (identity id)
 
     <select name="identity" id="identity" class="form-select" aria-describedby="identity_explain">
 % foreach my $identity (sort { $a->name cmp $b->name } $account->identities) {
 %   my $idid  = $identity->identityId;
-    <option value="<%= $idid %>"<%= $group->isMember($idid) ? ' selected' : '' %>><%= $identity->role %></option>
+    <option value="<%= $idid %>"<%= $selected ? ' selected' : '' %>><%= $identity->role %></option>
 % }
     </select>

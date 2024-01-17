@@ -183,7 +183,20 @@
   <h5>Delete Identity?</h5>
 
   <p>When you delete one of your Identities, all related proofs will be
-  "unbound": they can be moved to other identities later.</p>
+  "unbound": they can be moved to other identities later.
+
+% my @groups = $identity->usedForGroups;
+% if(@groups) {
+  <div class="alert alert-danger" role="alert">
+    This Identity is in use for some of your Groups.  You will loose contact to
+    the following Groups, when you confirm deletion:
+    <ul>
+%   foreach my $group (@groups) {
+    <li><a href="<%= $group->link %>"><%= $group->name %></a></li>
+%   }
+    </ul>
+  </div>
+% }
 
   <button type="submit" id="delete_button" class="btn btn-danger">
   Delete this identity <i class="fa fa-skull" aria-hidden="true"></i>

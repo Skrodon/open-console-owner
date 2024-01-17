@@ -34,6 +34,13 @@ warn "QUERY=$how";
 warn "PARAMS=", Dumper $params;
 warn "DATA IN =", Dumper $data;
 
+	if($how eq 'delete')
+	{	$account->remove;
+		$self->notify(__x"Your account has been removed.");
+		$answer->redirect('/');
+        return $self->render(json => $answer->data);
+	}
+
 	if(my $email = $data->{email} = delete $params->{email})
 	{	if(not is_valid_email $email)
 		{	$answer->addError(email => __x"Invalid email-address");

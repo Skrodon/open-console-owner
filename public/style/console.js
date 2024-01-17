@@ -26,9 +26,8 @@ $(document).ready(function() {
 	$('.search-select').select2(); // ({theme: 'bootstrap5'});
 
 	// make alerts closeable
-	var alertList = document.querySelectorAll('.alert');
-	alertList.forEach(function (alert) {
-  		new bootstrap.Alert(alert)
+	$('.alert').each(function () {
+		var alert = $(this);
+		$('.close', alert).on('click', function () { alert.hide() });
 	});
-
 });
