@@ -61,7 +61,7 @@ sub mustBeLoggedIn($)
 sub logout()
 {	my $self = shift;
 	$self->session(is_auth => 0, expires => 1);  # Kill the Session cookie
-	$self->render(template => 'login/logout');
+	$self->redirect_to('/');
 }
 
 ###### Register
@@ -103,8 +103,6 @@ sub tryRegister()
 	 });
 
 	$self->login($account);
-
-	$self->notify(warning => __x"The user account is created.");
 	$self->redirect_to('/dashboard');
 }
 
