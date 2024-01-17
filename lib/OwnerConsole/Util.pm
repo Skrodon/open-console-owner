@@ -49,9 +49,10 @@ sub is_valid_email($)    { Email::Valid->address($_[0]) }
 sub is_valid_phone($)    { $_[0] =~ m!^\+[0-9 \-]{4,}(?:/.+)?! }
 sub is_valid_date($)     { $_[0] =~ s! ^\s* ([0-9]{4}) (?:[-/ ]?) ([0-9]{2}) (?:[-/ ]?)? ([0-9]{2}) \s*$ !$1-$2-$3!r }
 
-sub bson2datetime($)
-{	my $stamp = shift or return undef;
-	DateTime->from_epoch(epoch => $stamp->to_epoch)->set_time_zone($::app->user->timezone);
+sub bson2datetime($$)
+{	my $stamp = shift or return;
+	my $tz    = shift;
+	DateTime->from_epoch(epoch => $stamp->to_epoch)->set_time_zone($tz);
 }
 
 1;

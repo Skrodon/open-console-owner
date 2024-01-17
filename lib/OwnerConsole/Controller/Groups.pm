@@ -29,8 +29,8 @@ sub submit_group($)
 	my $req     = $self->req;
 	my $how     = $req->url->query;
 
-use Data::Dumper;
-warn "GROUP QUERY=$how";
+#use Data::Dumper;
+#warn "GROUP QUERY=$how";
 
 	my $account  = $self->account;
 	my $id       = $self->param('groupid');
@@ -108,6 +108,7 @@ sub _sendInvitation($$)
 		templates => 'group/mail_invite',
 		text    => $self->render_to_string('group/mail_invite', format => 'txt',  %args),
 		html    => $self->render_to_string('group/mail_invite', format => 'html', %args),
+		sender  => $self->account,
 		sendto  => $args{sendto},
 		purpose => 'invite',
 		state   => $args{state},

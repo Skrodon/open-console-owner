@@ -59,7 +59,7 @@ sub timezone()  { $_[0]->_data->{timezone} }
 sub identityIds() { @{$_[0]->_data->{identities} || []} }
 sub groupIds()    { @{$_[0]->_data->{groups} || []} }
 
-sub isAdmin()   { $::app->isAdmin($_[0]) }
+sub isAdmin()   { $_[0]->{OA_admin} ||= $::app->isAdmin($_[0]) }
 sub ifLanguage  { language_name($_[0]->iflang) }
 sub preferredLanguage { ($_[0]->languages)[0] }
 
@@ -198,12 +198,10 @@ sub groups
 warn "GROUP $id = $group";
 			if(! $group)
 			{	# Someone else may have removed this group.
-				$::app->notify(info => __x"One group has disappeared.");
 				$self->log("Silently removed group which disappeared: $id");
 			}
 			elsif(! $group->hasMemberFrom($self))
 			{	# Someone else may have kicked you out.
-				$::app->notify(info => __x"You are not a member of group '{name}' anymore", name => $group->name);
 				$self->log("Group $id does not contain any of these identities anymore");
 			}
 			else

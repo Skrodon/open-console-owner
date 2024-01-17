@@ -1,15 +1,24 @@
 % layout 'outsider';
 <script src="/assets/login.js"></script>
 
-<h2>Please Login to Access the Website</h2>
 
 <div class="container">
-  <div class="card" id="login_card">
-    <h5 class="card-header">User Sign in</h5>
-    <div class="card-body">
-      <form method="post" id="login">
+  <form method="post" id="login">
+    <div class="col-8">
+      <h1>Welcome back to Open Console</h1>
+      <p>When you are new to Open Console, please register first.  When you do not
+      remember your password, use the "reset-password" procedure.  You will get an
+      email.</p>
+      <a href="/login/register" class="btn btn-secondary">Register</a>
+      <a href="/login/reset" class="btn btn-secondary">Reset password</a>
+      &nbsp;<br/>
+      &nbsp;<br/>
+    </div>
 
-        <p>Welcome back to Open Console</p>
+    <div class="card col-8" id="login_card">
+      <h5 class="card-header">User Sign in</h5>
+      <div class="card-body">
+        <p>Please login to access our website.</p>
 
         <div class="col-12">
           <div class="input-group mb-3">
@@ -34,18 +43,14 @@
 
         <div class="col-6">
           <div class="col-12">
+            &nbsp;<br />
             <button class="btn btn-primary" type="submit">
               <i class="fas fa-arrow-right-to-bracket"></i>&nbsp; Sign In
             </button>
           </div>
         </div>
 
-        <div class="col-12">
-          <a href="/login/register" class="card-link">Register</a>
-          <a href="/login/reset" class="card-link">Reset password</a>
-        </div>
-
-      </form>
+      </div>
     </div>
-  </div>
+  </form>
 </div>

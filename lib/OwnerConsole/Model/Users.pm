@@ -68,6 +68,9 @@ sub createAccount($%)
  
 sub account($)
 {	my ($self, $userid) = @_;
+	defined $userid or return;
+
+warn "LOADING ACCOUNT $userid";
 	my $data = $self->accounts->find_one({userid => $userid})
 		or return;
  

@@ -81,19 +81,18 @@ sub tryRegister()
 
 	# I do not care what the value of the "confirm password" is.
 
-warn "CHECK($check) = ", $self->session('human_check');
 	if($check ne $self->session('human_check'))
 	{	$self->notify(error => __x"Incorrect value in challenge");
 		return $self->register;
 	}
 
-	#XXX use Email::Valid to check email, otherwise return with notify(error)
-	#XXX check password length
-warn "PARAM EMAIL $email";
-warn "PARAM PASSWD $password";
+	unless(is_valid_email $email)
+	{	$self->notify(error => __x"The email address is invalid");
+		return $self->register;
+	}
 
 	if($self->users->accountByEmail($email))
-	{	$self->notify(error => 'Username already exist. Please start the password-reset procedure.');
+	{	$self->notify(error => __x"Username already exist. Please start the password-reset procedure.");
 		return $self->register;
 	}
 

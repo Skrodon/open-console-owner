@@ -1,0 +1,93 @@
+/* Thao's favorit blue colors: #DAEBF4 B6D3E3 3A6275 004154 003044 */
+body {
+	background-color: #DAEBF4;
+}
+
+header {
+    width: 100%;
+    position: absolute;
+    z-index: 333;
+    left: 0;
+    top: 0;
+    padding: 38px 0;
+}
+
+header .row {
+    margin: 0 auto;
+    max-width: 1330px;
+    width: 100%;
+    padding: 0 20px;
+}
+
+header nav {
+    background-color: #3A6275;
+}
+
+header .form-select,
+header .nav-link {
+    background-color: #3A6275;
+	color: #DAEBF4;
+	border-color: #DAEBF4;
+}
+
+#main-box {
+    background-position: center top;
+    background-color: #003044;
+    position: relative;
+    color: white;
+    min-height: 650px;
+    width: 100%;
+    font-size: 120%;
+    padding-top: 170px;
+}
+
+#main-box h1 {
+    color: white;
+    font-size: 300%;
+    font-weight: 900;
+    margin: 0 0 20px;
+    letter-spacing: -1px;
+    line-height: 75px;
+}
+
+#main-box .btn-primary {
+    background-color: #3A6275;
+	color: #DAEBF4;
+	border-color: #DAEBF4;
+}
+
+#colophon A:not(.btn),
+#main-box A:not(.btn) {
+	color: #ED8974;
+	text-decoration: none;
+}
+
+#colophon {
+	padding: 20px 30px 100px 30px;
+    background-color: #3A6275;
+	color: #DAEBF4;
+}
+
+#colophon h5 {
+    font-weight: 900;
+}
+
+#colophon #OWSimg {
+	width: 70%;
+	background-color: white;
+	padding: 10px;
+}
+
+#explain {
+	padding: 3ex 0;
+}
+
+#explain IMG {
+	margin: 2ex 4ex;
+	width: 80%;
+}
+
+#explain H5 {
+	padding: 2ex 0 0 0;
+}
+

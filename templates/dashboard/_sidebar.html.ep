@@ -1,5 +1,5 @@
 
-% my $account = $::app->account;
+% my $account = $c->account;
 
 <ul class="nav flex-column">
 % if($c->user->isAdmin) {

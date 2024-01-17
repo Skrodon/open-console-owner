@@ -27,7 +27,7 @@ sub submit($)
 	my $params  = $req->json || $req->body_params->to_hash;
 
 	my $id      = $self->param('userid');
-	$::app->user->isAdmin || $id eq $account->userId
+	$self->user->isAdmin || $id eq $account->userId
 		or error __x"You cannot modify the account of someone else.";
 use Data::Dumper;
 warn "QUERY=$how";

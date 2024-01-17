@@ -29,7 +29,7 @@ sub create($%)
 	);
 
 	my $self = $class->SUPER::create(\%insert, %args);
-	$self->addMember($account->preferredIdentity);
+	$self->addMember($account);
 	$self;
 }
 
@@ -91,9 +91,10 @@ sub inviteMember($%)
 }
 
 sub _invitation($)
-{	my %invite = %{$_[1]};
-	$invite{invited} = bson2datetime $invite{invited};
-	$invite{expires} = bson2datetime $invite{expires};
+{	my $tz     = $_[0]->user->timezone;
+	my %invite = %{$_[1]};
+	$invite{invited} = bson2datetime $invite{invited}, $tz;
+	$invite{expires} = bson2datetime $invite{expires}, $tz;
 	\%invite;
 }
 
@@ -135,13 +136,11 @@ Structure: ARRAY of
 
 =cut
 
-sub addMember($)
-{	my ($self, $id) = @_;
-	$id = $id->identityId if blessed $id;
+sub addMember($$)
+{	my ($self, $account) = @_;
+	my $id  = $account->preferredIdentity->identityId;
+	my $aid = $account->userId;
 	my $gid = $self->groupId;
-
-	my $account = $::app->account;
-	my $aid     = $account->userId;
 
 	if(my $has = $self->hasMemberFrom($account))
 	{	if($has->{identid} ne $id)

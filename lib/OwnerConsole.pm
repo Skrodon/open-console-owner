@@ -87,8 +87,27 @@ sub startup
 #$self->users->db->collection('accounts')->remove({});  #XXX hack clean whole accounts table
 
 	# 'user' is the logged-in user, the admin can select to show a different 'account'
-	$self->helper(user      => sub { $self->{O_user}    ||= $_[0]->users->account($_[0]->session('userid')) });
-	$self->helper(account   => sub { $self->{O_account} ||= $_[0]->users->account($_[0]->session('account') or return $_[0]->user) });
+	$self->helper(user      => sub {
+		my $c = shift;
+		my $user;
+		unless($user = $c->stash('user'))
+		{	$user = $self->users->account($c->session('userid'));
+			$c->stash(user => $user);
+		}
+		$user;
+	});
+
+	$self->helper(account   => sub {
+		my $c = shift;
+		my $account;
+		unless($account = $c->stash('account'))
+		{	my $aid = $c->session('account');
+			$account = defined $aid ? $self->users->account($aid) : $c->user;
+			$c->stash(account => $account);
+		}
+		$account;
+	});
+
 	$self->helper(newUnique => sub { $config->{instance} . ':' . $token_generator->get });
 
 	my $iflangs = $config->{interface_languages};
