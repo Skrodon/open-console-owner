@@ -98,9 +98,7 @@
 
   <div>
     <label for="timezone" class="form-label">Default Time-zone</label>
-    <div class="col">
 %= include 'shared/_timezone', timezone => $account->timezone;
-    </div>
     <div id="timezone_explain" class="form-text">Usually the Time-Zone you live in.</div>
   </div>
 

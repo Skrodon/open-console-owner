@@ -23,7 +23,7 @@ $(document).ready(function() {
 	});
 
 	// Anywhere we can find select boxes which need search
-	$('.search-select').select2(); // ({theme: 'bootstrap5'});
+	$('.search-select').select2({theme: 'bootstrap-5'});
 
 	// make alerts closeable
 	$('.alert').each(function () {
