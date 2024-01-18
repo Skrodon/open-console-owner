@@ -106,8 +106,8 @@ sub _sendInvitation($$)
 
 	my $email = OwnerConsole::Email->create(
 		templates => 'group/mail_invite',
-		text    => $self->render_to_string('group/mail_invite', format => 'txt',  %args),
-		html    => $self->render_to_string('group/mail_invite', format => 'html', %args),
+		text    => $self->render_to_string('group/mail_invite', format => 'txt'),
+		html    => $self->render_to_string('group/mail_invite', format => 'html'),
 		sender  => $self->account,
 		sendto  => $args{sendto},
 		purpose => 'invite',

@@ -1,0 +1,10 @@
+% layout 'mail';
+% title 'Password reset';
+
+<p>(Hopefully) you have asked for a password reset for your
+Open Console account.</p>
+
+<p>Please click the following link, and change your password:
+<a href="<%== $link %>">confirm reset</a>.</p>
+
+

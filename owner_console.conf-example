@@ -42,7 +42,18 @@
 
 	# Where is the email database?  Contains the outgoing emails
 	emails => {
-		server => 'mongodb://localhost:27017',  # this is the default for mongodb
+		server => 'mongodb://localhost:27017',
 		dbname => 'emails',
 	},
+
+	# Where is the batch processing administration?  On the moment, this is
+	# implemented using Minion.  Other options for Minion can be added here.
+	batch => {
+		server => 'mongodb://localhost:27017',
+		dbname => 'batch',
+	},
+
+	# Overrule the automatic detection of the virtual-host of the website
+	vhost    => 'https://open-console.eu',
+
 }

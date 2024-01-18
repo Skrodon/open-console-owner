@@ -30,7 +30,7 @@ sub users()
 
 sub emails()
 {	my $config = $dbconfig{emails};
-	state $u   = OwnerConsole::Model::Emails->new(db =>
+	state $e   = OwnerConsole::Model::Emails->new(db =>
 		$_[0]->dbserver($config->{server})->db($config->{dbname} || 'emails'))->upgrade;
 }
 
@@ -71,6 +71,7 @@ sub startup
 
 	# Load configuration from hash returned by config file
 	my $config = $self->plugin('Config');
+	$config->{vhost} ||= 'https://' . $ENV{HTTP_HOST};
 
 	### Configure the application
 	$self->secrets($config->{secrets});
@@ -80,6 +81,14 @@ sub startup
 #	$self->plugin('CSRFProtect');
 	$self->plugin('BootstrapAlerts');
 	$self->plugin('I18NUtils');
+
+#	my $minion  = $config->{batch} or panic "Config for batch missing";
+#	$minion->{backend} = Minion::Backend::Mango->new(delete $minion->{server});
+#	$minion->{prefix}  = delete $minion->{dbname} || 'batch';
+#	$self->plugin(Minion => $minion);
+
+#	$self->plugin(Minion => { Mango => $minion->{server} });
+#	$self->plugin(Minion::Admin => { });   # under /minion
 
 	$dbconfig{users} = $config->{users};
 	$self->helper(dbserver => \&dbserver);
@@ -110,6 +119,8 @@ sub startup
 
 	$self->helper(newUnique => sub { $config->{instance} . ':' . $token_generator->get });
 
+	srand;
+
 	my $iflangs = $config->{interface_languages};
 	my %langs   = map +($_ => 1), @$iflangs;
 	$self->helper(language    => sub { $self->_detectLanguage($_[0], \%langs, $iflangs->[0]) });
@@ -130,6 +141,9 @@ sub startup
 	$r->get('/logout')->to('login#logout');
 	$r->get('/login/register')->to('login#register');
 	$r->post('/login/register')->to('login#tryRegister');
+	$r->get('/login/reset')->to('login#startResetPassword');
+	$r->post('/login/reset')->to('login#submitResetPassword');
+	$r->get('/reset')->to('login#runReset');
 
 	my $dashboard = $r->under('/dashboard')->to('login#mustBeLoggedIn');
 	$dashboard->get('/')->to('dashboard#index');

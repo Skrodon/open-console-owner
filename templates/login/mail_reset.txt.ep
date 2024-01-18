@@ -1,0 +1,9 @@
+% layout 'mail';
+% title 'Password reset';
+
+(Hopefully) you have asked for a password reset for your
+Open Console account.
+
+Please click the following link, and change your password:
+
+   <%== $link %>

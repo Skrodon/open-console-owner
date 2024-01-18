@@ -7,18 +7,20 @@ WriteMakefile
  , VERSION  => '0.01'
 
  , PREREQ_PM    => { 
-	'Crypt::PBKDF2'       => 0,
-	'Data::Dumper'        => 0,
-	'DateTime'            => 1.50,
-	'Email::Valid'        => 1.202,
-	'Lingua::EN::Numbers' => 2.03,
-	'List::Util'          => 0,
-	'Log::Report'         => 0,
-	'Mail::Message'       => 3.00,
-	'Mango'               => 0,
-	'Mojolicious'         => 9.35,
+	'Crypt::PBKDF2'          => 0,
+	'Data::Dumper'           => 0,
+	'DateTime'               => 1.50,
+	'Email::Valid'           => 1.202,
+	'Lingua::EN::Numbers'    => 2.03,
+	'List::Util'             => 0,
+	'Log::Report'            => 0,
+	'Mail::Message'          => 3.00,
+	'Mango'                  => 0,
+	'Minion'                 => 10.28,
+	'Minion::Backend::Mango' => 1.02,
+	'Mojolicious'            => 9.35,
 	'Mojolicious::Plugin::CSRFProtect' => 0.16,
-	'Session::Token'      => 1.503,
+	'Session::Token'         => 1.503,
 
    }
  , EXE_FILES    => []

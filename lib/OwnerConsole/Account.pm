@@ -3,7 +3,8 @@ use Mojo::Base 'OwnerConsole::Mango::Object';
 
 use Log::Report 'open-console-owner';
 
-use Crypt::PBKDF2 ();
+use Mango::BSON::Time ();
+use Crypt::PBKDF2     ();
 my $crypt = Crypt::PBKDF2->new;
 
 use OwnerConsole::Tables qw(language_name);
@@ -55,6 +56,7 @@ sub languages() { @{$_[0]->_data->{languages} || []} }
 sub phone()     { $_[0]->_data->{phone} }
 sub iflang()    { $_[0]->_data->{iflang} }
 sub timezone()  { $_[0]->_data->{timezone} }
+sub reset()     { $_[0]->_data->{reset} }
 
 sub identityIds() { @{$_[0]->_data->{identities} || []} }
 sub groupIds()    { @{$_[0]->_data->{groups} || []} }
@@ -87,6 +89,26 @@ sub changePassword($)
 	};
 	$self->log("changed password");
 	$self;
+}
+
+sub startPasswordReset($)
+{	my ($self, $token) = @_;
+	$self->_data->{reset} = +{
+		token     => $token,
+		initiated => Mango::BSON::Time->new,
+		by        => $ENV{REMOTE_HOST},
+	};
+	$self->log("start password reset $token");
+}
+
+sub correctResetToken($)
+{	my ($self, $token) = @_;
+	if(my $reset = $self->reset)
+	{	return $reset->{token} eq $token;
+	}
+
+	$self->notify(warning => __x"Not in a reset procedure, at the moment.");
+	0;
 }
 
 #------------------
@@ -228,9 +250,11 @@ sub remove()
 
 sub save(%)
 {	my ($self, %args) = @_;
+
 	if($args{by_user})
 	{	$self->_data->{schema} = ACCOUNT_SCHEMA;
 		$self->log('Changed account settings');
+		delete $self->_data->{reset};   # leave the reset procedure
 	}
 	$::app->users->saveAccount($self);
 }

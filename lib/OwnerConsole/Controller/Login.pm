@@ -6,6 +6,7 @@ use Log::Report 'open-console-owner';
 use Lingua::EN::Numbers qw(num2en);
 
 use OwnerConsole::Util  qw(val_line is_valid_email);
+use OwnerConsole::Email ();
 
 use constant
 {
@@ -62,6 +63,84 @@ sub logout()
 {	my $self = shift;
 	$self->session(is_auth => 0, expires => 1);  # Kill the Session cookie
 	$self->redirect_to('/');
+}
+
+###### Reset password
+
+sub startResetPassword()
+{	my $self   = shift;
+	my $random = int(rand 1000);
+	$self->session(human_check => $random);
+    $self->render(template => 'login/reset', human_check => num2en($random));
+}
+
+sub submitResetPassword()
+{	my $self  = shift;
+	my $email = val_line($self->param('email'));
+	my $check = val_line($self->param('human-check')) // '';
+
+	if($check ne $self->session('human_check'))
+	{	$self->notify(error => __x"Incorrect value in challenge");
+		return $self->startResetPassword;
+	}
+
+	if(! is_valid_email $email)
+	{	$self->notify(error => __x"Invalid email-address.  Password reset procedure not started.");
+		return $self->startResetPassword;
+	}
+
+	my $victim = $::app->users->accountByEmail($email);
+	unless($victim)
+	{	$self->notify(error => __x"This account is not known.  Password reset procedure not started.");
+		#XXX when the account owns this address, then we may hint for the account name.
+		return $self->startResetPassword;
+	}
+
+	my $token   = $::app->newUnique;
+
+	$victim->startPasswordReset($token);
+	$victim->save;
+
+	my $vhost   = $self->config('vhost');
+	$self->stash(link => "$vhost/reset?user=$email&token=$token");
+
+	my $config  = $self->config('email');
+	my $task    = OwnerConsole::Email->create(
+		subject => 'Password reset requested',
+       	text    => $self->render_to_string('login/mail_reset', format => 'txt'),
+       	html    => $self->render_to_string('login/mail_reset', format => 'html'),
+       	sender  => undef,
+       	sendto  => $email,
+       	purpose => 'password reset',
+       	state   => 'start',
+   	);
+
+#XXX move this to minion
+	$task->buildMessage($config)->send(to => $task->sendTo);
+
+	$self->notify(info => __x"Password reset procedure started: await an email.");
+	$self->startResetPassword;
+}
+
+sub runReset($)
+{	my $self  = shift;
+	my $email = val_line($self->param('user'));
+	my $token = val_line($self->param('token'));
+
+	my $victim = $::app->users->accountByEmail($email);
+	unless($victim)
+	{	$self->notify(error => __x"Cannot find account `{email}` for reset", email => $email);
+	    $self->session(is_auth => 0, expires => 1);   # was accidentally still logged-in
+		return $self->index;
+	}
+
+	if($victim->correctResetToken($token))
+	{	$self->login($victim);
+		return $self->redirect_to('/dashboard/account');
+	}
+
+	$self->notify(error => __x"Password reset procedure failed");
+	$self->startResetPassword;
 }
 
 ###### Register

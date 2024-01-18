@@ -12,3 +12,9 @@ changes progress partial.
 
 For instance, when an Identity is removed from a Group, then only the Group knows.  The Account,
 which lists the Group, will only register the change when it is written for some other reason.
+
+## Surprises
+
+### Mojolicious
+
+  * `my $value = $c->stash('key')` but `$c == $c->stash(key => $value)`

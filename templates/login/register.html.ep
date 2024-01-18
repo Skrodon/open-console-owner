@@ -60,8 +60,8 @@
           </div>
         </div>
 
-		&nbsp;<br />
         <div class="col-12">
+		  &nbsp;<br />
           <label for="human-check" class="form-label">Spam reducing challenge</label>
           <input name="human-check" type="text" id="human-check" class="form-control" aria-describedby="human-explain"
             placeholder="<%= $human_check %>" />
