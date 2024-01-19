@@ -70,7 +70,7 @@ function activate_language_selector(form) {
 		})
 	});
 
-	$('.remove-link', table).on('click', function (event) {
+	table.on('click', '.remove-link', function (event) {
 		event.preventDefault();
 		$(this).closest('TR').remove();
 		updateHiddenInput();
