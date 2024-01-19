@@ -10,6 +10,7 @@ use Data::Dumper;
 $Data::Dumper::Indent = 1;
 sub fromDB($)
 {	my ($class, $data) = @_;
+delete $data->{logging};
 	$class->new(_data => $data);
 }
 
@@ -47,10 +48,11 @@ sub logging(%)
 
 sub log($)
 {	my ($self, $insert) = @_;
+warn "LOGGING: ", $insert->{text}, "\n";
+return;
 	$insert = { text => $insert } unless ref $insert eq 'HASH';
 	$insert->{timestamp} //= Mango::BSON::Time->new;
 #	$insert->{user}      //= $::app->user->username;
-warn "LOGGING: ", $insert->{text}, "\n";
 	push @{$self->_data->{logging}}, $insert;
 }
 
