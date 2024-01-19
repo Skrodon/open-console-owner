@@ -2,7 +2,7 @@ package OwnerConsole::Controller::Account;
 use Mojo::Base 'Mojolicious::Controller';
 
 use OwnerConsole::AjaxAnswer ();
-use Log::Report 'owner-console';
+use Log::Report 'open-console-owner';
 
 use OwnerConsole::Util       qw(flat :validate);
 
@@ -29,10 +29,10 @@ sub submit($)
 	my $id      = $self->param('userid');
 	$self->user->isAdmin || $id eq $account->userId
 		or error __x"You cannot modify the account of someone else.";
-use Data::Dumper;
-warn "QUERY=$how";
-warn "PARAMS=", Dumper $params;
-warn "DATA IN =", Dumper $data;
+#use Data::Dumper;
+#warn "QUERY=$how";
+#warn "PARAMS=", Dumper $params;
+#warn "DATA IN =", Dumper $data;
 
 	if($how eq 'delete')
 	{	$account->remove;
@@ -64,7 +64,8 @@ warn "DATA IN =", Dumper $data;
 	}
 
 	my @langs;
-	foreach my $lang (flat(delete $params->{languages}))
+	my $langs = delete $params->{languages} || '';
+	foreach my $lang (split /\,/, $langs)
 	{	is_valid_language $lang
 			or $answer->addWarning(languages => __x"Ignoring unsupported language-code '{code}'", code => $lang);
 		push @langs, $lang;
@@ -98,11 +99,8 @@ warn "Unprocessed parameters: ", join ', ', sort keys %$params if keys %$params 
 
 	if($how eq 'save' && ! $answer->hasErrors)
 	{	$answer->redirect('/dashboard');
-warn "SAVING";
-$self->users->allAccounts;
+#warn "SAVING";
 		$account->save(by_user => 1);
-warn "DONE SAVING";
-$self->users->allAccounts;
 	}
 
     $self->render(json => $answer->data);

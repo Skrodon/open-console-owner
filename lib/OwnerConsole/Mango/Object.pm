@@ -48,9 +48,9 @@ sub logging(%)
 
 sub log($)
 {	my ($self, $insert) = @_;
+	$insert = { text => $insert } unless ref $insert eq 'HASH';
 warn "LOGGING: ", $insert->{text}, "\n";
 return;
-	$insert = { text => $insert } unless ref $insert eq 'HASH';
 	$insert->{timestamp} //= Mango::BSON::Time->new;
 #	$insert->{user}      //= $::app->user->username;
 	push @{$self->_data->{logging}}, $insert;
