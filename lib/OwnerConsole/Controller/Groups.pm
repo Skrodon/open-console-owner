@@ -119,7 +119,7 @@ sub _sendInvitation($$)
 
 has invite_expiration => sub {
 my $x =
- ($_[0]->config->{group_invite_expiration} || 1) * 86400
+ ($_[0]->config->{groups}{invite_expiration} || 7) * 86400
 ; warn "EXPIRE AFTER $x"; $x };
 
 sub submit_member($)

@@ -8,11 +8,6 @@ use Lingua::EN::Numbers qw(num2en);
 use OwnerConsole::Util  qw(val_line is_valid_email);
 use OwnerConsole::Email ();
 
-use constant
-{
-	EXPIRE_SESSION => 600,  # seconds of inactivity, now 10 minutes
-};
-
 ###### Login
 
 sub index()
@@ -45,7 +40,7 @@ sub login($)
 	# Create session cookie
 	$self->session(is_auth    => 1);
 	$self->session(userid     => $account->userId);
-	$self->session(expiration => EXPIRE_SESSION);
+	$self->session(expiration => $self->config->{sessions}{expire} || 600);
 }
 
 sub mustBeLoggedIn($)

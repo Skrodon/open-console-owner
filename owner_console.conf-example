@@ -3,15 +3,22 @@
 {
 	# This instance name must be unique within the network.  It is used
 	# as prefix in userid's
-
 	instance => 'oc001',
 
 	# Overrule the automatic detection of the virtual-host of the website
 	vhost    => 'https://open-console.eu',
 
+	#### Sessions
+
+	sessions => {
+		# The amount of time until some-one is logged-out automatically.  If this
+		# is too short, people cannot submit the forms the filled-in.  Time in
+		# seconds.
+		expire => 4 * 3600,
+	},
+
 	# The email addresses of the administrators: they get more pages in the
 	# dashboard.
-
 	admins   => [ 'email1' ],
 
 	# Secrets are used to encrypt cookies.  Multiple secrets can be active
@@ -25,26 +32,27 @@
 	# Select which interface languages you want to show to the end user.  When a
 	# translation is not ready yet, then you can better only add it in the test
 	# setup, not production.
-
 	interface_languages => [ 'en' ],
 
 	#### Group management
 
-	group_invite_expiration => 7,    # in days, float
+	groups => {
+		invite_expiration => 7,    # in days, float
+	},
 
 	#### Email
 
-    email    => {
-        sender      => 'Open Console <>',         # 'From' line
-        overrule_to => '@',                       # in test setup, keep emails local
-        subject_prefix => '[Open Console XXXX] ',
-    }
+	email    => {
+		sender      => 'Open Console <>',         # 'From' line
+		overrule_to => '@',                       # in test setup, keep emails local
+		subject_prefix => '[Open Console XXXX] ',
+	}
 
 	#### Databases
 	#    various components are coded as if their data is location in different
 	#    database instances.  This may be the case once Open Console grows huge.
 	#    When the databases use the same server URL, then they will share the
-    #    connections.
+	#    connections.
 
 	# Where is the user's database? Contains users, identities, and groups.
 	users  => {
