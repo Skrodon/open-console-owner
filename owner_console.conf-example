@@ -54,20 +54,15 @@
 	#    When the databases use the same server URL, then they will share the
 	#    connections.
 
+	# Critical data, so need redundancy.  Optimized to have few writes.
 	# Where is the user's database? Contains users, identities, and groups.
 	users  => {
 		server => 'mongodb://localhost:27017',  # this is the default for mongodb
 		dbname => 'users',
 	},
 
-	# Where is the email database?  Contains the outgoing emails
-	emails => {
-		server => 'mongodb://localhost:27017',
-		dbname => 'emails',
-	},
-
-	# Where is the batch processing administration?  On the moment, this is
-	# implemented using Minion.  Other options for Minion can be added here.
+	# Less cricital data, but many writes: outgoing emails, presented tokens.
+	# Often the table data is processed by Minion tasks.
 	batch => {
 		server => 'mongodb://localhost:27017',
 		dbname => 'batch',

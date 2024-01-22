@@ -269,7 +269,7 @@ TABLE {
 
 <tr><td colspan="2" id="disclaimer">
 
-<p>This is email is sent to you by <a href="https://open-console.eu">Open Console</a>.</p>
+<p>This is email is sent to you by <a href="<%= $c->config('vhost') %>">Open Console</a>.</p>
 
     </td></tr>
 

@@ -36,11 +36,11 @@ private person, sometimes a part within an organization.  Sometimes you want to
 tell a lot about yourself, sometimes hide behind a nickname only.  You can express
 your separate roles in separate Identities.</p>
 
-<p>You can connect your Identities to organizations (Indentity Groups)>  As person
+<p>You can connect your Identities to organizations (Indentity Groups).  As person
 or for a Group, you can proof (website) Ownership, or use or provide a Service.</p>
 
 <p>Although you may share an Identity to use or provide different Services, they
-will not be able to detect you reuse your Identy: you do <i>not need</i> to set-up
+will not be able to detect you reuse your Identity: you do <i>not need</i> to set-up
 a different Identity for each Service.</p>
 
 <p>When using your Account for <strong>OpenID</strong>, you can relate a single

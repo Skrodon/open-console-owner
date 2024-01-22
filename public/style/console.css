@@ -97,8 +97,8 @@ LABEL.form-label {
  }
 
 FORM#config_account  #account-delete-tab,
-FORM#config_identity #identity-delete-tab
-FORM#config_group	#group-delete-tab
+FORM#config_identity #identity-delete-tab,
+FORM#config_group	 #group-delete-tab
 {	color: rgba(var(--bs-danger-rgb));
 }
 

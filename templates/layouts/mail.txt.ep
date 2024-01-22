@@ -4,6 +4,6 @@
   Cheers,
   The Open Console Team
 
-This is email is send to you by Open Console, https://open-console.eu.
+This is email is send to you by Open Console, <%= $c->config('vhost') %>
 
 

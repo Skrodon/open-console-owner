@@ -10,11 +10,11 @@ my $token_generator = Session::Token->new;
 use List::Util  qw(first);
 
 use OwnerConsole::Model::Users  ();
-use OwnerConsole::Model::Emails ();
+use OwnerConsole::Model::Batch  ();
 
 use OwnerConsole::Tables qw(language_name);
 
-use Log::Report 'owner-console';
+use Log::Report 'open-console-owner';
 
 my (%dbconfig, %dbservers);
 sub dbserver($)  # server connections shared, when databases on same server
@@ -28,9 +28,9 @@ sub users()
 		$_[0]->dbserver($config->{server})->db($config->{dbname} || 'users'))->upgrade;
 }
 
-sub emails()
-{	my $config = $dbconfig{emails};
-	state $e   = OwnerConsole::Model::Emails->new(db =>
+sub batch()
+{	my $config = $dbconfig{batch};
+	state $e   = OwnerConsole::Model::Batch->new(db =>
 		$_[0]->dbserver($config->{server})->db($config->{dbname} || 'emails'))->upgrade;
 }
 
