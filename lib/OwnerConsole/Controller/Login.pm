@@ -168,12 +168,12 @@ sub tryRegister()
 		return $self->register;
 	}
 
-	my $account = $self->users->createAccount({
+	my $account = OwnerConsole::Account->create({
 		email    => $email,
 		password => $password,
 		iflang   => $self->language,
 	});
-	my $name = $account =~ s/\@.*//r;
+	$account->save;
 
 	$self->login($account);
 	$self->redirect_to('/dashboard');

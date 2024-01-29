@@ -66,11 +66,19 @@ DIV.addrblock { padding-left: 3em; padding-bottom: 5ex; }
 
 <h5>You do want to join!</h5>
 
-<p>Are you already participating in Open Console?  Of that's not the case, please
-<a href="/login/register" class="btn btn-secondary" target="_blank"><i class="fa-regular fa-address-card"></i> Register first</a></p>
+<table class="table">
+<tr><td>Are you already participating in Open Console?  Of that's not the case, please
+        register now.</td>
+    <td><a href="/login/register" class="btn btn-secondary" target="_blank"><i class="fa-solid fa-user"></i> Register</a></td></tr>
 
-<p>If you are registered and willing to join the group, please confirm here:
-<a href="/dashboard/accept_invite" class="btn btn-success" target="_blank"><i class="fa-solid fa-check"></i> Proceed</a></p>
+<tr><td>Do you already have created any identity?</td>
+    <td><a href="/dashboard/identity/new" class="btn btn-secondary" target="_blank"><i class="fa-regular fa-address-card"></i> New identity</a></td></tr>
+
+<tr><td>If you are registered and willing to join the group, please confirm here:</td>
+    <td><a href="/dashboard/invite_accept/<%= $invite->token %>" class="btn btn-success"
+         target="_blank"><i class="fa-solid fa-check"></i> Accept</a></td></tr>
+
+</table>
 
       </div>
     </div>

@@ -1,4 +1,13 @@
-
 % layout 'mail';
+% title "Invitation to take part in group: " . $group->fullname || $group->name;
+% my $vhost  = $c->config('vhost');
 
-<p>The content of the HTML part</p>
+<p>In Open Console, you are invited to become member of a group.
+Together, you can monitor websites and more.</p>
+
+<p>You were invited by <%= $identity->nameInGroup %>
+The group is named '<%= $group->name %>'.</p>
+
+% my $link = $vhost . $invite->link;
+<p>Please visit our website <a href="<%== $link %>">to accept or reject
+this invitation</a>.</p>

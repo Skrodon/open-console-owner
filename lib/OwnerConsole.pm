@@ -159,8 +159,9 @@ sub startup
 
 	$dashboard->get('/groups')->to('groups#index');
 	$dashboard->get('/group/:groupid')->to('groups#group');
-	$dashboard->post('/config_group/:groupid')->to('groups#submit_group');
+	$dashboard->post('/config_group/:groupid')->to('groups#configGroup');
 	$dashboard->post('/config_member/:groupid')->to('groups#configMember');
+	$dashboard->any('/invite_accept/:token')->to('groups#inviteAccept');
 
 	$r->get('/invite/:token')->to('groups#invite_choice');
 }

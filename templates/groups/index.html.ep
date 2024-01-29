@@ -22,7 +22,7 @@
 % my @identities = sort { $a->role cmp $b->role } $account->identities;
 % foreach my $group ($account->groups) {
     <tr><td><%= $group->name %></td>
-        <td><a href="group/<%= $group->groupId %>"><i class="fa-solid fa-pen"></a></i></td>
+        <td><a href="/dashboard/group/<%= $group->groupId %>"><i class="fa-solid fa-pen"></a></i></td>
         <td>
 
     <select class="form-select member" data-groupid="<%= $group->groupId %>">
@@ -35,7 +35,7 @@
         </td></tr>
 % }
     <tr class="table-light">
-        <td><a href="group/new" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i>&nbsp;Create new Group</a></td>
+        <td><a href="/dashboard/group/new" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i>&nbsp;Create new Group</a></td>
         <td colspan="2">&nbsp;</td></tr>
   </tbody>
   </table>

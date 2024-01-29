@@ -32,8 +32,7 @@ sub create($%)
 		gender   => $account->gender,
 		language => $account->preferredLanguage,
 	);
-
-	my $self = $class->SUPER::create(\%insert, %args);
+	$class->SUPER::create(\%insert, %args);
 }
 
 #-------------

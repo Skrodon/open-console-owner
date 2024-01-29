@@ -58,6 +58,7 @@ sub organization() { $_[0]->_data->{organization} }
 sub phone()      { $_[0]->_data->{phone} }
 sub postal()     { $_[0]->_data->{postal} }
 sub timezone()   { $_[0]->_data->{timezone} }
+
 sub link()       { '/dashboard/group/' . $_[0]->groupId }
 
 #-------------
@@ -106,15 +107,14 @@ sub removeInvitation($)
 Structure: ARRAY of
 
    { identid   => $code,    # identity identifier, required after accepted
-     invited   => date,
      accepted  => date,
    }
 
 =cut
 
 sub addMember($$)
-{	my ($self, $account) = @_;
-	my $id  = $account->preferredIdentity->identityId;
+{	my ($self, $account, $identity) = @_;
+	my $id  = blessed $identity ? $identity->identityId : $identity;
 	my $aid = $account->userId;
 	my $gid = $self->groupId;
 

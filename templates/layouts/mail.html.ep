@@ -243,7 +243,7 @@ TABLE {
     </th></tr>
 <tr><td colspan="2" id="main">
 
-<h1><%= $title %></h1>
+<h4><%= $title %></h4>
 
 <%= content %>
 

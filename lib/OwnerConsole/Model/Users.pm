@@ -57,15 +57,6 @@ sub upgrade
 =section The "account" table
 =cut
 
-sub createAccount($%)
-{	my ($self, $insert, %args) = @_;
-	$insert or return;
-
-	my $account = OwnerConsole::Account->create($insert);
-	$self->accounts->insert($account->toDB);
-	$account;  # Does not contain all info, like db object_id
-}
- 
 sub account($)
 {	my ($self, $userid) = @_;
 	defined $userid or return;

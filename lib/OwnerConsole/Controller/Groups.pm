@@ -22,7 +22,7 @@ sub group($)
 
 ### Keep this logic in sync with OwnerConsole::Group attributes
 
-sub submit_group($)
+sub configGroup($)
 {   my $self   = shift;
 	my $answer = OwnerConsole::AjaxAnswer->new();
 
@@ -127,10 +127,8 @@ use Data::Dumper;
 	my $account  = $self->account;
 	my $id       = $self->param('groupid');
 	my $params   = $req->json || $req->body_params->to_hash;
-warn "SUBMIT MEMBER", Dumper $params;
 
    	my $group    = $account->group($id);
-$group or warn "CANNOT FIND GROUP $id";
 	my $identity = $group->memberIdentityOf($account);
 
 	if(! $group)
@@ -199,8 +197,7 @@ $group or warn "CANNOT FIND GROUP $id";
 sub invite_choice()
 {	my $self   = shift;
 	my $token  = $self->param('token');
-	my $invite = $::app->batch->invite($token);
-	$invite
+	my $invite = $::app->batch->invite($token)
 		or return $self->render(template => 'groups/invite_failed');
 
 	my $how    = $self->req->url->query;
@@ -220,6 +217,30 @@ sub invite_choice()
 	else { panic "invite_choice:$how#".length($how) }
 
     $self->render(template => 'groups/invite_choice', invite => $invite);
+}
+
+#!!! Inside, so with $account
+sub inviteAccept()
+{	my $self   = shift;
+	my $token  = $self->param('token');
+	my $invite = $::app->batch->invite($token)
+		or return $self->render(template => 'groups/invite_failed');
+
+	my $account  = $self->account;
+	if(my $identity = $account->preferredIdentity)
+	{	if(my $group    = $invite->invitedTo)
+		{	$group->addMember($account, $identity);
+			$invite->changeState('accept');
+		}
+		else
+		{	$self->notify(error => __x"Sorry, the group seems to have disappeared.");
+		}
+	}
+	else
+	{	$self->notify(error => __x"First create an identity, then accept again.");
+	}
+
+	$self->render(template => 'groups/index');
 }
 
 1;

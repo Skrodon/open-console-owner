@@ -1,6 +1,7 @@
 % layout 'mail';
-% title "Invitation to group '$group'";
 % my $vhost  = $c->config('vhost');
+
+--> Invitation to take part in group: <%= $group->fullname || $group->name %>
 
 In Open Console, you are invited to become member of a group.
 Together, you can monitor websites and more.
