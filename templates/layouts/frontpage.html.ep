@@ -27,7 +27,7 @@
         </select>
       </form>
       <div class="nav-item text-nowrap">
-        <a class="nav-link px-3" href="/login"><i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp; sign in</a>
+        <a class="nav-link px-3" href="/login"><i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp;Sign in</a>
       </div>
     </nav>
   </div>

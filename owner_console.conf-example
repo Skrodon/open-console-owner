@@ -37,7 +37,10 @@
 	#### Group management
 
 	groups => {
-		invite_expiration => 7,    # in days, float
+        # expiration of invitations (in days, float)
+		invite_expiration  => 7,    # after which it cannot be used anymore
+		extend_invitation  => 14,   # when explicitly extended/revived by group owner
+		cleanup_invitation => 30,   # punish spam
 	},
 
 	#### Email

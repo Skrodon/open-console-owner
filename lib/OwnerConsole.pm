@@ -31,7 +31,7 @@ sub users()
 sub batch()
 {	my $config = $dbconfig{batch};
 	state $e   = OwnerConsole::Model::Batch->new(db =>
-		$_[0]->dbserver($config->{server})->db($config->{dbname} || 'emails'))->upgrade;
+		$_[0]->dbserver($config->{server})->db($config->{dbname} || 'batch'))->upgrade;
 }
 
 sub _languageTable($)   #XXX probably better remove this
@@ -91,6 +91,8 @@ sub startup
 #	$self->plugin(Minion::Admin => { });   # under /minion
 
 	$dbconfig{users} = $config->{users};
+	$dbconfig{batch} = $config->{batch};
+
 	$self->helper(dbserver => \&dbserver);
 	$self->helper(users    => \&users);
 #$self->users->db->collection('accounts')->remove({});  #XXX hack clean whole accounts table
@@ -158,7 +160,9 @@ sub startup
 	$dashboard->get('/groups')->to('groups#index');
 	$dashboard->get('/group/:groupid')->to('groups#group');
 	$dashboard->post('/config_group/:groupid')->to('groups#submit_group');
-	$dashboard->post('/config_member/:groupid')->to('groups#submit_member');
+	$dashboard->post('/config_member/:groupid')->to('groups#configMember');
+
+	$r->get('/invite/:token')->to('groups#invite_choice');
 }
 
 1;

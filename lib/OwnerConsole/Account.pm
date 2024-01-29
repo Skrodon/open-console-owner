@@ -217,7 +217,6 @@ sub groups
 		my (@groups, @groupids);
 		foreach my $id ($self->groupIds)
 		{	my $group = $::app->users->group($id);
-warn "GROUP $id = $group";
 			if(! $group)
 			{	# Someone else may have removed this group.
 				$self->log("Silently removed group which disappeared: $id");

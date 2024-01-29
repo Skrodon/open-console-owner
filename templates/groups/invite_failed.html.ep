@@ -1,0 +1,20 @@
+% layout 'outsider';
+% title 'Invitation not found';
+
+<div class="container">
+  <div class="col-6">
+    <h1>Invitation not found</h1>
+
+    <p>We are sorry to inform you, but your invitiation is not valid (any more).
+    This can have a few reasons:</p>
+    <ul>
+    <li>The inviting group or user we removed from Open Console;</li>
+    <li>The invitation token is not copied correctly; or</li>
+    <li>The invitation expired a long time ago.</li>
+    </ul>
+
+	<p>Please contact the person listed in your invitation to send you a new one.</p>
+
+    <a href="/" class="btn btn-primary"><i class="fa-solid fa-house"></i> visit the front-page</a>
+  </div>
+</div>

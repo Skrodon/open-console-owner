@@ -54,11 +54,9 @@ sub language()   { $_[0]->_data->{language} }
 sub gender()     { $_[0]->_data->{gender} }
 sub postal()     { $_[0]->_data->{postal} }
 
-sub emailOther() { $_[0]->_data->{email} }     # Usually, the code want to get the default
-sub phoneOther() { $_[0]->_data->{phone} }
+sub email()      { $_[0]->_data->{email} }
+sub phone()      { $_[0]->_data->{phone} }
 
-sub email()      { $_[0]->emailOther // $_[0]->account->email }
-sub phone()      { $_[0]->phoneOther // $_[0]->account->phone }
 sub link()       { '/dashboard/identity/' . $_[0]->identityId }
 
 sub nameInGroup() { $_[0]->fullname || $_[0]->nickname || $_[0]->role }

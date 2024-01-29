@@ -11,7 +11,7 @@
 % my $group_form = begin
 
   <div>
-	<label for="name" class="form-label">Short name</label>
+	<label for="name" class="form-label">Group's short name</label>
     <input name="name" type="text" id="name" class="form-control" 
      placeholder="Short identifier" value="<%= $group->name || '' %>"
      aria-describedby="group_explain" required />
@@ -19,7 +19,7 @@
   </div>
 
   <div>
-	<label for="fullname" class="form-label">Full name</label>
+	<label for="fullname" class="form-label">Group's full name</label>
     <input name="fullname" type="text" id="fullname" class="form-control"
      placeholder="Name (defaults to the short name)" value="<%= $group->fullname ||'' %>"
      aria-describedby="full_explain" />
@@ -107,14 +107,14 @@
   <div>
 	<label for="email" class="form-label">Email</label>
     <input name="email" type="email" id="email" class="form-control" placeholder="Defaults to email-address of Account"
-	  value="<%= $group->emailOther || '' %>" aria-describedby="email_explain" />
+	  value="<%= $group->email || '' %>" aria-describedby="email_explain" />
     <div id="email_explain" class="form-text">When you specify an email-address here, you will be asked to validate it.</div>
   </div>
 
   <div>
    <label for="phone" class="form-label">Phone number</label>
    <input name="phone" type="text" id="phone" class="form-control" placeholder="Defaults to phone-number of Account"
-     value="<%= $group->phoneOther || '' %>" aria-describedby="phone-explain" />
+     value="<%= $group->phone || '' %>" aria-describedby="phone-explain" />
    <div id="phone_explain" class="form-text">Use the international phone-number notation, like <tt>+31 ...</tt></div>
   </div>
 
@@ -147,13 +147,6 @@
 % ];
 
 % my $members_form = begin
-
-  <div>
-	<label for="identity" class="form-label">Your Group Membership</label>
-%  my $selected = $group->hasMemberFrom($account) || $account->preferredIdentity->identityId;
-%= include 'shared/_identities', account => $account, selected => $selected;
-	<div id="identity_explain" class="form-text">Which of your personal Identities is member?</div>
-  </div>
 
 % if($is_new) {
   <div class="alert alert-info" role="alert">

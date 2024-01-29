@@ -6,9 +6,9 @@ use Log::Report 'open-console-owner';
 use Scalar::Util qw(blessed);
 use List::Util   qw(first);
 
-use OwnerConsole::Util  qw(bson2datetime);
-
-use constant GROUP_SCHEMA => '20240112';
+use constant
+{	GROUP_SCHEMA => '20240112',
+};
 
 =section DESCRIPTION
 
@@ -19,18 +19,22 @@ sub create($%)
 {	my ($class, $account, %args) = @_;
 
 	my %insert  = (
-		groupid  => 'new',
-		schema   => GROUP_SCHEMA,
-		userid   => $account->userId,
-		language => $account->preferredLanguage,
-
+		groupid     => 'new',
+		schema      => GROUP_SCHEMA,
+		language    => $account->preferredLanguage,
+		timezone    => $account->timezone || 'GMT',
 		members     => [],
-		invitations => [], 
 	);
 
 	my $self = $class->SUPER::create(\%insert, %args);
 	$self->addMember($account);
 	$self;
+}
+
+sub fromDB($)
+{	my ($class, $data) = @_;
+	$data->{timezone} ||= 'GMT';   #XXX remove at next restart of the db
+	$class->SUPER::fromDB($data);
 }
 
 #-------------
@@ -41,88 +45,60 @@ sub create($%)
 # method submit_group()
 
 sub groupId()    { $_[0]->_data->{groupid} }
-sub userId()     { $_[0]->_data->{userid} }
 sub schema()     { $_[0]->_data->{schema} }
 
-sub name()       { $_[0]->_data->{name} }
-sub fullname()   { $_[0]->_data->{fullname} }
-sub timezone()   { $_[0]->_data->{timezone} }
-sub department() { $_[0]->_data->{department} }
 sub country()    { $_[0]->_data->{country} }
-sub organization() { $_[0]->_data->{organization} }
+sub department() { $_[0]->_data->{department} }
+sub email()      { $_[0]->_data->{email} }
+sub fullname()   { $_[0]->_data->{fullname} }
 sub language()   { $_[0]->_data->{language} }
+sub members()    { @{$_[0]->_data->{members}} }   # HASH
+sub name()       { $_[0]->_data->{name} }
+sub organization() { $_[0]->_data->{organization} }
+sub phone()      { $_[0]->_data->{phone} }
 sub postal()     { $_[0]->_data->{postal} }
-sub members()    { @{$_[0]->_data->{members}     ||= []} }   # HASH
-sub invitations  { @{$_[0]->_data->{invitations} ||= []} }   # HASH
-
-sub emailOther() { $_[0]->_data->{email} }     # Usually, the code want to get the default
-sub phoneOther() { $_[0]->_data->{phone} }
-
-sub email()      { $_[0]->emailOther // $_[0]->account->email }
-sub phone()      { $_[0]->phoneOther // $_[0]->account->phone }
+sub timezone()   { $_[0]->_data->{timezone} }
 sub link()       { '/dashboard/group/' . $_[0]->groupId }
 
 #-------------
 =section Invited Members
-
-Structure: ARRAY of
-
-   { email     => $email,
-     invited   => date,
-     expires   => date,
-     token     => $secret
-   }
-
 =cut
 
-sub inviteMember($%)
-{	my ($self, $email, %args) = @_;
-	my $now        = time;
-	my $expiration = $args{expiration} // 86400;
-
-	my $invitation = +{
-		email    => $email,
-		invited  => Mango::BSON::Time->new($now * 1000),
-		expires  => Mango::BSON::Time->new(($now + $expiration) * 1000),
-		token    => $::app->newUnique,
-	};
-	push @{$self->_data->{invitations}}, $invitation;
-	$self->_invitation($invitation);
+sub inviteMember($$%)
+{	my ($self, $identity, $email, %args) = @_;
+	my $invite  = OwnerConsole::Group::Invite->create($identity, $self, $email);
+	$::app->batch->saveInvite($invite);
+	$invite;
 }
 
-sub _invitation($)
-{	my $tz     = $_[0]->user->timezone;
-	my %invite = %{$_[1]};
-	$invite{invited} = bson2datetime $invite{invited}, $tz;
-	$invite{expires} = bson2datetime $invite{expires}, $tz;
-	\%invite;
+sub invite($)
+{	my ($self, $token) = @_;
+	defined $token or return ();
+	first { lc($_->token) eq lc($token) } $self->invites;
 }
 
-sub invitation($)
-{	my ($self, $email) = @_;
-	defined $email or return ();
-
-	my $invite = first { lc($_->{email}) eq lc($email) } $self->invitations;
-warn "INVITE $email $invite";
-	$invite ? $self->_invitation($invite) : undef;
+sub invites()
+{	my $self = shift;
+	$self->{OG_invites} ||= [ $::app->batch->invitesForGroup($self) ];
+	@{$self->{OG_invites}};
 }
 
-sub extendInvitation($$)
-{	my ($self, $email, $seconds) = @_;
-	my $invitation = first { lc($_->{email}) eq lc($email) } $self->invitations or return;
-
-	my $expires = time + $seconds;
-	$invitation->{expires} = Mango::BSON::Time->new($expires * 1000);
-	$self->_invitation($invitation);
+sub extendInvitation($)
+{	my ($self, $token) = @_;
+	my $invite = $self->invite($token) or return;
+	$invite->extend;
+	$invite->save;
 }
 
 sub removeInvitation($)
-{	my ($self, $email) = @_;
-	$self->_data->{invitations} = [ grep { $_->{email} ne $email } $self->invitations ];
-	$email;
-}
+{	my ($self, $token) = @_;
+	delete $self->{OG_invites};
+	my $invite = $self->invite($token) or return 1;
+	return 0 if $invite->state eq 'spam';
 
-sub allInvitations() { map $_[0]->_invitation($_), $_[0]->invitations }
+	$::app->batch->removeInvite($token);
+	1;
+}
 
 #-------------
 =section Accepted Members
@@ -215,10 +191,41 @@ sub allMembers(%)
 sub hasMemberFrom($)
 {	my ($self, $account) = @_;
 	my %ids  = map +($_->identityId => 1), $account->identities;
-use Data::Dumper;
-warn "HAS MEMBER: ", Dumper \%ids, $self->_data;
     my $data = first { $ids{$_->{identid}} } $self->members;
     defined $data ? $self->_import_member($data) : undef;
+}
+
+sub memberIdentityOf($)
+{	my ($self, $account) = @_;
+	my %memids = map +($_->{identid} => $_), $self->members;
+	first { exists $memids{$_->identityId}} $account->identities;
+}
+
+sub changeIdentity($$)
+{	my ($self, $account, $identity) = @_;
+	my $identid = blessed $identity ? $identity->identityId : $identity;
+	my %memids  = map +($_->{identid} => $_), $self->members;
+	foreach my $identity ($account->identities)
+	{	my $had = $memids{$identity->identityId} or next;
+		$had->{identid} = $identid;
+	}
+	1;
+}
+
+sub findMemberWithEmail($)
+{	my ($self, $email) = @_;
+
+	#TODO probably we should look through the other identities of
+	#TODO the member, to see whether someone has used that one to
+    #TODO link.  On the other hand, the invitee can flag this as well.
+
+	foreach my $member ($self->allMembers(get_identities => 1))
+	{
+		my $identity = $member->{identity};
+		return $identity if $identity->email eq $email;
+	}
+
+	undef;
 }
 
 #-------------

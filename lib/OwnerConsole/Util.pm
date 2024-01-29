@@ -5,15 +5,17 @@ use Email::Valid  ();
 use List::Util    qw(first);
 use DateTime      ();
 
-use OwnerConsole::Tables     qw(language_name gender_name timezone_names);
+use OwnerConsole::Tables     qw(language_name gender_name timezone_names country_name);
 
 my @is_valid = qw(
-	is_valid_gender
-	is_valid_email
-	is_valid_phone
-	is_valid_language
-	is_valid_timezone
+	is_valid_country
 	is_valid_date
+	is_valid_email
+	is_valid_gender
+	is_valid_language
+	is_valid_phone
+	is_valid_timezone
+
 );
 
 our @EXPORT_OK = (@is_valid, qw(
@@ -41,6 +43,7 @@ sub val_text($)
 	$text =~ s/\s{2,}/ /gr =~ s/ $//gmr =~ s/\n{2,}/\n/gr;
 }
 
+sub is_valid_country($)  { defined country_name($_[0]) }
 sub is_valid_gender($)   { defined gender_name($_[0]) }
 sub is_valid_language($) { defined language_name($_[0]) }
 sub is_valid_timezone($) { defined first { $_ eq $_[0] } @{timezone_names()} }
@@ -50,9 +53,8 @@ sub is_valid_phone($)    { $_[0] =~ m!^\+[0-9 \-]{4,}(?:/.+)?! }
 sub is_valid_date($)     { $_[0] =~ s! ^\s* ([0-9]{4}) (?:[-/ ]?) ([0-9]{2}) (?:[-/ ]?)? ([0-9]{2}) \s*$ !$1-$2-$3!r }
 
 sub bson2datetime($$)
-{	my $stamp = shift or return;
-	my $tz    = shift;
-	DateTime->from_epoch(epoch => $stamp->to_epoch)->set_time_zone($tz);
+{	my ($stamp, $tz) = @_;
+	$stamp ? DateTime->from_epoch(epoch => $stamp->to_epoch)->set_time_zone($tz) : undef;
 }
 
 1;

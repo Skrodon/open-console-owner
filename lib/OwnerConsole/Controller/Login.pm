@@ -31,7 +31,7 @@ sub tryLogin()
 	}
 
 	$self->login($account);
-	$self->redirect_to('/dashboard');
+	$self->redirect_to($self->session('after_login') // '/dashboard');
 }
 
 sub login($)
@@ -47,7 +47,10 @@ sub mustBeLoggedIn($)
 {	my $self = shift;
 	return 1 if $self->session('is_auth');
 
-	$self->notify(error => "You are not logged in, please login to access this.");
+	my $target = $self->req->url;
+	$self->session(after_login => "$target")
+		unless $target =~ m!/login*!;
+
 	$self->redirect_to('/login');
 	undef;
 }
@@ -99,19 +102,14 @@ sub submitResetPassword()
 	my $vhost   = $self->config('vhost');
 	$self->stash(link => "$vhost/reset?user=$email&token=$token");
 
-	my $config  = $self->config('email');
-	my $task    = OwnerConsole::Email->create(
-		subject => 'Password reset requested',
+	OwnerConsole::Email->create(
+		subject => __x"Password reset requested",
        	text    => $self->render_to_string('login/mail_reset', format => 'txt'),
        	html    => $self->render_to_string('login/mail_reset', format => 'html'),
        	sender  => undef,
        	sendto  => $email,
        	purpose => 'password reset',
-       	state   => 'start',
-   	);
-
-#XXX move this to minion
-	$task->buildMessage($config)->send(to => $task->sendTo);
+   	)->queueEmail;
 
 	$self->notify(info => __x"Password reset procedure started: await an email.");
 	$self->startResetPassword;
@@ -174,7 +172,8 @@ sub tryRegister()
 		email    => $email,
 		password => $password,
 		iflang   => $self->language,
-	 });
+	});
+	my $name = $account =~ s/\@.*//r;
 
 	$self->login($account);
 	$self->redirect_to('/dashboard');

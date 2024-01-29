@@ -8,20 +8,20 @@
     <tbody>
 
 % my $seq = 'inv000';
-% my @invitations = $group->allInvitations;
-% foreach my $invitation (@invitations) {
+% my @invites = $group->invites;
+% foreach my $invite (@invites) {
 %    $seq++;
-%    my $email = $invitation->{email};
-%    my $has_expired = 1; # $invitation->{expires} < $now;
+%    my $email = $invite->email;
 
       <tr><td><%= $email %></td>
+          <td><%= $invite->stateName %></td>
           <td><a href="#" for="<%= $seq %>"><i class="fa-solid fa-pen"></i></a></td>
           <td>
-% if($has_expired) {
-             <span class="badge badge-pill badge-danger">Expired</span>
+% if($invite->hasExpired) {
+             <span class="badge badge-pill badge-warning">Expired</span>
 % }
 
-  <div class="manage_invitation modal" id="<%= $seq %>" data-email="<%= $email %>" style="display: none;">
+  <div class="manage_invitation modal" id="<%= $seq %>" data-email="<%= $email %>" data-token="<%= $invite->token %>" style="display: none;">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -31,7 +31,7 @@
           </button>
         </div>
         <div class="modal-body">
-% if($has_expired) {
+% if($invite->hasExpired) {
           <div class="alert alert-danger" role="alert">
 			This invitation has expired.  When you resend the initation, it will revive again.
           </div>
@@ -39,13 +39,26 @@
           <p>Group membership invitation:
           <table class="table">
           <tr><td>sent to</td><td><tt><%= $email %></tt></td></tr>
-          <tr><td>created</td><td><tt><%= $invitation->{invited} %></tt></td></tr>
-          <tr><td>expires</td><td><tt><%= $invitation->{expires} %></tt></td></tr>
+          <tr><td>created</td><td><%= $invite->invited->stringify %></td></tr>
+          <tr><td>expires</td><td><%= $invite->expires->stringify %></td></tr>
+          <tr><td>status </td><td><%= $invite->stateName %></td></tr>
+% if($c->user->isAdmin) {
+          <tr class="admin"><td>token</td><td><%= $invite->token %></td></tr>
+% }
           </table>
         </div>
         <div class="modal-footer">
+% my $state = $invite->state;
+% if($state eq 'start') {
           <button id="resend_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-share-from-square"></i> Resend invitation</button>
+% }
+% if($state ne 'spam') {
           <button id="remove_button" type="button" class="btn btn-danger"><i class="fa-solid fa-xmark"></i> Cancel invitation</button>
+% } else {
+          <br />
+          <p>You have to wait until the invite gets cleaned-up.  You may also contact the invitee to convince her/him
+          this is not spam.</p>
+% }
         </div>
       </div>
     </div>
@@ -53,7 +66,7 @@
 
           </td></tr>
 % }
-% unless(@invitations) {
+% unless(@invites) {
       <tr><td colspan="3">There are no pending older invitations.</td></tr>
 % }
       <tr class="table-light">

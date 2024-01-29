@@ -1,0 +1,78 @@
+% layout 'outsider';    #!!! <--- person may not be logged-in
+% title 'Invitation Chooser';
+
+% my $group    = $invite->invitedTo;
+% my $identity = $invite->invitedBy;
+
+<style>
+DIV.addrblock { padding-left: 3em; padding-bottom: 5ex; }
+</style>
+
+  <h1>Invitation Received</h1>
+
+  <p>You have received an invitation to join a Group.  Do you want to join?</p>
+
+<div class="container">
+  <div class="row">
+    <div class="card" id="show-invite" style="width: 45%">
+      <h5 class="card-header">The Invitation</h5>
+      <div class="card-body">
+
+<p>The invitation was send to you by:</p>
+<div class="addrblock">
+  <%= $identity->nameInGroup %><br />
+  <a href="mailto:<%= $identity->email %>"><%= $identity->email %></a><br />
+% if(my $phone = $identity->phone) {
+  Phone: <%= $phone %><br />
+% }
+% if(my $postal = $identity->postal) {
+  &nbsp;<br />
+  Postal: <%= $postal =~ s!\n!<br />\n!gr %>
+% }
+</div>
+
+<p>The invitation is for group:</p>
+<div class="addrblock">
+  <%= $group->fullname // $group->name %><br />
+% if(my $orga = $group->organization) {
+  <%= $orga %><br />
+% }
+% if(my $dept = $group->department) {
+  <%= $dept %><br />
+% }
+% if(my $phone  = $group->phone) {
+  <%= $phone %><br />
+% }
+% if(my $postal = $group->postal) {
+  &nbsp;<br />
+  Postal: <%= $postal =~ s!\n!<br />\n!gr %>
+% }
+
+</div>
+
+      </div>
+    </div>
+
+    <div class="card" id="invite-accept" style="width: 45%">
+      <h5 class="card-header">Your options</h5>
+      <div class="card-body">
+
+<h5>You do not want to join?</h5>
+<p><a href="?ignore" class="btn btn-info"><i class="fa-solid fa-house" aria-hidden="true"></i> ignore </a>
+<a href="?reject" class="btn btn-warning"><i class="fa fa-times" aria-hidden="true"></i> reject </a>
+<a href="?spam" class="btn btn-danger"><i class="fa fa-skull" aria-hidden="true"></i> report as spam</a></p>
+&nbsp;<br />
+&nbsp;<br />
+
+<h5>You do want to join!</h5>
+
+<p>Are you already participating in Open Console?  Of that's not the case, please
+<a href="/login/register" class="btn btn-secondary" target="_blank"><i class="fa-regular fa-address-card"></i> Register first</a></p>
+
+<p>If you are registered and willing to join the group, please confirm here:
+<a href="/dashboard/accept_invite" class="btn btn-success" target="_blank"><i class="fa-solid fa-check"></i> Proceed</a></p>
+
+      </div>
+    </div>
+  </div>
+</div>

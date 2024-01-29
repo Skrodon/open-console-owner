@@ -158,7 +158,8 @@ sub allGroups()
 
 sub groupsUsingIdentity($)
 {	my ($self, $identity) = @_;
-	map OwnerConsole::Group->fromDB($_), $self->groups->find({identid => $identity->identId});
+	my $groups = $self->groups->find({identid => $identity->identityId})->all;
+	map OwnerConsole::Group->fromDB($_), @$groups;
 }
 
 1;

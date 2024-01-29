@@ -84,7 +84,7 @@
   <div>
 	<label for="email" class="form-label">Email</label>
     <input name="email" type="email" id="email" class="form-control" placeholder="Defaults to email-address of Account"
-	  value="<%= $identity->emailOther || '' %>" aria-describedby="email_explain" />
+	  value="<%= $identity->email || '' %>" aria-describedby="email_explain" />
     <div id="email_explain" class="form-text">When you specify a different email-address here, you will be asked to validate it.</div>
   </div>
 
@@ -147,7 +147,7 @@
   <div>
    <label for="phone" class="form-label">Phone number</label>
    <input name="phone" type="text" id="phone" class="form-control" placeholder="Defaults to phone-number of Account"
-     value="<%= $identity->phoneOther || '' %>" aria-describedby="phone-explain" />
+     value="<%= $identity->phone || '' %>" aria-describedby="phone-explain" />
    <div id="phone_explain" class="form-text">Use the international phone-number notation, like <tt>+31 ...</tt></div>
   </div>
 

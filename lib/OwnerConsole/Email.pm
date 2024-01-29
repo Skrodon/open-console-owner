@@ -32,13 +32,11 @@ sub create($%)
 		related  => $args{related} // [],
 		sendto   => $to,
 		purpose  => $args{purpose} // (panic "No purpose"),
-		state    => $args{state}   // (panic "No state"),
+		state    => 'created',
 		text     => $args{text}->to_string,
 		html     => $args{html}->to_string,
 	);
 
-use Data::Dumper;
-warn "CREATE=", Dumper \%insert;
 	$class->SUPER::create(\%insert, %args);
 }
 
@@ -56,13 +54,23 @@ sub state()      { $_[0]->_data->{state} }
 sub text()       { $_[0]->_data->{text} }
 sub html()       { $_[0]->_data->{html} }
 
+sub sender() { $::app->users->user($_[0]->senderId) }
+sub queue()  { $::app->batch->queueEmail($_[0]) }
+
 #-------------
-=section Action
+=section Task for Minion
+
+The Minion has all the time in the world to compose and send the
+email, not delaying the user's website experience.
 =cut
 
-sub sender() { $::app->users->user($_[0]->senderId) }
-
 my $CRLF = "\x0D\x0A";
+
+sub send()
+{	my $self   = shift;
+	my $config = $::app->config->{email} || {};
+	$self->buildMessage($config)->send(to => $self->sendTo);
+}
 
 sub buildMessage($)
 {	my ($self, $config) = @_;
@@ -94,5 +102,10 @@ __PREAMBLE
 		Subject => $config->{subject_prefix} . $self->subject,
 	);
 }
+
+#-------------
+=section Action
+=cut
+
 
 1;

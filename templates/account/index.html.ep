@@ -85,7 +85,7 @@
     </tbody>
     </table>
 
-    <select name="language_list" id="language_list" class="form-select search-select">
+    <select id="language_list" class="form-select search-select">
     <option value="">&mdash; select addition languages &mdash;</option>
 % foreach my $lang (@{language_table()}) {
 %   my ($code, $name) = @$lang;
