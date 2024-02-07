@@ -153,6 +153,29 @@ FORM.config-form #form-summary TH {
 	padding: 3px;
 }	
 
+/* https://observablehq.com/@rkaravia/css-trick-tabs-with-consistent-height */
+FORM.config-form .tab-content {
+	display: flex;
+}
+
+FORM.config-form .tab-content > .tab-pane {
+	display: block;      /* undo "display: none;" Everything gets rendered */
+	visibility: hidden;
+	margin-right: -100%;
+	width: 100%;
+}
+
+FORM.config-form .tab-content > .active {
+	visibility: visible;
+}
+
+FORM.config-form .container,
+FORM.config-form .row {
+	height: 100%;
+}
+
+/* END height trick */
+
 FORM LABEL.has-changed {
 	padding: 0 10px;
 	background-color: rgba(var(--bs-info-rgb));
@@ -167,6 +190,7 @@ FIELDSET.history {
 	padding: 20px;
 	position: relative;
 }
+
 FIELDSET.history LEGEND {
 	font-size: 1rem;
 	position: absolute;
@@ -179,3 +203,4 @@ FIELDSET.history LEGEND {
 	background-color: rgba(var(--bs-info-rgb));
 	border-radius: 1ex;
 }
+

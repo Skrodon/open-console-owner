@@ -61,7 +61,7 @@
 
 % my $locale_form = begin
 
-  <div class="container">
+  <div>
     <label for="languages" class="form-label">Languages you can read</label>
     <table id="langtab" class="table table-hover table-striped table-bordered mt-3">
     <thead>
@@ -94,7 +94,6 @@
     </select>
     <input id="ordered_lang" type="hidden" name="languages">
     <div id="lang_explain" class="form-text">Drag the languages in the right order, them from best to worst.</div>
-
   </div>
 
   <div>
