@@ -5,7 +5,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="card" id="config_card" style="width: 45%">
+    <div class="card" id="config-card" style="width: 45%">
       <h5 class="card-header">Continue configuration</h5>
       <div class="card-body">
 
@@ -40,7 +40,7 @@
       </div>
     </div>
 
-    <div class="card" id="config_card" style="width: 45%">
+    <div class="card" id="config-card" style="width: 45%">
       <h5 class="card-header">Explain configuration</h5>
       <div class="card-body">
 

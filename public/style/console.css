@@ -96,59 +96,60 @@ LABEL.form-label {
 	font-weight: bold;
  }
 
-FORM#config_account  #account-delete-tab,
-FORM#config_identity #identity-delete-tab,
-FORM#config_group	 #group-delete-tab
+FORM#config-account  #account-delete-tab,
+FORM#config-identity #identity-delete-tab,
+FORM#config-group	 #group-delete-tab
 {	color: rgba(var(--bs-danger-rgb));
 }
 
-FORM#config_account #account-delete-tab.active,
-FORM#config_idenity #identity-delete-tab.active
+FORM#config-account #account-delete-tab.active,
+FORM#config-idenity #identity-delete-tab.active,
+FORM#config-group   #group-delete-tab.active,
 {	color: white;
 	background-color: red;
 }
 
-FORM#config_account TABLE#langtab.table-hover TBODY TR:hover {
+FORM#config-account TABLE#langtab.table-hover TBODY TR:hover {
 	background-color: #e0e0e0;
 }
 
-FORM.config_form #save_button {
+FORM.config-form #save_button {
 	margin-bottom: 1ex;
 }
 
-FORM.config_form #save_button.bg-danger:hover {
+FORM.config-form #save_button.bg-danger:hover {
 	background-color: white !important;
 	color: var(--bs-nav-pills-link-active-bg);
 }
 
-FORM.config_form #save_button.bg-success {
+FORM.config-form #save_button.bg-success {
 	color: white !important;
 }
 
-FORM.config_form #save_button.bg-success:hover {
+FORM.config-form #save_button.bg-success:hover {
 	background-color: var(--bs-nav-pills-link-active-bg) !important;
 }
 
-FORM.config_form #cancel_button.bg-success {
+FORM.config-form #cancel_button.bg-success {
 	color: white !important;
 }
 
-FORM.config_form #cancel_button.bg-success:hover {
+FORM.config-form #cancel_button.bg-success:hover {
 	background-color: blue !important;
 }
 
-FORM.config_form DIV.row > DIV {
+FORM.config-form DIV.row > DIV {
 	border-left: 1px solid;
 	border-color: #0d6efd;
 }
 
-FORM.config_form DIV#form-summary {
+FORM.config-form DIV#form-summary {
 	max-width: 15rem;
 	margin-top: 2ex;
 }
 
-FORM.config_form #form-summary TD,
-FORM.config_form #form-summary TH {
+FORM.config-form #form-summary TD,
+FORM.config-form #form-summary TH {
 	padding: 3px;
 }	
 

@@ -1,4 +1,5 @@
 % layout 'mail';
+% title "Invitation to take part in group";
 % my $vhost  = $c->config('vhost');
 
 --> Invitation to take part in group: <%= $group->fullname || $group->name %>

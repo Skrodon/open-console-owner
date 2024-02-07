@@ -194,7 +194,7 @@ use Data::Dumper;
 }
 
 #!!! Outside, so no $account
-sub invite_choice()
+sub inviteChoice()
 {	my $self   = shift;
 	my $token  = $self->param('token');
 	my $invite = $::app->batch->invite($token)
@@ -214,7 +214,7 @@ sub invite_choice()
 	{	$invite->changeState('spam');
 		$self->notify(warning => __x"You expressed you did not like to receive this invitation.  The statement will hinder the sender inviting new members for some time.");
 	}
-	else { panic "invite_choice:$how#".length($how) }
+	else { panic "inviteChoice:$how#".length($how) }
 
     $self->render(template => 'groups/invite_choice', invite => $invite);
 }

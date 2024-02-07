@@ -188,5 +188,5 @@ function install_config_form(form) {
 };
 
 $(document).ready(function() {
-	$('form.config_form').each( function () { install_config_form($(this)) } );
+	$('form.config-form').each( function () { install_config_form($(this)) } );
 });

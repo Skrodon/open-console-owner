@@ -1,5 +1,5 @@
 function send_instruction(form, data, groupid, how, success) {
-    var action = '/dashboard/config_member/' + groupid + '?' + how;
+    var action = '/dashboard/config-member/' + groupid + '?' + how;
 	/* Handled in OwnerConsole::Controller::Groups::configMember() */
 
     $.ajax({
@@ -77,7 +77,7 @@ function activate_invite_add(form) {
 }
 
 $(document).ready(function() {
-	$("form#config_group").map(function () {
+	$("form#config-group").map(function () {
 		var form = $(this);
 		$(".manage_invitation", form).each(function () { activate_invitation_modal( $(this), form ) });
 		activate_delete_button(form);

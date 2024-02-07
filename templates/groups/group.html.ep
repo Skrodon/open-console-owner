@@ -271,7 +271,7 @@ which Identity that user will use.</p>
 % ] unless $is_new;
 
 <script src="/assets/group.js"></script>
-<form id="config_group" class="config_form">
+<form id="config-group" class="config-form">
   <input id="identifier"     type="hidden" value="<%= $group->groupId %>" />
   <input id="object_version" type="hidden" value="<%= $group->schema %>" />
 

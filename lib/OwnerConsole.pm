@@ -151,19 +151,19 @@ sub startup
 	$dashboard->get('/')->to('dashboard#index');
 
 	$dashboard->get('/account')->to('account#index');
-	$dashboard->post('/config_account/:userid')->to('account#submit');
+	$dashboard->post('/config-account/:userid')->to('account#submit');
 
 	$dashboard->get('/identities')->to('identities#index');
 	$dashboard->get('/identity/:identid')->to('identities#identity');
-	$dashboard->post('/config_identity/:identid')->to('identities#submit_identity');
+	$dashboard->post('/config-identity/:identid')->to('identities#submit_identity');
 
 	$dashboard->get('/groups')->to('groups#index');
 	$dashboard->get('/group/:groupid')->to('groups#group');
-	$dashboard->post('/config_group/:groupid')->to('groups#configGroup');
-	$dashboard->post('/config_member/:groupid')->to('groups#configMember');
-	$dashboard->any('/invite_accept/:token')->to('groups#inviteAccept');
+	$dashboard->post('/config-group/:groupid')->to('groups#configGroup');
+	$dashboard->post('/config-member/:groupid')->to('groups#configMember');
+	$dashboard->any('/invite-accept/:token')->to('groups#inviteAccept');
 
-	$r->get('/invite/:token')->to('groups#invite_choice');
+	$r->get('/invite/:token')->to('groups#inviteChoice');
 }
 
 1;

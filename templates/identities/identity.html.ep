@@ -89,7 +89,9 @@
   </div>
 
   <div>
+	<label for="gender" class="form-label">Gender</label>
 %= include 'shared/_gender', gender => $identity->gender;
+    <div id="gender_explain" class="form-text">The gender you want to express in this identity.</div>
   </div>
 
   <div>
@@ -242,7 +244,7 @@
 %    $delete_explain,
 % ] unless $is_new;
 
-<form id="config_identity" class="config_form">
+<form id="config-identity" class="config-form">
   <input id="identifier"     type="hidden" value="<%= $identity->identityId %>" />
   <input id="object_version" type="hidden" value="<%= $identity->schema %>" />
 
