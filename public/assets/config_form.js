@@ -84,8 +84,8 @@ function update_form_status(form) {
         sum_warns  += warns;
 	})
 
-	var save   = $('#save_button', form);
-	var cancel = $('#cancel_button', form);
+	var save   = $('#save-button', form);
+	var cancel = $('#cancel-button', form);
 	save.removeClass('bg-danger').removeClass('bg-success');
 
 	var history = $('#form-summary', form);

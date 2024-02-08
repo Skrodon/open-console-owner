@@ -225,9 +225,6 @@ which Identity that user will use.</p>
 
   <h5>Delete Group?</h5>
 
-  <p>When you delete one of your Identities, all related proofs will be
-  "unbound": they can be moved to other identities later.</p>
-
   <button type="submit" id="delete_button" class="btn btn-danger">
   Delete this group <i class="fa fa-skull" aria-hidden="true"></i>
   </button>
@@ -256,12 +253,7 @@ which Identity that user will use.</p>
 
  <p>When you decide to <strong style="background-color: red; color: white">&nbsp;delete
  an group&nbsp;</strong>, then <strong>Proofs</strong> related to this
- group will not disappear: you can assign them to other Identities
- or Group Identities later.</p>
-
- <p>However: when your Group is part of a <strong>Group</strong>, then you loose access
- to the proofs assigned to that Group <em>unless</em> you are the last member of that
- Group.</p>
+ group will be reassigned to your identity.</p>
 
 % end
 

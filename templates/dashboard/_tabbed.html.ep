@@ -23,10 +23,11 @@
 
     <br />&nbsp;
     <br />&nbsp;
-    <button type="submit" id="save_button"   class="btn btn-outline-primary" data-toggle="tooltip" data-placement="bottom">
-       Save
+    <button type="submit" id="save-button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="When there are errors, you will not be able to save this form, to avoid inconsistent data">
+       <i class="fa-solid fa-floppy-disk"></i> Save
     </button>
-    <button type="submit" id="cancel_button" class="btn btn-outline-primary bg-success">Cancel</button>
+    <button type="submit" id="cancel-button" class="btn btn-outline-primary bg-success">
+       <i class="fa-solid fa-xmark"></i> Cancel</button>
 
     <div id="cancel_without_saving" class="modal" style="display: none">
       <div class="modal-dialog">
@@ -46,7 +47,6 @@
     </div>
 
     <div id="form-summary">
-      <p>When there are errors, you will not be able to save this form, to avoid inconsistent data.</p>
       <table>
       <tr><td><span id="sum_errors" class="badge rounded-pill bg-danger  show_errors">0</span></td><td>errors</td></tr>
       <tr><td><span id="sum_warns"  class="badge rounded-pill bg-warning show_warns">0</span></td><td>warnings</td></tr>

@@ -30,4 +30,7 @@ $(document).ready(function() {
 		var alert = $(this);
 		$('.close', alert).on('click', function () { alert.hide() });
 	});
+
+	// enable tooltips
+	$('[data-bs-toggle="tooltip"]').tooltip();
 });

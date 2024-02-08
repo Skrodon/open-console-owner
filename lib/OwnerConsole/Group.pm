@@ -217,9 +217,6 @@ sub changeIdentity($$)
 
 sub memberIsAdmin($)
 {	my ($self, $account) = @_;
-use Data::Dumper;
-warn "HASMEM=", Dumper $self->hasMemberFrom($account);
-warn "MEMBER=", Dumper [ $self->members ];
 	my $member = $self->hasMemberFrom($account) or return 0;
 	$member->{is_admin};
 }

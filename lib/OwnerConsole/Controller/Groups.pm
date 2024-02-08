@@ -44,7 +44,7 @@ sub configGroup($)
 			or error __x"Tried to access group '{id}'.", id => $id;
 	}
 
-    $group->memberIsAdmin($account)
+    $id eq 'new' || $group->memberIsAdmin($account)
 		or error __x"Tried to modify group '{id}', not being admin.", id => $id;
 
 	if($how eq 'delete') {
@@ -126,9 +126,6 @@ sub configMember()
 
 	my $req     = $self->req;
 	my $how     = $req->url->query;
-
-use Data::Dumper;
-#warn "INVITE QUERY=$how";
 
 	my $account  = $self->account;
 	my $id       = $self->param('groupid');
