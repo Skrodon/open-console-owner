@@ -33,7 +33,8 @@ sub create($%)
 
 sub fromDB($)
 {	my ($class, $data) = @_;
-	$data->{timezone} ||= 'GMT';   #XXX remove at next restart of the db
+	$data->{timezone}   ||= 'GMT';   #XXX remove at next restart of the db
+	$data->{members}[0]{is_admin} = 1;   #XXX remove at next restart of the db
 	$class->SUPER::fromDB($data);
 }
 
@@ -52,7 +53,7 @@ sub department() { $_[0]->_data->{department} }
 sub email()      { $_[0]->_data->{email} }
 sub fullname()   { $_[0]->_data->{fullname} }
 sub language()   { $_[0]->_data->{language} }
-sub members()    { @{$_[0]->_data->{members}} }   # HASH
+sub members()    { @{$_[0]->_data->{members}} }   # HASHes
 sub name()       { $_[0]->_data->{name} }
 sub organization() { $_[0]->_data->{organization} }
 sub phone()      { $_[0]->_data->{phone} }
@@ -125,9 +126,11 @@ sub addMember($$)
         }
 	}
 	else
-	{	push @{$self->_data->{members}}, +{
+	{	my $members = $self->_data->{members};
+		push @$members, +{
 			identid  => $id,
 			accepted => Mango::BSON::Time->new,
+			is_admin => @$members ? 0 : 1,
 		};
 	}
 	$self->log("Added identity $id of account $aid to group $gid.");
@@ -180,7 +183,7 @@ sub allMembers(%)
 	}
 
 	# There must be at least one admin left
-	unless(grep $_->{is_admin}, @members)
+	if(@members && ! grep $_->{is_admin}, @members)
 	{	$members[0]->{is_admin} = 1;
 		$self->log("Member ". $members[0]->{identid} ." in group $gid promoted to admin.");
 	}
@@ -212,6 +215,15 @@ sub changeIdentity($$)
 	1;
 }
 
+sub memberIsAdmin($)
+{	my ($self, $account) = @_;
+use Data::Dumper;
+warn "HASMEM=", Dumper $self->hasMemberFrom($account);
+warn "MEMBER=", Dumper [ $self->members ];
+	my $member = $self->hasMemberFrom($account) or return 0;
+	$member->{is_admin};
+}
+
 sub findMemberWithEmail($)
 {	my ($self, $email) = @_;
 
@@ -220,8 +232,7 @@ sub findMemberWithEmail($)
     #TODO link.  On the other hand, the invitee can flag this as well.
 
 	foreach my $member ($self->allMembers(get_identities => 1))
-	{
-		my $identity = $member->{identity};
+	{	my $identity = $member->{identity};
 		return $identity if $identity->email eq $email;
 	}
 

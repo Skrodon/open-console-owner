@@ -6,6 +6,7 @@
 %#   <p class="admin">IdentID = <%= $group->groupId %></p>
 % }
 % my $account = $c->account;
+% my $is_group_admin = $is_new || $group->memberIsAdmin($account);
 
 % my @pages;
 % my $group_form = begin
@@ -185,7 +186,8 @@ members. When you have the <strong>Rights</strong>, then you can invite
 people by sending them an email. You have no control over which Identity
 that person will present.</p>
 
-<p>The administrator (<i class="fa-solid fa-user-tie"></i>) can add members.</p>
+<p>Only the administrator (<i class="fa-solid fa-user-tie"></i>) can
+modify the information about the group, and invite new members.</p>
 
 % end
 
@@ -217,7 +219,7 @@ which Identity that user will use.</p>
 %    'Invitations',
 %    $invite_form,
 %    $invite_explain,
-% ] unless $is_new;
+% ] if ! $is_new && $is_group_admin;
 
 % my $delete_form = begin
 
@@ -268,12 +270,13 @@ which Identity that user will use.</p>
 %    'Delete',
 %    $delete_form,
 %    $delete_explain,
-% ] unless $is_new;
+% ] if ! $is_new && $is_group_admin;
 
 <script src="/assets/group.js"></script>
 <form id="config-group" class="config-form">
   <input id="identifier"     type="hidden" value="<%= $group->groupId %>" />
-  <input id="object_version" type="hidden" value="<%= $group->schema %>" />
+  <input id="object_version" type="hidden" value="<%= $group->schema %>"  />
+  <input id="is_group_admin" type="hidden" value="<%= $is_group_admin ? 1 : 0 %>" />
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('group-tabs' => \@pages);

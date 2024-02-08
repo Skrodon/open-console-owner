@@ -16,10 +16,10 @@
   </thead>
   <tbody>
 % foreach my $identity ($account->identities) {
-    <tr><td><%= $identity->role %></td><td><a href="identity/<%= $identity->identityId %>"><i class="fa-solid fa-pen"></a></i></tr>
+    <tr><td><%= $identity->role %></td><td><a href="/dashboard/identity/<%= $identity->identityId %>"><i class="fa-solid fa-pen"></a></i></tr>
 % }
     <tr class="table-light"><td>&nbsp;</td>
-        <td><a href="identity/new" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i>&nbsp;Create new Identity<a></td></tr>
+        <td><a href="/dashboard/identity/new" class="btn btn-primary"><i class="fa-solid fa-circle-plus"></i>&nbsp;Create new Identity<a></td></tr>
   </tbody>
   </table>
 </form>

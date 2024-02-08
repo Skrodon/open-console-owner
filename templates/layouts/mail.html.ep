@@ -45,7 +45,11 @@ TABLE {
 }
 
 #footer_body TD {
-	padding: 1ex 3em;
+	padding: 1ex 1em;
+}
+
+#footer_body TD A {
+	text-decoration: none;
 }
 
 #disclaimer {

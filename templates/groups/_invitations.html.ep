@@ -12,9 +12,19 @@
 % foreach my $invite (@invites) {
 %    $seq++;
 %    my $email = $invite->email;
+%    my $state = $invite->state;
+%    my $sname = $invite->stateName;
 
       <tr><td><%= $email %></td>
-          <td><%= $invite->stateName %></td>
+          <td>
+%    if($state eq 'spam') {
+              <span class="badge rounded-pill text-bg-danger"><%= $sname %></span>
+%    } elsif($state eq 'accept') {
+              <span class="badge rounded-pill text-bg-success"><%= $sname %></span>
+%    } else {
+              <%= $sname %>
+%    }
+          </td>
           <td><a href="#" for="<%= $seq %>"><i class="fa-solid fa-pen"></i></a></td>
           <td>
 % if($invite->hasExpired) {
@@ -25,7 +35,7 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Invitation</h5>
+          <h5 class="modal-title">Invitation status</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -48,16 +58,19 @@
           </table>
         </div>
         <div class="modal-footer">
-% my $state = $invite->state;
 % if($state eq 'start') {
           <button id="resend_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-share-from-square"></i> Resend invitation</button>
 % }
-% if($state ne 'spam') {
-          <button id="remove_button" type="button" class="btn btn-danger"><i class="fa-solid fa-xmark"></i> Cancel invitation</button>
-% } else {
+% if($state eq 'spam') {
           <br />
-          <p>You have to wait until the invite gets cleaned-up.  You may also contact the invitee to convince her/him
-          this is not spam.</p>
+          <p>The receiver flagged this invitation as being <strong>spam</strong>, as strongly
+          undesired. You have to wait until the invite gets cleaned-up, which can take
+          weeks after the invitation expiration.</p>
+
+          <p>You may also contact the invitee to convince her/him this is
+          not spam and revisit the invitation.</p>
+% } elsif($state ne 'accept') {
+          <button id="remove_button" type="button" class="btn btn-danger"><i class="fa-solid fa-xmark"></i> Cancel invitation</button>
 % }
         </div>
       </div>

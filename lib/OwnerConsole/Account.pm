@@ -187,7 +187,6 @@ sub addGroup($)  # by id or object
 
 	push @$groupIds, $id;
 	$self->log("Added group $id");
-	$self->save;
 
 	delete $self->{OA_groups};  # clean cache
 	$self;

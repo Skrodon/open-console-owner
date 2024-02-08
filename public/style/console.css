@@ -104,7 +104,7 @@ FORM#config-group	 #group-delete-tab
 
 FORM#config-account #account-delete-tab.active,
 FORM#config-idenity #identity-delete-tab.active,
-FORM#config-group   #group-delete-tab.active,
+FORM#config-group   #group-delete-tab.active
 {	color: white;
 	background-color: red;
 }

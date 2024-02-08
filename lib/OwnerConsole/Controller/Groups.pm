@@ -41,8 +41,11 @@ sub configGroup($)
 	}
 	else
 	{	$group = $account->group($id)
-			or error __x"Tried to access group '{id}'", id => $id;
+			or error __x"Tried to access group '{id}'.", id => $id;
 	}
+
+    $group->memberIsAdmin($account)
+		or error __x"Tried to modify group '{id}', not being admin.", id => $id;
 
 	if($how eq 'delete') {
 		$::app->users->removeGroup($group);
@@ -60,7 +63,7 @@ sub configGroup($)
 
 	my $name = $data->{name} = val_line delete $params->{name};
 	defined $name
-		or $answer->addError(name => __x"The name name is required, used in the overviews.");
+		or $answer->addError(name => __x"The group name is required, used in the overviews.");
 
 	$data->{fullname}     = val_line delete $params->{fullname};
 
@@ -71,6 +74,9 @@ sub configGroup($)
 
 	$data->{organization} = val_line delete $params->{organization};
 	$data->{department}   = val_line delete $params->{department};
+
+	$data->{country}      = is_valid_country delete $params->{country}
+		or $answer->addError(country => __x"Invalid country");
 
 	my $tz = $data->{timezone} = delete $params->{timezone};
 	! defined $tz || is_valid_timezone($tz)
@@ -86,13 +92,13 @@ sub configGroup($)
 
 	my $postal = $data->{postal} = val_text delete $params->{postal};
 
-
 warn "Unprocessed parameters: ", join ', ', sort keys %$params if keys %$params;
 
 	if($how eq 'save' && ! $answer->hasErrors)
 	{	$answer->redirect('/dashboard/groups');  # order browser to redirect
 		$group->save(by_user => 1);
 		$account->addGroup($group);
+		$account->save(by_user => 1);
 
 		$self->notify(info => __x"New group created") if $id eq 'new';
 	}
@@ -131,9 +137,22 @@ use Data::Dumper;
    	my $group    = $account->group($id);
 	my $identity = $group->memberIdentityOf($account);
 
-	if(! $group)
+	unless($group)
 	{	# or not linked to this account (anymore)
         $answer->addError(invite => __x"This group seems to have disappeared");
+    	return $self->render(json => $answer->data);
+	}
+
+	if($how eq 'change_identity')
+	{	my $identid = $params->{identid};
+		if($group->changeIdentity($account, $identid))
+		{	$group->save;  # when change is permitted
+		}
+    	return $self->render(json => $answer->data);
+	}
+
+	if(! $group->memberIsAdmin($account))
+	{	$answer->addError(invite => __x"You are not admin for this group.");
 	}
 	elsif($how eq 'invite_remove')
 	{	my $email = $params->{email};
@@ -181,12 +200,6 @@ use Data::Dumper;
 		{	$answer->addWarning(invite_emails => (__x"Missing invite for '{email}'.", email => $email));
 		}
 	}
-	elsif($how eq 'change_identity')
-	{	my $identid = $params->{identid};
-		if($group->changeIdentity($account, $identid))
-		{	$group->save;  # when change is permitted
-		}
-	}
 	else
 	{	error __x"No action '{action}' for invite.", id => $id;
 	}
@@ -221,15 +234,18 @@ sub inviteChoice()
 
 #!!! Inside, so with $account
 sub inviteAccept()
-{	my $self   = shift;
-	my $token  = $self->param('token');
-	my $invite = $::app->batch->invite($token)
+{	my $self    = shift;
+	my $token   = $self->param('token');
+	my $invite  = $::app->batch->invite($token)
 		or return $self->render(template => 'groups/invite_failed');
 
-	my $account  = $self->account;
-	if(my $identity = $account->preferredIdentity)
-	{	if(my $group    = $invite->invitedTo)
+	my $account = $self->account;
+	if(my $identity  = $account->preferredIdentity)
+	{	if(my $group = $invite->invitedTo)
 		{	$group->addMember($account, $identity);
+			$account->addGroup($group);
+			$group->save;
+			$account->save;
 			$invite->changeState('accept');
 		}
 		else
@@ -238,6 +254,7 @@ sub inviteAccept()
 	}
 	else
 	{	$self->notify(error => __x"First create an identity, then accept again.");
+		return $self->render(template => 'identities/index');
 	}
 
 	$self->render(template => 'groups/index');

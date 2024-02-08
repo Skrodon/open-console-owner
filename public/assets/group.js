@@ -76,12 +76,20 @@ function activate_invite_add(form) {
 	});
 }
 
+function only_for_admins(form) {
+	if($('#is_group_admin', form).val()==1) {
+		activate_delete_button(form);
+		activate_invite_add(form);
+	} else {
+		$(":input:not([role=tab])", form).prop('disabled', true);
+	}
+}
+
 $(document).ready(function() {
 	$("form#config-group").map(function () {
 		var form = $(this);
 		$(".manage_invitation", form).each(function () { activate_invitation_modal( $(this), form ) });
-		activate_delete_button(form);
-		activate_invite_add(form);
+		only_for_admins(form);
 	});
 
 	$("form#group_list").map(function () {
