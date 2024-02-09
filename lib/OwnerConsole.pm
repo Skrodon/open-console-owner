@@ -11,12 +11,15 @@ use List::Util  qw(first);
 
 use OwnerConsole::Model::Users  ();
 use OwnerConsole::Model::Batch  ();
+use OwnerConsole::Model::Proofs ();
 
 use OwnerConsole::Tables qw(language_name);
 
 use Log::Report 'open-console-owner';
 
 my (%dbconfig, %dbservers);
+my @databases = qw/users batch proofs/;
+
 sub dbserver($)  # server connections shared, when databases on same server
 {	my $server = $_[1] || 'mongodb://localhost:27017';
 	$dbservers{$server} ||= Mango->new($server);
@@ -32,6 +35,12 @@ sub batch()
 {	my $config = $dbconfig{batch};
 	state $e   = OwnerConsole::Model::Batch->new(db =>
 		$_[0]->dbserver($config->{server})->db($config->{dbname} || 'batch'))->upgrade;
+}
+
+sub proofs()
+{	my $config = $dbconfig{proofs};
+	state $p   = OwnerConsole::Model::Proofs->new(db =>
+		$_[0]->dbserver($config->{server})->db($config->{dbname} || 'proofs'))->upgrade;
 }
 
 sub _languageTable($)   #XXX probably better remove this
@@ -90,8 +99,7 @@ sub startup
 #	$self->plugin(Minion => { Mango => $minion->{server} });
 #	$self->plugin(Minion::Admin => { });   # under /minion
 
-	$dbconfig{users} = $config->{users};
-	$dbconfig{batch} = $config->{batch};
+	$dbconfig{$_} = $config->{$_} for @databases;
 
 	$self->helper(dbserver => \&dbserver);
 	$self->helper(users    => \&users);

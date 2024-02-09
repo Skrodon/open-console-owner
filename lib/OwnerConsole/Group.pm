@@ -194,6 +194,8 @@ sub allMembers(%)
 sub hasMemberFrom($)
 {	my ($self, $account) = @_;
 	my %ids  = map +($_->identityId => 1), $account->identities;
+use Data::Dumper;
+warn "MISSING IDENTID ", Dumper [ $self->members ] if grep ! $_->{identid}, $self->members;
     my $data = first { $ids{$_->{identid}} } $self->members;
     defined $data ? $self->_import_member($data) : undef;
 }

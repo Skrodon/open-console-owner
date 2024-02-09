@@ -47,25 +47,58 @@ Identification:
 Ownership:
 <ul class="nav flex-column">
 <li class="nav-item">
-  <a class="nav-link" href="#">
-    <i class="fa-solid fa-key"></i> Security keys
+  <a class="nav-link" href="/dashboard">
+    <i class="fa-solid fa-envelope-circle-check"></i> Email-addresses
+% my $nrEmails = $account->nrEmails;
+% if($nrEmails) {
+  <span class="badge badge-pill"><%= $nrEmails %></span>
+% }
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="/dashboard">
+    <i class="fa-solid fa-file-circle-plus"></i> Websites
+% my $nrWebsites = $account->nrWebsites;
+% if($nrWebsites) {
+  <span class="badge badge-pill"><%= $nrWebsites %></span>
+% }
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="/dashboard">
+    <i class="fa-solid fa-house-medical"></i> Domains
+% my $nrDomains = $account->nrDomains;
+% if($nrDomains) {
+  <span class="badge badge-pill"><%= $nrDomains %></span>
+% }
+  </a>
+</li>
+<li class="nav-item">
+  <a class="nav-link" href="/dashboard">
+    <i class="fa-solid fa-network-wired"></i> Networks
+% my $nrNetworks = $account->nrNetworks;
+% if($nrNetworks) {
+  <span class="badge badge-pill"><%= $nrNetworks %></span>
+% }
   </a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="#">
-    <i class="fa-solid fa-suitcase"></i> Ownerships
+    <i class="fa-solid fa-key"></i> Security keys
   </a>
 </li>
+</ul>
+<br />
+Services:
+<ul class="nav flex-column">
 <li class="nav-item">
   <a class="nav-link" href="#">
     <i class="fa-solid fa-wrench"></i> Using services
   </a>
 </li>
-</ul>
-<br />
-Provider:
-<ul class="nav flex-column">
+<li class="nav-item">
   <a class="nav-link" href="#">
     <i class="fa-solid fa-wrench"></i> Providing services
   </a>
+</li>
 </ul>

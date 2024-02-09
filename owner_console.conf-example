@@ -64,7 +64,13 @@
 		dbname => 'users',
 	},
 
-	# Less cricital data, but many writes: outgoing emails, presented tokens.
+	# Medium critical data, mild in performance requirements.
+	proofs  => {
+		server => 'mongodb://localhost:27017',
+		dbname => 'proofs',
+	},
+
+	# Low cricital data, but many writes: outgoing emails, presented tokens.
 	# Often the table data is processed by Minion tasks.
 	batch => {
 		server => 'mongodb://localhost:27017',

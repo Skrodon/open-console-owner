@@ -69,6 +69,10 @@ sub nrIdentities { scalar $_[0]->identityIds }
 sub nrGroups     { scalar $_[0]->groupIds }
 sub link()       { '/dashboard/account/' . $_[0]->userId }
 
+sub nrEmails     { 0 }
+sub nrWebsites   { 0 }
+sub nrDomains    { 0 }
+sub nrNetworks   { 0 }
 
 #------------------
 =section Password handling
