@@ -27,7 +27,7 @@ sub create($%)
 	);
 
 	my $self = $class->SUPER::create(\%insert, %args);
-	$self->addMember($account);
+	$self->addMember($account, $account->preferredIdentity);
 	$self;
 }
 
