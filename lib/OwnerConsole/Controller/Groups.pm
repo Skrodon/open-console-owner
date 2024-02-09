@@ -44,7 +44,7 @@ sub configGroup($)
 			or error __x"Tried to access group '{id}'.", id => $id;
 	}
 
-    $id eq 'new' || $group->memberIsAdmin($account)
+    $how eq 'validate' || $id eq 'new' || $group->memberIsAdmin($account)
 		or error __x"Tried to modify group '{id}', not being admin.", id => $id;
 
 	if($how eq 'delete') {
