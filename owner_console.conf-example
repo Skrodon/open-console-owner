@@ -49,7 +49,7 @@
 		sender      => 'Open Console <>',         # 'From' line
 		overrule_to => '@',                       # in test setup, keep emails local
 		subject_prefix => '[Open Console XXXX] ',
-	}
+	},
 
 	#### Databases
 	#    various components are coded as if their data is location in different
