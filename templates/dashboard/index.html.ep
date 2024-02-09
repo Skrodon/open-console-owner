@@ -19,9 +19,9 @@
 <tr><td><i class="fa-solid fa-arrow-right"></i></td>
     <td><a href="/dashboard/identity">Create at least one Identity.</a></td></tr>
 <tr><td><i class="fa-regular fa-clock"></i></td>
-    <td>You may wish to declare Identities to be part of a Group, for instance
-        a department or organization you belong to.</td></tr>
-<tr><th colspan="2">Proof your Ownership (optional)</th></tr>
+    <td>You may wish to declare Identities to be part of a Group (for instance,
+        a department or organization where you belong to.)</td></tr>
+<tr><th colspan="2">Prove your Ownership (optional)</th></tr>
 <tr><td><input type="checkbox"></td>
     <td>(At the moment) I only use the OpenID without proven ownerships.</td></tr>
 <tr><td><i class="fa-regular fa-clock"></i></td>
@@ -41,7 +41,7 @@
     </div>
 
     <div class="card" id="config-card" style="width: 45%">
-      <h5 class="card-header">Explain configuration</h5>
+      <h5 class="card-header">Explanation</h5>
       <div class="card-body">
 
 <p>We hope you have a good day.  You made your first move to use Open Console.  To become
@@ -51,8 +51,8 @@ useful, you need to continue the configuration by adding Idenities and proves of
 <ul>
 <li>step 1: create yourself one or more "Identities", which you can use to identify yourself
     to external parties, like service providers.  Open Console can be used as OpenID provider.<br />&nbsp;</li>
-<li>step 2: (optional) proof your Ownership of some websites, domain-names, or network ranges.
-    You can tell service providers that you are interested receiving information about them.<br />&nbsp;</li>
+<li>step 2: (optional) prove your Ownership of some email-addresses, websites, domain-names, or network ranges.
+    You can tell service providers that you are interested in receiving information about them.<br />&nbsp;</li>
 <li>step 3: (optional) use your Account to configure the offering of services to (website)
     owners.<br />&nbsp;</li>
 </ul>

@@ -29,7 +29,7 @@
   <div>
 	<label for="nickname" class="form-label">Nickname</label>
     <input name="nickname" type="text" id="nickname" class="form-control"
-     placeholder="Your caller name" value="<%= $identity->nickname %>"
+     placeholder="Pseudonym, public short name" value="<%= $identity->nickname %>"
      aria-describedby="nick_explain" />
     <div id="nick_explain" class="form-text">The name people you want people to use to address you informally in this context.</div>
   </div>

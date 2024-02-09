@@ -3,7 +3,7 @@
 
 <h1>Registration for Open Console</h1>
 
-<p>Please, fill in this form to gain access to this Website.</p>
+<p>Please, fill in this form to gain access to Open Console.</p>
 
 <div class="container">
   <div class="card" id="login_card">
@@ -12,7 +12,7 @@
       <form id="register" method="post">
 
         <p>Welcome to Open Console.  Open Console is a single interface
-        to various services of internet which know something about your
+        to various internet services which know something about your
         websites, domain-names, or networks.  Create an account to be
         able to contact them.</p>
 
