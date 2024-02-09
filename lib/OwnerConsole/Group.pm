@@ -221,6 +221,8 @@ sub memberIsAdmin($)
 	$member->{is_admin};
 }
 
+sub nrAdmins() { scalar grep $_->{is_admin}, $_[0]->members }
+
 sub findMemberWithEmail($)
 {	my ($self, $email) = @_;
 
