@@ -90,7 +90,7 @@
 
   <div>
 	<label for="gender" class="form-label">Gender</label>
-%= include 'shared/_gender', gender => $identity->gender;
+%= include 'shared/_gender', gender => $identity->gender // '';
     <div id="gender_explain" class="form-text">The gender you want to express in this identity.</div>
   </div>
 
@@ -200,7 +200,7 @@
   </div>
 % }
 
-  <button type="submit" id="delete_button" class="btn btn-danger">
+  <button type="submit" id="delete-button" class="btn btn-danger">
   Delete this identity <i class="fa fa-skull" aria-hidden="true"></i>
   </button>
 
@@ -215,8 +215,8 @@
           <p>Are you sure you want to delete this Identity?</p>
         </div>
         <div class="modal-footer">
-          <button id="cancel_delete_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button id="confirm_delete_button" type="button" class="btn btn-danger">Yes, Delete</button>
+          <button id="cancel-delete-button" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button id="confirm-delete-button" type="button" class="btn btn-danger">Yes, Delete</button>
         </div>
       </div>
     </div>
@@ -231,7 +231,7 @@
  identity will not disappear: you can assign them to other Identities
  or Group Identities later.</p>
 
- <p>However: when your Identity is part of a <strong>Group</strong>, then you loose access
+ <p>However: when your Identity is part of a <strong>Group</strong>, then you lose access
  to the proofs assigned to that Group <em>unless</em> you are the last member of that
  Group.</p>
 

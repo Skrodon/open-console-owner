@@ -191,7 +191,7 @@
 
   <p>Once you delete your account, there is no going back. Please, be certain.</p>
 
-  <button type="submit" id="delete_button" class="btn btn-danger">
+  <button type="submit" id="delete-button" class="btn btn-danger">
   Delete your account <i class="fa fa-skull" aria-hidden="true"></i>
   </button>
 
@@ -206,8 +206,8 @@
           deletion.</p>
         </div>
         <div class="modal-footer">
-          <button id="cancel_delete_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-          <button id="confirm_delete_button" type="button" class="btn btn-danger">Yes, Delete</button>
+          <button id="cancel-delete-button" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <button id="confirm-delete-button" type="button" class="btn btn-danger">Yes, Delete</button>
         </div>
       </div>
     </div>

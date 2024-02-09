@@ -155,7 +155,7 @@ sub startup
 
 	$dashboard->get('/identities')->to('identities#index');
 	$dashboard->get('/identity/:identid')->to('identities#identity');
-	$dashboard->post('/config-identity/:identid')->to('identities#submit_identity');
+	$dashboard->post('/config-identity/:identid')->to('identities#submitIdentity');
 
 	$dashboard->get('/groups')->to('groups#index');
 	$dashboard->get('/group/:groupid')->to('groups#group');

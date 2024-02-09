@@ -4,16 +4,16 @@ var unique_counter = 42;
 function activate_delete_button(form) {
 	const deleteModal   = $('#delete_confirmation_modal', form);
 
-	$('#delete_button', form).on('click', function(event)  {
+	$('#delete-button', form).on('click', function(event)  {
 		event.preventDefault();
 		deleteModal.show();
 	});
 
-	$('#cancel_delete_button', deleteModal).on('click', function () {
+	$('#cancel-delete-button', deleteModal).on('click', function () {
 		deleteModal.hide();
 	});
 
-	$('#confirm_delete_button', deleteModal).on('click', function () {
+	$('#confirm-delete-button', deleteModal).on('click', function () {
 		deleteModal.hide();
 		accept_form_data(form, 'delete');
 	});
@@ -113,7 +113,7 @@ console.log("Changed by " + $(this).attr('id'));
 
 function cancel_without_saving(form) {
 	var modal = $('#cancel_without_saving', form);
-	$('#cancel_button', form).on('click', function (event) {
+	$('#cancel-button', form).on('click', function (event) {
 		event.preventDefault();
 		if(form.hasClass('changed')) {
        		modal.show();
@@ -150,7 +150,7 @@ function accept_form_data(form, how, success) {
 }
 
 function save_validated_form(form) {
-	var save = $('#save_button', form);
+	var save = $('#save-button', form);
 	save.on('click', function (event) {
 		event.preventDefault();
 
