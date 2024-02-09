@@ -209,8 +209,8 @@ modify the information about the group, and invite new members.</p>
 % my $invite_explain = begin
 
 <p>When you <strong>invite</strong> a new member to your group, that person needs
-to get (or be) registered with Open Console.  But, at that stage, you will not know
-which Identity that user will use.</p>
+to get (or be) registered with Open Console.  On invitation, you will not know
+which Identity that user will use for your group.</p>
 
 % end
 
