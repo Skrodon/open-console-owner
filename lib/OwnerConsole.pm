@@ -27,20 +27,17 @@ sub dbserver($)  # server connections shared, when databases on same server
 
 sub users()
 {	my $config = $dbconfig{users};
-	state $u   = OwnerConsole::Model::Users->new(db =>
-		$_[0]->dbserver($config->{server})->db($config->{dbname} || 'users'))->upgrade;
+	state $u   = OwnerConsole::Model::Users->new(db => $_[0]->dbserver($config->{server})->db($config->{dbname}))->upgrade;
 }
 
 sub batch()
 {	my $config = $dbconfig{batch};
-	state $e   = OwnerConsole::Model::Batch->new(db =>
-		$_[0]->dbserver($config->{server})->db($config->{dbname} || 'batch'))->upgrade;
+	state $e   = OwnerConsole::Model::Batch->new(db => $_[0]->dbserver($config->{server})->db($config->{dbname}))->upgrade;
 }
 
 sub proofs()
 {	my $config = $dbconfig{proofs};
-	state $p   = OwnerConsole::Model::Proofs->new(db =>
-		$_[0]->dbserver($config->{server})->db($config->{dbname} || 'proofs'))->upgrade;
+	state $p   = OwnerConsole::Model::Proofs->new(db => $_[0]->dbserver($config->{server})->db($config->{dbname}))->upgrade;
 }
 
 sub _languageTable($)   #XXX probably better remove this
@@ -170,6 +167,9 @@ sub startup
 	$dashboard->post('/config-group/:groupid')->to('groups#configGroup');
 	$dashboard->post('/config-member/:groupid')->to('groups#configMember');
 	$dashboard->any('/invite-accept/:token')->to('groups#inviteAccept');
+
+	$dashboard->get('/emailaddrs')->to('emailaddrs#index');
+	$dashboard->get('/emailaddr/:proofid')->to('emailaddrs#emailaddr');
 
 	$r->get('/invite/:token')->to('groups#inviteChoice');
 }

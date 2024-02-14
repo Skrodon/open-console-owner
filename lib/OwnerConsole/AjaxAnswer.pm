@@ -1,6 +1,8 @@
 package OwnerConsole::AjaxAnswer;
 use Mojo::Base -base;
 
+use Log::Report 'open-console-owner';
+
 use Scalar::Util    qw(blessed);
 
 =section Constructors

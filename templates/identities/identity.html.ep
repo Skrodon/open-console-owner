@@ -244,6 +244,8 @@
 %    $delete_explain,
 % ] unless $is_new;
 
+<script src="/assets/config_form.js"></script>
+
 <form id="config-identity" class="config-form">
   <input id="identifier"     type="hidden" value="<%= $identity->identityId %>" />
   <input id="object_version" type="hidden" value="<%= $identity->schema %>" />

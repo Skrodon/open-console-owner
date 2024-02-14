@@ -125,8 +125,8 @@ console.log('go to dashboard');
 		false;
 	});
 
-	$('#cancel_oops',    modal).on('click', function () { modal.hide() });
-	$('#cancel_confirm', modal).on('click', function () { modal.hide(); window.location.href = '/dashboard/' });
+	$('#cancel-oops',    modal).on('click', function () { modal.hide() });
+	$('#cancel-confirm', modal).on('click', function () { modal.hide(); window.location.href = '/dashboard/' });
 };
 
 function accept_form_data(form, how, success) {

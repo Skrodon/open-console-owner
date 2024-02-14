@@ -6,6 +6,8 @@ use Log::Report 'open-console-owner';
 use Scalar::Util qw(blessed);
 use List::Util   qw(first);
 
+use OwnerConsole::Proofs   ();
+
 use constant
 {	GROUP_SCHEMA => '20240112',
 };
@@ -51,7 +53,7 @@ sub schema()     { $_[0]->_data->{schema} }
 sub country()    { $_[0]->_data->{country} }
 sub department() { $_[0]->_data->{department} }
 sub email()      { $_[0]->_data->{email} }
-sub fullname()   { $_[0]->_data->{fullname} }
+sub fullname()   { $_[0]->_data->{fullname} || $_[0]->name }
 sub language()   { $_[0]->_data->{language} }
 sub members()    { @{$_[0]->_data->{members}} }   # HASHes
 sub name()       { $_[0]->_data->{name} }
@@ -239,6 +241,12 @@ sub findMemberWithEmail($)
 
 	undef;
 }
+
+#-------------
+=section Proofs
+=cut
+
+sub proofs() { $_[0]->{OG_proofs} ||= OwnerConsole::Proofs->new(owner => $_[0]) }
 
 #-------------
 =section Actions

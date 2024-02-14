@@ -33,7 +33,7 @@ DIV.addrblock { padding-left: 3em; padding-bottom: 5ex; }
 
 <p>The invitation is for group:</p>
 <div class="addrblock">
-  <%= $group->fullname // $group->name %><br />
+  <%= $group->fullname %><br />
 % if(my $orga = $group->organization) {
   <%= $orga %><br />
 % }

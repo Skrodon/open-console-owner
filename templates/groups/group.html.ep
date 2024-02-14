@@ -264,7 +264,9 @@ which Identity that user will use for your group.</p>
 %    $delete_explain,
 % ] if ! $is_new && $is_group_admin;
 
+<script src="/assets/config_form.js"></script>
 <script src="/assets/group.js"></script>
+
 <form id="config-group" class="config-form">
   <input id="identifier"     type="hidden" value="<%= $group->groupId %>" />
   <input id="object_version" type="hidden" value="<%= $group->schema %>"  />

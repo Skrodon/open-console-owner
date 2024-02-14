@@ -39,8 +39,8 @@
             <p>Are you sure you want to cancel the changes made in this form?</p>
           </div>
           <div class="modal-footer">
-            <button id="cancel_oops" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Oops! No</button>
-            <button id="cancel_confirm" type="button" class="btn btn-danger">Yes, forget them</button>
+            <button id="cancel-oops" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Oops! No</button>
+            <button id="cancel-confirm" type="button" class="btn btn-danger">Yes, forget them</button>
           </div>
         </div>
       </div>

@@ -9,6 +9,7 @@ my $crypt = Crypt::PBKDF2->new;
 
 use OwnerConsole::Tables qw(language_name);
 use OwnerConsole::Identity ();
+use OwnerConsole::Proofs   ();
 
 use constant ACCOUNT_SCHEMA => '20240102';
 
@@ -68,11 +69,6 @@ sub preferredLanguage { ($_[0]->languages)[0] }
 sub nrIdentities { scalar $_[0]->identityIds }
 sub nrGroups     { scalar $_[0]->groupIds }
 sub link()       { '/dashboard/account/' . $_[0]->userId }
-
-sub nrEmails     { 0 }
-sub nrWebsites   { 0 }
-sub nrDomains    { 0 }
-sub nrNetworks   { 0 }
 
 #------------------
 =section Password handling
@@ -239,6 +235,11 @@ sub groups
 	@{$self->{OA_groups}};
 }
 
+#-------------
+=section Proofs
+=cut
+
+sub proofs() { $_[0]->{OA_proofs} ||= OwnerConsole::Proofs->new(owner => $_[0]) }
 
 #------------------
 =section Actions

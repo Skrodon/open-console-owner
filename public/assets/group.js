@@ -1,4 +1,4 @@
-function send_instruction(form, data, groupid, how, success) {
+function handle_invite(form, data, groupid, how, success) {
     var action = '/dashboard/config-member/' + groupid + '?' + how;
 	/* Handled in OwnerConsole::Controller::Groups::configMember() */
 
@@ -25,7 +25,7 @@ function activate_membership_change(form) {
 		$("option:selected", select).each(function () {
 			var identid = $(this).val();
 			var groupid = $(select).data('groupid');
-			send_instruction(form, { identid: identid }, groupid, 'change_identity', function () {
+			handle_invite(form, { identid: identid }, groupid, 'change_identity', function () {
 console.log('change identity to ' + identid + " for group " + groupid);
 			});
 		});
@@ -45,13 +45,13 @@ function activate_invitation_modal(modal, form) {
 	});
 
 	$('#resend_button', modal).on('click', function () {
-		send_instruction(form, { email: email, token: token }, groupid, 'invite_resend', function () {
+		handle_invite(form, { email: email, token: token }, groupid, 'invite_resend', function () {
 console.log('Resend accepted');
 		});
 	});
 
 	$('#remove_button', modal).on('click', function () {
-		send_instruction(form, { email: email, token: token }, groupid, 'invite_remove', function () {
+		handle_invite(form, { email: email, token: token }, groupid, 'invite_remove', function () {
 			button.parent().parent().remove();  // remove the line with the invitation
 		});
 	});
@@ -67,7 +67,7 @@ function activate_invite_add(form) {
 	button.on('click', function () {
 		event.preventDefault();
 		var emails = $('TEXTAREA#invite_emails', form);
-		send_instruction(form, { emails: emails.val() }, groupid, 'invite_new', function (answer) {
+		handle_invite(form, { emails: emails.val() }, groupid, 'invite_new', function (answer) {
 			for (email of answer.added) {
 				table.append('<tr><td>' + email + '</td><td>invited</td></tr>');
 			}

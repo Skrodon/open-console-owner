@@ -18,7 +18,7 @@
   <thead class="thead-light">
     <tr><th>Group</th>
         <th>Edit</th>
-        <th>Your member identity</tr>
+        <th>Your member identity</th></tr>
   </thead>
   <tbody>
 %   foreach my $group ($account->groups) {
@@ -51,8 +51,8 @@
       </div>
    </div>
 
-    <div class="card col-sm-5" id="identities_explain">
-      <h5 class="card-header">Configuring Group Identities</h5>
+    <div class="card col-sm-5" id="group_explain">
+      <h5 class="card-header">Manage Group Identities</h5>
       <div class="card-body">
 
 <p>You may need to organize your activities as part of an organization,
