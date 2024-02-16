@@ -51,6 +51,12 @@
 		subject_prefix => '[Open Console XXXX] ',
 	},
 
+	#### Proofs
+
+	proofs   => {
+		expire_challenge => 2,                    # days, float
+	},
+
 	#### Databases
 	#    various components are coded as if their data is location in different
 	#    database instances.  This may be the case once Open Console grows huge.
@@ -59,20 +65,20 @@
 
 	# Critical data, so need redundancy.  Optimized to have few writes.
 	# Where is the user's database? Contains users, identities, and groups.
-	users  => {
+	userdb  => {
 		server => 'mongodb://localhost:27017',  # this is the default for mongodb
 		dbname => 'users',
 	},
 
 	# Medium critical data, mild in performance requirements.
-	proofs  => {
+	proofdb  => {
 		server => 'mongodb://localhost:27017',
 		dbname => 'proofs',
 	},
 
 	# Low cricital data, but many writes: outgoing emails, presented tokens.
 	# Often the table data is processed by Minion tasks.
-	batch => {
+	batchdb => {
 		server => 'mongodb://localhost:27017',
 		dbname => 'batch',
 	},

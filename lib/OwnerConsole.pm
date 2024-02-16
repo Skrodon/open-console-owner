@@ -4,11 +4,9 @@ use Mojo::Base 'Mojolicious';
 use Mango;
 use feature 'state';
 
-use Session::Token ();
-my $token_generator = Session::Token->new;
-
 use List::Util  qw(first);
 
+use OwnerConsole::Util          qw(reseed_tokens);
 use OwnerConsole::Model::Users  ();
 use OwnerConsole::Model::Batch  ();
 use OwnerConsole::Model::Proofs ();
@@ -18,7 +16,7 @@ use OwnerConsole::Tables qw(language_name);
 use Log::Report 'open-console-owner';
 
 my (%dbconfig, %dbservers);
-my @databases = qw/users batch proofs/;
+my @databases = qw/userdb batchdb proofdb/;
 
 sub dbserver($)  # server connections shared, when databases on same server
 {	my $server = $_[1] || 'mongodb://localhost:27017';
@@ -26,23 +24,18 @@ sub dbserver($)  # server connections shared, when databases on same server
 }
 
 sub users()
-{	my $config = $dbconfig{users};
+{	my $config = $dbconfig{userdb};
 	state $u   = OwnerConsole::Model::Users->new(db => $_[0]->dbserver($config->{server})->db($config->{dbname}))->upgrade;
 }
 
 sub batch()
-{	my $config = $dbconfig{batch};
+{	my $config = $dbconfig{batchdb};
 	state $e   = OwnerConsole::Model::Batch->new(db => $_[0]->dbserver($config->{server})->db($config->{dbname}))->upgrade;
 }
 
 sub proofs()
-{	my $config = $dbconfig{proofs};
+{	my $config = $dbconfig{proofdb};
 	state $p   = OwnerConsole::Model::Proofs->new(db => $_[0]->dbserver($config->{server})->db($config->{dbname}))->upgrade;
-}
-
-sub _languageTable($)   #XXX probably better remove this
-{	my $langs = $_[1];
-	[ map +[ $_ => language_name($_) ], @$langs ];
 }
 
 sub _detectLanguage($$)
@@ -124,19 +117,13 @@ sub startup
 		$account;
 	});
 
-	$self->helper(newUnique => sub { $config->{instance} . ':' . $token_generator->get });
-
-	srand;
-
 	my $iflangs = $config->{interface_languages};
 	my %langs   = map +($_ => 1), @$iflangs;
 	$self->helper(language    => sub { $self->_detectLanguage($_[0], \%langs, $iflangs->[0]) });
-	$self->helper(ifLanguages => sub { my $l = $self->{O_langs} ||= $self->_languageTable($iflangs); @$l });
 
 	# Run at start of each fork
-	Mojo::IOLoop->timer(0 => sub {
-		$token_generator = Session::Token->new;
-	});
+	srand;
+	Mojo::IOLoop->timer(0 => sub { srand; reseed_tokens });
 
 	### Routes
 
@@ -160,7 +147,7 @@ sub startup
 
 	$dashboard->get('/identities')->to('identities#index');
 	$dashboard->get('/identity/:identid')->to('identities#identity');
-	$dashboard->post('/config-identity/:identid')->to('identities#submitIdentity');
+	$dashboard->post('/config-identity/:identid')->to('identities#configIdentity');
 
 	$dashboard->get('/groups')->to('groups#index');
 	$dashboard->get('/group/:groupid')->to('groups#group');
@@ -170,6 +157,7 @@ sub startup
 
 	$dashboard->get('/emailaddrs')->to('emailaddrs#index');
 	$dashboard->get('/emailaddr/:proofid')->to('emailaddrs#emailaddr');
+	$dashboard->post('/config-emailaddr/:proofid')->to('emailaddrs#configProof');
 
 	$r->get('/invite/:token')->to('groups#inviteChoice');
 }
