@@ -12,7 +12,7 @@
 % my $active = 'active';
 % foreach my $page (@$pages) {
 %   my ($label, $name) = @$page;
-    <button class="nav-link <%== $active %>" id="<%== $label %>-tab" data-bs-toggle="pill" data-bs-target="#<%== $label %>"
+    <button class="nav-link <%= $label =~ s/^.*?\-/any-/r %>-tab <%== $active %>" id="<%== $label %>-tab" data-bs-toggle="pill" data-bs-target="#<%== $label %>"
      type="button" role="tab" aria-controls="<%== $label %>" ><%== $name %>
        <span class="badge rounded-pill bg-danger  show_errors">0</span>
        <span class="badge rounded-pill bg-warning show_warns">0</span>

@@ -1,8 +1,6 @@
 
 function handle_proof_change(form, proofid, data, how, success) {
-console.log('#1');
     var action = '/dashboard/' + form.attr('id') + '/' + proofid + '?' + how;
-console.log(action);
 
     $.ajax({
         type: 'POST',
@@ -16,6 +14,14 @@ console.log(action);
             alert('Form ' + form.attr('id') + ', the server could not be reached: ' + response.status);  //XXX translation
         },
     });
+}
+
+function remove_proof(form) {
+	form.on('click', '.remove-proof', function(event) {
+		event.preventDefault();
+		var proofid = $(this).parent().parent().data('proof');
+		handle_proof_change(form, proofid, { }, 'delete', function () {});
+	});
 }
 
 function activate_prooflist_sorter(form) {
@@ -50,6 +56,7 @@ console.log("DONE");
 
 function install_prooflist_form(form) {
 	activate_prooflist_sorter(form);
+	remove_proof(form);
 }
 
 $(document).ready(function() {

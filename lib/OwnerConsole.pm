@@ -139,6 +139,8 @@ sub startup
 	$r->post('/login/reset')->to('login#submitResetPassword');
 	$r->get('/reset')->to('login#runReset');
 
+	# All 'post' routes are ajax calls, all 'get's are returning pages.
+
 	my $dashboard = $r->under('/dashboard')->to('login#mustBeLoggedIn');
 	$dashboard->get('/')->to('dashboard#index');
 
@@ -157,7 +159,7 @@ sub startup
 
 	$dashboard->get('/emailaddrs')->to('emailaddrs#index');
 	$dashboard->get('/emailaddr/:proofid')->to('emailaddrs#emailaddr');
-	$dashboard->post('/config-emailaddr/:proofid')->to('emailaddrs#configProof');
+	$dashboard->post('/config-emailaddr/:proofid')->to('emailaddrs#configEmailaddr');
 
 	my $challenge = $r->under('/challenge')->to('login#mustBeLoggedIn');
 	$challenge->get('/:token')->to('emailaddrs#challenge');  #XXX may get own controller later

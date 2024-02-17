@@ -96,15 +96,11 @@ LABEL.form-label {
 	font-weight: bold;
  }
 
-FORM#config-account  #account-delete-tab,
-FORM#config-identity #identity-delete-tab,
-FORM#config-group	 #group-delete-tab
+FORM.config-form .nav-link.any-delete-tab
 {	color: rgba(var(--bs-danger-rgb));
 }
 
-FORM#config-account #account-delete-tab.active,
-FORM#config-idenity #identity-delete-tab.active,
-FORM#config-group   #group-delete-tab.active
+FORM.config-form .nav-link.active.any-delete-tab
 {	color: white;
 	background-color: red;
 }

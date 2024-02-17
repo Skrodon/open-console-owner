@@ -72,7 +72,7 @@ sub bson2datetime($$)
 #   P = proof
 
 my $token_generator = Session::Token->new;
-sub new_token($)    { $::app->config->{instance} . ':' . $_[0] . ':' . $token_generator->get }
+sub new_token($)    { state $i = $::app->config->{instance}; "$i:${_[0]}:" . $token_generator->get }
 sub reseed_tokens() { $token_generator = Session::Token->new }
 
 1;

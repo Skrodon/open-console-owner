@@ -1,8 +1,7 @@
 package OwnerConsole::Mango::Object;
 use Mojo::Base -base;
 
-has '_data';
-
+#------------------------
 =section Constructors
 =cut
 
@@ -22,12 +21,40 @@ sub create($%)
 	$class->new(_data => $insert);
 }
 
-sub toDB() { $_[0]->_data }  #XXX might become more complex later
-
+#------------------------
 =section Attributes
 =cut
 
 sub created() { my $c = $_[0]->_data->{created}; $c ? $c->to_datetime : undef }
+
+#------------------------
+=section Data
+=cut
+
+has _data => sub { +{} };
+
+sub toDB() { $_[0]->_data }  #XXX might become more complex later
+
+sub changed()    { ++$_[0]->{OP_changed} }
+sub hasChanged() { !! $_[0]->{OP_changed} }
+
+sub setData($$)
+{	my ($self, $field, $value) = @_;
+	my $data = $self->_data;
+
+	# NOTE: blank fields do not exist
+	if(my $changed = +($data->{$field} // ' ') ne ($value // ' '))
+	{	$data->{$field} = $value;
+warn "CHANGED $field to $value";
+		return $self->changed;
+	}
+
+	0;
+}
+
+#------------------------
+=section Logging
+=cut
 
 sub logging(%)
 {	my ($self, %args) = @_;
@@ -45,9 +72,6 @@ sub logging(%)
 	\@lines;
 }
 
-=section Actions
-=cut
-
 sub log($)
 {	my ($self, $insert) = @_;
 	$insert = { text => $insert } unless ref $insert eq 'HASH';
@@ -57,5 +81,9 @@ return;
 #	$insert->{user}      //= $::app->user->username;
 	push @{$self->_data->{logging}}, $insert;
 }
+
+#------------------------
+=section Actions
+=cut
 
 1;

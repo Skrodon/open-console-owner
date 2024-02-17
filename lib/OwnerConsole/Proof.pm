@@ -57,6 +57,7 @@ sub score()   { $_[0]->{OP_score} //= $_[0]->status eq 'proven' ? $_[0]->_score 
 # Keep these attributes in sync with the OwnerConsole/Controller/Proof.pm
 # method submit_group()
 
+sub isNew()      { $_[0]->proofId eq 'new' }
 sub proofId()    { $_[0]->_data->{proofid} }
 sub ownerId()    { $_[0]->_data->{ownerid} }
 sub ownerClass() { $_[0]->_data->{ownerclass} }
@@ -79,7 +80,7 @@ sub hasExpired()
 	$self->{OP_dead} = defined $exp ? $exp < DateTime->now : 0;
 }
 
-sub link()       { '/dashboard/' . $_[0]->element . '/' . $_[0]->proofId }
+sub elemLink()   { '/dashboard/' . $_[0]->element . '/' . $_[0]->proofId }
 
 #-------------
 =section Ownership
@@ -118,7 +119,7 @@ sub identity($)
 
 sub changeOwner($$)
 {	my ($self, $account, $ownerid) = @_;
-	$self->_data->{ownerid} = $ownerid;
+	$self->setData(ownerid => $ownerid);
 	delete $self->{OP_owner};
 }
 
@@ -151,10 +152,19 @@ sub statusBgColorClass(;$)
 
 sub setStatus($)
 {	my ($self, $new) = @_;
-	$self->_data->{status} = $new;
-	$self->save;
+	$self->setData(status => $new);
 	$self;
 }
+
+#-------------
+=section Validation
+
+Validation administration.
+=cut
+
+sub invalidate() { $_[0]->setStatus('unproven') }
+
+sub isInvalid()  { $_[0]->status ne 'proven' }
 
 #-------------
 =section Action
@@ -162,19 +172,21 @@ sub setStatus($)
 
 sub save(%)
 {   my ($self, %args) = @_;
-	$self->_data->{proofid} = new_token 'P' if $self->proofId eq 'new';
+	$self->setData(proofid => new_token 'P') if $self->proofId eq 'new';
 
 	if($args{by_user})
-    {	$self->_data->{schema} = $self->schema;
+    {	$self->setData(schema => $self->schema);
 		$self->log('changed proof settings');
 	}
 
     $::app->proofs->saveProof($self);
 }
 
+sub delete() { $::app->proofs->deleteProof($_[0]) }
+
 sub accepted()
 {	my $self = shift;
-	delete $self->_data->{expires};
+	$self->setData(expires => undef);
 	$self->setStatus('proven');
 }
 

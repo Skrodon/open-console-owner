@@ -2,11 +2,17 @@
 
 % my $rows = begin
 %   my ($proofs, $editable) = @_;
-%   my $edit = $editable ? 'fa-solid fa-pen' : 'fa-solid fa-magnifying-glass';
 %   foreach my $proof (@$proofs) {
     <tr data-proof="<%= $proof->proofId %>">
       <td><%= $show->($proof) %></td>
-      <td><a href="<%= $proof->link %>"><i class="<%= $edit %>"></a></i></td>
+      <td>
+%     if($editable) {
+          <a href="<%= $proof->elemLink %>"><i class="fa-solid fa-pen"></i></a>
+          <a href="#" class="remove-proof"><i class="fa-solid fa-skull" style="color: red"></i></a>
+%     } else {
+          <a href="<%= $proof->elemLink %>"><i class="fa-solid fa-magnifying-glass"></i></a>
+%     }
+      </td>
       <td><span class="badge <%== $proof->statusBgColorClass %>"><%= $proof->statusText %></span></td>
       <td><%= $proof->score %></td></tr>
 %   }

@@ -65,6 +65,11 @@ sub proof($)
 	OwnerConsole::Proofs->proofFromDB($data);
 }
 
+sub deleteProof($)
+{	my ($self, $proof) = @_;
+	$self->proofs->remove({ proofid => $proof->proofId });
+}
+
 #---------------------
 =section Challenges
 
