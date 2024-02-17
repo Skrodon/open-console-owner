@@ -29,7 +29,7 @@ sub upgrade
     #### Indices
 	# We can run "ensure_index()" as often as we want.
 
-#$self->emails->drop_index('email');
+#$self->emails->drop_index('emailid');
 	$self->emails->ensure_index({ emailid => 1 }, { unique => bson_true });
 	$self->emails->ensure_index({ sender  => 1 }, { unique => bson_true });
 
@@ -39,8 +39,7 @@ sub upgrade
 	});
 
 	$self->invites->ensure_index({ token => 1 }, { unique => bson_true });
-
-	my $autoclean = $::app->config->{groups}{cleanup_invitation} || 30;
+	my $autoclean = $::app->config('groups')->{cleanup_invitation} || 30;
 	$self->invites->ensure_index({ expires => 1 }, { expireAfterSeconds => int($autoclean * 86400) } );
 
 	$self;

@@ -1,0 +1,29 @@
+% layout 'dashboard';
+% title 'Overview of email proofs';
+
+% my $account = $self->account;
+
+<div class="container">
+  <div class="row">
+    <div class="card col-sm-7" id="emailaddrs_card">
+      <h5 class="card-header">Email-address ownership</h5>
+      <div class="card-body">
+
+<form class="proof-list" id="config-emailaddr">
+%= include 'proofs/_proof_list', set => 'emailaddrs', show => sub { $_[0]->email }, show_column => "Email address";  #XXX translate
+</form>
+
+      </div>
+   </div>
+
+    <div class="card col-sm-5" id="emails_explain">
+      <h5 class="card-header">Proving email-addresses</h5>
+      <div class="card-body">
+
+<p>
+</p>
+
+      </div>
+    </div>
+  </div>
+</div>

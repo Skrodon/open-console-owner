@@ -7,6 +7,8 @@ use Mail::Message ();
 use Mail::Message::Body::String    ();
 use Mail::Message::Body::Multipart ();
 
+use OwnerConsole::Util  qw(new_token);
+
 =section DESCRIPTION
 
 =section Constructors
@@ -25,7 +27,7 @@ sub create($%)
 	my $sender = $args{sender};
 
 	my %insert = (
-    	emailid  => $::app->newUnique,
+    	emailid  => (new_token 'M'),
     	schema   => MAIL_SCHEMA,
     	sender   => $sender ? $sender->userId : undef,
 		subject  => $args{subject} // (panic "No subject"),

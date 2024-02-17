@@ -1,5 +1,7 @@
-% use OwnerConsole::Tables qw(language_table);
+%# Requires parameters 'language' (as code), and 'required' (boolean)
+%# Needs to be surrounded by <label for="lang"> and <div id="lang_explain">
 
+% use OwnerConsole::Tables qw(language_table);
     <select name="language" id="lang" class="form-select" aria-describedby="lang_explain">
 % unless($required) {
     <option value=""<%= defined $language ? '': ' selected' %>>&mdash; unspecified &mdash;</option>

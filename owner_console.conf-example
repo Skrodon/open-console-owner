@@ -54,7 +54,9 @@
 	#### Proofs
 
 	proofs   => {
-		expire_challenge => 2,                    # days, float
+		# When the challenge has been used, it will still stay this long in
+		# the database, to be able to distinguish between "already used" and "invalid".
+		expire_challenge => 30,               #  days, float
 	},
 
 	#### Databases

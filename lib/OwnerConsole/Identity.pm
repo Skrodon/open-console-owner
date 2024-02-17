@@ -3,6 +3,8 @@ use Mojo::Base 'OwnerConsole::Mango::Object';
 
 use Log::Report 'open-console-owner';
 
+use OwnerConsole::Util  qw(new_token);
+
 use constant IDENTITY_SCHEMA => '20240111';
 
 =section DESCRIPTION
@@ -77,7 +79,7 @@ sub usedForGroups() { $::app->users->groupsUsingIdentity($_[0]) }
 
 sub save(%)
 {   my ($self, %args) = @_;
-	$self->_data->{identid} = $::app->newUnique if $self->identityId eq 'new';
+	$self->_data->{identid} = new_token 'I' if $self->identityId eq 'new';
 	if($args{by_user})
     {	$self->_data->{schema} = IDENTITY_SCHEMA;
 		$self->log('changed identity settings');

@@ -92,7 +92,7 @@ sub configGroup($)
 
 	my $postal = $data->{postal} = val_text delete $params->{postal};
 
-warn "Unprocessed parameters: ", join ', ', sort keys %$params if keys %$params;
+	warn "Unprocessed parameters: ", join ', ', sort keys %$params if keys %$params;
 
 	if($how eq 'save' && ! $answer->hasErrors)
 	{	$answer->redirect('/dashboard/groups');  # order browser to redirect

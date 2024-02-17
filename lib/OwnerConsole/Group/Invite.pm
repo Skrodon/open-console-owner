@@ -6,7 +6,7 @@ use Log::Report 'open-console-owner';
 use List::Util   qw(first);
 use DateTime     ();
 
-use OwnerConsole::Util  qw(bson2datetime);
+use OwnerConsole::Util  qw(bson2datetime new_token);
 
 use constant
 {	INVITE_SCHEMA => '20240122',
@@ -34,7 +34,7 @@ sub create($$$)
 	$class->SUPER::create({
 		schema    => INVITE_SCHEMA,
         state     => 'start',
-		token     => $::app->newUnique,
+		token     => (new_token 'N'),
         invited   => Mango::BSON::Time->new($start * 1000),
         expires   => Mango::BSON::Time->new($expires * 1000),
         email     => $email,

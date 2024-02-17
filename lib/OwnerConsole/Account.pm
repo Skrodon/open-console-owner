@@ -7,7 +7,8 @@ use Mango::BSON::Time ();
 use Crypt::PBKDF2     ();
 my $crypt = Crypt::PBKDF2->new;
 
-use OwnerConsole::Tables qw(language_name);
+use OwnerConsole::Util     qw(new_token);
+use OwnerConsole::Tables   qw(language_name);
 use OwnerConsole::Identity ();
 use OwnerConsole::Proofs   ();
 
@@ -18,7 +19,7 @@ use constant ACCOUNT_SCHEMA => '20240102';
 
 sub create($%)
 {	my ($class, $insert, %args) = @_;
-	my $userid = $insert->{userid} = $::app->newUnique;
+	my $userid = $insert->{userid} = new_token 'A';
 	$insert->{schema}    //= ACCOUNT_SCHEMA;
 	$insert->{languages} //= [ 'en', 'nl' ];
 	$insert->{iflang}    //= 'en';
@@ -169,7 +170,7 @@ sub identities
 sub preferredIdentity()
 {	my $self = shift;
 
-#XXX No way to configure this yet
+	#XXX No way to configure this yet
 	($self->identities)[0];
 }
 
@@ -239,7 +240,22 @@ sub groups
 =section Proofs
 =cut
 
-sub proofs() { $_[0]->{OA_proofs} ||= OwnerConsole::Proofs->new(owner => $_[0]) }
+sub proofs() {	$_[0]->{OA_proofs} ||= OwnerConsole::Proofs->new(owner => $_[0]) }
+
+# proof may be missing when the world meanwhile changed
+sub proof($$)
+{	my ($self, $set, $proofid) = @_;
+
+	my $proof = $self->proofs->proof($set, $proofid);
+	return $proof if $proof;
+
+	foreach my $group ($self->groups)
+	{   $proof = $group->proofs->proof($set, $proofid);
+		return $proof if $proof;
+	}
+
+	undef;
+}
 
 #------------------
 =section Actions
@@ -261,6 +277,5 @@ sub save(%)
 	}
 	$::app->users->saveAccount($self);
 }
-
 
 1;

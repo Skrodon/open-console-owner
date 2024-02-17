@@ -5,7 +5,7 @@ use Log::Report 'open-console-owner';
 
 use Lingua::EN::Numbers qw(num2en);
 
-use OwnerConsole::Util  qw(val_line is_valid_email);
+use OwnerConsole::Util  qw(val_line is_valid_email new_token);
 use OwnerConsole::Email ();
 
 ###### Login
@@ -94,7 +94,7 @@ sub submitResetPassword()
 		return $self->startResetPassword;
 	}
 
-	my $token   = $::app->newUnique;
+	my $token   = new_token 'A';
 
 	$victim->startPasswordReset($token);
 	$victim->save;

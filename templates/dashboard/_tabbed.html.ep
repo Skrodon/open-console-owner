@@ -29,7 +29,7 @@
     <button type="submit" id="cancel-button" class="btn btn-outline-primary bg-success">
        <i class="fa-solid fa-xmark"></i> Cancel</button>
 
-    <div id="cancel_without_saving" class="modal" style="display: none">
+    <div id="cancel-without-saving" class="modal" style="display: none">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

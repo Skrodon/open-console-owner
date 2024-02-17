@@ -1,9 +1,10 @@
 package OwnerConsole::Util;
 use Mojo::Base 'Exporter';
 
-use Email::Valid  ();
-use List::Util    qw(first);
-use DateTime      ();
+use Email::Valid   ();
+use List::Util     qw(first);
+use DateTime       ();
+use Session::Token ();
 
 use OwnerConsole::Tables     qw(language_name gender_name timezone_names country_name);
 
@@ -15,18 +16,22 @@ my @is_valid = qw(
 	is_valid_language
 	is_valid_phone
 	is_valid_timezone
-
 );
 
-our @EXPORT_OK = (@is_valid, qw(
-	flat
+my @validators = qw(
 	val_line
 	val_text
+);
+
+our @EXPORT_OK = (@is_valid, @validators, qw(
+	flat
 	bson2datetime
+	new_token
+	reseed_tokens
 ));
 
 our %EXPORT_TAGS = (
-   validate => [ @is_valid, qw/val_line val_text/ ],
+   validate => [ @is_valid, @validators ],
 );
 
 sub flat(@) { grep defined, map ref eq 'ARRAY' ? @$_ : $_, @_ }
@@ -56,5 +61,18 @@ sub bson2datetime($$)
 {	my ($stamp, $tz) = @_;
 	$stamp ? DateTime->from_epoch(epoch => $stamp->to_epoch)->set_time_zone($tz) : undef;
 }
+
+# Token prefixes:
+#   A = Account
+#   C = Challenge
+#   G = Group identity
+#   I = personal Identity
+#   M = send eMail
+#   N = iNvite email
+#   P = proof
+
+my $token_generator = Session::Token->new;
+sub new_token($)    { $::app->config->{instance} . ':' . $_[0] . ':' . $token_generator->get }
+sub reseed_tokens() { $token_generator = Session::Token->new }
 
 1;

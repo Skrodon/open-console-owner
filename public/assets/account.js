@@ -4,14 +4,14 @@ function activate_language_selector(form) {
 	// Helper to make row not collapse when sort
 	function fixHelperModified(event, tr) {
 		var originals = tr.children();
-		var helper	= tr.clone();
+		var helper    = tr.clone();
 		helper.children().each(function(index) { $(this).width(originals.eq(index).width()) });
 		return helper;
 	};
 
 	$("TBODY", table).sortable({
 		helper: fixHelperModified,
-		update: function () { updateHiddenInput() }
+		update: function () { saveLangOrder() }
 	}).disableSelection();
 
 	// Remove duplicate language get from server in table
@@ -35,7 +35,7 @@ function activate_language_selector(form) {
 		}
 	});
 
-	function updateHiddenInput() {
+	function saveLangOrder() {
 		var selectedLanguages = $('td:first-child', table).map(function () { return $(this).data('code') }).get();
 		$('#ordered_lang', form).val(selectedLanguages.join(','));
 	}
@@ -46,7 +46,7 @@ function activate_language_selector(form) {
 		});
 	}
 
-	$('#language_list', form).on('change', function () {
+	$('#language-list', form).on('change', function () {
 		var list = $(this);
 		list.find('option:selected').each( function(index, selectedLanguage) {
 			var lang = $(selectedLanguage).text();
@@ -62,7 +62,7 @@ function activate_language_selector(form) {
 				</td>' +
 				'</tr>';
 			table.append(newRow);
-			updateHiddenInput();
+			saveLangOrder();
 
 			/* Should work :-( */
 			list.val('');
@@ -73,7 +73,7 @@ function activate_language_selector(form) {
 	table.on('click', '.remove-link', function (event) {
 		event.preventDefault();
 		$(this).closest('TR').remove();
-		updateHiddenInput();
+		saveLangOrder();
 	});
 }
 

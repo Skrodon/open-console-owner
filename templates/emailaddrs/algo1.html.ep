@@ -1,0 +1,93 @@
+% layout 'dashboard';
+% title 'Create/update email-address proof, type 1';
+
+% my $account = $c->account;
+% my $is_new  = $proof->proofId eq 'new';
+
+% my @pages;
+% my $settings_form = begin
+
+  <div>
+    <label for="email" class="form-label">Email-address</label>
+    <input name="email" type="email" id="email" class="form-control" placeholder="Email-address"
+      aria-describedby="email_explain" required value="<%= $proof->email %>"
+      <%= $is_new ? '' : 'disabled' %>
+    />
+    <div id="email_explain" class="form-text">Your or the group's email-address to be verified.</div>
+  </div>
+
+  <div>
+    <label for="subaddr" class="form-label">Sub-Addressing ('+'-trick)</label>
+    <div class="form-check">
+      <input type="checkbox" class="form-check-input" name="subaddr" id="subaddr"
+        value="yes" <%= $proof->supportsSubAddressing ? 'checked' : '' %>
+        aria-describedby="subaddr_explain" >
+      <label class="form-check-label" for="subaddr"> Supports sub-addressing</label>
+    </div>
+    <div id="subaddr_explain" class="form-text">Permit the "+"-trick on the proven email-address.</div>
+  </div>
+
+%= include 'proofs/_owner_pick';
+
+  <hr>
+
+%   if($is_new) {
+  <div>
+    <p>When you submit this form, you will receive an email with instructions.</p>
+  </div>
+%   } else {
+  <div>
+    <p>For most changes in the form, you have to rerun the verification.</p>
+  </div>
+%   }
+
+% end
+
+% my $settings_explain = begin
+
+<p>You can proof the ownership of a personal email-address, but it might also be
+the address in use by one of your groups.</p>
+
+<p>When you are the owner or administrator of the owning group, then you can move
+the proof to yourself or one of your groups.</p>
+
+<p><b>Sub-addressing</b> is the commonly supported feature to extend your email name
+with "+<something>" per use.  For instance, "<code>me+oc@example.com</code>" where
+"<code>+oc</code>" can be used to filter and select folders.  See
+<a href="https://en.wikipedia.org/wiki/Email_address#Subaddressing" target="_blank">Wikipedia</a></p>
+
+% end
+
+% push @pages, [
+%    'emailaddr-settings',
+%    'Settings',
+%    $settings_form,
+%    $settings_explain,
+% ];
+
+% my $status_form = begin
+
+%= include 'proofs/_status';
+
+% end
+
+% my $status_explain = begin
+% end
+
+% push @pages, [
+%    'emailaddr-status',
+%    'Status',
+%    $status_form,
+%    $status_explain,
+% ];
+
+<script src="/assets/config_form.js"></script>
+
+<form id="config-emailaddr" class="config-form">
+  <input id="identifier" type="hidden" value="<%= $proof->proofId %>" />
+
+% include 'dashboard/_tabbed';
+%= $::tabbed->('emailaddr-tabs' => \@pages);
+
+</form>
+

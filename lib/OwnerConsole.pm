@@ -159,6 +159,9 @@ sub startup
 	$dashboard->get('/emailaddr/:proofid')->to('emailaddrs#emailaddr');
 	$dashboard->post('/config-emailaddr/:proofid')->to('emailaddrs#configProof');
 
+	my $challenge = $r->under('/challenge')->to('login#mustBeLoggedIn');
+	$challenge->get('/:token')->to('emailaddrs#challenge');  #XXX may get own controller later
+
 	$r->get('/invite/:token')->to('groups#inviteChoice');
 }
 

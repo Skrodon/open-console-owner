@@ -33,6 +33,12 @@
     <div id="lang_explain" class="form-text">The (main) communication language of this group.</div>
   </div>
 
+  <div>
+    <label for="timezone" class="form-label">Time-zone</label>
+%= include 'shared/_timezone', timezone => $group->timezone;
+    <div id="timezone_explain" class="form-text">The Time-zone this group lives in.</div>
+  </div>
+
 % end
 
 % my $group_explain = begin
@@ -43,6 +49,9 @@
   <p>The <strong>Group short name</strong> is only used for convenience, within the Open
   Console interface.  When needed, the <strong>Full name</strong> is presented to outside
   services.</p>
+
+  <p>The <strong>Time-zone</strong> will be used for some emails: in this website, your
+  own time-zone setting is used.</p>
 
 % end
 
@@ -78,13 +87,6 @@
     <div id="country_explain" class="form-text">The Country this Organization (hence Group) is
       legally bound to.</div>
   </div>
-
-  <div>
-    <label for="timezone" class="form-label">Time-zone</label>
-%= include 'shared/_timezone', timezone => $group->timezone;
-    <div id="timezone_explain" class="form-text">The Time-zone the organization/group live in.</div>
-  </div>
-
 
 % end
 

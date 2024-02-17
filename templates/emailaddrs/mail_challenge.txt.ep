@@ -1,0 +1,14 @@
+% layout 'mail';
+% title "Challenge for email-address " . $proof->email;
+% my $vhost  = $c->config('vhost');
+
+--> Challenge to proof ownership of email-address
+
+In Open Console, you triggered the email-address validation procedure.
+In case you did not initiate this yourself, then someone may have made
+a mistake.  In that case, please ignore this message.
+
+Please visit
+
+
+to confirm that this email-address is yours.

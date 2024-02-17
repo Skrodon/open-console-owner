@@ -1,0 +1,21 @@
+% my @groups = $account->groups;
+% my $mine   = $proof->isOwnedByMe || $is_new;
+
+<div class="form-check">
+   <input type="radio" name="owner" value="<%= $account->userId %>" <%= $mine ? 'checked' : '' %>
+          class="form-check-input"  id="owner-me" aria-describedby="owner_explain" />
+   <label class="form-check-label" for="owner-me">Owned by me</label>
+
+   <input type="radio" name="owner" value="<%= $account->userId %>" <%= $mine ? '' : 'checked' %>
+          class="form-check-input"  id="owner-group" aria-describedby="owner_explain" />
+   <label class="form-check-label" for="owner-group">Owned by this group:</label>
+
+   <select name="owner-group" id="owner-select" class="form-select">
+% foreach my $group (@groups) {
+   <option value="<%= $group->groupId %>"
+      <%= $group->groupId eq $proof->ownerId ? ' selected' : '' %>
+      <%= $mine || $group->memberIsAdmin($account) ? '' : 'disabled' %>
+   ><% $group->fullname %></option>
+% }
+   </select>
+</div>

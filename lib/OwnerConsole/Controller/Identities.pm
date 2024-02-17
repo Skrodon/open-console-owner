@@ -21,7 +21,7 @@ sub identity()
 
 ### Keep this logic in sync with OwnerConsole::Identity attributes
 
-sub submitIdentity($)
+sub configIdentity($)
 {   my $self = shift;
 	my $answer  = OwnerConsole::AjaxAnswer->new();
 

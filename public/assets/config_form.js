@@ -36,6 +36,7 @@ function process_errors_and_warnings(form, answer) {
 	$('DIV.val-msg', form).remove(); 
 	answer.errors.forEach( function(error) { add_val_message(form, error.at(0), 'error', error.at(1)) });
 	answer.warnings.forEach(function(warn) { add_val_message(form, warn.at(0),  'warn',   warn.at(1)) });
+	answer.notifications.forEach(function(text) { alert(text) });
 }
 
 function create_field_versioning(form) {
@@ -50,7 +51,7 @@ function create_field_versioning(form) {
 		else if(node.data('schema') >= version) {
 			var reason = node.data('reason');
 			node.replaceWith('<fieldset class="history" for="' + target + '" style="display: block">'
-               +'<legend>' + reason + '</legend><h5>' + label.html() + '</h5>' + node.html() + '</fieldset>');
+			+ '<legend>' + reason + '</legend><h5>' + label.html() + '</h5>' + node.html() + '</fieldset>');
 			label.addClass('has-changed');
 		}
 		else {
@@ -81,7 +82,7 @@ function update_form_status(form) {
 		if(warns)
 		     { $(".show_warns",  tab).text(warns).css('display', 'inline-block') }
 		else { $(".show_warns",  tab).css('display', 'none') }
-        sum_warns  += warns;
+		sum_warns  += warns;
 	})
 
 	var save   = $('#save-button', form);
@@ -112,14 +113,13 @@ console.log("Changed by " + $(this).attr('id'));
 }
 
 function cancel_without_saving(form) {
-	var modal = $('#cancel_without_saving', form);
+	var modal = $('#cancel-without-saving', form);
 	$('#cancel-button', form).on('click', function (event) {
 		event.preventDefault();
 		if(form.hasClass('changed')) {
-       		modal.show();
+			modal.show();
 		}
 		else {	
-console.log('go to dashboard');
 			window.location.href = '/dashboard/';
 		}
 		false;

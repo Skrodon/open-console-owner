@@ -85,7 +85,7 @@
     </tbody>
     </table>
 
-    <select id="language_list" class="form-select search-select">
+    <select id="language-list" class="form-select search-select">
     <option value="">&mdash; select addition languages &mdash;</option>
 % foreach my $lang (@{language_table()}) {
 %   my ($code, $name) = @$lang;
@@ -98,9 +98,12 @@
 
   <div>
     <label for="iflang" class="form-label">Interface language</label>
-%= include 'shared/_language', language => $account->iflang, required => 1;
+    <select name="iflang" id="iflang" class="form-select" aria-describedby="iflang_explain">
+%= include 'shared/_iflanguage', iflang => $account->iflang;
+    </select>
     <div id="iflang_explain" class="form-text">The languages used for this Open Console website (changes
     after "Save")</div>
+
   </div>
 
   <div>

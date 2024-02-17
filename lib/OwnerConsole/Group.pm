@@ -6,6 +6,7 @@ use Log::Report 'open-console-owner';
 use Scalar::Util qw(blessed);
 use List::Util   qw(first);
 
+use OwnerConsole::Util     qw(new_token);
 use OwnerConsole::Proofs   ();
 
 use constant
@@ -260,7 +261,7 @@ sub remove()
 
 sub save(%)
 {   my ($self, %args) = @_;
-	$self->_data->{groupid} = $::app->newUnique if $self->groupId eq 'new';
+	$self->_data->{groupid} = new_token 'G' if $self->groupId eq 'new';
 	if($args{by_user})
     {	$self->_data->{schema} = GROUP_SCHEMA;
 		$self->log('changed group settings');

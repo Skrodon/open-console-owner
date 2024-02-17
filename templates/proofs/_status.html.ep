@@ -1,0 +1,17 @@
+
+<table class="table">
+<tbody>
+
+<tr><td>Status</td>
+    <td><span class="badge <%== $proof->statusBgColorClass %>"><%= $proof->statusText %></span></td></tr>
+
+% if(my $expires = $proof->expires) {
+<tr><td>Expires</td>
+    <td><%= $expires %></td></tr>
+% }
+
+<tr><td>Score</td>
+    <td><%= $proof->score %></td></tr>
+
+</tbody>
+</table>

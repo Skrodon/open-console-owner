@@ -19,11 +19,7 @@
       </div>
       <form class="d-flex" method="GET" action="/set" >
         <select name="language" class="form-select" onChange="submit()">
-% my $iflang = $c->language;
-% foreach my $lang ($c->ifLanguages) {
-%    my ($code, $name) = @$lang;
-        <option value="<%= $code %>"<%= $code eq $iflang ? ' selected' : '' %> ><%= $name %></option>
-%}
+%= include 'shared/_iflanguage', iflang => $c->language;
         </select>
       </form>
       <div class="nav-item text-nowrap">

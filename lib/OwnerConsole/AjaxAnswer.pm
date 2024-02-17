@@ -12,7 +12,7 @@ use Scalar::Util    qw(blessed);
 =section Attributes
 =cut
 
-has data => sub {  +{ warnings => [], errors => [] } };
+has data => sub {  +{ warnings => [], errors => [], notifications => [] } };
 
 #------------------
 =section Actions
@@ -31,6 +31,11 @@ sub hasErrors()
 sub addWarning($$)
 {	my ($self, $field, $warn) = @_;
 	push @{$self->data->{warnings}}, [ $field => blessed $warn ? "$warn" : $warn ];
+}
+
+sub notify($)
+{	my ($self, $text) = @_;
+	push @{$self->data->{notifications}}, $text->toString;
 }
 
 sub redirect($)

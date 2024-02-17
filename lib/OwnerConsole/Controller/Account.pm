@@ -73,8 +73,9 @@ sub submit($)
 	@langs = ('en') unless @langs;
 	$data->{languages} = \@langs;
 
-	my $iflang = $data->{iflang} = delete $params->{language} || '';
-	(grep $iflang eq $_->[0], $self->ifLanguages)
+	my $iflang  = $data->{iflang} = delete $params->{iflang} || '';
+	my $iflangs = $::app->config->{interface_languages};
+	grep $iflang eq $_, @$iflangs
 		or $answer->addError(iflang => __x"Unsupported interface language '{code}'", code => $iflang);
 
 	my $tz = $data->{timezone} = delete $params->{timezone};

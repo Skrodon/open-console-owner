@@ -1,0 +1,44 @@
+%# Parameters 'set' (proof set name), 'show_column' (name), 'show' (sub)
+
+% my $rows = begin
+%   my ($proofs, $editable) = @_;
+%   my $edit = $editable ? 'fa-solid fa-pen' : 'fa-solid fa-magnifying-glass';
+%   foreach my $proof (@$proofs) {
+    <tr data-proof="<%= $proof->proofId %>">
+      <td><%= $show->($proof) %></td>
+      <td><a href="<%= $proof->link %>"><i class="<%= $edit %>"></a></i></td>
+      <td><span class="badge <%== $proof->statusBgColorClass %>"><%= $proof->statusText %></span></td>
+      <td><%= $proof->score %></td></tr>
+%   }
+% end
+
+  <script src="/assets/proof_list.js"></script>
+  <input type="hidden" name="set" value="<%= $set %>" />
+  <table class="table table-striped table-hover" id="prooflisttab">
+  <thead class="thead-light">
+    <tr>
+      <th><%= $show_column %></th>
+      <th>Edit</th>
+      <th>Status</th>
+      <th>Score</th></tr>
+  </thead>
+  <tbody>
+    <tr data-owner="<%= $account->userId %>">
+      <th colspan="4">Personal properties:</th></tr>
+
+%= $rows->([ $account->proofs->for($set) ], 1);
+
+% foreach my $group ($account->groups) {
+%    my $group_admin = $group->memberIsAdmin($account);
+
+    <tr data-owner="<%= $group->groupId %>">
+      <th colspan="4">Group: <%= $group->name %> <%== $group_admin ? '<i class="fa-solid fa-user-tie"></i>' : '' %></th></tr>
+
+%=   $rows->([ $group->proofs->for($set) ], $group_admin);
+
+% }
+    <tr class="table-light">
+        <td colspan="4"><a href="/dashboard/emailaddr/new" class="btn btn-primary" role="button" %>
+           <i class="fa-solid fa-circle-plus"></i> Add a Proof</a></td></tr>
+  </tbody>
+  </table>
