@@ -3,7 +3,7 @@
 % my $rows = begin
 %   my ($proofs, $editable) = @_;
 %   foreach my $proof (@$proofs) {
-    <tr data-proof="<%= $proof->proofId %>">
+    <tr data-proof="<%= $proof->proofId %>" data-editable="<%= $editable ? 'true' : 'false' %>" >
       <td><%= $show->($proof) %></td>
       <td>
 %     if($editable) {
@@ -17,6 +17,8 @@
       <td><%= $proof->score %></td></tr>
 %   }
 % end
+
+% my $account = $c->account;
 
   <script src="/assets/proof_list.js"></script>
   <input type="hidden" name="set" value="<%= $set %>" />
@@ -37,7 +39,7 @@
 % foreach my $group ($account->groups) {
 %    my $group_admin = $group->memberIsAdmin($account);
 
-    <tr data-owner="<%= $group->groupId %>">
+    <tr data-owner="<%= $group->groupId %>" data-admin="<%= $group_admin ? 'true' : 'false' %>">
       <th colspan="4">Group: <%= $group->name %> <%== $group_admin ? '<i class="fa-solid fa-user-tie"></i>' : '' %></th></tr>
 
 %=   $rows->([ $group->proofs->for($set) ], $group_admin);

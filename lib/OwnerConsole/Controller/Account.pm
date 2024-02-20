@@ -1,7 +1,6 @@
 package OwnerConsole::Controller::Account;
-use Mojo::Base 'Mojolicious::Controller';
+use Mojo::Base 'OwnerConsole::Controller';
 
-use OwnerConsole::AjaxAnswer ();
 use Log::Report 'open-console-owner';
 
 use OwnerConsole::Util       qw(flat :validate);
@@ -16,95 +15,92 @@ sub index($)
 
 ### Keep this logic in sync with OwnerConsole::Account attributes
 
-sub submit($)
-{   my $self = shift;
-	my $answer  = OwnerConsole::AjaxAnswer->new();
-	my $account = $self->account;
-	my $data    = $account->_data;
+sub _acceptAccount($$)
+{	my ($self, $session, $victim) = @_;
+	$self->acceptObject($session, $victim);
 
-	my $req     = $self->req;
-	my $how     = $req->url->query;
-	my $params  = $req->json || $req->body_params->to_hash;
+	my $email = is_valid_email $session->requiredParam('email')
+		or $session->addError(email => __x"Invalid email address");
+	$victim->setData(email => $email);
 
-	my $id      = $self->param('userid');
-	$self->user->isAdmin || $id eq $account->userId
-		or error __x"You cannot modify the account of someone else.";
-#use Data::Dumper;
-#warn "QUERY=$how";
-#warn "PARAMS=", Dumper $params;
-#warn "DATA IN =", Dumper $data;
-
-	if($how eq 'delete')
-	{	$account->remove;
-		$self->notify(__x"Your account has been removed.");
-		$answer->redirect('/');
-        return $self->render(json => $answer->data);
-	}
-
-	if(my $email = $data->{email} = delete $params->{email})
-	{	if(not is_valid_email $email)
-		{	$answer->addError(email => __x"Invalid email-address");
-		}
-		elsif($data->{email} ne $email)
-		{	#XXX start validate email process
-		}
-	}
-
-	my $passwd  = delete $params->{password} || '';
-	my $confirm = delete $params->{confirm}  || '';
+	my $passwd  = $session->optionalParam(password => '');
+	my $confirm = $session->optionalParam(confirm  => '');
 
 	if(length $passwd && length $confirm)
 	{	if($passwd ne $confirm)
-		{	$answer->addError(confirm => __x"The passwords do not match.");
+		{	$session->addError(confirm => __x"The passwords do not match.");
 		}
 		if(length $passwd < 6)
-		{	$answer->addError(password => __x"The passwords is too short.");
+		{	$session->addError(password => __x"The passwords is too short.");
 		}
-		$account->changePassword($passwd);
+		$victim->changePassword($passwd);
+		$session->changed;
 	}
 
+	my $langs = $session->optionalParam(languages => '');
 	my @langs;
-	my $langs = delete $params->{languages} || '';
 	foreach my $lang (split /\,/, $langs)
 	{	is_valid_language $lang
-			or $answer->addWarning(languages => __x"Ignoring unsupported language-code '{code}'", code => $lang);
+			or $session->addWarning(languages => __x"Ignoring unsupported language-code '{code}'", code => $lang);
 		push @langs, $lang;
 	}
-	@langs = ('en') unless @langs;
-	$data->{languages} = \@langs;
+	$victim->setData(languages => @langs ? \@langs : [ 'en' ]);
 
-	my $iflang  = $data->{iflang} = delete $params->{iflang} || '';
 	my $iflangs = $::app->config->{interface_languages};
+	my $iflang  = $session->optionalParam(iflang => $iflangs->[0]);
 	grep $iflang eq $_, @$iflangs
-		or $answer->addError(iflang => __x"Unsupported interface language '{code}'", code => $iflang);
+		or $session->addError(iflang => __x"Unsupported interface language '{code}'", code => $iflang);
+	$victim->setData(iflang => $iflang);
 
-	my $tz = $data->{timezone} = delete $params->{timezone};
-	! defined $tz || is_valid_timezone($tz)
-		or $answer->addError(timezone => __x"Unsupported time-zone '{timezone}'", timezone => $tz);
+	my $tz = $session->optionalParam(timezone => 'Europe/Amsterdam');
+	is_valid_timezone($tz)
+		or $session->addError(timezone => __x"Unsupported time-zone '{tz}'", tz => $tz);
+	$victim->setData(timezone => $tz);
 
-	my $birth = delete $params->{birth} || '';
-	$data->{birth_date} = length $birth
-	  ? (is_valid_date $birth or $answer->addError(birth => __x"Illegal date format, use YYYY-MM-DD."))
-	  : undef;
+	my $birth = val_line $session->optionalParam('birth');
+	! defined $birth || is_valid_date $birth
+		or $session->addError(birth => __x"Illegal date format, use YYYY-MM-DD.");
+	$victim->setData(birth_date => $birth);
 
-	my $gender = $data->{gender} = delete $params->{gender} || '';
-	! length $gender || is_valid_gender $gender
-		or $answer->addError(gender => __x"Unknown gender type '{gender}'", gender => $gender);
+	my $gender = $session->optionalParam('gender');
+	! defined $gender || is_valid_gender $gender
+		or $session->addError(gender => __x"Unknown gender type '{gender}'", gender => $gender);
+	$victim->setData(gender => $gender);
 
-	my $phone = $data->{phone} = val_line delete $params->{phone};
-    ! defined $phone || is_valid_phone $phone
-        or $answer->addError(phone => __x"Invalid phone number, use '+<country><net>/<extension>'");
+	my $phone = val_line $session->optionalParam('phone');
+	! defined $phone || is_valid_phone $phone
+	    or $session->addError(phone => __x"Invalid phone number, use '+<country><net>/<extension>'");
+	$victim->setData(phone_number => $phone);
 
-warn "Unprocessed parameters: ", join ', ', sort keys %$params if keys %$params ;
-#warn "DATA OUT =", Dumper $data;
+	$self;
+}
 
-	if($how eq 'save' && ! $answer->hasErrors)
-	{	$answer->redirect('/dashboard');
-#warn "SAVING";
-		$account->save(by_user => 1);
+sub configAccount($)
+{   my $self    = shift;
+	my $session = $self->ajaxSession;
+	my $how     = $session->query || 'validate';
+
+	my $victim  = $session->openObject('OwnerConsole::Account', userid => sub { $::app->users->account($_[0]) })
+		or error __x"Account disappeared.";
+
+	$self->user->isAdmin || $victim->userId eq $self->account->userId
+		or error __x"You cannot modify the account of someone else.";
+
+	if($how eq 'delete')
+	{	$victim->remove;
+		$session->notify(info => __x"Your account has been removed.");
+		$session->redirect('/');
+	    return $session->reply;
 	}
 
-    $self->render(json => $answer->data);
+	$self->acceptFormData($session, $victim, '_acceptAccount');
+
+	if($how eq 'save' && $session->isHappy)
+	{	$session->redirect('/dashboard');
+		$victim->save(by_user => 1);
+	}
+
+	$session->checkParamsUsed->reply;
 }
 
 1;

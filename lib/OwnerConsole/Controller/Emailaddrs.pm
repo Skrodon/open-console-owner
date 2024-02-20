@@ -22,10 +22,10 @@ sub emailaddr(%)
 
 warn "PAGE EDIT PROOF $proofid, $proof.";
 
-	$self->render(template => 'emailaddrs/algo1', proof => $proof );
+	$self->render(template => 'emailaddrs/emailaddr1', proof => $proof );
 }
 
-sub acceptEmailaddr1()
+sub _acceptEmailaddr1()
 {	my ($self, $session, $proof) = @_;
 	$self->acceptProof($session, $proof);
 
@@ -34,13 +34,14 @@ sub acceptEmailaddr1()
 	my $email   = $session->optionalParam('email');
 	if($proof->isNew)
 	{	# Cannot change email-address unless a new proof is created
-		if(my $cleaned = is_valid_email $email)
-		{	$proof->setData(email => $cleaned) && $proof->invalidate;
+		if(! defined $email || $email eq '')
+		{	$session->addError(email => __x"Email address is required.");
+		}
+		elsif(is_valid_email $email)
+		{	$proof->setData(email => $email) && $proof->invalidate;
 		}
 		else
-		{	$session->addError(email => defined $email
-			  ? (__x"Invalid email address.")
-			  : (__x"Email address is required."));
+		{	$session->addError(email => __x"Invalid email address.");
 		}
 	}
 	elsif(defined $email && $email ne $proof->email)
@@ -48,7 +49,7 @@ sub acceptEmailaddr1()
 	}
 
 	my $subaddr = $session->optionalParam(subaddr => 'no');
-	$proof->setData(sub_addressing => $subaddr) && $proof->invalidate;
+	$proof->setData(sub_addressing => ($subaddr eq 'yes' || 0)) && $proof->invalidate;
 	$self;
 }
 
@@ -72,9 +73,10 @@ warn "HOW=$how";
 	{	$proof->delete;
 		$session->notify(info => __x"Proof for Email address '{email}' removed.", email => $proof->email);
 		$session->redirect('/dashboard/emailaddrs');
+		return $session->reply;
 	}
 
-	$self->acceptFormData($session, $proof, 'acceptEmailaddr1');
+	$self->acceptFormData($session, $proof, '_acceptEmailaddr1');
 
 	if($how eq 'save' && $session->isHappy)
 	{	$proof->save(by_user => 1);
@@ -105,12 +107,15 @@ sub _startVerification1($%)
 	);
 	$challenge->save;
 
+	my $email     = $proof->email;
+	$email =~ s/\@/+oc@/ if $proof->supportsSubAddressing;
+
 	OwnerConsole::Email->create(
 		subject => __"Proof email address ownership",
 		text    => $self->render_to_string('emailaddrs/mail_challenge', format => 'txt', %args),
 		html    => $self->render_to_string('emailaddrs/mail_challenge', format => 'html', %args),
 		sender  => $proof->identity($account),
-		sendto  => $proof->email,
+		sendto  => $email,
 		purpose => 'proof_emailaddr',
 	)->queue;
 }

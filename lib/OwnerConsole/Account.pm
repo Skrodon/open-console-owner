@@ -55,7 +55,7 @@ sub email()     { $_[0]->_data->{email}  }
 sub birth()     { $_[0]->_data->{birth_date} }
 sub gender()    { $_[0]->_data->{gender} }
 sub languages() { @{$_[0]->_data->{languages} || []} }
-sub phone()     { $_[0]->_data->{phone} }
+sub phone()     { $_[0]->_data->{phone_number} }
 sub iflang()    { $_[0]->_data->{iflang} }
 sub timezone()  { $_[0]->_data->{timezone} }
 sub reset()     { $_[0]->_data->{reset} }
@@ -66,6 +66,7 @@ sub groupIds()    { @{$_[0]->_data->{groups} || []} }
 sub isAdmin()   { $_[0]->{OA_admin} ||= $::app->isAdmin($_[0]) }
 sub ifLanguage  { language_name($_[0]->iflang) }
 sub preferredLanguage { ($_[0]->languages)[0] }
+sub orderedLang() { join ',', $_[0]->languages }
 
 sub nrIdentities { scalar $_[0]->identityIds }
 sub nrGroups     { scalar $_[0]->groupIds }
@@ -125,11 +126,9 @@ sub addIdentity($)  # by id or object
 	return $self if grep $id eq $_, @$ids;
 
 	push @$ids, $id;
+	delete $self->{OA_ids};  # clean cache
 
 	$self->log("Added identity $id");
-	$self->save;
-
-	delete $self->{OA_ids};  # clean cache
 	$self;
 }
 

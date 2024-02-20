@@ -1,6 +1,6 @@
 
 % layout 'frontpage';
-%# div class="col-2"><img src="/images/monitoring data.svg" width="100%" /></div>
+%# div class="col-2"><img src="/images/monitoring%20data.svg" width="100%" /></div>
 %# class="col-2"><img src="/images/group%20id.svg" width="100%" /></div>
 %# div class="col-2"><img src="/images/website%20owner.svg" width="100%" /></div>
 
@@ -11,8 +11,8 @@
     <div class="col-5">
 
 <h5>Proofs of Ownership</h5>
-<p>Once you have registered, you can proof your ownership to websites,
-domain-names, ip-networks, and data sources. These proofs give you access
+<p>Once you have registered, you can proof your ownership to email
+addresses, websites, domain-names, and more. These proofs give you access
 to information collected by other parties about your properties.</p>
 
     </div>
@@ -21,7 +21,7 @@ to information collected by other parties about your properties.</p>
 
   <div class="row">
     <div class="col-2"></div>
-    <div class="col-3"><img src="/images/fact%20exchange.svg" /></div>
+    <div class="col-3"><img src="/images/fact_exchange.svg" /></div>
     <div class="col-5">
 
 <h5>Exchange Facts about Websites</h5>
@@ -35,7 +35,7 @@ between people who have collected knowlegde about websites.
 
   <div class="row">
     <div class="col-2"></div>
-    <div class="col-3"><img src="/images/free,%20open,%20unbiased.svg" /></div>
+    <div class="col-3"><img src="/images/free_open_unbiased.svg" /></div>
     <div class="col-5">
 <h5>Free, open, and unbiased information</h5>
 <p>Open Console is a free to use and open infrastructure: it organizes the cooperation

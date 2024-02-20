@@ -38,18 +38,24 @@ sub toDB() { $_[0]->_data }  #XXX might become more complex later
 sub changed()    { ++$_[0]->{OP_changed} }
 sub hasChanged() { !! $_[0]->{OP_changed} }
 
-sub setData($$)
-{	my ($self, $field, $value) = @_;
+sub setData(@)
+{	my $self = shift;
 	my $data = $self->_data;
+	my $changes = 0;
 
-	# NOTE: blank fields do not exist
-	if(my $changed = +($data->{$field} // ' ') ne ($value // ' '))
-	{	$data->{$field} = $value;
+	while(@_)
+	{	my ($field, $value) = (shift @_, shift @_);
+
+		# NOTE: blank fields do not exist: blank==missing
+		if(my $changed = +($data->{$field} // ' ') ne ($value // ' '))
+		{	$data->{$field} = $value;
 warn "CHANGED $field to $value";
-		return $self->changed;
+			$self->changed;
+			$changes++;
+		}
 	}
 
-	0;
+	$changes;
 }
 
 #------------------------

@@ -92,7 +92,7 @@
     <option value="<%= $code %>"><%= $name %></option>
 % }
     </select>
-    <input id="ordered_lang" type="hidden" name="languages">
+    <input id="ordered-lang" type="text" name="languages" value="<%= $account->orderedLang %>" style="display: none">
     <div id="lang_explain" class="form-text">Drag the languages in the right order, them from best to worst.</div>
   </div>
 
@@ -139,7 +139,7 @@
 
   <div>
     <label for="birth" class="form-label">Birth-date</label>
-    <input name="birth" type="text" id="birth" class="form-control" placeholder="YYYY-MM-DD" aria-describedby="birth_explain" value="<%= $account->birth %>" />
+    <input name="birth" type="text" id="birth" class="form-control" placeholder="yyyy-mm-dd" aria-describedby="birth_explain" value="<%= $account->birth %>" />
     <div id="birth_explain" class="form-text">Some Services may want an age indication.</div>
   </div>
 

@@ -27,17 +27,18 @@ sub acceptFormData($$$)
 	$self;
 }
 
+sub acceptObject($$)
+{	my ($self, $session, $proof) = @_;
+	$self;
+}
+
 #-------------
 =section Generic code for Proofs
 =cut
 
 sub acceptProof($$)
 {	my ($self, $session, $proof) = @_;
-	no warnings 'uninitialized';
-
-    my $ownerid = $session->requiredParam('owner');
-    $proof->setData(ownerid => $ownerid);
-
+	$proof->setData(ownerid => $session->requiredParam('owner'));
 	$self;
 }
 

@@ -20,6 +20,7 @@ WriteMakefile
 	'Minion::Backend::Mango' => 1.02,
 	'Mojolicious'            => 9.35,
 	'Mojolicious::Plugin::CSRFProtect' => 0.16,
+	'Net::LibIDN'            => 0.12,
 	'Session::Token'         => 1.503,
 
    }

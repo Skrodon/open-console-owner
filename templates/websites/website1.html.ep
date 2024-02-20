@@ -1,0 +1,62 @@
+% layout 'dashboard';
+% title 'Create/update website proof, type 1';
+
+% my $is_new  = $proof->proofId eq 'new';
+
+% my @pages;
+% my $settings_form = begin
+
+  <div>
+    <label for="url" class="form-label">Website address</label>
+    <input name="url" type="text" id="url" class="form-control" placeholder="Website address"
+      aria-describedby="url_explain" required value="<%= $proof->url %>"
+      <%= $is_new ? '' : 'disabled' %>
+    />
+    <div id="url_explain" class="form-text">Your own or your group's website address.</div>
+  </div>
+
+%= include 'proofs/_owner_pick';
+
+  <hr>
+
+% end
+
+% my $settings_explain = begin
+
+<p>You can proof the ownership of a website.</p>
+
+% end
+
+% push @pages, [
+%    'website-settings',
+%    'Settings',
+%    $settings_form,
+%    $settings_explain,
+% ];
+
+% my $status_form = begin
+
+%= include 'proofs/_status';
+
+% end
+
+% my $status_explain = begin
+% end
+
+% push @pages, [
+%    'website-status',
+%    'Status',
+%    $status_form,
+%    $status_explain,
+% ];
+
+<script src="/assets/config_form.js"></script>
+
+<form id="config-website" class="config-form">
+  <input id="identifier" type="hidden" value="<%= $proof->proofId %>" />
+
+% include 'dashboard/_tabbed';
+%= $::tabbed->('website-tabs' => \@pages);
+
+</form>
+

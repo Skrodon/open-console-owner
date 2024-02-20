@@ -145,7 +145,7 @@ sub startup
 	$dashboard->get('/')->to('dashboard#index');
 
 	$dashboard->get('/account')->to('account#index');
-	$dashboard->post('/config-account/:userid')->to('account#submit');
+	$dashboard->post('/config-account/:userid')->to('account#configAccount');
 
 	$dashboard->get('/identities')->to('identities#index');
 	$dashboard->get('/identity/:identid')->to('identities#identity');
@@ -160,6 +160,10 @@ sub startup
 	$dashboard->get('/emailaddrs')->to('emailaddrs#index');
 	$dashboard->get('/emailaddr/:proofid')->to('emailaddrs#emailaddr');
 	$dashboard->post('/config-emailaddr/:proofid')->to('emailaddrs#configEmailaddr');
+
+	$dashboard->get('/websites')->to('websites#index');
+	$dashboard->get('/website/:proofid')->to('websites#emailaddr');
+	$dashboard->post('/config-website/:proofid')->to('websites#configWebsite');
 
 	my $challenge = $r->under('/challenge')->to('login#mustBeLoggedIn');
 	$challenge->get('/:token')->to('emailaddrs#challenge');  #XXX may get own controller later

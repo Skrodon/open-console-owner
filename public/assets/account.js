@@ -37,7 +37,7 @@ function activate_language_selector(form) {
 
 	function saveLangOrder() {
 		var selectedLanguages = $('td:first-child', table).map(function () { return $(this).data('code') }).get();
-		$('#ordered_lang', form).val(selectedLanguages.join(','));
+		$('#ordered-lang', form).val(selectedLanguages.join(','));
 	}
 
  	function languageIsSelected(language) {

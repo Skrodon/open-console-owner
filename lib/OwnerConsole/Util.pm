@@ -16,6 +16,7 @@ my @is_valid = qw(
 	is_valid_language
 	is_valid_phone
 	is_valid_timezone
+	is_valid_url
 );
 
 my @validators = qw(
@@ -56,6 +57,17 @@ sub is_valid_timezone($) { defined first { $_ eq $_[0] } @{timezone_names()} }
 sub is_valid_email($)    { Email::Valid->address($_[0]) }
 sub is_valid_phone($)    { $_[0] =~ m!^\+[0-9 \-]{4,}(?:/.+)?! }
 sub is_valid_date($)     { $_[0] =~ s! ^\s* ([0-9]{4}) (?:[-/ ]?) ([0-9]{2}) (?:[-/ ]?)? ([0-9]{2}) \s*$ !$1-$2-$3!r }
+
+sub is_valid_url($)
+{	# Only a first check: needs to be normalized
+	$_[0] =~ m!^
+		https?://               # scheme
+                                # no username/password
+		[\w\-]+(\.[\w\-){1,}\.? # hostname
+		(?: \: [0-9]+ )?        # port
+		(?: / [^?#]* )?         # path, no query or fragment
+	$ !x;
+}
 
 sub bson2datetime($$)
 {	my ($stamp, $tz) = @_;

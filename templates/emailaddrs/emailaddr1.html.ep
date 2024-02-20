@@ -1,19 +1,18 @@
 % layout 'dashboard';
-% title 'Create/update email-address proof, type 1';
+% title 'Create/update email address proof, type 1';
 
-% my $account = $c->account;
 % my $is_new  = $proof->proofId eq 'new';
 
 % my @pages;
 % my $settings_form = begin
 
   <div>
-    <label for="email" class="form-label">Email-address</label>
-    <input name="email" type="email" id="email" class="form-control" placeholder="Email-address"
+    <label for="email" class="form-label">Email address</label>
+    <input name="email" type="email" id="email" class="form-control" placeholder="name@example.com"
       aria-describedby="email_explain" required value="<%= $proof->email %>"
       <%= $is_new ? '' : 'disabled' %>
     />
-    <div id="email_explain" class="form-text">Your or the group's email-address to be verified.</div>
+    <div id="email_explain" class="form-text">Your or the group's email address to be verified.</div>
   </div>
 
   <div>
@@ -24,7 +23,7 @@
         aria-describedby="subaddr_explain" >
       <label class="form-check-label" for="subaddr"> Supports sub-addressing</label>
     </div>
-    <div id="subaddr_explain" class="form-text">Permit the "+"-trick on the proven email-address.</div>
+    <div id="subaddr_explain" class="form-text">Permit the "+"-trick on the proven email address.</div>
   </div>
 
 %= include 'proofs/_owner_pick';
@@ -45,7 +44,7 @@
 
 % my $settings_explain = begin
 
-<p>You can proof the ownership of a personal email-address, but it might also be
+<p>You can proof the ownership of a personal email address, but it might also be
 the address in use by one of your groups.</p>
 
 <p>When you are the owner or administrator of the owning group, then you can move

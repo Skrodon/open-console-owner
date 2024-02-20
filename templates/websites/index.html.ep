@@ -1,5 +1,5 @@
 % layout 'dashboard';
-% title 'Overview of email address proofs';
+% title 'Overview of website proofs';
 
 <div class="container">
   <div class="row">
@@ -7,16 +7,16 @@
       <h5 class="card-header">Email-address ownership</h5>
       <div class="card-body">
 
-<form class="proof-list" id="config-emailaddr">
-% my $show = sub { my $e = $_[0]->email; $e =~ s!\@!(+)\@! if $_[0]->supportsSubAddressing; $e };
-%= include 'proofs/_proof_list', set => 'emailaddrs', show => $show, show_column => "Email address";  #XXX translate
+<form class="proof-list" id="config-website">
+% my $show = sub { $_[0]->website };
+%= include 'proofs/_proof_list', set => 'websites', show => $show, show_column => "Website";  #XXX translate
 </form>
 
       </div>
    </div>
 
     <div class="card col-sm-5" id="emails_explain">
-      <h5 class="card-header">Proving email-addresses</h5>
+      <h5 class="card-header">Proving Websites</h5>
       <div class="card-body">
 
 <p>

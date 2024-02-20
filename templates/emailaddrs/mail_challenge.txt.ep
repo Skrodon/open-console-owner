@@ -1,14 +1,33 @@
 % layout 'mail';
 % title "Challenge for email-address " . $proof->email;
-% my $vhost  = $c->config('vhost');
+% my $link = $c->config('vhost') . $challenge->link;
 
---> Challenge to proof ownership of email-address
+This is a challenge to proof ownership of email address
+   <%== $proof->email %>
 
-In Open Console, you triggered the email-address validation procedure.
+% if($proof->isOwnedByMe) {
+
+In Open Console, you triggered an email address validation procedure.
 In case you did not initiate this yourself, then someone may have made
 a mistake.  In that case, please ignore this message.
 
-Please visit
+Please visit thist link to confirm that this email address is yours:
+   <%== $link %>
 
+% } else {
+%   my $group    = $self->owner;
+%   my $identity = $group->memberIdentityOf($account);
 
-to confirm that this email-address is yours.
+In Open Console, the email address validation procedure has been
+started by <%== $identity->fullname %>
+for group  <%== $group->fullname %>.
+
+If you are not the one who triggered this validation, then please ignore
+this message.
+
+When you started this procedure, please visit the link below to confirm
+that this email address is used by your group:
+   <%== $link %>
+
+% }
+

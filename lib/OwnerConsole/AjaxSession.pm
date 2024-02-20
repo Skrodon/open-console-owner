@@ -38,7 +38,12 @@ sub about($)
 sub params()
 {	my $self = shift;
 	my $req  = $self->request;
+my $new = ! defined $self->{OA_params};
+my $p =
 	$self->{OA_params} ||= $req->json || $req->body_params->to_hash;
+use Data::Dumper;
+warn "PARAMS=", Dumper $p if $new;
+$p;
 }
 
 sub optionalParam($;$) { delete $_[0]->params->{$_[1]} // $_[2] }
@@ -80,6 +85,11 @@ sub redirect($)
 	$self->_data->{redirect} = $location;
 }
 
+sub addOtherData($$)
+{	my ($self, $key, $value) = @_;
+	$self->_data->{$key} = $value;
+}
+
 sub internalError($) { push @{$_[0]->_data->{internal_errors}}, $_[1]->toString }
 
 sub hasInternalErrors() { scalar @{$_[0]->_data->{internal_errors}} }
@@ -91,8 +101,19 @@ sub isHappy() { ! $_[0]->hasErrors && ! $_[0]->hasInternalErrors }
 =cut
 
 sub openObject()
-{	my ($self, $objclass, $objectid) = @_;
-	...;
+{	my ($self, $objclass, $idlabel, $get) = @_;
+	my $objid = $self->about($idlabel) or panic $idlabel;
+
+	return $objclass->create({})
+		if $idlabel eq 'new';
+
+	my $object = $get->($objid);
+	unless($object)
+	{	$self->internalError(__x"The object has disappeared.");
+		return undef;
+	}
+
+	$object;
 }
 
 #------------------
