@@ -4,18 +4,18 @@
 <div class="container">
   <div class="row">
     <div class="card col-sm-7" id="emailaddrs_card">
-      <h5 class="card-header">Email-address ownership</h5>
+      <h5 class="card-header">Website ownership</h5>
       <div class="card-body">
 
 <form class="proof-list" id="config-website">
 % my $show = sub { $_[0]->website };
-%= include 'proofs/_proof_list', set => 'websites', show => $show, show_column => "Website";  #XXX translate
+%= include 'proofs/_proof_list', set => 'websites', element => 'website', show => $show, show_column => "Website";  #XXX translate
 </form>
 
       </div>
    </div>
 
-    <div class="card col-sm-5" id="emails_explain">
+    <div class="card col-sm-5" id="websites_explain">
       <h5 class="card-header">Proving Websites</h5>
       <div class="card-body">
 

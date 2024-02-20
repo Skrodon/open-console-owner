@@ -8,7 +8,7 @@
 
   <div>
     <label for="url" class="form-label">Website address</label>
-    <input name="url" type="text" id="url" class="form-control" placeholder="Website address"
+    <input name="url" type="text" id="url" class="form-control" placeholder="https://example.com/~user"
       aria-describedby="url_explain" required value="<%= $proof->url %>"
       <%= $is_new ? '' : 'disabled' %>
     />
@@ -23,7 +23,8 @@
 
 % my $settings_explain = begin
 
-<p>You can proof the ownership of a website.</p>
+<p>You can proof the ownership of a website.  As URL, you can use IDN
+(<a href="https://en.wikipedia.org/wiki/Internationalized_domain_name">Internatialized Domain Names</a>)</p>
 
 % end
 

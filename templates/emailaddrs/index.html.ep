@@ -9,7 +9,7 @@
 
 <form class="proof-list" id="config-emailaddr">
 % my $show = sub { my $e = $_[0]->email; $e =~ s!\@!(+)\@! if $_[0]->supportsSubAddressing; $e };
-%= include 'proofs/_proof_list', set => 'emailaddrs', show => $show, show_column => "Email address";  #XXX translate
+%= include 'proofs/_proof_list', set => 'emailaddrs', element => 'emailaddr', show => $show, show_column => "Email address";  #XXX translate
 </form>
 
       </div>

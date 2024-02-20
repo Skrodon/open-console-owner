@@ -46,7 +46,7 @@
 
 % }
     <tr class="table-light">
-        <td colspan="4"><a href="/dashboard/emailaddr/new" class="btn btn-primary" role="button" %>
+        <td colspan="4"><a href="/dashboard/<%= $element %>/new" class="btn btn-primary" role="button" %>
            <i class="fa-solid fa-circle-plus"></i> Add a Proof</a></td></tr>
   </tbody>
   </table>

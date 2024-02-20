@@ -71,7 +71,7 @@ warn "HOW=$how";
 		$session->redirect('/dashboard/websites');
 	}
 
-	$self->_acceptFormData($session, $proof, '_acceptWebsite1');
+	$self->acceptFormData($session, $proof, '_acceptWebsite1');
 
 	if($how eq 'save' && $session->isHappy)
 	{	$proof->save(by_user => 1);

@@ -1,0 +1,43 @@
+<div class="container">
+  <div class="row">
+    <div class="card" id="config-card" style="width: 45%">
+      <h5 class="card-header">Configure an identity</h5>
+      <div class="card-body">
+
+<p>We hope you have a good day.</p>
+
+<p>You made your first move to use Open Console.  To become useful,
+you need to continue the configuration by adding Idenities and proves
+of Ownership. Then you can connect to services.  Check the left panel.</p>
+
+<ul>
+<li>step 1: create yourself one or more <a href="/dashboard/identity/new">personal identities</a>, which
+    you can use to identify yourself to external parties, like service providers.</li>
+</ul>
+
+<p>The configuration options work like this:</p>
+<img src="/images/design/set1-oc-objects.svg" style="max-width:100%; max-heigth:300px" />
+<p>Maybe, an example is more helpfull:</p>
+<img src="/images/design/set1-crawler-example.svg" style="max-width:100%; max-heigth:300px" />
+
+
+      </div>
+    </div>
+
+    <div class="card" id="config-card" style="width: 45%">
+      <h5 class="card-header">Configuration process</h5>
+      <div class="card-body">
+
+<p>One Account can be used for different things.  Please go through all steps once.</p>
+<ul>
+<li><b>step 1: create a personal identity (required).</b></li>
+<li>step 2: create a group identity (optional).</li>
+<li>step 3: collect ownership proofs.</li>
+<li>step 4: connect to services you want to use.</li>
+<li>step 5: define services you offer.</li>
+</ul>
+
+      </div>
+    </div>
+  </div>
+</div>

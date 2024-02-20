@@ -68,7 +68,9 @@ sub configIdentity($)
 
 	$self->acceptFormData($session, $identity, '_acceptIdentity');
 
-	if($how eq 'save' && ! $session->hasErrors)
+use Data::Dumper;
+warn Dumper $session;
+	if($how eq 'save' && $session->isHappy)
 	{	my $is_new = $identity->identityId eq 'new';
 		$identity->save(by_user => 1);
 

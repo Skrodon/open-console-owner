@@ -162,7 +162,7 @@ sub startup
 	$dashboard->post('/config-emailaddr/:proofid')->to('emailaddrs#configEmailaddr');
 
 	$dashboard->get('/websites')->to('websites#index');
-	$dashboard->get('/website/:proofid')->to('websites#emailaddr');
+	$dashboard->get('/website/:proofid')->to('websites#website');
 	$dashboard->post('/config-website/:proofid')->to('websites#configWebsite');
 
 	my $challenge = $r->under('/challenge')->to('login#mustBeLoggedIn');

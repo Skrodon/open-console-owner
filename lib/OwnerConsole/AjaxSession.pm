@@ -3,8 +3,11 @@ use Mojo::Base -base;
 
 use Log::Report 'open-console-owner';
 
-use Scalar::Util    qw(blessed);
+use Scalar::Util       qw(blessed);
 
+use OwnerConsole::Util qw(val_line);
+
+=chapter METHODS
 =section Constructors
 =cut
 
@@ -48,7 +51,13 @@ $p;
 
 sub optionalParam($;$) { delete $_[0]->params->{$_[1]} // $_[2] }
 
-sub requiredParam($) { $_[0]->optionalParam($_[1]) or panic "param $_[1] missing" }
+sub requiredParam($)
+{	my ($self, $param) = @_;
+	my $p = val_line $self->optionalParam($param);
+	defined $p && length $p
+		or $self->addError($param => __x"Required parameter missing.");
+	'missing';
+}
 
 sub checkParamsUsed()
 {	my $self   = shift;

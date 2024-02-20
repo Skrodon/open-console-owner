@@ -49,7 +49,7 @@ sub setData(@)
 		# NOTE: blank fields do not exist: blank==missing
 		if(my $changed = +($data->{$field} // ' ') ne ($value // ' '))
 		{	$data->{$field} = $value;
-warn "CHANGED $field to $value";
+warn "CHANGED $field to " . ($value // 'undef');
 			$self->changed;
 			$changes++;
 		}
