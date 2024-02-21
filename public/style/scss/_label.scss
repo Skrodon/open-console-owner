@@ -1,0 +1,13 @@
+@import '_variables';
+
+LABEL.form-label {
+	margin-top: 2ex;
+	font-size: larger;
+	font-weight: bold;
+ }
+
+FORM LABEL.has-changed {
+	padding: 0 10px;
+	background-color: $info-color;
+	border-radius: 1ex;
+}

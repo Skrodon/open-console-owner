@@ -1,0 +1,10 @@
+@import "_variables";
+
+NAV .badge {
+	background: $info-color;
+	color: black;
+}
+
+.badge-danger {
+	background: $danger-color;
+}

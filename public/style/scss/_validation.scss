@@ -1,0 +1,15 @@
+@import '_variables';
+
+.val-error::before,
+.val-warn::before {
+	font-family: "Font Awesome 6 Free";
+	font-weight: 900;
+	content: "\f071  ";
+}
+
+.val-error {
+	color: $danger-color;
+}
+.val-warn {
+	color: $warning-color;
+}

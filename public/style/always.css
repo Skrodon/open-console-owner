@@ -1,0 +1,41 @@
+/* XXX why are these not in the Bootstrap CSS?  It is on their  */
+ /* website.  Need to play with the generated style-sheets?	  */
+
+.bg-warning { color: black }
+.bg-danger  { color: white }
+.bg-info	{ color: black }
+
+.close:not(:disabled):not(.disabled) {
+	cursor: pointer;
+
+}
+.modal-header .close {
+	padding: 1rem;
+	margin: -1rem -1rem -1rem auto;
+}
+/* XXX End of fixes */
+
+/* Mark everything what is only available to admins */
+.admin {
+	background: #CCFFCC;
+}
+
+TH, TD {
+	padding: 10px;
+}
+
+FORM > DIV {
+	margin-bottom: 3ex;
+}
+
+div#login_card {
+	width: auto;
+	height: auto;
+	max-width: 40rem;
+	max-height: 60rem;
+}
+
+.eye_toggle {
+	cursor: pointer;
+}
+

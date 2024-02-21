@@ -1,0 +1,81 @@
+@import '_variables';
+
+FORM#config-account  #account-delete-tab,
+FORM#config-identity #identity-delete-tab,
+FORM#config-group	 #group-delete-tab
+{	color: $danger-color;
+}
+
+FORM#config-account #account-delete-tab.active,
+FORM#config-identity #identity-delete-tab.active,
+FORM#config-group   #group-delete-tab.active
+{	color: white;
+	background-color: red;
+}
+
+FORM#config-account TABLE#langtab.table-hover TBODY TR:hover {
+	background-color: #e0e0e0;
+}
+
+FORM.config-form #save-button {
+	margin-bottom: 1ex;
+}
+
+FORM.config-form #save-button.bg-danger:hover {
+	background-color: white !important;
+	color: var(--bs-nav-pills-link-active-bg);
+}
+
+FORM.config-form #save-button.bg-success {
+	color: white !important;
+}
+
+FORM.config-form #save-button.bg-success:hover {
+	background-color: var(--bs-nav-pills-link-active-bg) !important;
+}
+
+FORM.config-form #cancel-button.bg-success {
+	color: white !important;
+}
+
+FORM.config-form #cancel-button.bg-success:hover {
+	background-color: blue !important;
+}
+
+FORM.config-form DIV.row > DIV {
+	border-left: 1px solid;
+	border-color: #0d6efd;
+}
+
+FORM.config-form DIV#form-summary {
+	max-width: 15rem;
+	margin-top: 2ex;
+}
+
+FORM.config-form #form-summary TD,
+FORM.config-form #form-summary TH {
+	padding: 3px;
+}	
+
+/* https://observablehq.com/@rkaravia/css-trick-tabs-with-consistent-height */
+FORM.config-form .tab-content {
+	display: flex;
+}
+
+FORM.config-form .tab-content > .tab-pane {
+	display: block;      /* undo "display: none;" Everything gets rendered */
+	visibility: hidden;
+	margin-right: -100%;
+	width: 100%;
+}
+
+FORM.config-form .tab-content > .active {
+	visibility: visible;
+}
+
+FORM.config-form .container,
+FORM.config-form .row {
+	height: 100%;
+}
+
+/* END height trick */
