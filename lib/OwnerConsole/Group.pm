@@ -21,13 +21,13 @@ use constant
 sub create($%)
 {	my ($class, $account, %args) = @_;
 
-	my %insert  = (
-		groupid     => 'new',
+	my %insert =
+	  (	groupid     => 'new',
 		schema      => GROUP_SCHEMA,
 		language    => $account->preferredLanguage,
 		timezone    => $account->timezone || 'GMT',
 		members     => [],
-	);
+	  );
 
 	my $self = $class->SUPER::create(\%insert, %args);
 	$self->addMember($account, $account->preferredIdentity);

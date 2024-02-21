@@ -117,8 +117,8 @@ sub openObject()
 {	my ($self, $objclass, $idlabel, $get) = @_;
 	my $objid = $self->about($idlabel) or panic $idlabel;
 
-	return $objclass->create({})
-		if $idlabel eq 'new';
+	return $objclass->create($self->account)
+		if $objid eq 'new';
 
 	my $object = $get->($objid);
 	unless($object)

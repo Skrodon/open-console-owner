@@ -9,8 +9,6 @@ use Data::Dumper;
 $Data::Dumper::Indent = 1;
 sub fromDB($)
 {	my ($class, $data) = @_;
-use Data::Dumper;
-#warn "DATA=", Dumper $data;
 delete $data->{logging};   #XXX remove after restart of the DBs
 	$class->new(_data => $data);
 }

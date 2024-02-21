@@ -27,13 +27,15 @@ these facts.  Work in progress.
 
 sub create($%)
 {	my ($class, $account, %args) = @_;
-	my %insert  = (
-		identid  => 'new',
+
+	my %insert =
+	  (	identid  => 'new',
 		schema   => IDENTITY_SCHEMA,
 		userid   => $account->userId,
 		gender   => $account->gender,
 		language => $account->preferredLanguage,
-	);
+	  );
+
 	$class->SUPER::create(\%insert, %args);
 }
 

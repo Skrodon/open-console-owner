@@ -1,5 +1,5 @@
 function activate_language_selector(form) {
-	var table = $("#langtab", form).first();
+	var table = $("TABLE#langtab", form).first();
 
 	// Helper to make row not collapse when sort
 	function fixHelperModified(event, tr) {
@@ -26,7 +26,7 @@ function activate_language_selector(form) {
 	});
 
 	// Remove duplicate language get from server in languages list
-	$('#languages option', table).each(function () {
+	$('SELECT#languages OPTION', table).each(function () {
 		var langName = $(this).text();
 		if(uniqueLangs[langName]) {
 			$(this).remove();
@@ -37,18 +37,18 @@ function activate_language_selector(form) {
 
 	function saveLangOrder() {
 		var selectedLanguages = $('td:first-child', table).map(function () { return $(this).data('code') }).get();
-		$('#ordered-lang', form).val(selectedLanguages.join(','));
+		$('INPUT#ordered-lang', form).val(selectedLanguages.join(','));
 	}
 
  	function languageIsSelected(language) {
-		return $('td:first-child', table).toArray().some(function (element) {
+		return $('TD:first-child', table).toArray().some(function (element) {
 			return $(element).text() === language;
 		});
 	}
 
-	$('#language-list', form).on('change', function () {
+	$('SELECT#language-list', form).on('change', function () {
 		var list = $(this);
-		list.find('option:selected').each( function(index, selectedLanguage) {
+		list.find('OPTION:selected').each( function(index, selectedLanguage) {
 			var lang = $(selectedLanguage).text();
 			var code = $(selectedLanguage).val();
 			if(code == '' || languageIsSelected(lang)) { return }

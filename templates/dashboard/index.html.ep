@@ -2,6 +2,8 @@
 % title 'Dashboard';
 % my $account = $c->account;
 
+<script src="/assets/dashboard.js"></script>
+
 % if($account->nrIdentities) {
 
 %= include 'dashboard/_service_selector';

@@ -1,0 +1,14 @@
+% layout 'demo';
+
+&nbsp;<br />
+&nbsp;<br />
+
+<table class="table" width="100%">
+<tr><td style="width: 50%">
+  <h1>Take-down requests</h1>
+
+   </td><td style="width: 50%; text-align: center">
+      <a href="https://openwebsearch.eu" target="_blank"><img src="/images/openwebsearch.png" id="OWSimg" style="width: 80%; max-height: 400px"></a>
+   </td>
+</tr>
+</table>

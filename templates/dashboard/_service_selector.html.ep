@@ -2,7 +2,7 @@
 
 % my $account = $c->account;
 
-<form>
+<form id="service-selector">
   <nav class="navbar navbar-expand-lg">
     <div class="container-fluid">
 
@@ -52,8 +52,9 @@
       <option disabled>Internation cooperating Cyber Security Centers</option>
       </select>
       <select name="service" id="service" class="form-select">
-      <option value="">Crawl status</option>
-      <option value="">Take-down requests</option>
+      <option value="intro">Introduction to Services</option>
+      <option value="crawl_status">Crawl status</option>
+      <option value="take_down">Take-down requests</option>
       <option value="">Classifications</option>
       </select>
     </li>

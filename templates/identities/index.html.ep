@@ -38,14 +38,11 @@ tell a lot about yourself, sometimes hide behind a nickname only.  You can expre
 your separate roles in separate Identities.</p>
 
 <p>You can connect your Identities to organizations (Indentity Groups).  As person
-or for a Group, you can prove (website) Ownership, or use or provide a Service.</p>
+or for a Group, you can prove (website) Ownership, and use or provide Services.</p>
 
 <p>Although you may share an Identity to use or provide different Services, they
 will not be able to detect you reusing your Identity: you do <i>not need</i> to set-up
 a different Identity for each Service.</p>
-
-<p>When using your Account for <strong>OpenID</strong>, you can relate a
-single Identity to every Server you want to login to.  It will remember
 where you used which Identity.</p>
 
       </div>

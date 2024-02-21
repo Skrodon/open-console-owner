@@ -53,7 +53,7 @@ Ownership:
   <a class="nav-link" href="/dashboard/websites"><i class="fa-solid fa-file-circle-plus"></i> Websites</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="/dashboard"><i class="fa-solid fa-piggy-bank"></i> Bank-accounts</a>
+  <a class="nav-link" href="/dashboard"><i class="fa-solid fa-piggy-bank"></i> Bank accounts</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="/dashboard"><i class="fa-solid fa-phone"></i> Phone numbers</a>

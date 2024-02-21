@@ -1,3 +1,21 @@
 % layout 'demo';
 
-<h1>INTRO!</h1>
+&nbsp;<br />
+&nbsp;<br />
+
+<table class="table" width="100%">
+<tr><td style="width: 50%">
+  <h1>Introduction to Services</h1>
+
+  <p>This will lead you to a few example pages, which may get
+  implemented later.  Select a <b>service</b> above to see
+  some mock-ups.</p>
+
+  %= include 'shared/_devel_warning';
+   </td><td style="width: 50%; text-align: center">
+     <div id="logo">
+        <img src="/images/open-console.svg" style="width: 80%; max-width: 400px" />
+     </div>
+   </td>
+</tr>
+</table>
