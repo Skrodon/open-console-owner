@@ -54,9 +54,13 @@ sub optionalParam($;$) { delete $_[0]->params->{$_[1]} // $_[2] }
 sub requiredParam($)
 {	my ($self, $param) = @_;
 	my $p = val_line $self->optionalParam($param);
-	defined $p && length $p
-		or $self->addError($param => __x"Required parameter missing.");
-	'missing';
+
+	unless(defined $p && length $p)
+	{	$self->addError($param => __x"Required parameter missing.");
+		return 'missing';
+	}
+
+	$p;
 }
 
 sub checkParamsUsed()

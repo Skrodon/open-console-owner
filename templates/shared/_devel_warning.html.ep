@@ -1,0 +1,10 @@
+<div class="alert alert-info" role="alert">
+  <p>This Open Console interface is under rapid development.  At the
+  moment, it shows a lot of plans as demonstration, but not everything
+  is implemented.  What should work: <b>account</b>, personal and group
+  <b>idenities</b>, and <b>email address proofs</b>.  We are currently
+  implementing website ownership proofs.</p>
+
+  <p>Please, report issues (especially crashes) in one of the "finished" components to
+  <a href="mailto:team@open-console.eu">team@open-console.eu</a>.</p>
+</div>

@@ -1,0 +1,64 @@
+%# Demonstration implementation
+
+% my $account = $c->account;
+
+<form>
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+
+    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+    <li class="nav-item">
+      <label for="identity">for identity</label>
+      <select name="identity" id="identity" class="form-select">
+        <option value="" selected>&mdash; any role &mdash;</option>
+% foreach my $identity ($account->identities) {
+%   my $idid  = $identity->identityId;
+        <option value="<%= $idid %>" disabled><%= $identity->role %></option>
+% }
+      </select>
+    </li>
+    <li class="nav-item">
+      <label for="owner">contract owner</label>
+      <select name="owner" id="owner" class="form-select">
+        <option value="" selected>&mdash; any owner &mdash;</option>
+        <option value="myself" disabled>&mdash; mine</option>
+% foreach my $group ($account->groups) {
+%   my $groupid = $group->groupId;
+        <option value="<%= $groupid %>" disabled>Group <%= $group->name %></option>
+% }
+      </select>
+    </li>
+    <li class="nav-item">
+      <label for="set">information about</label>
+      <select name="set" id="set" class="form-select">
+      <option>&mdash; any category &mdash;</option>
+      <option disabled>email address</option>
+      <option disabled>website</option>
+      </select>
+      <select name="element" id="element" class="form-select">
+      <option value="">&mdash; any property &mdash;</option>
+      <option disabled>mark@overmeer.net</option>
+      <option disabled>http://open-console.eu</option>
+      </select>
+    </li>
+    <li class="nav-item">
+      <label for="provider">service</label>
+      <select name="provider" id="provider" class="form-select">
+      <option value="">&mdash; any provider &mdash;</option>
+      <option selected>OpenWebSearch.EU</option>
+      <option disabled>CommonCrawl</option>
+      <option disabled>Cooperating Email Blacklist Organizations</option>
+      <option disabled>Amnesty International</option>
+      <option disabled>Internation cooperating Cyber Security Centers</option>
+      </select>
+      <select name="service" id="service" class="form-select">
+      <option value="">Crawl status</option>
+      <option value="">Take-down requests</option>
+      <option value="">Classifications</option>
+      </select>
+    </li>
+    </ul>
+
+    </div>
+  </nav>
+</form>

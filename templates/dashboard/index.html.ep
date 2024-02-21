@@ -1,19 +1,28 @@
 % layout 'dashboard';
 % title 'Dashboard';
+% my $account = $c->account;
+
+% if($account->nrIdentities) {
+
+%= include 'dashboard/_service_selector';
+
+<iframe id="service-window"
+  name="Service window"
+  allowfullscreen="false"
+  allowpaymentrequest="false"
+  height="100%"
+  loading="lazy"
+  width="100%"
+  src="/dashboard/service/intro"
+  border="1"
+>
+</iframe>
+
+% } else {
 
 <h1>Welcome to Open Console</h1>
 
-<div class="alert alert-info" role="alert">
-  <p>This Open Console interface is under rapid development.  At the moment, it shows a lot of
-  plans as demonstration, but not everything is implemented.  What should work: <b>account</b>,
-  <b>personal idenities</b>, <b>group identities</b>, and <b>email address proofs</b>.  We are
-  currently implementing website ownership proofs.</p>
-  <p>Please, report issues (especially crashes) in one of the "finished" components.</p>
-</div>
-
-%# if($account->nrIdentities) {
-% if(1) {
+%= include 'shared/_devel_warning';
 %= include 'dashboard/_need_ids';
-% } else {
-<div>Working on this</div>
+
 % }

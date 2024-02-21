@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="card" id="config-card" style="width: 45%">
-      <h5 class="card-header">Configure an identity</h5>
+      <h5 class="card-header">Configure a (personal) identity</h5>
       <div class="card-body">
 
 <p>We hope you have a good day.</p>
@@ -15,11 +15,14 @@ of Ownership. Then you can connect to services.  Check the left panel.</p>
     you can use to identify yourself to external parties, like service providers.</li>
 </ul>
 
-<p>The configuration options work like this:</p>
-<img src="/images/design/set1-oc-objects.svg" style="max-width:100%; max-heigth:300px" />
-<p>Maybe, an example is more helpfull:</p>
-<img src="/images/design/set1-crawler-example.svg" style="max-width:100%; max-heigth:300px" />
-
+<p>Once you have created (at least one) personal identity, you can start reaching
+out to services.  Continue with:</p>
+<ul>
+<li>creating group identities;</li>
+<li>collect ownership proofs;</li>
+<li>connect to services you want to use; and</li>
+<li>define services you offer.</li>
+</ul>
 
       </div>
     </div>
@@ -28,14 +31,17 @@ of Ownership. Then you can connect to services.  Check the left panel.</p>
       <h5 class="card-header">Configuration process</h5>
       <div class="card-body">
 
-<p>One Account can be used for different things.  Please go through all steps once.</p>
-<ul>
-<li><b>step 1: create a personal identity (required).</b></li>
-<li>step 2: create a group identity (optional).</li>
-<li>step 3: collect ownership proofs.</li>
-<li>step 4: connect to services you want to use.</li>
-<li>step 5: define services you offer.</li>
-</ul>
+
+<p>The configuration options relate like this:</p>
+<img src="/images/design/set1-oc-objects.svg" style="max-width:100%; max-heigth:300px; margin-bottom: 2ex" />
+
+<p>Maybe, <b>the example</b> below is more helpful to you.  Organization
+'C' runs a web-crawler: it collects information about the website
+of company 'AB' to be used in a search index.  The user can see that
+information in the dashboard when he has proven ownership of that
+website, or he is member of a group which has that proof.</p>
+
+<img src="/images/design/set1-crawler-example.svg" style="max-width:100%; max-heigth:300px" />
 
       </div>
     </div>

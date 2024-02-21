@@ -165,6 +165,8 @@ sub startup
 	$dashboard->get('/website/:proofid')->to('websites#website');
 	$dashboard->post('/config-website/:proofid')->to('websites#configWebsite');
 
+	$dashboard->get('/service/:demo')->to('dashboard#demo');
+
 	my $challenge = $r->under('/challenge')->to('login#mustBeLoggedIn');
 	$challenge->get('/:token')->to('emailaddrs#challenge');  #XXX may get own controller later
 

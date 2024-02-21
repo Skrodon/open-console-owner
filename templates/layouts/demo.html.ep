@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html data-lt-installed="true" lang="en">
+<head>
+	<title><%= title %></title>
+	<meta name="description" content="">
+	%= include '_standard_header'
+	%# = jquery_ajax_csrf_protection
+</head>
+<body>
+    
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Open Console</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="navbar-nav">
+    <div class="nav-item text-nowrap">
+      <a class="nav-link px-3" href="/logout"><i class="fa-solid fa-right-from-bracket"></i> Sign out</a>
+    </div>
+  </div>
+</header>
+
+<div class="container-fluid">
+  <div class="row">
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <br />
+      <br />
+
+      <%= notifications() %>
+      <%= content %>
+    </main>
+  </div>
+</div>
+
+</body>
+</html>
