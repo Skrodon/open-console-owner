@@ -8,7 +8,7 @@
       <td>
 %     if($editable) {
           <a href="<%= $proof->elemLink %>"><i class="fa-solid fa-pen"></i></a>
-          <a href="#" class="remove-proof"><i class="fa-solid fa-skull" style="color: red"></i></a>
+          <a href="#" class="remove-proof"><i class="fa-solid fa-skull"></i></a>
 %     } else {
           <a href="<%= $proof->elemLink %>"><i class="fa-solid fa-magnifying-glass"></i></a>
 %     }
@@ -21,6 +21,7 @@
 % my $account = $c->account;
 
   <script src="/assets/proof_list.js"></script>
+
   <input type="hidden" name="set" value="<%= $set %>" />
   <table class="table table-striped table-hover" id="prooflisttab">
   <thead class="thead-light">

@@ -20180,4 +20180,8 @@ FORM#config-account TABLE#langtab.table-hover TBODY TR:hover {
   content: "\f071";
 }
 
+FORM.proof-list A.remove-proof {
+  color: var(--bs-danger);
+}
+
 /*# sourceMappingURL=open-console.css.map */
