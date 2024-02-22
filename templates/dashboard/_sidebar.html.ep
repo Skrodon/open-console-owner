@@ -53,22 +53,22 @@ Ownership:
   <a class="nav-link" href="/dashboard/websites"><i class="fa-solid fa-file-circle-plus"></i> Websites</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="/dashboard"><i class="fa-solid fa-piggy-bank"></i> Bank accounts</a>
+  <a class="nav-link" href="#"><i class="fa-solid fa-piggy-bank"></i> Bank accounts</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="/dashboard"><i class="fa-solid fa-phone"></i> Phone numbers</a>
+  <a class="nav-link" href="#"><i class="fa-solid fa-phone"></i> Phone numbers</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="/dashboard"><i class="fa-solid fa-envelope-open-text"></i> Postal addresses</a>
+  <a class="nav-link" href="#"><i class="fa-solid fa-envelope-open-text"></i> Postal addresses</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="/dashboard"><i class="fa-solid fa-people-arrows"></i> Social media</a>
+  <a class="nav-link" href="#"><i class="fa-solid fa-people-arrows"></i> Social media</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="/dashboard"><i class="fa-solid fa-house-medical"></i> Domains</a>
+  <a class="nav-link" href="#"><i class="fa-solid fa-house-medical"></i> Domains</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="/dashboard"><i class="fa-solid fa-network-wired"></i> Networks</a>
+  <a class="nav-link" href="#"><i class="fa-solid fa-network-wired"></i> Networks</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="#"><i class="fa-solid fa-key"></i> Security keys</a>

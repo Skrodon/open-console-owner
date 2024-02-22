@@ -6,6 +6,8 @@
 .bg-danger  { color: white }
 .bg-info	{ color: black }
 
+A[href="#"] { text-decoration: line-through }
+
 NAV .badge {
 	background: rgba(var(--bs-info-rgb));
 	color: black;
