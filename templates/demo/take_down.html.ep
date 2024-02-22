@@ -7,8 +7,6 @@
 <tr><td style="width: 55%">
   <h1>Take-down requests</h1>
 
-  <p style="color: red">This is a mock-up: an example which does not work!</p>
-
   <p>With this form, you can force exclusion of urls from all the OpenWebSearch.EU indexes.  
   This is complementary to the sitemap mechanism, which lists what should be included.  And
   there is a gray area between these two.</p>

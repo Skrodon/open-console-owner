@@ -1,6 +1,7 @@
 %# Demonstration implementation
 
 % my $account = $c->account;
+% $c->notify(error => "This is a mock-up: an example of what this page may become in the future.");
 
 <form id="service-selector">
   <nav class="navbar navbar-expand-lg">

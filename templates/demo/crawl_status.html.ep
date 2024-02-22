@@ -6,7 +6,6 @@
 <table class="table" width="100%">
 <tr><td style="width: 80%">
   <h1>Crawl status</h1>
-  <p style="color: red">This is a mock-up: an example which does not work!</p>
 
  <form onSubmit="false">
   <div class="container">
