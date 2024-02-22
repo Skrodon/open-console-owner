@@ -1,0 +1,21 @@
+@import 'variables';
+
+.val-error {
+	@extend %fa-icon;
+	@extend .fas;
+
+	&::before {
+		content: fa-content($fa-var-warning);
+	}
+	color: var(--bs-alert-danger-color);
+}
+
+.val-warn {
+	@extend %fa-icon;
+	@extend .fas;
+
+	&::before {
+		content: fa-content($fa-var-warning);
+	}
+	color: var(--bs-alert-warning-color);
+}

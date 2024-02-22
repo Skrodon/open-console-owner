@@ -1,0 +1,74 @@
+@import 'variables';
+
+FORM.config-form {
+
+	#delete-tab {
+		color: var(--bs-danger-color);
+		&.active {
+			color: white;
+			background-color: red;
+		}
+	}
+
+	#save-button {
+		margin-bottom: 1ex;
+		&.bg-danger {
+			&:hover {
+				background-color: white !important;
+				color: var(--bs-nav-pills-link-active-bg);
+			}
+		}
+		&.bg-success {
+			color: white !important;
+			&:hover {
+				background-color: var(--bs-nav-pills-link-active-bg) !important;
+			}
+		}
+	}
+
+	#cancel-button {
+		&.bg-success {
+			color: white !important;
+			&:hover {
+				background-color: blue !important;
+			}
+		}
+	}
+
+	DIV#form-summary {
+		max-width: 15rem;
+		margin-top: 2ex;
+		TD {
+			padding: 3px;
+		}
+		TH {
+			padding: 3px;
+		}
+	}
+
+	DIV.row {
+		>DIV {
+			border-left: 1px solid;
+			border-color: #0d6efd;
+		}
+	}
+
+	.tab-content {
+		display: flex;
+		>.tab-pane {
+			display: block;
+			visibility: hidden;
+			margin-right: -100%;
+			width: 100%;
+		}
+		>.active {
+			visibility: visible;
+		}
+	}
+	.container {
+		height: 100%;
+	}
+	.row {
+		height: 100%;
+	}
+}

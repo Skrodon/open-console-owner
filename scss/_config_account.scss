@@ -1,0 +1,11 @@
+FORM#config-account {
+	TABLE#langtab.table-hover {
+		TBODY {
+			TR {
+				&:hover {
+					background-color: #e0e0e0;
+				}
+			}
+		}
+	}
+}

@@ -55,4 +55,7 @@ FIRST_YEAR      = 2024
 EMAIL           = mark@open-console.eu
 EXTENDS         = 
 WEBSITE         = http://perl.overmeer.net/owner-console
+
+css:
+	sass scss/main.scss public/assets/open-console.css
 __POSTAMBLE
