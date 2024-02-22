@@ -109,7 +109,7 @@ sub correctResetToken($)
 	{	return $reset->{token} eq $token;
 	}
 
-	$self->notify(warning => __x"Not in a reset procedure, at the moment.");
+	warn "Not in a reset procedure, at the moment.";
 	0;
 }
 
