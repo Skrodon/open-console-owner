@@ -20103,12 +20103,12 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
-FORM.config-form #delete-tab {
-  color: var(--bs-danger-color);
+FORM.config-form .any-delete-tab {
+  color: var(--bs-danger);
 }
-FORM.config-form #delete-tab.active {
+FORM.config-form .any-delete-tab.active {
   color: white;
-  background-color: red;
+  background-color: var(--bs-danger);
 }
 FORM.config-form #save-button {
   margin-bottom: 1ex;

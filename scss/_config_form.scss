@@ -2,11 +2,11 @@
 
 FORM.config-form {
 
-	#delete-tab {
-		color: var(--bs-danger-color);
+	.any-delete-tab {
+		color: var(--bs-danger);
 		&.active {
 			color: white;
-			background-color: red;
+			background-color: var(--bs-danger);
 		}
 	}
 
