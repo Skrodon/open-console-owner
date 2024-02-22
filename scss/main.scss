@@ -1,0 +1,18 @@
+// It's a pity, but import does not support string interpolation (yet)
+// You have to change the path on all places, when the versions change.
+$fontawesome : "../public/fontawesome-free-6.5.1-web";
+$fa-font-path: "/fontawesome-free-6.5.1-web/webfonts";
+
+// Download https://github.com/twbs/bootstrap/archive/v5.3.3.zip to /tmp.
+// Then: cd scss && unzip /tmp/bootstrap-5.3.3.zip bootstrap-5.3.3/scss/*
+// Check the version number from file templates/_standard_header.html.ep
+$bootstrap   : "bootstrap-5.3.3";
+
+@import "../public/fontawesome-free-6.5.1-web/scss/fontawesome.scss";
+@import "../public/fontawesome-free-6.5.1-web/scss/solid.scss";
+@import "bootstrap-5.3.3/scss/bootstrap.scss";
+
+@import "_variables.scss";
+@import "_config_form.scss";
+@import "_config_account.scss";
+@import "_validation.scss";
