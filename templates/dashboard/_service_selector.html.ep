@@ -55,7 +55,6 @@
       <option value="intro">Introduction to Services</option>
       <option value="crawl_status">Crawl status</option>
       <option value="take_down">Take-down requests</option>
-      <option value="">Classifications</option>
       </select>
     </li>
     </ul>

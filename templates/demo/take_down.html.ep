@@ -4,11 +4,54 @@
 &nbsp;<br />
 
 <table class="table" width="100%">
-<tr><td style="width: 50%">
+<tr><td style="width: 55%">
   <h1>Take-down requests</h1>
 
-   </td><td style="width: 50%; text-align: center">
-      <a href="https://openwebsearch.eu" target="_blank"><img src="/images/openwebsearch.png" id="OWSimg" style="width: 80%; max-height: 400px"></a>
+  <p style="color: red">This is a mock-up: an example which does not work!</p>
+
+  <p>With this form, you can force exclusion of urls from all the OpenWebSearch.EU indexes.  
+  This is complementary to the sitemap mechanism, which lists what should be included.  And
+  there is a gray area between these two.</p>
+
+  <p>Changes are processed as fast as feasible, but at most take a week to reach all our
+  projects.</p>
+
+  <form onSubmit="false">
+
+   <label for="website" class="form-label">Website</label>
+   <select id="website" class="form-select" aria-describedby="website_explain">
+   <option>https://open-console.eu</option>
+   <option>https://www.nluug.nl</option>
+   </select>
+   <div id="website_explain" class="form-text">Select the website which you wish to configure.</div>
+
+   <label for="filters" class="form-label">Exclude patterns</label>
+   <textarea id="filters" class="form-control" aria-describedby="filters_explain" rows="5">
+/images/*.odt
+/security.txt
+/search?source=backup&*
+   </textarea>
+   <div id="filters_explain" class="form-text">
+     Specify all (patterns of) urls which should not be included in one of our indexes.
+   </div>
+
+  </form>
+
+   </td><td style="width: 5%">
+       &nbsp;
+   </td><td style="width: 40%">
+      <a href="https://openwebsearch.eu" target="_blank"><img src="/images/openwebsearch.png" id="OWSimg" style="width: 80%; max-height: 400px"></a><br />
+
+      <ul>
+      <li>Earlier take-downs.
+      </ul>
+
+      <p>OpenWebSearch.EU</p>
+      <ul>
+      <li>Our mission.</li>
+      <li>Licence.</li>
+      <li>Become a sponsor.</li>
+      </ul>
    </td>
 </tr>
 </table>

@@ -12,11 +12,9 @@
   name="Service window"
   allowfullscreen="false"
   allowpaymentrequest="false"
-  height="100%"
   loading="lazy"
-  width="100%"
   src="/dashboard/service/intro"
-  border="1"
+  style="height: 1200px; width: 100%; border: 0px"
 >
 </iframe>
 
