@@ -5,9 +5,10 @@
 
 <div class="container">
   <div class="row">
-    <div class="card" id="config-card" style="width: 45%">
-      <h5 class="card-header">Continue configuration</h5>
-      <div class="card-body">
+    <div class="col-sm-6">
+        <div class="card" id="config-card">
+        <h5 class="card-header">Continue configuration</h5>
+        <div class="card-body">
 
 <form>
 <table cellpadding="10px">
@@ -37,12 +38,14 @@
 </table>
 </form>
 
-      </div>
+        </div>
+        </div>
     </div>
 
-    <div class="card" id="config-card" style="width: 45%">
-      <h5 class="card-header">Explanation</h5>
-      <div class="card-body">
+    <div class="col-sm-6">
+        <div class="card" id="config-card">
+        <h5 class="card-header">Explanation</h5>
+        <div class="card-body">
 
 <p>We hope you have a good day.  You made your first move to use Open Console.  To become
 useful, you need to continue the configuration by adding Idenities and proves of Ownership.</p>
@@ -57,7 +60,8 @@ useful, you need to continue the configuration by adding Idenities and proves of
     owners.<br />&nbsp;</li>
 </ul>
 
-      </div>
+        </div>
+        </div>
     </div>
   </div>
 </div>

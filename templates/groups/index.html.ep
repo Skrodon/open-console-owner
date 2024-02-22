@@ -8,9 +8,10 @@
 
 <div class="container">
   <div class="row">
-    <div class="card col-sm-7" id="identities_card">
-      <h5 class="card-header">Group Identities</h5>
-      <div class="card-body">
+    <div class="col-sm-7">
+      <div class="card" id="identities_card">
+        <h5 class="card-header">Group Identities</h5>
+        <div class="card-body">
 
 <form id="group_list">
   <table class="table table-striped table-hover">
@@ -49,16 +50,19 @@
 </form>
 
       </div>
+    </div>
    </div>
 
-    <div class="card col-sm-5" id="identities_explain">
-      <h5 class="card-header">Configuring Group Identities</h5>
-      <div class="card-body">
+    <div class="col-sm-5">
+      <div class="card" id="identities_explain">
+        <h5 class="card-header">Configuring Group Identities</h5>
+        <div class="card-body">
 
 <p>You may need to organize your activities as part of an organization,
 a company, or any other <strong>group of people</strong>.  Therefore, you
 can create Group identities, where you can specify such cooperation.</p>
 
+        </div>
       </div>
     </div>
   </div>
