@@ -3,26 +3,32 @@
 
 <div class="container">
   <div class="row">
-    <div class="card col-sm-7" id="emailaddrs_card">
-      <h5 class="card-header">Email-address ownership</h5>
-      <div class="card-body">
+
+    <div class="col-sm-7">
+      <div class="card" id="emailaddrs_card">
+        <h5 class="card-header">Email-address ownership</h5>
+        <div class="card-body">
 
 <form class="proof-list" id="config-emailaddr">
 % my $show = sub { my $e = $_[0]->email; $e =~ s!\@!(+)\@! if $_[0]->supportsSubAddressing; $e };
 %= include 'proofs/_proof_list', set => 'emailaddrs', element => 'emailaddr', show => $show, show_column => "Email address";  #XXX translate
 </form>
 
+        </div>
       </div>
-   </div>
+    </div>
 
-    <div class="card col-sm-5" id="emails_explain">
-      <h5 class="card-header">Proving email-addresses</h5>
-      <div class="card-body">
+    <div class="col-sm-5">
+      <div class="card" id="emails_explain">
+        <h5 class="card-header">Proving email-addresses</h5>
+        <div class="card-body">
 
 <p>
 </p>
 
+        </div>
       </div>
     </div>
+
   </div>
 </div>

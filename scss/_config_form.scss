@@ -1,4 +1,4 @@
-@import 'variables';
+@import '_variables';
 
 FORM.config-form {
 
@@ -14,6 +14,7 @@ FORM.config-form {
 		margin-bottom: 1ex;
 
 		&.bg-danger {
+			color: white !important;
 			&:hover {
 				background-color: white !important;
 				color: var(--bs-nav-pills-link-active-bg);
@@ -48,9 +49,52 @@ FORM.config-form {
 		}
 	}
 
+	BUTTON[role="tab"] SPAN.badge {
+		display: none;
+		float: right;
+	}
+
 	DIV.row > DIV {
 		border-left: 1px solid;
 		border-color: #0d6efd;
+	}
+
+	// Form styling
+
+	LABEL.form-label {
+		margin-top: 2ex;
+		font-size: larger;  // change BS $form-label-font-size?
+		font-weight: bold;  // $form-label-font-weight
+ 	}
+
+	// Form change history
+
+	LABEL.has-changed {
+		padding: 0 10px;
+		background-color: var(--bs-info);
+		border-radius: 1ex;
+	}
+
+	FIELDSET.history {
+		width:90%;
+		margin: 2em auto;
+		border: 2px solid var(--bs-info);
+		border-radius: 5px;
+		padding: 20px;
+		position: relative;
+
+		LEGEND {
+			font-size: 1rem;
+			position: absolute;
+			left: 10px;
+			top: -1.1em;
+			height: 2em;
+			line-height: 2em;
+			padding: 0 10px;
+			width: auto;
+			background-color: var(--bs-info);
+			border-radius: 1ex;
+		}
 	}
 
 	// All tabs are rendered, so they are all the same heigth

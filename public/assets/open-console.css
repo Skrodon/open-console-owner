@@ -13,8 +13,8 @@
 .fa-classic,
 .fa-sharp,
 .fas,
-.val-warn,
-.val-error,
+DIV.val-warn::before,
+DIV.val-error::before,
 .fa-solid,
 .far,
 .fa-regular,
@@ -29,7 +29,7 @@
   text-rendering: auto;
 }
 
-.fas, .val-warn, .val-error,
+.fas, DIV.val-warn::before, DIV.val-error::before,
 .fa-classic,
 .fa-solid,
 .far,
@@ -42,7 +42,7 @@
   font-family: "Font Awesome 6 Brands";
 }
 
-.val-warn, .val-error {
+DIV.val-warn::before, DIV.val-error::before {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   display: inline-block;
@@ -8253,7 +8253,7 @@ readers do not read off random characters that represent icons */
   font-display: block;
   src: url("/fontawesome-free-6.5.1-web/webfonts/fa-solid-900.woff2") format("woff2"), url("/fontawesome-free-6.5.1-web/webfonts/fa-solid-900.ttf") format("truetype");
 }
-.fas, .val-warn, .val-error,
+.fas, DIV.val-warn::before, DIV.val-error::before,
 .fa-solid {
   font-weight: 900;
 }
@@ -20103,6 +20103,14 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.admin {
+  background: #CCFFCC !important;
+}
+
+FORM#config-account TABLE#langtab.table-hover TBODY TR:hover {
+  background-color: #e0e0e0;
+}
+
 FORM.config-form .any-delete-tab {
   color: var(--bs-danger);
 }
@@ -20112,6 +20120,9 @@ FORM.config-form .any-delete-tab.active {
 }
 FORM.config-form #save-button {
   margin-bottom: 1ex;
+}
+FORM.config-form #save-button.bg-danger {
+  color: white !important;
 }
 FORM.config-form #save-button.bg-danger:hover {
   background-color: white !important;
@@ -20139,9 +20150,43 @@ FORM.config-form DIV#form-summary TD {
 FORM.config-form DIV#form-summary TH {
   padding: 3px;
 }
+FORM.config-form BUTTON[role=tab] SPAN.badge {
+  display: none;
+  float: right;
+}
 FORM.config-form DIV.row > DIV {
   border-left: 1px solid;
   border-color: #0d6efd;
+}
+FORM.config-form LABEL.form-label {
+  margin-top: 2ex;
+  font-size: larger;
+  font-weight: bold;
+}
+FORM.config-form LABEL.has-changed {
+  padding: 0 10px;
+  background-color: var(--bs-info);
+  border-radius: 1ex;
+}
+FORM.config-form FIELDSET.history {
+  width: 90%;
+  margin: 2em auto;
+  border: 2px solid var(--bs-info);
+  border-radius: 5px;
+  padding: 20px;
+  position: relative;
+}
+FORM.config-form FIELDSET.history LEGEND {
+  font-size: 1rem;
+  position: absolute;
+  left: 10px;
+  top: -1.1em;
+  height: 2em;
+  line-height: 2em;
+  padding: 0 10px;
+  width: auto;
+  background-color: var(--bs-info);
+  border-radius: 1ex;
 }
 FORM.config-form .tab-content {
   display: flex;
@@ -20162,26 +20207,85 @@ FORM.config-form .row {
   height: 100%;
 }
 
-FORM#config-account TABLE#langtab.table-hover TBODY TR:hover {
-  background-color: #e0e0e0;
+A[href="#"] {
+  text-decoration: line-through;
 }
 
-.val-error {
-  color: var(--bs-alert-danger-color);
-}
-.val-error::before {
-  content: "\f071";
+IFRAME#service-window {
+  height: 1200px;
+  width: 100%;
+  border: 0px;
 }
 
-.val-warn {
-  color: var(--bs-alert-warning-color);
+NAV.sidebar SPAN.badge {
+  background: var(--bs-info);
+  color: black;
+  float: right;
 }
-.val-warn::before {
-  content: "\f071";
+
+.eye_toggle {
+  cursor: pointer;
+}
+
+/* close buttons, for instance for alerts */
+.close:not(:disabled):not(.disabled) {
+  cursor: pointer;
+}
+
+BUTTON.close {
+  padding: 0;
+  background-color: transparent;
+  border: 0;
+  -webkit-appearance: none;
+}
+
+/*
+ * Any modal
+ */
+DIV.modal {
+  display: none;
+}
+DIV.modal .modal-header .close {
+  padding: 1rem;
+  margin: -1rem -1rem -1rem auto;
+}
+
+/*
+ * Any alert (notification)
+ */
+DIV.alert BUTTON.close {
+  float: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+  opacity: 0.5;
+}
+
+DIV#login-card {
+  width: auto;
+  height: auto;
+  max-width: 40rem;
+  max-height: 60rem;
 }
 
 FORM.proof-list A.remove-proof {
   color: var(--bs-danger);
+}
+
+DIV.val-error {
+  color: var(--bs-danger);
+}
+DIV.val-error::before {
+  content: "\f071" " ";
+}
+
+DIV.val-warn {
+  color: var(--bs-warning);
+}
+DIV.val-warn::before {
+  content: "\f071" " ";
 }
 
 /*# sourceMappingURL=open-console.css.map */

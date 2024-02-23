@@ -22,7 +22,7 @@
   <p>When you wish to change your login password, type a new one here.</p>
 
   <div>
-    <label for="password" class="col-form-label">Password</label>
+    <label for="password" class="form-label">Password</label>
     <div class="input-group">
       <span class="input-group-text"><i class="fas fa-lock"></i></span>
       <input name="password" type="password" value="" class="form-control" id="password" placeholder="Enter a new password" aria-describedby="password_explain">
@@ -32,7 +32,7 @@
   </div>
 
   <div>
-    <label for="confirm" class="col-form-label">Confirm password</label>
+%#  <label for="confirm" class="form-label">Confirm password</label>
     <div class="input-group">
 	  <span class="input-group-text"><i class="fas fa-lock"></i></span>
       <input name="confirm" type="password" value="" class="form-control" id="confirm" placeholder="Repeat your password">
@@ -198,7 +198,7 @@
   Delete your account <i class="fa fa-skull" aria-hidden="true"></i>
   </button>
 
-  <div id="delete_confirmation_modal" class="modal" style="display: none;">
+  <div id="delete_confirmation_modal" class="modal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">

@@ -14,7 +14,6 @@
   allowpaymentrequest="false"
   loading="lazy"
   src="/dashboard/service/intro"
-  style="height: 1200px; width: 100%; border: 0px"
 >
 </iframe>
 

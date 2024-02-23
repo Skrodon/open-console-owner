@@ -5,9 +5,10 @@
 
 <div class="container">
   <div class="row">
-    <div class="card col-sm-6" id="identities_card">
-      <h5 class="card-header">Personal Identities</h5>
-      <div class="card-body">
+    <div class="col-sm-7">
+      <div class="card" id="identities_card">
+        <h5 class="card-header">Personal Identities</h5>
+        <div class="card-body">
 
 <form id="identity-list">
   <table class="table table-striped table-hover">
@@ -25,12 +26,14 @@
   </table>
 </form>
 
+        </div>
       </div>
-   </div>
+    </div>
 
-    <div class="card col-sm-6" id="identities_explain">
-      <h5 class="card-header">Configuring your personal Identities</h5>
-      <div class="card-body">
+    <div class="col-sm-5">
+      <div class="card" id="identities_explain">
+        <h5 class="card-header">Configuring your personal Identities</h5>
+        <div class="card-body">
 
 <p>Your activities are related to some roles you play in life: sometimes you are a
 private person, sometimes a part within an organization.  Sometimes you want to
@@ -43,9 +46,10 @@ or for a Group, you can prove (website) Ownership, and use or provide Services.<
 <p>Although you may share an Identity to use or provide different Services, they
 will not be able to detect you reusing your Identity: you do <i>not need</i> to set-up
 a different Identity for each Service.</p>
-where you used which Identity.</p>
 
+        </div>
       </div>
     </div>
+
   </div>
 </div>

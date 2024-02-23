@@ -6,7 +6,7 @@
 <p>Please, fill in this form to gain access to Open Console.</p>
 
 <div class="container">
-  <div class="card" id="login_card">
+  <div class="card" id="login-card">
     <h5 class="card-header">User Register</h5>
     <div class="card-body">
       <form id="register" method="post">

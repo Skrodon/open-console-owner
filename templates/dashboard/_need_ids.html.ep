@@ -1,8 +1,9 @@
 <div class="container">
   <div class="row">
-    <div class="card" id="config-card" style="width: 45%">
-      <h5 class="card-header">Configure a (personal) identity</h5>
-      <div class="card-body">
+    <div class="col-sm-6">
+      <div class="card" id="config-card">
+        <h5 class="card-header">Configure a (personal) identity</h5>
+        <div class="card-body">
 
 <p>We hope you have a good day.</p>
 
@@ -24,12 +25,14 @@ out to services.  Continue with:</p>
 <li>define services you offer.</li>
 </ul>
 
+        </div>
       </div>
     </div>
 
-    <div class="card" id="config-card" style="width: 45%">
-      <h5 class="card-header">Configuration process</h5>
-      <div class="card-body">
+    <div class="col-sm-6">
+      <div class="card" id="config-card">
+        <h5 class="card-header">Configuration process</h5>
+        <div class="card-body">
 
 
 <p>The configuration options relate like this:</p>
@@ -43,6 +46,7 @@ website, or he is member of a group which has that proof.</p>
 
 <img src="/images/design/set1-crawler-example.svg" style="max-width:100%; max-heigth:300px" />
 
+        </div>
       </div>
     </div>
   </div>

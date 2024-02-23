@@ -4,7 +4,7 @@
 <div class="container">
   <form method="post" id="login">
 
-    <div class="card col-8" id="login_card">
+    <div class="card col-8" id="login-card">
       <h5 class="card-header">Reset Password Procedure</h5>
       <div class="card-body">
         <p>When you do not know your password anymore, then you can request to start

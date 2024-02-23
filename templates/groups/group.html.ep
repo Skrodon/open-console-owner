@@ -231,7 +231,7 @@ which Identity that user will use for your group.</p>
   Delete this group <i class="fa fa-skull" aria-hidden="true"></i>
   </button>
 
-  <div id="delete_confirmation_modal" class="modal" style="display: none;">
+  <div id="delete_confirmation_modal" class="modal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">

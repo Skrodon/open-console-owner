@@ -1,21 +1,21 @@
 @import 'variables';
 
-.val-error {
-	@extend %fa-icon;
-	@extend .fas;
+DIV.val-error {
+	color: var(--bs-danger);
 
 	&::before {
-		content: fa-content($fa-var-warning);
+		@extend %fa-icon;
+		@extend .fas;
+		content: fa-content($fa-var-warning) $hard-space;
 	}
-	color: var(--bs-alert-danger-color);
 }
 
-.val-warn {
-	@extend %fa-icon;
-	@extend .fas;
+DIV.val-warn {
+	color: var(--bs-warning);
 
 	&::before {
-		content: fa-content($fa-var-warning);
+		@extend %fa-icon;
+		@extend .fas;
+		content: fa-content($fa-var-warning) $hard-space;
 	}
-	color: var(--bs-alert-warning-color);
 }

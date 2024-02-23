@@ -13,7 +13,12 @@ $bootstrap   : "bootstrap-5.3.3";
 @import "bootstrap-5.3.3/scss/bootstrap.scss";
 
 @import "_variables.scss";
-@import "_config_form.scss";
+
+@import "_admin.scss";
 @import "_config_account.scss";
-@import "_validation.scss";
+@import "_config_form.scss";
+@import "_dashboard.scss";
+@import "_generic.scss";
+@import "_login.scss";
 @import "_proof_list.scss";
+@import "_validation.scss";
