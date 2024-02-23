@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-lt-installed="true" lang="en">
+<html lang="en">
 <head>
 	<title><%= title %></title>
 	<meta name="description" content="">

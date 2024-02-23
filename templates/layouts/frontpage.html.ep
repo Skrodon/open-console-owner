@@ -1,14 +1,14 @@
 <!DOCTYPE html>
-<html data-lt-installed="true" lang="en">
+<html lang="en">
 <head>
   <title><%= title %></title>
   <meta name="description" content="">
 
   %= include '_standard_header'
-  <link href="/assets/frontpage.css" rel="stylesheet" />
+  <link href="/assets/open-console.css" rel="stylesheet" />
 
 </head>
-<body>
+<body id="frontpage">
 
 <header>
   <div class="row">
