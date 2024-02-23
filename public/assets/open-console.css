@@ -20287,10 +20287,6 @@ BODY {
   color: white;
 }
 
-A[href="#"] {
-  text-decoration: line-through;
-}
-
 .nav-link {
   white-space: nowrap !important;
 }
@@ -20378,7 +20374,10 @@ DIV#page {
   width: 100%;
   padding-top: 140px;
 }
-DIV#page NAV.sidebar A:not(.btn) {
+DIV#page NAV.sidebar A[href="#"] {
+  text-decoration: line-through;
+}
+DIV#page NAV.sidebar A {
   color: #ED8974;
   text-decoration: none;
 }

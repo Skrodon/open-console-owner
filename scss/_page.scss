@@ -5,7 +5,11 @@ DIV#page {
     padding-top: 140px;
 
 	NAV.sidebar {
-		A:not(.btn) {
+		A[href="#"] {
+    		text-decoration: line-through;
+		}
+
+		A {
 			color: $oc-link-on-dark;
 			text-decoration: none;
 		}
