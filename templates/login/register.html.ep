@@ -68,6 +68,7 @@
           <div id="human-explain" class="form-text">Please enter the place-holder text in numeric.</div>
         </div>
         <div class="col-12">
+          &nbsp;<br />
           <button class="btn btn-primary" type="submit">
             <i class="fas fa-arrow-right-to-bracket"></i>&nbsp; Register
           </button>

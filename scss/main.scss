@@ -15,11 +15,14 @@ $bootstrap   : "bootstrap-5.3.3";
 @import "_variables.scss";
 
 @import "_admin.scss";
+@import "_colophon.scss";
 @import "_config_account.scss";
 @import "_config_form.scss";
 @import "_dashboard.scss";
 @import "_frontpage.scss";
 @import "_generic.scss";
+@import "_header.scss";
 @import "_login.scss";
+@import "_page.scss";
 @import "_proof_list.scss";
 @import "_validation.scss";

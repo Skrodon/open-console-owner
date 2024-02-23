@@ -1,0 +1,18 @@
+DIV#page {
+    background-position: center top;
+    position: relative;
+    width: 100%;
+    padding-top: 140px;
+
+	NAV.sidebar {
+		A:not(.btn) {
+			color: $oc-link-on-dark;
+			text-decoration: none;
+		}
+	}
+
+	MAIN {
+		// above optional colophon
+		margin-bottom: 10ex;
+	}
+}

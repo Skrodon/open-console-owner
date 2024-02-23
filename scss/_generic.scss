@@ -1,3 +1,15 @@
+BODY {
+	background-color: $oc-color-dark;
+	color: white;
+}
+
+// Form styling
+
+LABEL.form-label {
+	margin-top: 2ex;
+	font-size: larger;  // change BS $form-label-font-size?
+	font-weight: bold;  // $form-label-font-weight
+}
 
 .eye_toggle {
 	cursor: pointer;

@@ -1,42 +1,16 @@
+
 BODY#frontpage {
-		background-color: $oc-color-light;
+	background-color: $oc-color-light;
 
-	HEADER {
-	    width: 100%;
-	    position: absolute;
-	    z-index: 333;
-	    left: 0;
-	    top: 0;
-	    padding: 38px 0;
-
-		.row {
-	    	margin: 0 auto;
-	    	max-width: 1330px;
-	    	width: 100%;
-	    	padding: 0 20px;
-		}
-
-		NAV {
-	    	background-color: $oc-color-normal;
-		}
-
-		.form-select,
-		.nav-link {
-	    	background-color: $oc-color-normal;
-			color: $oc-color-light;
-			border-color: $oc-color-light;
-		}
-	}
-
-	#main-box {
+	SECTION#main-box {
 	    background-position: center top;
 	    background-color: $oc-color-dark;
 	    position: relative;
 	    color: white;
-	    min-height: 650px;
 	    width: 100%;
 	    font-size: 120%;
-	    padding-top: 170px;
+	    padding-top: 140px;
+	    padding-bottom: 40px;
 
 		H1 {
 	    	color: white;
@@ -54,43 +28,26 @@ BODY#frontpage {
 		}
 
 		A:not(.btn) {
-			color: #ED8974;
+			color: $oc-link-on-dark;
 			text-decoration: none;
 		}
 	}
 
-	#colophon {
-		padding: 20px 30px 100px 30px;
-	    background-color: $oc-color-normal;
-		color: $oc-color-light;
+	MAIN {
+		color: $oc-color-dark;
 
-		A:not(.btn) {
-			color: #ED8974;
-			text-decoration: none;
-		}
+		DIV#explain {
+			padding: 3ex 0;
 
-		H5 {
-	    	font-weight: 900;
-		}
+			IMG {
+				margin: 2ex 4ex;
+				width: 80%;
+			}
 
-		#OWSimg {
-			width: 70%;
-			background-color: white;
-			padding: 10px;
-		}
-	}
-
-	#explain {
-		padding: 3ex 0;
-
-		IMG {
-			margin: 2ex 4ex;
-			width: 80%;
-		}
-
-		H5 {
-			padding: 2ex 0 0 0;
-			font-weight: 600;
+			H5 {
+				padding: 2ex 0 0 0;
+				font-weight: 600;
+			}
 		}
 	}
 }

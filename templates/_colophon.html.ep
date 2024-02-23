@@ -1,0 +1,23 @@
+%# We can add the colophone to every page which has little content.
+%# Matches scss/_colophon.scss
+
+<section class="container-fluid" id="colophon">
+  <div class="row">
+    <div class="col-1">&nbsp;</div>
+    <div class="col-2"><img src="/images/open-console.svg" width="80%" /></div>
+    <div class="col-4">
+      <h5>Contact</h5>
+      <i class="fa-solid fa-envelope"></i>&nbsp;<a href="mailto:support@open-console.eu">Ask for Support</a><br />
+      <i class="fa-solid fa-envelope"></i>&nbsp;<a href="mailto:team@open-console.eu">Email the development team</a><br />
+      &nbsp;<br>
+      <i class="fa-brands fa-mastodon"></i>&nbsp;<a href="#">Open Console on Mastodon</a><br />
+      <i class="fa-brands fa-patreon"></i>&nbsp;<a href="#">Become an Open Console Patreon</a><br />
+    </div>
+    <div class="col-4">
+      <h5>Part of</h5>
+      <a href="https://openwebsearch.eu" target="_blank"><img src="/images/openwebsearch.png" id="OWSimg"></a>
+    </div>
+    <div class="col-1">&nbsp;</div>
+  </div>
+</section>
+

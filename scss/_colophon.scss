@@ -1,0 +1,23 @@
+// matches templates/_colofon.html.ep
+
+SECTION#colophon {
+	padding: 20px 30px 30px 30px;
+    background-color: $oc-color-normal;
+	color: $oc-color-light;
+
+	A:not(.btn) {
+		color: $oc-link-on-dark;
+		text-decoration: none;
+	}
+
+	H5 {
+    	font-weight: 900;
+	}
+
+	#OWSimg {
+		width: 70%;
+		background-color: white;
+		padding: 10px;
+	}
+}
+

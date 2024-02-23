@@ -20107,6 +20107,24 @@ textarea.form-control-lg {
   background: #CCFFCC !important;
 }
 
+SECTION#colophon {
+  padding: 20px 30px 30px 30px;
+  background-color: #3A6275;
+  color: #DAEBF4;
+}
+SECTION#colophon A:not(.btn) {
+  color: #ED8974;
+  text-decoration: none;
+}
+SECTION#colophon H5 {
+  font-weight: 900;
+}
+SECTION#colophon #OWSimg {
+  width: 70%;
+  background-color: white;
+  padding: 10px;
+}
+
 FORM#config-account TABLE#langtab.table-hover TBODY TR:hover {
   background-color: #e0e0e0;
 }
@@ -20157,11 +20175,6 @@ FORM.config-form BUTTON[role=tab] SPAN.badge {
 FORM.config-form DIV.row > DIV {
   border-left: 1px solid;
   border-color: #0d6efd;
-}
-FORM.config-form LABEL.form-label {
-  margin-top: 2ex;
-  font-size: larger;
-  font-weight: bold;
 }
 FORM.config-form LABEL.has-changed {
   padding: 0 10px;
@@ -20226,40 +20239,17 @@ NAV.sidebar SPAN.badge {
 BODY#frontpage {
   background-color: #DAEBF4;
 }
-BODY#frontpage HEADER {
-  width: 100%;
-  position: absolute;
-  z-index: 333;
-  left: 0;
-  top: 0;
-  padding: 38px 0;
-}
-BODY#frontpage HEADER .row {
-  margin: 0 auto;
-  max-width: 1330px;
-  width: 100%;
-  padding: 0 20px;
-}
-BODY#frontpage HEADER NAV {
-  background-color: #3A6275;
-}
-BODY#frontpage HEADER .form-select,
-BODY#frontpage HEADER .nav-link {
-  background-color: #3A6275;
-  color: #DAEBF4;
-  border-color: #DAEBF4;
-}
-BODY#frontpage #main-box {
+BODY#frontpage SECTION#main-box {
   background-position: center top;
   background-color: #003044;
   position: relative;
   color: white;
-  min-height: 650px;
   width: 100%;
   font-size: 120%;
-  padding-top: 170px;
+  padding-top: 140px;
+  padding-bottom: 40px;
 }
-BODY#frontpage #main-box H1 {
+BODY#frontpage SECTION#main-box H1 {
   color: white;
   font-size: 300%;
   font-weight: 900;
@@ -20267,42 +20257,39 @@ BODY#frontpage #main-box H1 {
   letter-spacing: -1px;
   line-height: 75px;
 }
-BODY#frontpage #main-box .btn-primary {
+BODY#frontpage SECTION#main-box .btn-primary {
   background-color: #3A6275;
   color: #DAEBF4;
   border-color: #DAEBF4;
 }
-BODY#frontpage #main-box A:not(.btn) {
+BODY#frontpage SECTION#main-box A:not(.btn) {
   color: #ED8974;
   text-decoration: none;
 }
-BODY#frontpage #colophon {
-  padding: 20px 30px 100px 30px;
-  background-color: #3A6275;
-  color: #DAEBF4;
+BODY#frontpage MAIN {
+  color: #003044;
 }
-BODY#frontpage #colophon A:not(.btn) {
-  color: #ED8974;
-  text-decoration: none;
-}
-BODY#frontpage #colophon H5 {
-  font-weight: 900;
-}
-BODY#frontpage #colophon #OWSimg {
-  width: 70%;
-  background-color: white;
-  padding: 10px;
-}
-BODY#frontpage #explain {
+BODY#frontpage MAIN DIV#explain {
   padding: 3ex 0;
 }
-BODY#frontpage #explain IMG {
+BODY#frontpage MAIN DIV#explain IMG {
   margin: 2ex 4ex;
   width: 80%;
 }
-BODY#frontpage #explain H5 {
+BODY#frontpage MAIN DIV#explain H5 {
   padding: 2ex 0 0 0;
   font-weight: 600;
+}
+
+BODY {
+  background-color: #003044;
+  color: white;
+}
+
+LABEL.form-label {
+  margin-top: 2ex;
+  font-size: larger;
+  font-weight: bold;
 }
 
 .eye_toggle {
@@ -20345,11 +20332,49 @@ DIV.alert BUTTON.close {
   opacity: 0.5;
 }
 
+HEADER {
+  width: 100%;
+  position: absolute;
+  z-index: 333;
+  left: 0;
+  top: 0;
+  padding: 38px 0;
+}
+HEADER .row {
+  margin: 0 auto;
+  max-width: 1330px;
+  width: 100%;
+  padding: 0 20px;
+}
+HEADER NAV {
+  background-color: #3A6275;
+}
+HEADER NAV .form-select,
+HEADER NAV .nav-link {
+  background-color: #3A6275;
+  color: #DAEBF4;
+  border-color: #DAEBF4;
+}
+
 DIV#login-card {
   width: auto;
   height: auto;
   max-width: 40rem;
   max-height: 60rem;
+}
+
+DIV#page {
+  background-position: center top;
+  position: relative;
+  width: 100%;
+  padding-top: 140px;
+}
+DIV#page NAV.sidebar A:not(.btn) {
+  color: #ED8974;
+  text-decoration: none;
+}
+DIV#page MAIN {
+  margin-bottom: 10ex;
 }
 
 FORM.proof-list A.remove-proof {
