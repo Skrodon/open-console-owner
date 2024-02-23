@@ -3,6 +3,14 @@ BODY {
 	color: white;
 }
 
+A[href="#"] {
+	text-decoration: line-through;
+}
+
+.nav-link {
+	white-space: nowrap !important;
+}
+
 // Form styling
 
 LABEL.form-label {

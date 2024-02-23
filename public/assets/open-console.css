@@ -20220,20 +20220,20 @@ FORM.config-form .row {
   height: 100%;
 }
 
-A[href="#"] {
-  text-decoration: line-through;
-}
-
-IFRAME#service-window {
+DIV.dashboard IFRAME#service-window {
   height: 1200px;
   width: 100%;
   border: 0px;
 }
-
-NAV.sidebar SPAN.badge {
+DIV.dashboard NAV.sidebar SPAN.badge {
   background: var(--bs-info);
   color: black;
   float: right;
+}
+DIV.dashboard MAIN {
+  background-color: white;
+  color: black;
+  min-height: 1000px;
 }
 
 BODY#frontpage {
@@ -20284,6 +20284,10 @@ BODY#frontpage MAIN DIV#explain H5 {
 BODY {
   background-color: #003044;
   color: white;
+}
+
+A[href="#"] {
+  text-decoration: line-through;
 }
 
 LABEL.form-label {

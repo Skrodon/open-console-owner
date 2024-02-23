@@ -1,14 +1,21 @@
 
-A[href="#"] { text-decoration: line-through }
+DIV.dashboard {
 
-IFRAME#service-window {
-	height: 1200px;
-	width: 100%;
-	border: 0px
-}
+	IFRAME#service-window {
+		height: 1200px;
+		width: 100%;
+		border: 0px
+	}
 
-NAV.sidebar SPAN.badge {
-    background: var(--bs-info);
-    color: black;
-	float: right;
+	NAV.sidebar SPAN.badge {
+    	background: var(--bs-info);
+    	color: black;
+		float: right;
+	}
+
+	MAIN {
+		background-color: white;
+		color: black;
+		min-height: 1000px;
+	}
 }
