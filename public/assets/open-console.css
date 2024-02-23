@@ -20224,6 +20224,7 @@ DIV.dashboard IFRAME#service-window {
   height: 1200px;
   width: 100%;
   border: 0px;
+  background-color: white;
 }
 DIV.dashboard NAV.sidebar SPAN.badge {
   background: var(--bs-info);
@@ -20288,6 +20289,10 @@ BODY {
 
 A[href="#"] {
   text-decoration: line-through;
+}
+
+.nav-link {
+  white-space: nowrap !important;
 }
 
 LABEL.form-label {

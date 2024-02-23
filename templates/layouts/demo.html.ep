@@ -6,7 +6,7 @@
 	%= include '_standard_header'
 	%# = jquery_ajax_csrf_protection
 </head>
-<body>
+<body style="background-color: white">
     
 <%= notifications() %>
 <%= content %>
