@@ -20392,6 +20392,15 @@ DIV#page MAIN {
 FORM.proof-list A.remove-proof {
   color: var(--bs-danger);
 }
+FORM.proof-list .edit {
+  text-align: center;
+}
+FORM.proof-list .score {
+  text-align: right;
+}
+FORM.proof-list I.fa-solid {
+  width: 2em;
+}
 
 DIV.val-error {
   color: var(--bs-danger);

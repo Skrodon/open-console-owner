@@ -2,5 +2,17 @@ FORM.proof-list {
 	A.remove-proof {
 		color: var(--bs-danger);
 	}
+
+	.edit {
+		text-align: center;
+	}
+
+	.score {
+		text-align: right;
+	}
+
+	I.fa-solid {
+		width: 2em;
+	}
 }
 		

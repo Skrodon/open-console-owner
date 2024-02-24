@@ -5,7 +5,9 @@
 %   foreach my $proof (@$proofs) {
     <tr data-proof="<%= $proof->proofId %>" data-editable="<%= $editable ? 'true' : 'false' %>" >
       <td><%= $show->($proof) %></td>
-      <td>
+      <td><span class="badge <%== $proof->statusBgColorClass %>"><%= $proof->statusText %></span></td>
+      <td class="score"><%= $proof->score %></td>
+      <td class="edit">
 %     if($editable) {
           <a href="<%= $proof->elemLink %>"><i class="fa-solid fa-pen"></i></a>
           <a href="#" class="remove-proof"><i class="fa-solid fa-skull"></i></a>
@@ -13,8 +15,7 @@
           <a href="<%= $proof->elemLink %>"><i class="fa-solid fa-magnifying-glass"></i></a>
 %     }
       </td>
-      <td><span class="badge <%== $proof->statusBgColorClass %>"><%= $proof->statusText %></span></td>
-      <td><%= $proof->score %></td></tr>
+     </tr>
 %   }
 % end
 
@@ -27,13 +28,16 @@
   <thead class="thead-light">
     <tr>
       <th><%= $show_column %></th>
-      <th>Edit</th>
       <th>Status</th>
-      <th>Score</th></tr>
+      <th class="score">Score</th>
+      <th class="edit">Edit</th>
+    </tr>
   </thead>
   <tbody>
     <tr data-owner="<%= $account->userId %>">
-      <th colspan="4">Personal properties:</th></tr>
+      <th colspan="3"><i class="fa-solid fa-user"></i> Personal properties</th>
+      <th class="edit"><i class="fa-solid fa-user-tie owner"></i></th>
+    </tr>
 
 %= $rows->([ $account->proofs->for($set) ], 1);
 
@@ -41,7 +45,9 @@
 %    my $group_admin = $group->memberIsAdmin($account);
 
     <tr data-owner="<%= $group->groupId %>" data-admin="<%= $group_admin ? 'true' : 'false' %>">
-      <th colspan="4">Group: <%= $group->name %> <%== $group_admin ? '<i class="fa-solid fa-user-tie"></i>' : '' %></th></tr>
+      <th colspan="3"><i class="fa-solid fa-people-group"></i> <%= $group->name %></th>
+      <th class="edit"><%== $group_admin ? '<i class="fa-solid fa-user-tie owner"></i>' : '' %></th>
+    </tr>
 
 %=   $rows->([ $group->proofs->for($set) ], $group_admin);
 

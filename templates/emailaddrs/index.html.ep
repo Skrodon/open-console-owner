@@ -6,7 +6,7 @@
 
     <div class="col-sm-7">
       <div class="card" id="emailaddrs-card">
-        <h5 class="card-header">Email-address ownership</h5>
+        <h5 class="card-header"><i class="fa-solid fa-envelope-circle-check"></i> Email address ownership</h5>
         <div class="card-body">
 
 <form class="proof-list" id="config-emailaddr">
