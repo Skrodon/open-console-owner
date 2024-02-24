@@ -2,6 +2,11 @@
 
 FORM.config-form {
 
+	H1 {
+		color: $oc-color-normal;
+		margin-bottom: 1ex;
+	}
+
 	.any-delete-tab {
 		color: var(--bs-danger);
 		&.active {

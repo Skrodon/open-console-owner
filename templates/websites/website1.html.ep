@@ -2,6 +2,7 @@
 % title 'Create/update website proof, type 1';
 
 % my $is_new  = $proof->proofId eq 'new';
+% $c->notify(error => 'Development of this kind of proofs is underway.');
 
 % my @pages;
 % my $settings_form = begin
@@ -55,6 +56,8 @@
 
 <form id="config-website" class="config-form">
   <input id="identifier" type="hidden" value="<%= $proof->proofId %>" />
+
+  <h1><i class="fa-solid fa-file-circle-plus"></i> Website proof</h1>
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('website-tabs' => \@pages);

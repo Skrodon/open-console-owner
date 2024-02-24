@@ -246,6 +246,8 @@
 <form id="config-account" class="config-form">
   <input id="identifier" type="hidden" value="<%= $account->userId %>" />
 
+  <h1><i class="fa-solid fa-person-half-dress"></i> Account</h1>
+
 % include 'dashboard/_tabbed';
 %= $::tabbed->('account-tabs' => \@pages);
 

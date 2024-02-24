@@ -21,12 +21,12 @@ Identification:
 <ul class="nav flex-column">
 <li class="nav-item">
   <a class="nav-link" href="/dashboard/account">
-    <i class="fa-solid fa-user"></i> Account
+    <i class="fa-solid fa-person-half-dress"></i> Account
   </a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="/dashboard/identities">
-    <i class="fa-solid fa-address-card"></i> Identities
+    <i class="fa-solid fa-user"></i> Identities
 % my $nrIds = $account->nrIdentities;
 % if($nrIds) {
   <span class="badge badge-pill"><%= $nrIds %></span>
@@ -78,13 +78,13 @@ Ownership:
 Services:
 <ul class="nav flex-column">
 <li class="nav-item">
-  <a class="nav-link" href="#">
-    <i class="fa-solid fa-wrench"></i> Using services
+  <a class="nav-link" href="/dashboard/contracts">
+    <i class="fa-solid fa-handshake-simple"></i> Contracts
   </a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="#">
-    <i class="fa-solid fa-wrench"></i> Providing services
+    <i class="fa-solid fa-wrench"></i> Offered Services
   </a>
 </li>
 </ul>

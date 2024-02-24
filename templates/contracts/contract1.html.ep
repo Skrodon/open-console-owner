@@ -1,0 +1,62 @@
+% layout 'dashboard';
+% title 'Create/update contract, type 1';
+
+% my $is_new  = $proof->proofId eq 'new';
+% $c->notify(error => 'This is just a mock-up, to show you our plans');
+
+% my @pages;
+% my $settings_form = begin
+
+  <div>
+    <label for="name" class="form-label">Symbolic name</label>
+    <input name="name" type="text" id="name" class="form-control" placeholder="Connected Organization"
+      aria-describedby="name-explain" required value="<%= $proof->name %>"
+    />
+    <div id="name-explain" class="form-text">Your own name for this contract.</div>
+  </div>
+
+%= include 'proofs/_owner_pick';
+
+  <hr>
+
+% end
+
+% my $settings_explain = begin
+
+% end
+
+% push @pages, [
+%    'contract-settings',
+%    'Settings',
+%    $settings_form,
+%    $settings_explain,
+% ];
+
+% my $status_form = begin
+
+%= include 'proofs/_status';
+
+% end
+
+% my $status_explain = begin
+% end
+
+% push @pages, [
+%    'contract-status',
+%    'Status',
+%    $status_form,
+%    $status_explain,
+% ];
+
+<script src="/assets/config_form.js"></script>
+
+<form id="config-contract" class="config-form">
+  <input id="identifier" type="hidden" value="<%= $proof->proofId %>" />
+
+  <h1><i class="fa-solid fa-handshake-simple"></i> Service Contract</h1>
+
+% include 'dashboard/_tabbed';
+%= $::tabbed->('contract-tabs' => \@pages);
+
+</form>
+

@@ -85,6 +85,8 @@ with "+<something>" per use.  For instance, "<code>me+oc@example.com</code>" whe
 <form id="config-emailaddr" class="config-form">
   <input id="identifier" type="hidden" value="<%= $proof->proofId %>" />
 
+  <h1><i class="fa-solid fa-envelope-circle-check"></i> Email address proof</h1>
+
 % include 'dashboard/_tabbed';
 %= $::tabbed->('emailaddr-tabs' => \@pages);
 

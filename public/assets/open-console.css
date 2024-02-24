@@ -20129,6 +20129,10 @@ FORM#config-account TABLE#langtab.table-hover TBODY TR:hover {
   background-color: #e0e0e0;
 }
 
+FORM.config-form H1 {
+  color: #3A6275;
+  margin-bottom: 1ex;
+}
 FORM.config-form .any-delete-tab {
   color: var(--bs-danger);
 }

@@ -5,7 +5,7 @@
   <div class="row">
 
     <div class="col-sm-7">
-      <div class="card" id="emailaddrs_card">
+      <div class="card" id="websites-card">
         <h5 class="card-header">Website ownership</h5>
         <div class="card-body">
 
@@ -19,7 +19,7 @@
     </div>
 
     <div class="col-sm-5">
-      <div class="card" id="websites_explain">
+      <div class="card" id="websites-explain">
         <h5 class="card-header">Proving Websites</h5>
         <div class="card-body">
 

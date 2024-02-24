@@ -1,14 +1,21 @@
 package OwnerConsole::Proofs;
 use Mojo::Base -base;
 
+#XXX "Proofs" may have been "Collectables", but in the wider sence, a contract
+#XXX is also a kind of proof: a proof that you agreed communicating.
+
 use Log::Report 'open-console-owner';
 
 use Scalar::Util    qw(blessed);
 
 use OwnerConsole::Proof::EmailAddr1 ();
+use OwnerConsole::Proof::Website1   ();
+use OwnerConsole::Proof::Contract1  ();
 
 my %proofclass = (
 	emailaddr1 => 'OwnerConsole::Proof::EmailAddr1',
+	website1   => 'OwnerConsole::Proof::Website1',
+	contract1  => 'OwnerConsole::Proof::Contract1',
 );
 
 =chapter DESCRIPTION

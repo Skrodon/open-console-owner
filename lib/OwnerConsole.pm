@@ -165,6 +165,10 @@ sub startup
 	$dashboard->get('/website/:proofid')->to('websites#website');
 	$dashboard->post('/config-website/:proofid')->to('websites#configWebsite');
 
+	$dashboard->get('/contracts')->to('contracts#index');
+	$dashboard->get('/contract/:proofid')->to('contracts#contract');
+	$dashboard->post('/config-contract/:proofid')->to('contracts#configContract');
+
 	$dashboard->get('/service/:demo')->to('dashboard#demo');
 
 	my $challenge = $r->under('/challenge')->to('login#mustBeLoggedIn');

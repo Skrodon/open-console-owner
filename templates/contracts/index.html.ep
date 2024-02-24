@@ -1,0 +1,34 @@
+% layout 'dashboard';
+% title 'Overview of contract proofs';
+
+<div class="container">
+  <div class="row">
+
+    <div class="col-sm-7">
+      <div class="card" id="contracts-card">
+        <h5 class="card-header">Contract ownership</h5>
+        <div class="card-body">
+
+<form class="proof-list" id="config-contract">
+% my $show = sub { $_[0]->name };
+%= include 'proofs/_proof_list', set => 'contracts', element => 'contract', show => $show, show_column => "Contract";  #XXX translate
+</form>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="col-sm-5">
+      <div class="card" id="contracts-explain">
+        <h5 class="card-header">Proving Contracts</h5>
+        <div class="card-body">
+
+<p>
+</p>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

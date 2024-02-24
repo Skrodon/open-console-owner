@@ -19,7 +19,7 @@
   </div>
 
   <div>
-	<label for="fullname" class="form-label">Fullname</label>
+	<label for="fullname" class="form-label">Full name</label>
     <input name="fullname" type="text" id="fullname" class="form-control"
      placeholder="Name" value="<%= $identity->fullname ||'' %>"
      aria-describedby="name_explain" />
@@ -59,7 +59,7 @@
   <p>The <strong>Role</strong> names will not be shared with anyone, but are
   displayed in overviews in this Open Console interface.</p>
 
-  <p>As <strong>Fullname</strong>, fill-in your name as suits to this role.
+  <p>As <strong>Full name</strong>, fill-in your name as suits to this role.
   For instance, when you use this Identity for OpenID, then this will be
   passed to the website you login to.  This is also the Name as shown in
   identity Groups.</p>
@@ -249,6 +249,8 @@
 <form id="config-identity" class="config-form">
   <input id="identifier"     type="hidden" value="<%= $identity->identityId %>" />
   <input id="object_version" type="hidden" value="<%= $identity->schema %>" />
+
+  <h1><i class="fa-solid fa-user"></i> Identity</h1>
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('identity-tabs' => \@pages);
