@@ -5,35 +5,46 @@
 % $c->notify(error => 'Development of this kind of proofs is underway.');
 
 % my @pages;
-% my $settings_form = begin
+% my $location_form = begin
 
   <div>
     <label for="url" class="form-label">Website address</label>
-    <input name="url" type="text" id="url" class="form-control" placeholder="https://example.com/~user"
+    <input name="url" type="text" id="url" class="form-control" value="https://имена.бг" placeholder="https://example.com/~user"
       aria-describedby="url_explain" required value="<%= $proof->url %>"
       <%= $is_new ? '' : 'disabled' %>
     />
     <div id="url_explain" class="form-text">Your own or your group's website address.</div>
+    <div class="val-error">This website is not canonical.</div>
   </div>
+
+  <table style="margin: 10px 20px">
+  <tr><th colspan="2">Verification results:</th></tr>
+  <tr><td>IDN   </td><td><a href="https://xn--80ajiqg.xn--90ae">https://xn--80ajiqg.xn--90ae</a></td></tr>
+  <tr><td>Served&nbsp;by&nbsp;</td><td>server.imena.bg</td></tr>
+  <tr><td>Canonical</td><td>www.imena.bg</td></tr>
+  <tr><td>DNSSEC</td><td>yes</td></tr>
+  <tr><td>Certificate&nbsp;</td><td>failed</td></tr>
+  </table>
 
 %= include 'proofs/_owner_pick';
 
-  <hr>
-
 % end
 
-% my $settings_explain = begin
+% my $location_explain = begin
 
 <p>You can proof the ownership of a website.  As URL, you can use IDN
 (<a href="https://en.wikipedia.org/wiki/Internationalized_domain_name">Internatialized Domain Names</a>)</p>
 
+<p>The <b>Website address</b> must be "canonical", which means that it does not redirect you to
+another website and matches the '&lt;link rel="canonical"&gt;' in the page (if present).</p>
+
 % end
 
 % push @pages, [
-%    'website-settings',
-%    'Settings',
-%    $settings_form,
-%    $settings_explain,
+%    'website-location',
+%    'Location',
+%    $location_form,
+%    $location_explain,
 % ];
 
 % my $status_form = begin

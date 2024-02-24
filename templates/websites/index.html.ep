@@ -6,7 +6,7 @@
 
     <div class="col-sm-7">
       <div class="card" id="websites-card">
-        <h5 class="card-header">Website ownership</h5>
+        <h5 class="card-header"><i class="fa-solid fa-file-circle-plus"></i> Website ownership</h5>
         <div class="card-body">
 
 <form class="proof-list" id="config-website">

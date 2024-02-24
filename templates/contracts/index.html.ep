@@ -6,7 +6,7 @@
 
     <div class="col-sm-7">
       <div class="card" id="contracts-card">
-        <h5 class="card-header">Contract ownership</h5>
+        <h5 class="card-header"><i class="fa-solid fa-handshake-simple"></i> Contract ownership</h5>
         <div class="card-body">
 
 <form class="proof-list" id="config-contract">
@@ -20,7 +20,7 @@
 
     <div class="col-sm-5">
       <div class="card" id="contracts-explain">
-        <h5 class="card-header">Proving Contracts</h5>
+        <h5 class="card-header">Establishing Contracts</h5>
         <div class="card-body">
 
 <p>
