@@ -5,40 +5,82 @@
 % $c->notify(error => 'This is just a mock-up, to show you our plans');
 
 % my @pages;
-% my $settings_form = begin
+% my $parties_form = begin
 
   <div>
     <label for="name" class="form-label">Symbolic name</label>
     <input name="name" type="text" id="name" class="form-control" placeholder="Connected Organization"
       aria-describedby="name-explain" required value="<%= $proof->name %>"
     />
-    <div id="name-explain" class="form-text">Your own name for this contract.</div>
+    <div id="name-explain" class="form-text">Your own reference name for this contract.</div>
   </div>
 
 %= include 'proofs/_owner_pick';
 
-  <hr>
+  <div>
+    <label for="org" class="form-label">Provider of the service</label>
+    <select name="org" class="form-select" aria-describedby="org-explain">
+    <option>OpenWebSearch.EU, crawling</option>
+    <option>OpenWebSearch.EU, indexing</option>
+    </select>
+    <div id="org-explain" class="form-text">Organization providing the service.</div>
+  </div>
+
+  <div>
+    <label for="service" class="form-label">Select services</label>
+    <select name="service" class="form-select" aria-describedby="serv-explain">
+    <option>&mdash; all by this provider &mdash;</option>
+    <option>Crawl statistics</option>
+    <option>Take-down requests</option>
+    <option>Geo-location detection</option>
+    </select>
+    <div id="serv-explain" class="form-text">Which services are you interested in?</div>
+  </div>
 
 % end
 
-% my $settings_explain = begin
+% my $parties_explain = begin
+
+&nbsp;
 
 % end
 
 % push @pages, [
-%    'contract-settings',
-%    'Settings',
-%    $settings_form,
-%    $settings_explain,
+%    'contract-parties',
+%    'Parties',
+%    $parties_form,
+%    $parties_explain,
 % ];
 
-% my $status_form = begin
 
-%= include 'proofs/_status';
+% my $share_form = begin
+
+% end
+
+% my $share_explain = begin
+
+<p>To be able to use this service, you have to share personal
+or group information.  You may also need to share some of your
+proofs.</p>
+
+% end
+
+% push @pages, [
+%    'contract-share',
+%    'Share',
+%    $share_form,
+%    $share_explain,
+% ];
+
+
+% my $status_form = begin
 
 % end
 
 % my $status_explain = begin
+
+&nbsp;
+
 % end
 
 % push @pages, [
@@ -47,6 +89,7 @@
 %    $status_form,
 %    $status_explain,
 % ];
+
 
 <script src="/assets/config_form.js"></script>
 

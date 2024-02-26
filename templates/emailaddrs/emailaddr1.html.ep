@@ -6,6 +6,17 @@
 % my @pages;
 % my $settings_form = begin
 
+%   if($is_new) {
+  <div>
+    <p>When you submit this form, you will receive an email with instructions
+    to complete the proof.</p>
+  </div>
+%   } else {
+  <div>
+    <p>For most changes in the form, you have to rerun the verification.</p>
+  </div>
+%   }
+
   <div>
     <label for="email" class="form-label">Email address</label>
     <input name="email" type="email" id="email" class="form-control" placeholder="name@example.com"
@@ -27,18 +38,6 @@
   </div>
 
 %= include 'proofs/_owner_pick';
-
-  <hr>
-
-%   if($is_new) {
-  <div>
-    <p>When you submit this form, you will receive an email with instructions.</p>
-  </div>
-%   } else {
-  <div>
-    <p>For most changes in the form, you have to rerun the verification.</p>
-  </div>
-%   }
 
 % end
 

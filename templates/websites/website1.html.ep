@@ -3,6 +3,10 @@
 
 % my $is_new  = $proof->proofId eq 'new';
 % $c->notify(error => 'Development of this kind of proofs is underway.');
+% use OwnerConsole::Util qw(new_token);
+% my $token = new_token 'C';
+
+<style>TABLE { margin: 10px 20px } </style>
 
 % my @pages;
 % my $location_form = begin
@@ -17,7 +21,7 @@
     <div class="val-error">This website is not canonical.</div>
   </div>
 
-  <table style="margin: 10px 20px">
+  <table>
   <tr><th colspan="2">Verification results:</th></tr>
   <tr><td>IDN   </td><td><a href="https://xn--80ajiqg.xn--90ae">https://xn--80ajiqg.xn--90ae</a></td></tr>
   <tr><td>Served&nbsp;by&nbsp;</td><td>server.imena.bg</td></tr>
@@ -28,6 +32,21 @@
 
 %= include 'proofs/_owner_pick';
 
+  <div>
+    <label for="methods" class="form-label">Prove ownership using</label>
+    <div class="form-check">
+      <input name="method" value="dns" class="form-check-input" type="checkbox" id="method-dns">
+      <label class="form-check-label" for="method-dns">Prove by adding record in DNS.</label>
+    </div>
+    <div class="form-check">
+      <input name="method" value="index" class="form-check-input" type="checkbox" id="method-inline">
+      <label class="form-check-label" for="method-inline">Prove by putting token in a webpage.</label>
+    </div>
+    <div class="form-check">
+      <input name="method" value="file" class="form-check-input" type="checkbox" id="method-file">
+      <label class="form-check-label" for="method-file">Prove by adding a file to your website.</label>
+    </div>
+  </div>
 % end
 
 % my $location_explain = begin
@@ -47,6 +66,96 @@ another website and matches the '&lt;link rel="canonical"&gt;' in the page (if p
 %    $location_explain,
 % ];
 
+%# See https://datatracker.ietf.org/doc/draft-ietf-dnsop-domain-verification-techniques/
+
+% my $dns_form = begin
+
+<h3>Prove via DNS</h3>
+
+<p>Add this to the zone of имена.бг:</p>
+
+<table>
+<tr><td>name</td><td>_oc-challenge.имена.бг</td></tr>
+<tr><td>record-type&nbsp;</td><td>TXT</td></tr>
+<tr><td>value</td><td>"<%= $token %>"</td></tr>
+</table>
+
+<p>After you have added above record, start verification:</p>
+<button id="prove_dns" class="btn btn-primary">Verify</button>
+
+
+% end
+
+% my $dns_explain = begin
+
+% end
+
+% push @pages, [
+%    'website-dns',
+%    'Proof DNS',
+%    $dns_form,
+%    $dns_explain,
+% ];
+
+% my $inline_form = begin
+
+<h3>Prove via index file</h3>
+
+<p>Add this line to your <tt>/index.html</tt> file, in a part
+which is not dynamically rendered.</p>
+
+<i class="fa-regular fa-copy" style="float: right"></i>
+%# This is probably not the current practice.
+<pre>
+  &lt;link rel="open-console"
+     value="<%= $token %>"&gt;
+</pre>
+
+<p>After you have added above line to your frontpage, start verification:</p>
+<button id="prove_inline" class="btn btn-primary">Verify</button>
+
+% end
+
+% my $inline_explain = begin
+
+% end
+
+% push @pages, [
+%    'website-inline',
+%    'Proof Inline',
+%    $inline_form,
+%    $inline_explain,
+% ];
+
+% my $file_form = begin
+
+<h3>Prove via a file</h3>
+
+<p>Create a file named <tt>open-console.txt</tt> in the
+root directory of you website, containing the following:</p>
+
+<i class="fa-regular fa-copy" style="float: right"></i>
+<pre>
+  owner-token: <%= $token %>
+</pre>
+
+<p>After you have created this file, start verification:</p>
+<button id="prove_inline" class="btn btn-primary">Verify</button>
+
+% end
+
+% my $file_explain = begin
+
+% end
+
+% push @pages, [
+%    'website-file',
+%    'Proof File',
+%    $file_form,
+%    $file_explain,
+% ];
+
+
 % my $status_form = begin
 
 %= include 'proofs/_status';
@@ -54,6 +163,7 @@ another website and matches the '&lt;link rel="canonical"&gt;' in the page (if p
 % end
 
 % my $status_explain = begin
+
 % end
 
 % push @pages, [
@@ -62,6 +172,7 @@ another website and matches the '&lt;link rel="canonical"&gt;' in the page (if p
 %    $status_form,
 %    $status_explain,
 % ];
+
 
 <script src="/assets/config_form.js"></script>
 
