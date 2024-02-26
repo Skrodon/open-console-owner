@@ -46,7 +46,7 @@ sub val_line($)
 sub val_text($)
 {	my $text = shift;
 	defined $text && $text =~ /\S/ or return undef;
-	$text =~ s/\s{2,}/ /gr =~ s/ $//gmr =~ s/\n{2,}/\n/gr;
+	$text =~ s/[ \t]{2,}/ /gr =~ s/ $//gmr =~ s/\n{2,}/\n/gr;
 }
 
 sub is_valid_country($)  { defined country_name($_[0]) }
