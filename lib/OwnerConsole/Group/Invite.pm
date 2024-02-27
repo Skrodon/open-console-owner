@@ -61,7 +61,7 @@ sub link()       { '/invite/' . $_[0]->token }
 
 sub invited()    { $_[0]->{OGI_inv} ||= bson2datetime $_[0]->_data->{invited}, $_[0]->timezone }
 sub expires()    { $_[0]->{OGI_exp} ||= bson2datetime $_[0]->_data->{expires}, $_[0]->timezone }
-sub hasExpired   { $_[0]->{OGI_dead}//= $_[0]->_data->{expires} < DateTime->now // 0 }
+sub hasExpired   { $_[0]->{OGI_dead}//= $_[0]->expires < DateTime->now // 0 }
 sub invitedBy    { $_[0]->{OGI_iid} ||= $::app->users->identity($_[0]->identityId) }
 sub invitedTo    { $_[0]->{OGI_gid} ||= $::app->users->group($_[0]->groupId) }
 sub timezone     { $_[0]->{OGI_tz}  ||= $_[0]->invitedTo->timezone }

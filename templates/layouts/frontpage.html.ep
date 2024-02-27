@@ -22,7 +22,7 @@
         </select>
       </form>
       <div class="nav-item text-nowrap">
-        <a class="nav-link px-3" href="/login"><i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp;Sign in</a>
+        <a class="nav-link px-3" href="/login"><i class="fa-solid fa-arrow-right-to-bracket" aria-hidden="true"></i>&nbsp;Sign in</a>
       </div>
     </nav>
   </div>
@@ -65,7 +65,7 @@ visibility.</p>
 
     <div class="row">
       <div class="col" style="text-align: center; width: 100%">
-        The only Cookie we use is a session cookie&nbsp;<i class="fa-solid fa-cookie"></i>.
+        The only Cookie we use is a session cookie&nbsp;<i class="fa-solid fa-cookie" aria-hidden="true"></i>.
       </div>
     </div>
   </main>

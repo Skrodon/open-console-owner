@@ -15,7 +15,7 @@
           <label for="email" class="form-label">Your account name</label>
           <div class="input-group mb-3">
             <span class="input-group-text">
-              <i class="fa-solid fa-user"></i>
+              <i class="fa-solid fa-user" aria-hidden="true"></i>
             </span>
             <input name="email" id="email" type="email" class="form-control" placeholder="Your email-address">
           </div>
@@ -33,7 +33,7 @@
           <div class="col-12">
             &nbsp;<br />
             <button class="btn btn-primary" type="submit">
-              <i class="fa-regular fa-circle-question"></i>&nbsp;Request reset
+              <i class="fa-regular fa-circle-question" aria-hidden="true"></i>&nbsp;Request reset
             </button>
           </div>
         </div>

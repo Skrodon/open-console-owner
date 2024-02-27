@@ -169,7 +169,7 @@
 % foreach my $name (sort keys %members) {
 %	my $member   = $members{$name};
 %   my $identity = $member->{identity};
-      <tr><td><%= $name %></td><td><%== $member->{is_admin} ? '<i class="fa-solid fa-user-tie"></i>' : '' %></td></tr>
+      <tr><td><%= $name %></td><td><%== $member->{is_admin} ? '<i class="fa-solid fa-user-tie" aria-label="member is admin"></i>' : '' %></td></tr>
 % }
     </tbody>
     </table>
@@ -188,7 +188,7 @@ members. When you have the <strong>Rights</strong>, then you can invite
 people by sending them an email. You have no control over which Identity
 that person will present.</p>
 
-<p>Only the administrator (<i class="fa-solid fa-user-tie"></i>) can
+<p>Only the administrator (<i class="fa-solid fa-user-tie" aria-hidden="true"></i>) can
 modify the information about the group, and invite new members.</p>
 
 % end
@@ -274,7 +274,7 @@ which Identity that user will use for your group.</p>
   <input id="object_version" type="hidden" value="<%= $group->schema %>"  />
   <input id="is_group_admin" type="hidden" value="<%= $is_group_admin ? 1 : 0 %>" />
 
-  <h1><i class="fa-solid fa-people-group"></i> Group</h1>
+  <h1><i class="fa-solid fa-people-group" aria-hidden="true"></i> Group</h1>
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('group-tabs' => \@pages);

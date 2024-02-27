@@ -15,6 +15,6 @@
 
 	<p>Please contact the person listed in your invitation to send you a new one.</p>
 
-    <a href="/" class="btn btn-primary"><i class="fa-solid fa-house"></i> visit the front-page</a>
+    <a href="/" class="btn btn-primary"><i class="fa-solid fa-house" aria-hidden="true"></i> visit the front-page</a>
   </div>
 </div>

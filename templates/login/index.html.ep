@@ -23,7 +23,7 @@
         <div class="col-12">
           <div class="input-group mb-3">
             <span class="input-group-text">
-              <i class="fas fa-user"></i>
+              <i class="fas fa-user" aria-hidden="true"></i>
             </span>
             <input name="email" id="email" type="email" class="form-control" placeholder="Your email-address">
           </div>
@@ -32,11 +32,11 @@
         <div class="col-12">
           <div class="input-group mb-3">
             <span class="input-group-text">
-              <i class="fas fa-lock"></i>
+              <i class="fas fa-lock" aria-hidden="true"></i>
             </span>
             <input name="password" type="password" value="" class="form-control" id="password" placeholder="Enter Password" required>
             <span class="input-group-text">
-              <i class="fa-solid fa-eye eye_toggle"></i>
+              <i class="fa-solid fa-eye eye_toggle" aria-hidden="true"></i>
             </span>
           </div>
         </div>
@@ -45,7 +45,7 @@
           <div class="col-12">
             &nbsp;<br />
             <button class="btn btn-primary" type="submit">
-              <i class="fas fa-arrow-right-to-bracket"></i>&nbsp; Sign In
+              <i class="fas fa-arrow-right-to-bracket" aria-hidden="true"></i>&nbsp; Sign In
             </button>
           </div>
         </div>

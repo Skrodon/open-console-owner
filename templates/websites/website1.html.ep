@@ -104,7 +104,7 @@ another website and matches the '&lt;link rel="canonical"&gt;' in the page (if p
 <p>Add this line to your <tt>/index.html</tt> file, in a part
 which is not dynamically rendered.</p>
 
-<i class="fa-regular fa-copy" style="float: right"></i>
+<i class="fa-regular fa-copy" style="float: right" aria-hidden="true"></i>
 %# This is probably not the current practice.
 <pre>
   &lt;link rel="open-console"
@@ -134,7 +134,7 @@ which is not dynamically rendered.</p>
 <p>Create a file named <tt>open-console.txt</tt> in the
 root directory of you website, containing the following:</p>
 
-<i class="fa-regular fa-copy" style="float: right"></i>
+<i class="fa-regular fa-copy" aria-hidden="true" style="float: right"></i>
 <pre>
   owner-token: <%= $token %>
 </pre>
@@ -179,7 +179,7 @@ root directory of you website, containing the following:</p>
 <form id="config-website" class="config-form">
   <input id="identifier" type="hidden" value="<%= $proof->proofId %>" />
 
-  <h1><i class="fa-solid fa-file-circle-plus"></i> Website proof</h1>
+  <h1><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Website proof</h1>
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('website-tabs' => \@pages);

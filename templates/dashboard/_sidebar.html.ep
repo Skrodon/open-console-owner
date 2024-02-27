@@ -5,13 +5,13 @@
 % if($c->user->isAdmin) {
 <li class="nav-item admin">
   <a class="nav-link" href="#">
-    <i class="fa-solid fa-mask"></i> Admin
+    <i class="fa-solid fa-mask" aria-hidden="true"></i> Admin
   </a>
 </li>
 % }
 <li class="nav-item">
   <a class="nav-link" href="/dashboard">
-    <i class="fa-solid fa-home"></i> Dashboard
+    <i class="fa-solid fa-home" aria-hidden="true"></i> Dashboard
   </a>
 </li>
 </ul>
@@ -21,12 +21,12 @@ Identification:
 <ul class="nav flex-column">
 <li class="nav-item">
   <a class="nav-link" href="/dashboard/account">
-    <i class="fa-solid fa-person-half-dress"></i> Account
+    <i class="fa-solid fa-person-half-dress" aria-hidden="true"></i> Account
   </a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="/dashboard/identities">
-    <i class="fa-solid fa-user"></i> Identities
+    <i class="fa-solid fa-user" aria-hidden="true"></i> Identities
 % my $nrIds = $account->nrIdentities;
 % if($nrIds) {
   <span class="badge badge-pill"><%= $nrIds %></span>
@@ -35,7 +35,7 @@ Identification:
 </li>
 <li class="nav-item">
   <a class="nav-link" href="/dashboard/groups">
-    <i class="fa-solid fa-people-group"></i> Groups
+    <i class="fa-solid fa-people-group" aria-hidden="true"></i> Groups
 % my $nrGroups = $account->nrGroups;
 % if($nrGroups) {
   <span class="badge badge-pill"><%= $nrGroups %></span>
@@ -47,31 +47,31 @@ Identification:
 Ownership:
 <ul class="nav flex-column">
 <li class="nav-item">
-  <a class="nav-link" href="/dashboard/emailaddrs"><i class="fa-solid fa-envelope-circle-check"></i> Email addresses</a>
+  <a class="nav-link" href="/dashboard/emailaddrs"><i class="fa-solid fa-envelope-circle-check" aria-hidden="true"></i> Email addresses</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="/dashboard/websites"><i class="fa-solid fa-file-circle-plus"></i> Websites</a>
+  <a class="nav-link" href="/dashboard/websites"><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Websites</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="#"><i class="fa-solid fa-piggy-bank"></i> Bank accounts</a>
+  <a class="nav-link" href="#"><i class="fa-solid fa-piggy-bank" aria-hidden="true"></i> Bank accounts</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="#"><i class="fa-solid fa-phone"></i> Phone numbers</a>
+  <a class="nav-link" href="#"><i class="fa-solid fa-phone" aria-hidden="true"></i> Phone numbers</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="#"><i class="fa-solid fa-envelope-open-text"></i> Postal addresses</a>
+  <a class="nav-link" href="#"><i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i> Postal addresses</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="#"><i class="fa-solid fa-people-arrows"></i> Social media</a>
+  <a class="nav-link" href="#"><i class="fa-solid fa-people-arrows" aria-hidden="true"></i> Social media</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="#"><i class="fa-solid fa-house-medical"></i> Domains</a>
+  <a class="nav-link" href="##"><i class="fa-solid fa-house-medical" aria-hidden="true"></i> Domains</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="#"><i class="fa-solid fa-network-wired"></i> Networks</a>
+  <a class="nav-link" href="##"><i class="fa-solid fa-network-wired" aria-hidden="true"></i> Networks</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="#"><i class="fa-solid fa-key"></i> Security keys</a>
+  <a class="nav-link" href="#"><i class="fa-solid fa-key" aria-hidden="true"></i> Security keys</a>
 </li>
 </ul>
 <br />
@@ -79,12 +79,12 @@ Services:
 <ul class="nav flex-column">
 <li class="nav-item">
   <a class="nav-link" href="/dashboard/contracts">
-    <i class="fa-solid fa-handshake-simple"></i> Contracts
+    <i class="fa-solid fa-handshake-simple" aria-hidden="true"></i> Contracts
   </a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="#">
-    <i class="fa-solid fa-chart-line"></i> Offered Services
+    <i class="fa-solid fa-chart-line" aria-hidden="true"></i> Offered Services
   </a>
 </li>
 </ul>

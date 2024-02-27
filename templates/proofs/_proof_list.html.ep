@@ -9,10 +9,10 @@
       <td class="score"><%= $proof->score %></td>
       <td class="edit">
 %     if($editable) {
-          <a href="<%= $proof->elemLink %>"><i class="fa-solid fa-pen"></i></a>
-          <a href="#" class="remove-proof"><i class="fa-solid fa-skull"></i></a>
+          <a href="<%= $proof->elemLink %>"><i class="fa-solid fa-pen" aria-label="edit"></i></a>
+          <a href="#" class="remove-proof"><i class="fa-solid fa-skull" aria-label="delete"></i></a>
 %     } else {
-          <a href="<%= $proof->elemLink %>"><i class="fa-solid fa-magnifying-glass"></i></a>
+          <a href="<%= $proof->elemLink %>"><i class="fa-solid fa-magnifying-glass" aria-label="view"></i></a>
 %     }
       </td>
      </tr>
@@ -35,8 +35,8 @@
   </thead>
   <tbody>
     <tr data-owner="<%= $account->userId %>">
-      <th colspan="3"><i class="fa-solid fa-user"></i> Personal properties</th>
-      <th class="edit"><i class="fa-solid fa-user-tie owner"></i></th>
+      <th colspan="3"><i class="fa-solid fa-user" aria-hidden="true"></i> Personal properties</th>
+      <th class="edit"><i class="fa-solid fa-user-tie owner" aria-hidden="true"></i></th>
     </tr>
 
 %= $rows->([ $account->proofs->for($set) ], 1);
@@ -45,8 +45,8 @@
 %    my $group_admin = $group->memberIsAdmin($account);
 
     <tr data-owner="<%= $group->groupId %>" data-admin="<%= $group_admin ? 'true' : 'false' %>">
-      <th colspan="3"><i class="fa-solid fa-people-group"></i> <%= $group->name %></th>
-      <th class="edit"><%== $group_admin ? '<i class="fa-solid fa-user-tie owner"></i>' : '' %></th>
+      <th colspan="3"><i class="fa-solid fa-people-group" aria-hidden="true"></i> <%= $group->name %></th>
+      <th class="edit"><%== $group_admin ? '<i class="fa-solid fa-user-tie owner" aria-label="you are group owner"></i>' : '' %></th>
     </tr>
 
 %=   $rows->([ $group->proofs->for($set) ], $group_admin);
@@ -54,6 +54,6 @@
 % }
     <tr class="table-light">
         <td colspan="4"><a href="/dashboard/<%= $element %>/new" class="btn btn-primary" role="button" %>
-           <i class="fa-solid fa-circle-plus"></i> Add a <%= $show_column %></a></td></tr>
+           <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> Add a <%= $show_column %></a></td></tr>
   </tbody>
   </table>

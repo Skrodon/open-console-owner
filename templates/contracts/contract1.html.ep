@@ -96,7 +96,7 @@ proofs.</p>
 <form id="config-contract" class="config-form">
   <input id="identifier" type="hidden" value="<%= $proof->proofId %>" />
 
-  <h1><i class="fa-solid fa-handshake-simple"></i> Service Contract</h1>
+  <h1><i class="fa-solid fa-handshake-simple" aria-hidden="true"></i> Service Contract</h1>
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('contract-tabs' => \@pages);

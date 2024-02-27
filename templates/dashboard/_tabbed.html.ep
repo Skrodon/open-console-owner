@@ -24,10 +24,10 @@
     <br />&nbsp;
     <br />&nbsp;
     <button type="submit" id="save-button" class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-title="If there are errors, you will not be able to save this form, to avoid inconsistent data">
-       <i class="fa-solid fa-floppy-disk"></i> Save
+       <i class="fa-solid fa-floppy-disk" aria-hidden="true"></i> Save
     </button>
     <button type="submit" id="cancel-button" class="btn btn-outline-primary bg-success">
-       <i class="fa-solid fa-xmark"></i> Cancel</button>
+       <i class="fa-solid fa-xmark" aria-hidden="true"></i> Cancel</button>
 
     <div id="cancel-without-saving" class="modal">
       <div class="modal-dialog">

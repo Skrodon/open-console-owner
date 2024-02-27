@@ -25,7 +25,7 @@
               <%= $sname %>
 %    }
           </td>
-          <td><a href="#" for="<%= $seq %>"><i class="fa-solid fa-pen"></i></a></td>
+          <td><a href="#" for="<%= $seq %>"><i class="fa-solid fa-pen" aria-label="inspect invite"></i></a></td>
           <td>
 % if($invite->hasExpired) {
              <span class="badge badge-pill badge-warning">Expired</span>
@@ -59,7 +59,7 @@
         </div>
         <div class="modal-footer">
 % if($state eq 'start') {
-          <button id="resend_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-share-from-square"></i> Resend invitation</button>
+          <button id="resend_button" type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="fa-solid fa-share-from-square" aria-hidden="true"></i> Resend invitation</button>
 % }
 % if($state eq 'spam') {
           <br />
@@ -70,7 +70,7 @@
           <p>You may also contact the invitee to convince her/him this is
           not spam and revisit the invitation.</p>
 % } elsif($state ne 'accept') {
-          <button id="remove_button" type="button" class="btn btn-danger"><i class="fa-solid fa-xmark"></i> Cancel invitation</button>
+          <button id="remove_button" type="button" class="btn btn-danger"><i class="fa-solid fa-xmark" aria-hidden="true"></i> Cancel invitation</button>
 % }
         </div>
       </div>
@@ -85,7 +85,7 @@
       <tr class="table-light">
         <td><label for="invite_emails" class="form-label">New invitations</label>
             <textarea id="invite_emails" type="text" rows="3" placeholder="Email-addresses of potential members" class="form-control"></textarea></td>
-        <td style="vertical-align: middle" colspan="2"><button id="invite" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text"></i>&nbsp;Invite</button></td>
+        <td style="vertical-align: middle" colspan="2"><button id="invite" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i>&nbsp;Invite</button></td>
       </tr>
     </tbody>
     </table>

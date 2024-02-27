@@ -24,9 +24,9 @@
   <div>
     <label for="password" class="form-label">Password</label>
     <div class="input-group">
-      <span class="input-group-text"><i class="fas fa-lock"></i></span>
+      <span class="input-group-text"><i class="fas fa-lock" aria-hidden="true"></i></span>
       <input name="password" type="password" value="" class="form-control" id="password" placeholder="Enter a new password" aria-describedby="password_explain">
-      <span class="input-group-text"><i class="fa-solid fa-eye eye_toggle"></i></span>
+      <span class="input-group-text"><i class="fa-solid fa-eye eye_toggle" aria-hidden="true"></i></span>
     </div>
     <div id="password_explain" class="form-text">Do everyone a favor: pick a good pasword!</div>
   </div>
@@ -34,9 +34,9 @@
   <div>
 %#  <label for="confirm" class="form-label">Confirm password</label>
     <div class="input-group">
-	  <span class="input-group-text"><i class="fas fa-lock"></i></span>
+	  <span class="input-group-text"><i class="fas fa-lock" aria-hidden="true"></i></span>
       <input name="confirm" type="password" value="" class="form-control" id="confirm" placeholder="Repeat your password">
-      <span class="input-group-text"><i class="fa-solid fa-eye eye_toggle"></i></span>
+      <span class="input-group-text"><i class="fa-solid fa-eye eye_toggle" aria-hidden="true"></i></span>
     </div>
   </div>
 
@@ -246,7 +246,7 @@
 <form id="config-account" class="config-form">
   <input id="identifier" type="hidden" value="<%= $account->userId %>" />
 
-  <h1><i class="fa-solid fa-person-half-dress"></i> Account</h1>
+  <h1><i class="fa-solid fa-person-half-dress" aria-hidden="true"></i> Account</h1>
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('account-tabs' => \@pages);

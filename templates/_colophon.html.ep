@@ -7,11 +7,11 @@
     <div class="col-2"><img src="/images/open-console.svg" width="80%" /></div>
     <div class="col-4">
       <h5>Contact</h5>
-      <i class="fa-solid fa-envelope"></i>&nbsp;<a href="mailto:support@open-console.eu">Ask for Support</a><br />
-      <i class="fa-solid fa-envelope"></i>&nbsp;<a href="mailto:team@open-console.eu">Email the development team</a><br />
+      <i class="fa-solid fa-envelope" aria-hidden="true"></i>&nbsp;<a href="mailto:support@open-console.eu">Ask for Support</a><br />
+      <i class="fa-solid fa-envelope" aria-hidden="true"></i>&nbsp;<a href="mailto:team@open-console.eu">Email the development team</a><br />
       &nbsp;<br>
-      <i class="fa-brands fa-mastodon"></i>&nbsp;<a href="#">Open Console on Mastodon</a><br />
-      <i class="fa-brands fa-patreon"></i>&nbsp;<a href="#">Become an Open Console Patreon</a><br />
+      <i class="fa-brands fa-mastodon" aria-hidden="true"></i>&nbsp;<a href="#">Open Console on Mastodon</a><br />
+      <i class="fa-brands fa-patreon" aria-hidden="true"></i>&nbsp;<a href="#">Become an Open Console Patreon</a><br />
     </div>
     <div class="col-4">
       <h5>Part of</h5>

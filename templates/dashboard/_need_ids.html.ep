@@ -12,7 +12,8 @@ you need to continue the configuration by adding Idenities and proves
 of Ownership. Then you can connect to services.  Check the left panel.</p>
 
 <ul>
-<li>step 1: create yourself one or more <a href="/dashboard/identity/new">personal identities</a>, which
+<li><b>step 1:</b> extend your <a href="/dashboard/account">account</a> information.</li>
+<li><b>step 2:</b> create yourself one or more <a href="/dashboard/identity/new">personal identities</a>, which
     you can use to identify yourself to external parties, like service providers.</li>
 </ul>
 

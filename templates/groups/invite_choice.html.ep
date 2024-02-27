@@ -14,9 +14,10 @@ DIV.addrblock { padding-left: 3em; padding-bottom: 5ex; }
 
 <div class="container">
   <div class="row">
-    <div class="card" id="show-invite" style="width: 45%">
-      <h5 class="card-header">The Invitation</h5>
-      <div class="card-body">
+    <div class="col-sm-6">
+      <div class="card" id="show-invite">
+        <h5 class="card-header">The Invitation</h5>
+        <div class="card-body">
 
 <p>The invitation was send to you by:</p>
 <div class="addrblock">
@@ -27,7 +28,10 @@ DIV.addrblock { padding-left: 3em; padding-bottom: 5ex; }
 % }
 % if(my $postal = $identity->postal) {
   &nbsp;<br />
-  Postal: <%= $postal =~ s!\n!<br />\n!gr %>
+  Postal:<br />
+<pre>
+<%= $postal %>
+</pre>
 % }
 </div>
 
@@ -45,17 +49,22 @@ DIV.addrblock { padding-left: 3em; padding-bottom: 5ex; }
 % }
 % if(my $postal = $group->postal) {
   &nbsp;<br />
-  Postal: <%= $postal =~ s!\n!<br />\n!gr %>
+  Postal:<br />
+<pre>
+<%= $postal %>
+</pre>
 % }
 
 </div>
 
+        </div>
       </div>
     </div>
 
-    <div class="card" id="invite-accept" style="width: 45%">
-      <h5 class="card-header">Your options</h5>
-      <div class="card-body">
+    <div class="col-sm-6">
+      <div class="card" id="invite-accept">
+        <h5 class="card-header">Your options</h5>
+        <div class="card-body">
 
 <h5>You do not want to join?</h5>
 <p><a href="?ignore" class="btn btn-info"><i class="fa-solid fa-house" aria-hidden="true"></i> ignore </a>
@@ -71,22 +80,24 @@ DIV.addrblock { padding-left: 3em; padding-bottom: 5ex; }
 % if(my $account = $c->account) {
 <tr><td>You are currently signed-in as <%= $account->email %>.  If this is not the account
        you want to link this invitation to, then sign-out first.</td>
-     <td><a href="/logout" class="btn btn-warning"><i class="fa-solid fa-right-from-bracket"></i> Sign out</a></td></tr>
+     <td><a href="/logout" class="btn btn-warning"><i class="fa-solid fa-right-from-bracket" aria-hidden="true"></i> Sign out</a></td></tr>
 % } else {
 <tr><td>Are you already participating in Open Console?  Of that's not the case, please
         register now.</td>
-    <td><a href="/login/register" class="btn btn-secondary" target="_blank"><i class="fa-solid fa-user"></i> Register</a></td></tr>
+    <td><a href="/login/register" class="btn btn-secondary" target="_blank"><i class="fa-solid fa-person-half-dress" aria-hidden="true"></i> Register</a></td></tr>
 % }
 
 <tr><td>Do you already have created any identity in your account?  You need one to take part
     in this group.</td>
-    <td><a href="/dashboard/identity/new" class="btn btn-secondary" target="_blank"><i class="fa-regular fa-address-card"></i> New identity</a></td></tr>
+    <td><a href="/dashboard/identity/new" class="btn btn-secondary" target="_blank"><i class="fa-regular fa-user" aria-hidden="true"></i> New identity</a></td></tr>
 
 <tr><td>If you are registered and willing to join the group, please confirm here:</td>
-    <td><a href="/dashboard/invite-accept/<%= $invite->token %>" class="btn btn-success"><i class="fa-solid fa-check"></i> Accept</a></td></tr>
+    <td><a href="/dashboard/invite-accept/<%= $invite->token %>" class="btn btn-success"><i class="fa-solid fa-check" aria-hidden="true"></i> Accept</a></td></tr>
 </table>
 
+        </div>
       </div>
     </div>
+
   </div>
 </div>

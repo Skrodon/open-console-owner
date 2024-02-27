@@ -19,7 +19,7 @@
         <div class="collapse navbar-collapse">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" href="/"><i class="fa-solid fa-house"></i>&nbsp; Home</a>
+            <a class="nav-link active" href="/"><i class="fa-solid fa-house" aria-hidden="true"></i>&nbsp; Home</a>
           </li>
           </ul>
         </div>
@@ -29,7 +29,7 @@
           </select>
         </form>
         <div class="nav-item text-nowrap">
-          <a class="nav-link px-3" href="/login"><i class="fa-solid fa-arrow-right-to-bracket"></i>&nbsp;Sign in</a>
+          <a class="nav-link px-3" href="/login"><i class="fa-solid fa-arrow-right-to-bracket" aria-hidden="true"></i>&nbsp;Sign in</a>
         </div>
       </div>
     </nav>
@@ -43,13 +43,13 @@
         <div class="position-sticky pt-3">
           <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link" href="/login"><i class="fa-solid fa-arrow-right-to-bracket"></i> Sign in</a>
+            <a class="nav-link" href="/login"><i class="fa-solid fa-arrow-right-to-bracket" aria-hidden="true"></i> Sign in</a>
           </li>
           <li class="nav-item text-nowrap">
-            <a class="nav-link" href="/login/register"><i class="fa-regular fa-address-card"></i> Register</a>
+            <a class="nav-link" href="/login/register"><i class="fa-regular fa-address-card" aria-hidden="true"></i> Register</a>
           </li>
           <li class="nav-item text-nowrap">
-            <a class="nav-link" href="/login/reset"><i class="fa-regular fa-circle-question"></i> Reset password</a>
+            <a class="nav-link" href="/login/reset"><i class="fa-regular fa-circle-question" aria-hidden="true"></i> Reset password</a>
           </li>
           </ul>
         </div>
