@@ -6,11 +6,13 @@
 
 <script src="/assets/group.js"></script>
 
+<h1><i class="fa-solid fa-people-group" aria-hidden="true"></i> Groups</h1>
+
 <div class="container">
   <div class="row">
     <div class="col-sm-7">
       <div class="card" id="identities_card">
-        <h5 class="card-header">Group Identities</h5>
+        <h5 class="card-header">Your group memberships</h5>
         <div class="card-body">
 
 <form id="group_list">
@@ -23,9 +25,16 @@
   </thead>
   <tbody>
 %   foreach my $group ($account->groups) {
+
     <tr><td><%= $group->name %></td>
-        <td><a href="/dashboard/group/<%= $group->groupId %>"><i class="fa-solid fa-pen"></a></i></td>
         <td>
+%     if($group->memberIsAdmin($account)) {
+            <i class="fa-solid fa-user-tie" aria-label="you are admin"></i>
+            <a href="/dashboard/group/<%= $group->groupId %>"><i class="fa-solid fa-pen" aria-label="edit group"></i></a>
+% } else {
+            <a href="/dashboard/group/<%= $group->groupId %>"><i class="fa-solid fa-magnifying-glass" aria-label="view group"></a></i>
+% }
+        </td><td>
 
     <select class="form-select member" data-groupid="<%= $group->groupId %>">
 %      my $member   = $group->memberIdentityOf($account) or next;
@@ -43,7 +52,7 @@
 % }
     <tr class="table-light">
         <td><a href="/dashboard/group/new" class="btn btn-primary<%= @identities ? '' : ' disabled' %>" role="button"
-           <%= @identities ? '' : 'aria-disabled="true"' %>><i class="fa-solid fa-circle-plus"></i> Create new Group</a></td>
+           <%= @identities ? '' : 'aria-disabled="true"' %>><i class="fa-solid fa-circle-plus" aria-hidden="true"></i> Create new Group</a></td>
         <td colspan="2">&nbsp;</td></tr>
   </tbody>
   </table>

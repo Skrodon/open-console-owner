@@ -20129,10 +20129,6 @@ FORM#config-account TABLE#langtab.table-hover TBODY TR:hover {
   background-color: #e0e0e0;
 }
 
-FORM.config-form H1 {
-  color: #3A6275;
-  margin-bottom: 1ex;
-}
 FORM.config-form .any-delete-tab {
   color: var(--bs-danger);
 }
@@ -20291,6 +20287,11 @@ BODY {
   color: white;
 }
 
+H1 {
+  color: #3A6275;
+  margin-bottom: 1ex;
+}
+
 .nav-link {
   white-space: nowrap !important;
 }
@@ -20398,6 +20399,7 @@ FORM.proof-list .edit {
 FORM.proof-list .score {
   text-align: right;
 }
+FORM.proof-list I.fa-regular,
 FORM.proof-list I.fa-solid {
   width: 2em;
 }

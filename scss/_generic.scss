@@ -3,6 +3,11 @@ BODY {
 	color: white;
 }
 
+H1 {
+	color: $oc-color-normal;
+	margin-bottom: 1ex;
+}
+
 .nav-link {
 	white-space: nowrap !important;
 }
