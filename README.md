@@ -1,4 +1,9 @@
 
+# LICENSE
+
+This software is braught to you under the EUPL-1.2 (or later) license.
+The text of this license can be found in the LICENSES directory.
+
 # Open Console, Website Owner Interface
  
 This project is part of https://open-console.eu Open Console, which is
