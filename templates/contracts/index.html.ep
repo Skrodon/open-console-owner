@@ -1,17 +1,18 @@
 % layout 'dashboard';
 % title 'Overview of contract proofs';
 
+<h1><i class="fa-solid fa-handshake-simple" aria-hidden="true"></i> Contracts</h1>
 <div class="container">
   <div class="row">
 
     <div class="col-sm-7">
       <div class="card" id="contracts-card">
-        <h5 class="card-header"><i class="fa-solid fa-handshake-simple" aria-hidden="true"></i> Contract ownership</h5>
+        <h5 class="card-header">Established contracts</h5>
         <div class="card-body">
 
 <form class="proof-list" id="config-contract">
 % my $show = sub { $_[0]->name };
-%= include 'proofs/_proof_list', set => 'contracts', element => 'contract', show => $show, show_column => "Contract";  #XXX translate
+%= include 'proofs/_proof_list', set => 'contracts', element => 'contract', show => $show, show_column => "Contract", add_text => "Add a contract";  #XXX translate
 </form>
 
         </div>
@@ -23,8 +24,9 @@
         <h5 class="card-header">Establishing Contracts</h5>
         <div class="card-body">
 
-<p>
-</p>
+<p>You need to establish a <b>contract</b> with a service provide to access
+the data it has to offer.  You will informed when the conditions change,
+later.</p>
 
         </div>
       </div>

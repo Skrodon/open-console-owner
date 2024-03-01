@@ -1,17 +1,19 @@
 % layout 'dashboard';
 % title 'Overview of email address proofs';
 
+<h1><i class="fa-solid fa-envelope-circle-check" aria-hidden="true"></i> Email addresses</h1>
+
 <div class="container">
   <div class="row">
 
     <div class="col-sm-7">
       <div class="card" id="emailaddrs-card">
-        <h5 class="card-header"><i class="fa-solid fa-envelope-circle-check" aria-hidden="true"></i> Email address user</h5>
+        <h5 class="card-header">Collected proofs</h5>
         <div class="card-body">
 
 <form class="proof-list" id="config-emailaddr">
 % my $show = sub { my $e = $_[0]->email; $e =~ s!\@!(+)\@! if $_[0]->supportsSubAddressing; $e };
-%= include 'proofs/_proof_list', set => 'emailaddrs', element => 'emailaddr', show => $show, show_column => "Email address";  #XXX translate
+%= include 'proofs/_proof_list', set => 'emailaddrs', element => 'emailaddr', show => $show, show_column => "Email address", add_text => "Add an email address proof";  #XXX translate
 </form>
 
         </div>
@@ -25,6 +27,10 @@
 
 <p>Verify that you are the receipient of emails sent to a specific email address.
 This may be a personal address, but also a mailinglist for a group.</p>
+
+<p>You can <b>drag</b> the properties to change ownership.  You can give it away to
+a group.  You can only take it back when you are an admin (<i class="fa-solid fa-user-tie" aria-hidden="true"></i>)
+of that group.</p>
 
 <p>Addresses which are marked with "<b>(+)</b>" support sub-addressing: the user name
 of the email address may be extended by a "+" followed by any random name.  All these

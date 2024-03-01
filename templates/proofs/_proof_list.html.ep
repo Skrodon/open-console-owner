@@ -1,4 +1,4 @@
-%# Parameters 'set' (proof set name), 'show_column' (name), 'show' (sub)
+%# Parameters 'set' (proof set name), 'show_column' (name), 'show' (sub), 'add_text' (button text)
 
 % my $rows = begin
 %   my ($proofs, $editable) = @_;
@@ -54,6 +54,6 @@
 % }
     <tr class="table-light">
         <td colspan="4"><a href="/dashboard/<%= $element %>/new" class="btn btn-primary" role="button" %>
-           <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> Add a <%= $show_column %></a></td></tr>
+           <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> <%= $add_text %></a></td></tr>
   </tbody>
   </table>

@@ -1,17 +1,18 @@
 % layout 'dashboard';
 % title 'Overview of website proofs';
 
+<h1><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Website ownership proofs</h1>
 <div class="container">
   <div class="row">
 
     <div class="col-sm-7">
       <div class="card" id="websites-card">
-        <h5 class="card-header"><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Website ownership</h5>
+        <h5 class="card-header">Collected proofs</h5>
         <div class="card-body">
 
 <form class="proof-list" id="config-website">
 % my $show = sub { $_[0]->website };
-%= include 'proofs/_proof_list', set => 'websites', element => 'website', show => $show, show_column => "Website";  #XXX translate
+%= include 'proofs/_proof_list', set => 'websites', element => 'website', show => $show, show_column => "Website", add_text => 'Add a website proof';  #XXX translate
 </form>
 
         </div>

@@ -65,10 +65,10 @@ Ownership:
   <a class="nav-link" href="#"><i class="fa-solid fa-people-arrows" aria-hidden="true"></i> Social media</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="##"><i class="fa-solid fa-house-medical" aria-hidden="true"></i> Domains</a>
+  <a class="nav-link" href="#"><i class="fa-solid fa-house-medical" aria-hidden="true"></i> Domains</a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="##"><i class="fa-solid fa-network-wired" aria-hidden="true"></i> Networks</a>
+  <a class="nav-link" href="#"><i class="fa-solid fa-network-wired" aria-hidden="true"></i> Networks</a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="#"><i class="fa-solid fa-key" aria-hidden="true"></i> Security keys</a>
