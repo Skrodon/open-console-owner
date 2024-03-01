@@ -7,12 +7,12 @@
     <div class="col-2"><img src="/images/open-console.svg" width="80%" /></div>
     <div class="col-4">
       <h5>Contact</h5>
-      <i class="fa-solid fa-envelope"  aria-hidden="true"></i>&nbsp;<a href="mailto:support@open-console.eu">Ask for Support</a><br />
-      <i class="fa-solid fa-envelope"  aria-hidden="true"></i>&nbsp;<a href="mailto:team@open-console.eu">Email the development team</a><br />
-      &nbsp;<br>
-      <i class="fa-brands fa-mastodon" aria-hidden="true"></i>&nbsp;<a href="#">Open Console on Mastodon</a><br />
-      <i class="fa-brands fa-patreon"  aria-hidden="true"></i>&nbsp;<a href="#">Become an Open Console Patreon</a><br />
-      <i class="fa-brands fa-github"   aria-hidden="true"></i>&nbsp;<a href="https://github.com/Skrodon/open-console-owner/">Sources on GitHUB</a><br />
+      <a href="mailto:support@open-console.eu"><i class="fa-solid fa-envelope"  aria-hidden="true"></i> Ask for Support</a><br />
+      <a href="mailto:team@open-console.eu"><i class="fa-solid fa-envelope" aria-hidden="true"></i> Email the development team</a><br />
+      &nbsp;<br />
+	  <a href="https://noc.social/@Openconsole" target="_blank"><i class="fa-brands fa-mastodon" aria-hidden="true"></i> Open Console on Mastodon</a><br />
+      <a href="https://github.com/Skrodon/open-console-owner/" target="_blank"><i class="fa-brands fa-github" aria-hidden="true"></i> Sources on GitHUB</a><br />
+%#    <a href="#"><i class="fa-brands fa-patreon"  aria-hidden="true"></i> Become an Open Console Patreon</a><br />
     </div>
     <div class="col-4">
       <h5>Part of</h5>
