@@ -168,7 +168,7 @@
   country code.  This value may include business internal extension numbers.</p>
 
   <p>As <strong>Postal Address</strong>, please fill-in address information
-  which can be written down on an enveloppe and posted to you, from anywhere
+  which can be written down on an envelope and posted to you, from anywhere
   on this planet.  The country name can best be given in English.</p>
 
 % end
@@ -190,7 +190,7 @@
 % my @groups = $identity->usedForGroups;
 % if(@groups) {
   <div class="alert alert-danger" role="alert">
-    This Identity is in use for some of your Groups.  You will loose contact to
+    This Identity is in use for some of your Groups.  You will lose contact to
     the following Groups, when you confirm deletion:
     <ul>
 %   foreach my $group (@groups) {

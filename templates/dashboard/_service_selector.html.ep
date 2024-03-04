@@ -50,7 +50,7 @@
       <option disabled>CommonCrawl</option>
       <option disabled>Cooperating Email Blacklist Organizations</option>
       <option disabled>Amnesty International</option>
-      <option disabled>Internation cooperating Cyber Security Centers</option>
+      <option disabled>Cooperating Cyber Security Centers</option>
       </select>
       <select name="service" id="service" class="form-select">
       <option value="intro">Introduction to Services</option>

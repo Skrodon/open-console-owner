@@ -44,7 +44,7 @@
 % my $group_explain = begin
 
   <p>This Group of people (Personal Identities) with manage Ownerships or share a login
-  somewhere.  A Group could be colleages, family members, friends, whatever.</p>
+  somewhere.  A Group could be colleagues, family members, friends, whatever.</p>
 
   <p>The <strong>Group short name</strong> is only used for convenience, within the Open
   Console interface.  When needed, the <strong>Full name</strong> is presented to outside
@@ -137,7 +137,7 @@
   country code.  This value may include business internal extension numbers.</p>
 
   <p>As <strong>Postal Address</strong>, please fill-in address information
-  which can be written down on an enveloppe and posted to you, from anywhere
+  which can be written down on an envelope and posted to you, from anywhere
   on this planet.  The country name can best be given in English.</p>
 
 % end
@@ -254,7 +254,7 @@ which Identity that user will use for your group.</p>
 % my $delete_explain = begin
 
  <p>When you decide to <strong style="background-color: red; color: white">&nbsp;delete
- an group&nbsp;</strong>, then <strong>Proofs</strong> related to this
+ a group&nbsp;</strong>, then <strong>Proofs</strong> related to this
  group will be reassigned to your identity.</p>
 
 % end

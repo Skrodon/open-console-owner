@@ -5,10 +5,10 @@
   <div class="col-6">
     <h1>Invitation not found</h1>
 
-    <p>We are sorry to inform you, but your invitiation is not valid (any more).
-    This can have a few reasons:</p>
+    <p>We are sorry to inform you, that your invitation is not valid (any more).
+    There could be a few reasons:</p>
     <ul>
-    <li>The inviting group or user we removed from Open Console;</li>
+    <li>The inviting group or user was removed from Open Console;</li>
     <li>The invitation token is not copied correctly; or</li>
     <li>The invitation expired a long time ago.</li>
     </ul>

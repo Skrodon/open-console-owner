@@ -8,7 +8,7 @@
       <h1>Welcome back to Open Console</h1>
       <p>When you are new to Open Console, please register first.  When you do not
       remember your password, use the "reset-password" procedure.  You will get an
-      email.</p>
+      email with instructions.</p>
       <a href="/login/register" class="btn btn-secondary">Register</a>
       <a href="/login/reset" class="btn btn-secondary">Reset password</a>
       &nbsp;<br/>

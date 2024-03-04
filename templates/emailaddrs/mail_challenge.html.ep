@@ -2,7 +2,7 @@
 % title "Challenge for email address";
 % my $link = $c->config('vhost') . $challenge->link;
 
-<p>This is a challenge to proof ownership of email address
+<p>This is a challenge to prove ownership of email address
 <tt><%= $proof->email %></tt>.</p>
 
 % if($proof->isOwnedByMe) {

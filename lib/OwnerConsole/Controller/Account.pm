@@ -34,7 +34,7 @@ sub _acceptAccount($$)
 		{	$session->addError(confirm => __x"The passwords do not match.");
 		}
 		if(length $passwd < 6)
-		{	$session->addError(password => __x"The passwords is too short.");
+		{	$session->addError(password => __x"The password is too short.");
 		}
 		$victim->changePassword($passwd);
 		$session->changed;
@@ -62,7 +62,7 @@ sub _acceptAccount($$)
 
 	my $birth = val_line $session->optionalParam('birth');
 	! defined $birth || is_valid_date $birth
-		or $session->addError(birth => __x"Illegal date format, use YYYY-MM-DD.");
+		or $session->addError(birth => __x"Invalid date format, use YYYY-MM-DD.");
 	$victim->setData(birth_date => $birth);
 
 	my $gender = $session->optionalParam('gender');

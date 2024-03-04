@@ -28,7 +28,7 @@
       <input name="password" type="password" value="" class="form-control" id="password" placeholder="Enter a new password" aria-describedby="password_explain">
       <span class="input-group-text"><i class="fa-solid fa-eye eye_toggle" aria-hidden="true"></i></span>
     </div>
-    <div id="password_explain" class="form-text">Do everyone a favor: pick a good pasword!</div>
+    <div id="password_explain" class="form-text">Do everyone a favor: pick a good password!</div>
   </div>
 
   <div>
@@ -223,7 +223,7 @@
  <p>When you decide to
  <strong style="background-color: red; color: white">&nbsp;delete your account&nbsp;</strong>,
  then there is really <strong>no way back:</strong> all information
- about you will be removed from our administration.  You will loose all
+ about you will be removed from our administration.  You will lose all
  ownership proves which relate to your personal Identities.</p>
 
  <p>When you are the last member of a Group, than all that related

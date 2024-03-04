@@ -43,7 +43,7 @@
 
 % my $settings_explain = begin
 
-<p>You can proof the ownership of a personal email address, but it might also be
+<p>You can prove the ownership of a personal email address, but it might also be
 the address in use by one of your groups.</p>
 
 <p>When you are the owner or administrator of the owning group, then you can move

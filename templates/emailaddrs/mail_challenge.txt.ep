@@ -2,7 +2,7 @@
 % title "Challenge for email-address " . $proof->email;
 % my $link = $c->config('vhost') . $challenge->link;
 
-This is a challenge to proof ownership of email address
+This is a challenge to prove ownership of email address
    <%== $proof->email %>
 
 % if($proof->isOwnedByMe) {
@@ -11,7 +11,7 @@ In Open Console, you triggered an email address validation procedure.
 In case you did not initiate this yourself, then someone may have made
 a mistake.  In that case, please ignore this message.
 
-Please visit thist link to confirm that this email address is yours:
+Please visit this link to confirm that this email address is yours:
    <%== $link %>
 
 % } else {

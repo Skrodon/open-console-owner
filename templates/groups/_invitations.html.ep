@@ -43,7 +43,7 @@
         <div class="modal-body">
 % if($invite->hasExpired) {
           <div class="alert alert-danger" role="alert">
-			This invitation has expired.  When you resend the initation, it will revive again.
+			This invitation has expired.  When you resend the invitation, it will revive again.
           </div>
 % }
           <p>Group membership invitation:

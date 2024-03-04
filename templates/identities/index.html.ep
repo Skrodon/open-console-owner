@@ -23,7 +23,7 @@
     <tr><td><%= $identity->role %></td><td><a href="/dashboard/identity/<%= $identity->identityId %>"><i class="fa-solid fa-pen" aria-label="edit identity"></a></i></tr>
 % }
     <tr class="table-light">
-        <td colspan="2"><a href="/dashboard/identity/new" class="btn btn-primary"><i class="fa-solid fa-circle-plus" aria-hidden="true"></i> Create new Identity<a></td></tr>
+        <td colspan="2"><a href="/dashboard/identity/new" class="btn btn-primary"><i class="fa-solid fa-circle-plus" aria-hidden="true"></i> Create a new Identity<a></td></tr>
   </tbody>
   </table>
 </form>
@@ -37,7 +37,7 @@
         <h5 class="card-header">Configuring your Identities</h5>
         <div class="card-body">
 
-<p>Your activities are related to some roles you play in life: sometimes you are a
+<p>Your activities are related to some <b>roles you play in life</b>: sometimes you are a
 private person, sometimes a part within an organization.  Sometimes you want to
 tell a lot about yourself, sometimes hide behind a nickname only.  You can express
 your separate roles in separate Identities.</p>
@@ -47,7 +47,7 @@ or for a Group, you can prove (website) Ownership, and use or provide Services.<
 
 <p>Although you may share an Identity to use or provide different Services, they
 will not be able to detect you reusing your Identity: you do <i>not need</i> to set-up
-a different Identity for each Service.</p>
+a separate Identity for each Service.</p>
 
         </div>
       </div>
