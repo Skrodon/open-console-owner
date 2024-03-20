@@ -27,7 +27,7 @@ sub create($%)
 	$insert->{status}    = 'unproven';
 
 	my $owner = delete $insert->{owner} or panic;
-	$insert->{ownerid}   = $owner->isa('OwnerConsole::Account') ? $owner->userId : $owner->groupId;
+	$insert->{ownerid}   = $owner->ownerId;
 	$insert->{ownerclass}= ref $owner;
 
 	my $self = $class->SUPER::create($insert, %args);
@@ -98,6 +98,12 @@ sub owner($)
 	{	$account->userId eq $self->ownerId
 			or error __x"Account does not own the proof anymore.";
 		return $self->{OP_owner} = $account;
+	}
+
+	if($class->ownerClass->isa('OwnerConsole::Identity'))
+	{	my $identity = $account->identity($self->ownerId)
+			or error __x"Missing identity.";
+		return $self->{OP_owner} = $identity;
 	}
 
 	if($class->ownerClass->isa('OwnerConsole::Group'))

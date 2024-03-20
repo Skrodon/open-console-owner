@@ -30,8 +30,6 @@
   <tr><td>Certificate&nbsp;</td><td>failed</td></tr>
   </table>
 
-%= include 'proofs/_owner_pick';
-
   <div>
     <label for="methods" class="form-label">Prove ownership using</label>
     <div class="form-check">
@@ -175,8 +173,9 @@ root directory of you website, containing the following:</p>
 
 
 <script src="/assets/config_form.js"></script>
+<script src="/assets/proof_website.js"></script>
 
-<form id="config-website" class="config-form">
+<form id="proof-website" class="config-form">
   <input id="identifier" type="hidden" value="<%= $proof->proofId %>" />
 
   <h1><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Website proof</h1>

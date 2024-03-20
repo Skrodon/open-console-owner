@@ -11,7 +11,8 @@ function activate_language_selector(form) {
 
 	$("TBODY", table).sortable({
 		helper: fixHelperModified,
-		update: function () { saveLangOrder() }
+		update: function () { saveLangOrder() },
+		cursor: 'grabbing'
 	}).disableSelection();
 
 	// Remove duplicate language get from server in table

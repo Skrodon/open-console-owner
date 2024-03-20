@@ -41,7 +41,6 @@ sub acceptObject($$)
 
 sub acceptProof($$)
 {	my ($self, $session, $proof) = @_;
-	$proof->setData(ownerid => $session->requiredParam('owner'));
 	$self;
 }
 

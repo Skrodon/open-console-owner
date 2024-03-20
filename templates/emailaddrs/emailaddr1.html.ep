@@ -37,8 +37,6 @@
     <div id="subaddr_explain" class="form-text">Permit the "+"-trick on the proven email address.</div>
   </div>
 
-%= include 'proofs/_owner_pick';
-
 % end
 
 % my $settings_explain = begin
