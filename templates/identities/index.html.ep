@@ -3,7 +3,7 @@
 
 % my $account = $c->account;
 
-<h1><i class="fa-solid fa-user" aria-hidden="true"></i> Identities</h1>
+<h1><i class="fa-solid fa-ghost" aria-hidden="true"></i> Identities</h1>
 
 <div class="container">
   <div class="row">

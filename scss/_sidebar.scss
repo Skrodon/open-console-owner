@@ -1,0 +1,13 @@
+
+DIV.dashboard NAV.sidebar {
+	SPAN.badge {
+    	background: var(--bs-info);
+    	color: black;
+		float: right;
+	}
+
+	I.fa-solid, I.fa-regular {
+		width: 2em;
+		text-align: center;
+	}
+}

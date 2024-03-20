@@ -21,12 +21,12 @@ Identification:
 <ul class="nav flex-column">
 <li class="nav-item">
   <a class="nav-link" href="/dashboard/account">
-    <i class="fa-solid fa-person-half-dress" aria-hidden="true"></i> Account
+    <i class="fa-solid fa-user" aria-hidden="true"></i> Account
   </a>
 </li>
 <li class="nav-item">
   <a class="nav-link" href="/dashboard/identities">
-    <i class="fa-solid fa-user" aria-hidden="true"></i> Identities
+    <i class="fa-solid fa-ghost" aria-hidden="true"></i> Identities
 % my $nrIds = $account->nrIdentities;
 % if($nrIds) {
   <span class="badge badge-pill"><%= $nrIds %></span>

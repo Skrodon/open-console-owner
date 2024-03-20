@@ -20226,11 +20226,6 @@ DIV.dashboard IFRAME#service-window {
   border: 0px;
   background-color: white;
 }
-DIV.dashboard NAV.sidebar SPAN.badge {
-  background: var(--bs-info);
-  color: black;
-  float: right;
-}
 DIV.dashboard MAIN {
   background-color: white;
   color: black;
@@ -20402,6 +20397,17 @@ FORM.proof-list .score {
 FORM.proof-list I.fa-regular,
 FORM.proof-list I.fa-solid {
   width: 2em;
+  text-align: center;
+}
+
+DIV.dashboard NAV.sidebar SPAN.badge {
+  background: var(--bs-info);
+  color: black;
+  float: right;
+}
+DIV.dashboard NAV.sidebar I.fa-solid, DIV.dashboard NAV.sidebar I.fa-regular {
+  width: 2em;
+  text-align: center;
 }
 
 DIV.val-error {

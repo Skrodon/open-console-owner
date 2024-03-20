@@ -84,7 +84,7 @@ DIV.addrblock { padding-left: 3em; padding-bottom: 5ex; }
 % } else {
 <tr><td>Are you already participating in Open Console?  Of that's not the case, please
         register now.</td>
-    <td><a href="/login/register" class="btn btn-secondary" target="_blank"><i class="fa-solid fa-person-half-dress" aria-hidden="true"></i> Register</a></td></tr>
+    <td><a href="/login/register" class="btn btn-secondary" target="_blank"><i class="fa-solid fa-user" aria-hidden="true"></i> Register</a></td></tr>
 % }
 
 <tr><td>Do you already have created any identity in your account?  You need one to take part

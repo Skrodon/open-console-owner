@@ -51,9 +51,10 @@ sub fromDB($)
 # Keep these attributes in sync with the OwnerConsole/Controller/Groups.pm
 # method submit_group()
 
-sub groupId()    { $_[0]->_data->{groupid} }
 sub schema()     { $_[0]->_data->{schema} }
+sub ownerId()    { $_[0]->groupId }
 
+sub groupId()    { $_[0]->_data->{groupid} }
 sub country()    { $_[0]->_data->{country} }
 sub department() { $_[0]->_data->{department} }
 sub email()      { $_[0]->_data->{email} }

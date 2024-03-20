@@ -11,7 +11,7 @@
         <div class="card-body">
 
 <form class="proof-list" id="config-website">
-% my $show = sub { $_[0]->website };
+% my $show = sub { $_[0]->urlUnicode };
 %= include 'proofs/_proof_list', set => 'websites', element => 'website', show => $show, show_column => "Website", add_text => 'Add a website proof';  #XXX translate
 </form>
 
@@ -24,8 +24,12 @@
         <h5 class="card-header">Proving Websites</h5>
         <div class="card-body">
 
-<p>
-</p>
+<p>More and more services require a website ownership proof, in their
+fight against abuse.</p>
+
+<p>Over time, different practices have emerged to proof ownership:
+via DNS, inside HTML, or as a separate file.  Not all may be available
+to you.</p>
 
         </div>
       </div>

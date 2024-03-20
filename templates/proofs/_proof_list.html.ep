@@ -34,12 +34,29 @@
     </tr>
   </thead>
   <tbody>
+
+%### Bound to account
+
     <tr data-owner="<%= $account->userId %>">
       <th colspan="3"><i class="fa-solid fa-user" aria-hidden="true"></i> Personal properties</th>
       <th class="edit"><i class="fa-solid fa-user-tie owner" aria-hidden="true"></i></th>
     </tr>
 
 %= $rows->([ $account->proofs->for($set) ], 1);
+
+%### Bound to Identities
+
+% foreach my $identity ($account->identities) {
+
+    <tr data-owner="<%= $identity->identityId %>">
+      <th colspan="3"><i class="fa-solid fa-ghost" aria-hidden="true"></i> <%= $identity->role %></th>
+      <th class="edit"><i class="fa-solid fa-user-tie owner" aria-hidden="true"></i></th>
+    </tr>
+
+%=   $rows->([ $identity->proofs->for($set) ], 1);
+% }
+
+%### Bound to Groups
 
 % foreach my $group ($account->groups) {
 %    my $group_admin = $group->memberIsAdmin($account);

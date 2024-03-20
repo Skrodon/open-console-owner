@@ -250,7 +250,7 @@
   <input id="identifier"     type="hidden" value="<%= $identity->identityId %>" />
   <input id="object_version" type="hidden" value="<%= $identity->schema %>" />
 
-  <h1><i class="fa-solid fa-user" aria-hidden="true"></i> Identity</h1>
+  <h1><i class="fa-solid fa-ghost" aria-hidden="true"></i> Identity</h1>
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('identity-tabs' => \@pages);

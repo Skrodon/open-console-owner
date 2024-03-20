@@ -52,6 +52,7 @@ sub fromDB($)
 #### Keep these attributes in sync with OwnerConsole::Collector::Account::submit()
 
 sub schema()    { $_[0]->_data->{schema} }
+sub ownerId()   { $_[0]->userId }
 
 sub userId()    { $_[0]->_data->{userid} }
 sub email()     { $_[0]->_data->{email}  }

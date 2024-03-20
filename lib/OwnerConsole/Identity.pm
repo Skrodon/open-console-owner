@@ -49,9 +49,11 @@ sub create($%)
 # Keep these attributes in sync with the OwnerConsole/Controller/Identities.pm
 # method submit_identity()
 
+sub schema()     { $_[0]->_data->{schema} }
+sub ownerId()    { $_[0]->identityId }
+
 sub identityId() { $_[0]->_data->{identid} }
 sub userId()     { $_[0]->_data->{userid} }
-sub schema()     { $_[0]->_data->{schema} }
 
 sub role()       { $_[0]->_data->{role} }
 sub fullname()   { $_[0]->_data->{fullname} }
@@ -66,6 +68,12 @@ sub phone()      { $_[0]->_data->{phone} }
 sub link()       { '/dashboard/identity/' . $_[0]->identityId }
 
 sub nameInGroup() { $_[0]->fullname || $_[0]->nickname || $_[0]->role }
+
+#-------------
+=section Proofs
+=cut
+
+sub proofs() { $_[0]->{OI_proofs} ||= OwnerConsole::Proofs->new(owner => $_[0]) }
 
 #-------------
 =section Actions

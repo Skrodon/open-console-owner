@@ -37,10 +37,10 @@ has owner => sub { error "Requires owner" }, weak => 1;
 =section Ownership
 =cut
 
-sub ownedByPerson() { $_[0]->owner->isa('OwnerConsole::Account') }
-sub ownedByGroup()  { $_[0]->owner->isa('OwnerConsole::Group')   }
-
-sub ownerId()       { $_[0]->{OP_id} ||= $_[0]->ownedByPerson ? $_[0]->owner->userId : $_[0]->owner->groupId }
+sub ownerId()         { $_[0]->owner->ownerId }
+sub ownedByPerson()   { $_[0]->owner->isa('OwnerConsole::Account')  }
+sub ownedByIdentity() { $_[0]->owner->isa('OwnerConsole::Identity') }
+sub ownedByGroup()    { $_[0]->owner->isa('OwnerConsole::Group')    }
 
 #------------------
 =section Separate Proofs
