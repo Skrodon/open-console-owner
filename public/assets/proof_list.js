@@ -40,7 +40,8 @@ function activate_prooflist_sorter(form) {
 	$("TBODY", table).sortable({
 		helper: fixHelperModified,
 		update: function (e, ui) { reownMove($(this), e, ui) },
-		cancel: 'th,tr[data-editable="false"]'  // don't move group headers
+		cancel: 'th,tr[data-editable="false"]',  // don't move group headers
+		cursor: 'grabbing'
 	});
 
 	function reownMove(list, e, ui) {
