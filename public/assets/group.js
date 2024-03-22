@@ -32,6 +32,47 @@ console.log('change identity to ' + identid + " for group " + groupid);
 	}).trigger('change');
 }
 
+function activate_admin_change(form) {
+	//Get number of current admin in group by count fa-user-tie on row
+	var adminNum = $('.member-row .fa-solid.fa-user-tie').length;
+	console.log(adminNum);
+
+	$('.member-row').each(function() {
+	  var rights = $(this).find('.rights');
+  
+	  $(this).click(function() {
+		  var rightsInner = rights.html().trim();
+		  if (rightsInner == '') {
+			rights.html('<i class="fa-solid fa-user-tie" style="border: 2px solid blue;"></i>');
+			adminNum++;
+		  } else {
+			if (adminNum == 1) {
+			  oneAdminWarning();
+			  return;
+			} else {
+			  rights.html('');
+			  adminNum--;
+			}
+		  }
+		  changedWarning();
+	  });
+	});
+  
+	function changedWarning() {
+	  var changedText = $('.warning');
+	  changedText.text("Changes will only be applied when you save this form");
+	  changedText.removeAttr('hidden');
+	  changedText.css('color', 'red');
+	}
+  
+	function oneAdminWarning() {
+	  var changedText = $('.warning');
+	  changedText.text("There must be at least one admin in the group");
+	  changedText.removeAttr('hidden');
+	  changedText.css('color', 'red');
+	}
+}
+
 function activate_invitation_modal(modal, form) {
 	var id      = modal.attr('id');
 	var email   = modal.data('email');
@@ -78,6 +119,7 @@ function activate_invite_add(form) {
 
 function only_for_admins(form) {
 	if($('#is_group_admin', form).val()==1) {
+		activate_admin_change(form);
 		activate_delete_button(form);
 		activate_invite_add(form);
 	} else {
