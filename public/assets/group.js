@@ -35,7 +35,6 @@ console.log('change identity to ' + identid + " for group " + groupid);
 function activate_admin_change(form) {
 	//Get number of current admin in group by count fa-user-tie on row
 	var adminNum = $('.member-row .fa-solid.fa-user-tie').length;
-	console.log(adminNum);
 
 	$('.member-row').each(function() {
 	  var rights = $(this).find('.rights');
