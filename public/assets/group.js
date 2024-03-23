@@ -58,15 +58,13 @@ function activate_admin_change(form) {
 	});
   
 	function changedWarning() {
-	  var changedText = $('.warning');
-	  changedText.text("Changes will only be applied when you save this form");
+	  var changedText = $('.changed-warning');
 	  changedText.removeAttr('hidden');
 	  changedText.css('color', 'red');
 	}
   
 	function oneAdminWarning() {
-	  var changedText = $('.warning');
-	  changedText.text("There must be at least one admin in the group");
+	  var changedText = $('.last-admin-waring');
 	  changedText.removeAttr('hidden');
 	  changedText.css('color', 'red');
 	}
