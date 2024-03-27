@@ -83,8 +83,8 @@ sub remove()
 {	my $self = shift;
 
 	my $id   = $self->identityId;
+	$::app->batch->removeEmailsRelatedTo($self->identityId);
 	$::app->users->removeIdentity($self);
-	$::app->emails->removeOutgoingRelatedTo($self->identityId);
 	$self->account->removeIdentity($self);
 }
 

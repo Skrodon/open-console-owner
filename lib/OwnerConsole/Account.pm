@@ -267,7 +267,7 @@ sub proof($$)
 sub remove()
 {	my $self = shift;
     $_->remove for $self->groups, $self->identities;
-    $::app->emails->removeOutgoingRelatedTo($self->accountId);
+    $::app->batch->removeEmailsRelatedTo($self->accountId);
 }
 
 sub save(%)

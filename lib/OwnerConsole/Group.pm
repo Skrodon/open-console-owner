@@ -259,7 +259,7 @@ sub proofs() { $_[0]->{OG_proofs} ||= OwnerConsole::Proofs->new(owner => $_[0]) 
 
 sub remove()
 {	my $self = shift;
-	$::app->emails->removeOutgoingRelatedTo($self->accountId);
+	$::app->batch->removeEmailsRelatedTo($self->accountId);
 #XXX Check ownerships which have to be reassigned
 }
 

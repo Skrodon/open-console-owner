@@ -79,7 +79,7 @@ sub configGroup()
 
 	if($how eq 'delete') {
 		$::app->users->removeGroup($group);
-		$::app->emails->removeOutgoingRelatedTo($group->groupId);
+		$::app->batch->removeEmailsRelatedTo($group->groupId);
 
 		$account->removeGroup($group);
 		$account->save;
