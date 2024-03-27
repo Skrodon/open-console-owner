@@ -23,9 +23,11 @@ WriteMakefile
 	'Minion::Backend::Mango' => 1.02,
 	'Mojolicious'            => 9.35,
 	'Mojolicious::Plugin::CSRFProtect' => 0.16,
-	'Net::LibIDN'            => 0.12,
+	'Net::LibIDN2'           => 0.12,
 	'Session::Token'         => 1.503,
 
+	'Net::DNS'               => 1.44,
+	'Net::DNS::SEC'          => 1.23,
    }
  , EXE_FILES    => []
  , AUTHOR       => 'Open Console <team@open-console.eu>'

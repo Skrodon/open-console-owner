@@ -4,7 +4,7 @@
 package OwnerConsole::AjaxSession;
 use Mojo::Base -base;
 
-use Log::Report 'open-console-owner';
+use Log::Report 'open-console-owner', import => qw/__x/;
 
 use Scalar::Util       qw(blessed);
 
@@ -19,7 +19,7 @@ use OwnerConsole::Util qw(val_line);
 
 =cut
 
-has _data => sub {  +{ warnings => [], errors => [], notifications => [], internal_errors => [] } };
+has _data => sub {  +{ warnings => [], errors => [], notifications => [], internal_errors => [], trace => [] } };
 
 has controller => sub { ... };
 has account    => sub { $_[0]->controller->account };
@@ -113,6 +113,30 @@ sub hasInternalErrors() { scalar @{$_[0]->_data->{internal_errors}} }
 sub isHappy() { ! $_[0]->hasErrors && ! $_[0]->hasInternalErrors }
 
 #------------------
+=section Trace
+=cut
+
+# Trace messages are not translated.
+sub _trace($) { push @{$_[0]->_data->{trace}}, [ time, $_[1] ] }
+
+sub showTrace($%)
+{	my ($self, $account, %args) = @_;
+	my @trace = @{$self->_data->{trace}};
+	@trace or return [];
+
+	my @lines;
+	my $first = shift @trace;
+	my $start = DateTime->from_epoch(epoch => $first->[0]);
+	$start->set_time_zone($account->timezone) if $account;
+
+	push @lines, [ $start->stringify, $first->[1] ];
+	push @lines, [ (sprintf "+%ds", $_->[0] - $first->[0]), $_->[1] ]
+		for @trace;
+
+	\@lines;
+}
+
+#------------------
 =section Generic code for Objects
 =cut
 
@@ -160,5 +184,6 @@ sub reply()
 {	my $self = shift;
 	$self->controller->render(json => $self->_data);
 }
+
 
 1;
