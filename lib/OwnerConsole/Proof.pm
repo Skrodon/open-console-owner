@@ -55,7 +55,8 @@ sub algo()    { ... }
 sub sort()    { ... }
 sub _score()  { ... }
 
-sub score()   { $_[0]->{OP_score} //= $_[0]->status eq 'proven' ? $_[0]->_score : 0 }
+sub schema()     { $_[0]->_data->{schema} }
+sub score()      { $_[0]->{OP_score} //= $_[0]->status eq 'proven' ? $_[0]->_score : 0 }
 
 # Keep these attributes in sync with the OwnerConsole/Controller/Proof.pm
 # method submit_group()
@@ -64,7 +65,7 @@ sub isNew()      { $_[0]->proofId eq 'new' }
 sub proofId()    { $_[0]->_data->{proofid} }
 sub ownerId()    { $_[0]->_data->{ownerid} }
 sub ownerClass() { $_[0]->_data->{ownerclass} }
-sub schema()     { $_[0]->_data->{schema} }
+sub prover()     { $_[0]->_data->{prover} }
 sub algorithm()  { $_[0]->_data->{algorithm} }
 sub status()     { $_[0]->_data->{status} }
 

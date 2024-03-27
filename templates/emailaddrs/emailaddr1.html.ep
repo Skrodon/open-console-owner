@@ -44,9 +44,6 @@
 <p>You can prove the ownership of a personal email address, but it might also be
 the address in use by one of your groups.</p>
 
-<p>When you are the owner or administrator of the owning group, then you can move
-the proof to yourself or one of your groups.</p>
-
 <p><b>Sub-addressing</b> is the commonly supported feature to extend your email name
 with "+<something>" per use.  For instance, "<code>me+oc@example.com</code>" where
 "<code>+oc</code>" can be used to filter and select folders.  See

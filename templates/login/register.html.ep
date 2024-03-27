@@ -34,7 +34,7 @@
             <span class="input-group-text">
               <i class="fas fa-lock" aria-hidden="true"></i>
             </span>
-            <input name="password" type="password" value="" class="form-control" id="password" placeholder="Enter a new password" required="true">
+            <input name="password" type="password" value="" class="form-control" id="password" placeholder="Enter a new password" required>
             <span class="input-group-text">
               <i class="fa-solid fa-eye eye_toggle" aria-hidden="true"></i>
             </span>

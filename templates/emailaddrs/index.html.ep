@@ -13,9 +13,14 @@
 
 <form class="proof-list" id="config-emailaddr">
 % my $show = sub { my $e = $_[0]->email; $e =~ s!\@!(+)\@! if $_[0]->supportsSubAddressing; $e };
-%= include 'proofs/_proof_list', set => 'emailaddrs', element => 'emailaddr', show => $show, show_column => "Email address", add_text => "Add an email address proof";  #XXX translate
+%= include 'proofs/_proof_list', set => 'emailaddrs', element => 'emailaddr', show => $show, show_column => "Email address";  #XXX translate
 </form>
 
+        </div>
+        <div class="card-body">
+          <h5>New email address proof</h5>
+          <a href="/dashboard/emailaddr/new?prover=email" class="btn btn-primary" role="button" %>
+          <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> via email</a>
         </div>
       </div>
     </div>

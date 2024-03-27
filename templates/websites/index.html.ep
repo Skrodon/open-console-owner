@@ -12,9 +12,18 @@
 
 <form class="proof-list" id="config-website">
 % my $show = sub { $_[0]->urlUnicode };
-%= include 'proofs/_proof_list', set => 'websites', element => 'website', show => $show, show_column => "Website", add_text => 'Add a website proof';  #XXX translate
+%= include 'proofs/_proof_list', set => 'websites', element => 'website', show => $show, show_column => "Website";  #XXX translate
 </form>
 
+        </div>
+        <div class="card-body">
+           <h5>New website proof</h5>
+           <a href="/dashboard/website/new?prover=dns" class="btn btn-primary" role="button" %>
+           <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> via DNS</a>
+           <a href="/dashboard/website/new?prover=html" class="btn btn-primary" role="button" %>
+           <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> in HTML</a>
+           <a href="/dashboard/website/new?prover=file" class="btn btn-primary" role="button" %>
+           <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> add File</a>
         </div>
       </div>
     </div>
@@ -27,9 +36,10 @@
 <p>More and more services require a website ownership proof, in their
 fight against abuse.</p>
 
-<p>Over time, different practices have emerged to proof ownership:
-via DNS, inside HTML, or as a separate file.  Not all may be available
-to you.</p>
+<p>Over time, different practices have emerged to proof ownership: add a
+record in <b>DNS</b>, add a line into the <b>HTML</b> of your front-page,
+or publish a separate text <b>file</b> in your site.  Not all options
+may be available to you.</p>
 
         </div>
       </div>
