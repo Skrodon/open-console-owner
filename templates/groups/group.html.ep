@@ -179,7 +179,8 @@
           % }
       </tbody>
     </table>
-    <p class="warning" hidden></p>
+    <p class="changed-warning" hidden>Changes will only be applied when you save this form</p>
+    <p class="last-admin-waring" hidden>There must be at least one admin in the group</p>
 </div>
 
 % end

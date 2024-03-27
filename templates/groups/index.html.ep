@@ -2,6 +2,7 @@
 % title 'Overview of configured identity Groups';
 
 % my $account    = $self->account;
+% my $email      = $account->email;
 % my @identities = sort { $a->role cmp $b->role } $account->identities;
 
 <script src="/assets/group.js"></script>
@@ -10,7 +11,7 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-sm-7">
+    <div class="col-sm-8">
       <div class="card" id="identities_card">
         <h5 class="card-header">Your group memberships</h5>
         <div class="card-body">
@@ -25,7 +26,9 @@
         <th>Remove from group</th></tr>
   </thead>
   <tbody>
+% my $seq = 'remove000';
 %   foreach my $group ($account->groups) {
+%    $seq++;
 
     <tr><td><%= $group->name %></td>
         <td>
@@ -45,10 +48,40 @@
 %      }
     </select>
         </td><td>
-        <button id="self_remove" class="btn btn-danger">Remove me
-          <i class="fa fa-skull" aria-hidden="true"></i>
-        </button>
+        <a href="#" for="<%= $seq %>">
+          <button class="btn btn-danger">Remove me
+            <i class="fa fa-skull" aria-hidden="true"></i>
+          </button>
+        </a>
         </td></tr>
+
+  <div class="mangage-self-remove modal" id="<%= $seq %>" data-email="<%= $email %>" data-isadmin="<%= $group->memberIsAdmin($account) %>" data-groupid="<%= $group->groupId %>" data-membernum="<%= $group->allMembers %>" data-adminnum="<%= $group->nrAdmins %>">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" style="color: black">Confirmation</h4>
+        </div>
+        <div class="modal-body" style="color: black">
+          <p class="last-admin" style="display: none;">
+            You are the last admin of this group. <br>
+            Removal is not allowed when you are the last admin of a group.
+          </p>
+          <p class="normal" style="display: none;">
+            Are you sure you want to remove yourself from this group? <br> 
+            You will lose contact with your group.
+          </p>
+          <p class="last-member" style="display: none;">
+            You are the last member of this group. <br> 
+            Please delete your group at Edit/Delete -> Delete this group.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button id="cancel" type="button" class="btn btn-secondary">Cancel</button>
+          <button id="confirm_remove" type="button" class="btn btn-danger">Remove me</button>
+        </div>
+      </div>
+    </div>
+  </div>
 %   }
 % } else {
     <tr><td colspan="100%"><div class="alert alert-warning" role="alert">
@@ -64,21 +97,23 @@
 </form>
 
         </div>
+        </div>
       </div>
-    </div>
 
-    <div class="col-sm-5">
-      <div class="card id="group_explain">
+    
+
+    <div class="col-sm-4">
+      <div class="card" id="group_explain">
         <h5 class="card-header">Manage Group Identities</h5>
         <div class="card-body">
 
 <p>You may need to organize your activities as part of an organization,
 a company, or any other <strong>group of people</strong>.  Therefore, you
-can create Group identities, where you can specify such cooperation.</p>
+can create Group identities, whmoere you can specify such cooperation.</p>
 
         </div>
       </div>
     </div>
-
+    </div>
   </div>
 </div>
