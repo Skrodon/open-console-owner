@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: EUPL-1.2-or-later
 
 package OwnerConsole::Controller::Login;
-use Mojo::Base 'Mojolicious::Controller';
+use Mojo::Base 'OwnerConsole::Controller';
 
 use Log::Report 'open-console-owner';
 
@@ -27,7 +27,7 @@ sub tryLogin()
 	my $email    = val_line($self->param('email'));
 	my $password = val_line($self->param('password'));
 
-	my $account = $self->users->accountByEmail($email);
+	my $account = $::app->users->accountByEmail($email);
 	unless(defined $account && $account->correctPassword($password))
 	{	$self->notify(error => __x"Invalid login, please try again.");
 		return $self->index;
@@ -166,7 +166,7 @@ sub tryRegister()
 		return $self->register;
 	}
 
-	if($self->users->accountByEmail($email))
+	if($::app->users->accountByEmail($email))
 	{	$self->notify(error => __x"Username already exist. Please start the password-reset procedure.");
 		return $self->register;
 	}
@@ -174,7 +174,7 @@ sub tryRegister()
 	my $account = OwnerConsole::Account->create({
 		email    => $email,
 		password => $password,
-		iflang   => $self->language,
+		iflang   => $self->detectLanguage,
 	});
 	$account->save;
 

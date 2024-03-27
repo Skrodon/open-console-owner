@@ -84,4 +84,11 @@
 		server => 'mongodb://localhost:27017',
 		dbname => 'batch',
 	},
+
+	#### Batch processing
+	#    Minion is the batch processing framework.
+	minion => {
+		server => 'mongodb://localhost:27017',
+		# Other options provided by Mojolicious::Backend::Minion
+	},
 }

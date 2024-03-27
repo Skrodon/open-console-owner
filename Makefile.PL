@@ -10,6 +10,7 @@ WriteMakefile
  , VERSION  => '0.01'
 
  , PREREQ_PM    => { 
+	# Common purpose modules
 	'Crypt::PBKDF2'          => 0,
 	'Data::Dumper'           => 0,
 	'DateTime'               => 1.50,
@@ -18,16 +19,18 @@ WriteMakefile
 	'List::Util'             => 0,
 	'Log::Report'            => 0,
 	'Mail::Message'          => 3.00,
+	'Net::DNS'               => 1.44,
+	'Net::DNS::SEC'          => 1.23,
+	'Net::LibIDN2'           => 0.12,
+	'Session::Token'         => 1.503,
+
+	# Website and database framwork
 	'Mango'                  => 0,
 	'Minion'                 => 10.28,
 	'Minion::Backend::Mango' => 1.02,
 	'Mojolicious'            => 9.35,
 	'Mojolicious::Plugin::CSRFProtect' => 0.16,
-	'Net::LibIDN2'           => 0.12,
-	'Session::Token'         => 1.503,
-
-	'Net::DNS'               => 1.44,
-	'Net::DNS::SEC'          => 1.23,
+	'Mojolicious::Plugin::Minion'      => 0,    # expected to be part of Minion
    }
  , EXE_FILES    => []
  , AUTHOR       => 'Open Console <team@open-console.eu>'

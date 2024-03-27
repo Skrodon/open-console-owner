@@ -18,7 +18,7 @@
       </div>
       <form class="d-flex" method="GET" action="/set" >
         <select name="language" class="form-select" onChange="submit()">
-%= include 'shared/_iflanguage', iflang => $c->language;
+%= include 'shared/_iflanguage', iflang => $c->detectLanguage;
         </select>
       </form>
       <div class="nav-item text-nowrap">

@@ -4,8 +4,12 @@
 package OwnerConsole;
 use Mojo::Base 'Mojolicious';
 
-use Mango;
+use Log::Report 'open-console-owner';
+
 use feature 'state';
+
+use Mango;
+use Minion::Backend::Mango      ();
 
 use List::Util  qw(first);
 
@@ -16,49 +20,75 @@ use OwnerConsole::Model::Proofs ();
 
 use OwnerConsole::Tables qw(language_name);
 
-use Log::Report 'open-console-owner';
-
-my (%dbconfig, %dbservers);
+my (%dbconfig, %_dbservers);
 my @databases = qw/userdb batchdb proofdb/;
 
-sub dbserver($)  # server connections shared, when databases on same server
-{	my $server = $_[1] || 'mongodb://localhost:27017';
-	$dbservers{$server} ||= Mango->new($server);
+use constant
+{	MONGODB_CONNECT => 'mongodb://localhost:27017',
+};
+
+=chapter NAME
+
+OwnerConsole - Open Console Owner's Website
+
+=chapter SYNOPSIS
+
+  morbo script/owner_console &
+
+=chapter DESCRIPTION
+
+=chapter METHODS
+
+=section Constructors
+Standard M<Mojo::Base> constructors.
+
+=section Databases
+The application may configure different MongoDB databases (clusters), for different
+characteristics of tasks.
+
+=method users
+The C<users> database (M<OwnerConsole::Model::Users>), contains generic user and group
+information.  It is important data, and inconsistencies in the administration shall not
+happen at any cost.
+
+=method batch
+The C<batch> database (M<OwnerConsole::Model::Batch>) contains run-time
+information, which is localized to a single instance of the Open Console
+website.  It also contains the Minion administration.
+
+Run this on that instance itself for performance.  The data is not important enough
+for expensive protection.
+
+=method proofs
+The C<proofs> database (M<OwnerConsole::Model::Proofs>) contains the proof
+and contract administration.  Less important than the C<users> database information.
+=cut
+
+sub _dbserver($)  # server connections shared, when databases on same server
+{	my $server = $_[1] || MONGODB_CONNECT;
+	$_dbservers{$server} ||= Mango->new($server);
 }
 
 sub users()
-{	my $config = $dbconfig{userdb};
-	state $u   = OwnerConsole::Model::Users->new(db => $_[0]->dbserver($config->{server})->db($config->{dbname}))->upgrade;
+{	my $self   = shift;
+	my $config = $dbconfig{userdb};
+	state $u   = OwnerConsole::Model::Users->new(db => $self->_dbserver($config->{server})->db($config->{dbname}))->upgrade;
 }
 
 sub batch()
-{	my $config = $dbconfig{batchdb};
-	state $e   = OwnerConsole::Model::Batch->new(db => $_[0]->dbserver($config->{server})->db($config->{dbname}))->upgrade;
+{	my $self   = shift;
+	my $config = $dbconfig{batchdb};
+	state $e   = OwnerConsole::Model::Batch->new(db => $self->_dbserver($config->{server})->db($config->{dbname}))->upgrade;
 }
 
 sub proofs()
-{	my $config = $dbconfig{proofdb};
-	state $p   = OwnerConsole::Model::Proofs->new(db => $_[0]->dbserver($config->{server})->db($config->{dbname}))->upgrade;
+{	my $self   = shift;
+	my $config = $dbconfig{proofdb};
+	state $p   = OwnerConsole::Model::Proofs->new(db => $self->_dbserver($config->{server})->db($config->{dbname}))->upgrade;
 }
 
-sub _detectLanguage($$)
-{	my ($self, $c, $accepted, $default) = @_;
-	if(my $if = $c->session('iflang')) { return $if }
-
-	my @wants = $c->browser_languages;
-	my $code  = first { exists $accepted->{$_} } @wants;
-
-	unless($code)
-	{	my @langs = map language_name($_), @wants;
-#XXX notify is not shows
-		$c->notify(warning => __x("None of the languages configured in your browser ({langs}) is supported for the Open Console interface at the moment.", langs => \@langs));
-		$code = $default;
-	}
-
-	$c->session(iflang => $code);
-	$code;
-}
-
+#----------------
+=section Other
 
 =method isAdmin $account
 =cut
@@ -84,19 +114,14 @@ sub startup
 	$self->plugin('BootstrapAlerts');
 	$self->plugin('I18NUtils');
 
-#	my $minion  = $config->{batch} or panic "Config for batch missing";
-#	$minion->{backend} = Minion::Backend::Mango->new(delete $minion->{server});
-#	$minion->{prefix}  = delete $minion->{dbname} || 'batch';
-#	$self->plugin(Minion => $minion);
-
-#	$self->plugin(Minion => { Mango => $minion->{server} });
-#	$self->plugin(Minion::Admin => { });   # under /minion
-
 	$dbconfig{$_} = $config->{$_} for @databases;
 
-	$self->helper(dbserver => \&dbserver);
-	$self->helper(users    => \&users);
-#$self->users->db->collection('accounts')->remove({});  #XXX hack clean whole accounts table
+	my $minion  = $config->{minion} || {};
+	my $minion_server = delete $minion->{server} || MONGODB_CONNECT;
+	$self->plugin(Minion => { Mango => $minion_server });
+#	$self->plugin(Minion::Admin => { });   # under /minion
+
+#$::app->users->db->collection('accounts')->remove({});  #XXX hack clean whole accounts table
 
 	# 'user' is the logged-in user, the admin can select to show a different 'account'
 	$self->helper(user      => sub {
@@ -119,10 +144,6 @@ sub startup
 		}
 		$account;
 	});
-
-	my $iflangs = $config->{interface_languages};
-	my %langs   = map +($_ => 1), @$iflangs;
-	$self->helper(language    => sub { $self->_detectLanguage($_[0], \%langs, $iflangs->[0]) });
 
 	# Run at start of each fork
 	srand;

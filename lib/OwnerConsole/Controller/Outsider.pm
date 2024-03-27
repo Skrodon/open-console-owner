@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: EUPL-1.2-or-later
 
 package OwnerConsole::Controller::Outsider;
-use Mojo::Base 'Mojolicious::Controller';
+use Mojo::Base 'OwnerConsole::Controller';
 
 sub frontpage()
 {	my $self = shift;

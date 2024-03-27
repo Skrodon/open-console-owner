@@ -6,6 +6,8 @@ use Mojo::Base 'Mojolicious::Controller';
 
 use Log::Report 'open-console-owner';
 
+use List::Util    qw(first);
+
 use OwnerConsole::AjaxSession ();
 
 sub ajaxSession(%)
@@ -92,6 +94,29 @@ sub challenge()
 	}
 
 	$self->$handler($account, $challenge);
+}
+
+my ($iflangs, $langs);
+sub detectLanguage()
+{	my $self  = shift;
+	if(my $if = $self->session('iflang')) { return $if }
+
+    $iflangs ||= $self->config->{interface_languages};
+warn "IFLANGS=@$iflangs";
+    $langs   ||= +{ map +($_ => 1), @$iflangs };
+
+	my @wants = $self->browser_languages;
+	my $code  = first { exists $langs->{$_} } @wants;
+
+	unless($code)
+	{	my @langs = map language_name($_), @wants;
+#XXX notify is not shows
+		$self->notify(warning => __x("None of the languages configured in your browser ({langs}) is supported for the Open Console interface at the moment.", langs => \@langs));
+		$code = $iflangs->[0];
+	}
+
+	$self->session(iflang => $code);
+	$code;
 }
 
 1;
