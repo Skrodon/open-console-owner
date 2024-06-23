@@ -8,7 +8,7 @@ use Log::Report 'open-console-owner';
 
 use Lingua::EN::Numbers qw(num2en);
 
-use OwnerConsole::Util  qw(val_line is_valid_email new_token);
+use OpenConsole::Util   qw(val_line is_valid_email new_token);
 use OwnerConsole::Email ();
 
 ###### Login
@@ -171,7 +171,7 @@ sub tryRegister()
 		return $self->register;
 	}
 
-	my $account = OwnerConsole::Account->create({
+	my $account = OpenConsole::Account->create({
 		email    => $email,
 		password => $password,
 		iflang   => $self->detectLanguage,

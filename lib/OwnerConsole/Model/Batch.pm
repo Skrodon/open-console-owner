@@ -8,6 +8,7 @@ use Mango::BSON ':bson';
 
 use OwnerConsole::Email         ();
 use OwnerConsole::Group::Invite ();
+use OwnerConsole::Challenge      ();
 
 =section DESCRIPTION
 Collections which are located in this database do rapidly change, which makes
@@ -18,13 +19,15 @@ collections:
 =over 4
 =item * 'emails': outgoing emails
 =item * 'invites': group invites
+=item * 'challenges': state machine for challenges
 =back
 
 =cut
 
-has db      => undef;
-has emails  => sub { $_[0]->{OMB_emails}  ||= $_[0]->db->collection('emails')};
-has invites => sub { $_[0]->{OMB_invites} ||= $_[0]->db->collection('invites')};
+has db         => undef;
+has emails     => sub { $_[0]->{OMB_emails}  ||= $_[0]->db->collection('emails')};
+has invites    => sub { $_[0]->{OMB_invites} ||= $_[0]->db->collection('invites')};
+has challenges => sub { $_[0]->{OMB_chall}   ||= $_[0]->db->collection('challenges')};
 
 sub upgrade
 {	my $self = shift;
@@ -44,6 +47,10 @@ sub upgrade
 	$self->invites->ensure_index({ token => 1 }, { unique => bson_true });
 	my $autoclean = $::app->config('groups')->{cleanup_invitation} || 30;
 	$self->invites->ensure_index({ expires => 1 }, { expireAfterSeconds => int($autoclean * 86400) } );
+
+    $self->challenges->ensure_index({ token => 1 }, { unique => bson_true  });
+    my $expire_challenges = $::app->config('proofs')->{expire_challenge} || 30;  # days
+    $self->challenges->ensure_index({ changed => 1 }, { expireAfterSeconds => int($expire_challenges * 86400) });
 
 	$self;
 }
@@ -127,6 +134,26 @@ sub invite($)
 {	my ($self, $token) = @_;
 	my $data = $token ? $self->invites->find_one({token => $token}) : undef;
 	$data ? OwnerConsole::Group::Invite->fromDB($data) : undef;
+}
+
+#---------------------
+=section Challenges
+
+The challenges table hides internal states and ids from the outside, by only
+showing a token.
+=cut
+
+sub saveChallenge($)
+{	my ($self, $challenge) = @_;
+	$self->challenges->save($challenge->toDB);
+}
+
+sub challenge($)
+{	my ($self, $token) = @_;
+	my $data = $self->challenges->find_one({token => $token})
+		or return;
+
+	OwnerConsole::Challenge->fromDB($data);
 }
 
 1;

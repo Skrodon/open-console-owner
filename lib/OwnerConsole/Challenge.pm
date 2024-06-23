@@ -2,20 +2,19 @@
 # SPDX-License-Identifier: EUPL-1.2-or-later
 
 package OwnerConsole::Challenge;
-use Mojo::Base 'OwnerConsole::Mango::Object';
+use Mojo::Base 'OpenConsole::Mango::Object';
 
 use Log::Report 'open-console-owner';
 
 use Mango::BSON::Time   ();
 
-use OwnerConsole::Util  qw(new_token);
+use OpenConsole::Util  qw(new_token);
 
 use constant
 {	CHALLENGE_SCHEMA => '20240216',
 };
 
 =chapter DESCRIPTION
-Base class for all kinds of proofs of ownership.
 
 =chapter METHODS
 =section Constructors
@@ -78,7 +77,7 @@ sub link()       { '/challenge/' . $_[0]->token }
 sub save(%)
 {   my ($self, %args) = @_;
 	$self->_data->{changed} = Mango::BSON::Time->new;
-    $::app->proofs->saveChallenge($self);
+    $::app->batch->saveChallenge($self);
 }
 
 sub close()

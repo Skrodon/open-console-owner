@@ -1,5 +1,5 @@
 % layout 'dashboard';
-% title 'Create/update website proof, type 1';
+% title 'Create website proof';
 
 % my $is_new  = $proof->proofId eq 'new';
 % $c->notify(error => 'Development of this kind of proofs is underway.');
@@ -9,17 +9,31 @@
 
 <style>TABLE { margin: 10px 20px } </style>
 
+%# https://имена.бг
 % my @pages;
 % my $location_form = begin
 
   <div>
     <label for="url" class="form-label">Website address</label>
-    <input name="url" type="text" id="url" class="form-control" value="https://имена.бг" placeholder="https://example.com/~user"
+    <input name="url" type="text" id="url" class="form-control" placeholder="https://example.com/~user"
       aria-describedby="url_explain" required value="<%= $proof->url %>"
       <%= $is_new ? '' : 'disabled' %>
     />
-    <div id="url_explain" class="form-text">Your own or your group's website address.</div>
-    <div class="val-error">This website is not canonical.</div>
+    <div id="url_explain" class="form-text">One of your own or your group's website addresses.</div>
+  </div>
+
+  &nbsp;<br />
+
+  <div class="verify-block" id="check-url">
+    <div class="d-flex">
+      <button type="button" class="btn btn-success verify-button" id="check-url-button">Check</button>
+      <i class="fa-solid fa-check    verify-success"  id="check-url-success"  aria-hidden="true"></i>
+      <i class="fa-solid fa-asterisk verify-required" id="check-url-required" aria-hidden="true"></i>
+      <div class="spinner-border     verify-waiting"  id="check-url-wait"     aria-hidden="true"></div>
+    </div>
+    <div class="alert alert-warning verify-required">Check the validity of your website url before continuing.</div>
+    <div class="alert alert-info    verify-waiting">Checking may take some time.  Please be patient.</div>
+    <div class="alert alert-success verify-success">This website address looks valid.</div>
   </div>
 
   <table>
@@ -31,39 +45,21 @@
   <tr><td>Certificate&nbsp;</td><td>failed</td></tr>
   </table>
 
-  <div>
-    <label for="provers" class="form-label">Prove ownership using</label>
-    <div class="form-check">
-      <input name="prover" value="dns" class="form-check-input" type="radio" id="prover-dns"
-       <%= $prover eq 'dns' ? 'checked' : '' %>>
-      <label class="form-check-label" for="prover-dns">Prove by adding record in DNS.</label>
-    </div>
-    <div class="form-check">
-      <input name="prover" value="index" class="form-check-input" type="radio" id="prover-html"
-       <%= $prover eq 'dns' ? 'checked' : '' %>>
-      <label class="form-check-label" for="prover-html">Prove by putting token in a webpage.</label>
-    </div>
-    <div class="form-check">
-      <input name="prover" value="file" class="form-check-input" type="radio" id="prover-file"
-       <%= $prover eq 'dns' ? 'checked' : '' %>>
-      <label class="form-check-label" for="prover-file">Prove by adding a file to your website.</label>
-    </div>
-  </div>
 % end
 
 % my $location_explain = begin
 
 <p>You can proof the ownership of a website.  As URL, you can use IDN
-(<a href="https://en.wikipedia.org/wiki/Internationalized_domain_name">Internatialized Domain Names</a>)</p>
+(<a href="https://en.wikipedia.org/wiki/Internationalized_domain_name">Internationalized Domain Names</a>)</p>
 
-<p>The <b>Website address</b> must be "canonical", which means that it does not redirect you to
+<p>The <b>Website address</b> must be "canonical", which means that it does not redirect to
 another website and matches the '&lt;link rel="canonical"&gt;' in the page (if present).</p>
 
 % end
 
 % push @pages, [
 %    'website-location',
-%    'Location',
+%    'Website',
 %    $location_form,
 %    $location_explain,
 % ];
@@ -179,7 +175,7 @@ root directory of you website, containing the following:</p>
 <script src="/assets/config_form.js"></script>
 <script src="/assets/proof_website.js"></script>
 
-<form id="proof-website" class="config-form">
+<form id="config-website" class="config-form">
   <input id="identifier" type="hidden" value="<%= $proof->proofId %>" />
 
   <h1><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Website proof</h1>

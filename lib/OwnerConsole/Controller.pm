@@ -8,11 +8,11 @@ use Log::Report 'open-console-owner';
 
 use List::Util    qw(first);
 
-use OwnerConsole::AjaxSession ();
+use OwnerConsole::Session::Ajax ();
 
 sub ajaxSession(%)
 {	my ($self, %args) = @_;
-	OwnerConsole::AjaxSession->new(controller => $self, %args);
+	OwnerConsole::Session::Ajax->new(controller => $self, %args);
 }
 
 #-------------
@@ -26,15 +26,29 @@ sub acceptFormData($$$)
 		$self->$handler($session, $object);
 	};
 
-	$session->notify(error => $_->message->toString)
-		for $@->exceptions;
-
+	$session->notify(error => $_) for $@->exceptions;
 	$self;
 }
 
 sub acceptObject($$)
 {	my ($self, $session, $proof) = @_;
 	$self;
+}
+
+sub openObject($$$$)
+{	my ($self, $session, $objclass, $idlabel, $get) = @_;
+	my $objid = $session->about($idlabel) or panic $idlabel;
+
+	return $objclass->create($self->account)
+		if $objid eq 'new';
+
+	my $object = $get->($objid);
+	unless($object)
+	{	$session->internalError(__x"The object has disappeared.");
+		return undef;
+	}
+
+	$object;
 }
 
 #-------------
@@ -44,6 +58,25 @@ sub acceptObject($$)
 sub acceptProof($$)
 {	my ($self, $session, $proof) = @_;
 	$self;
+}
+
+sub openProof($$)
+{	my ($self, $session, $objclass) = @_;
+	my $proofid = $session->about('proofid');
+
+  	if($proofid eq 'new')
+	{	trace "Create new $objclass proof";
+		return $objclass->create({ owner => $self->account })
+	}
+
+	my $proof = $self->account->proof($objclass->set, $proofid);
+	unless($proof)
+	{	info "Proof $proofid of type $objclass has disappeared.";
+	$session->internalError(__x"Proof has disappeared.");
+		return undef;
+	}
+
+	$proof;
 }
 
 #-------------
@@ -95,6 +128,38 @@ sub challenge()
 
 	$self->$handler($account, $challenge);
 }
+
+#-------------
+=section Running tasks
+
+=method startTask $session, $taskname, \%params, %options;
+=cut
+
+sub startTask($$$%)
+{	my ($self, $session, $taskname, $params, %args) = @_;
+	$params->{lang} ||= $session->lang;
+	my ($jobid, $state) = $::app->tasks->$taskname($session, $params);
+warn "Started task $taskname in $jobid\n";
+
+	if(my $poll = delete $args{poll})
+	{	$session->pollFor($poll, $jobid);
+	}
+
+	$jobid;
+}
+
+sub taskEnded($%)
+{	my ($self, $session, %args) = @_;
+	$session->stopPolling;
+}
+
+#-------------
+=section Other
+
+=method detectLanguage
+Returns the preferred interface language for a user, based on its previous
+choice.  Defaults from the user's browser settings.
+=cut
 
 my ($iflangs, $langs);
 sub detectLanguage()

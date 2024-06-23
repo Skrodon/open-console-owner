@@ -129,8 +129,10 @@ function cancel_without_saving(form) {
 	$('#cancel-confirm', modal).on('click', function () { modal.hide(); window.location.href = '/dashboard/' });
 };
 
-function accept_form_data(form, how, success) {
-	var data = form.serialize();
+function accept_form_data(form, how, param, success) {
+	var data   = form.serialize();
+	if(param) { data += '&' + $.param(param) }
+
 	var action = '/dashboard/' + form.attr('id') + '/' + $('#identifier', form).val() + '?' + how;
 
 	$.ajax({
@@ -141,6 +143,7 @@ function accept_form_data(form, how, success) {
 		success: function (response) {
  			process_errors_and_warnings(form, response);
 			update_form_status(form);
+			if(success) { success(form, response) }
 			if(response.redirect) { window.location = response.redirect }
 		},
 		error: function (response) {
@@ -166,8 +169,7 @@ function save_validated_form(form) {
 			// missing before real validation, to have less work on the server
 			update_form_status(form);
 		} else {
-			accept_form_data(form, 'save', function () {
-				
+			accept_form_data(form, 'save', undefined, function () {
 			});
 		}
 	});

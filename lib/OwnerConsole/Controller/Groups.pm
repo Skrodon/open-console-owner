@@ -6,7 +6,10 @@ use Mojo::Base 'OwnerConsole::Controller';
 
 use Log::Report 'open-console-owner';
 
-use OwnerConsole::Util   qw(:validate);
+use OpenConsole::Util    qw(:validate);
+use OpenConsole::Group   ();
+
+use OwnerConsole::Tables qw(:is_valid);
 use OwnerConsole::Email  ();
 
 sub index($)
@@ -19,11 +22,11 @@ sub group($)
 	my $groupid  = $self->param('groupid');
 
 	my $account  = $self->account;
-	my $group = $groupid eq 'new' ? OwnerConsole::Group->create($account) : $account->group($groupid);
+	my $group = $groupid eq 'new' ? OpenConsole::Group->create($account) : $account->group($groupid);
     $self->render(template => 'groups/group', group => $group);
 }
 
-### Keep this logic in sync with OwnerConsole::Group attributes
+### Keep this logic in sync with OpenConsole::Group attributes
 
 sub _acceptGroup($$)
 {	my ($self, $session, $group) = @_;
@@ -70,7 +73,7 @@ sub configGroup()
 	my $how      = $session->query || 'validate';
 
 	my $account  = $self->account;
-	my $group    = $session->openObject('OwnerConsole::Group', groupid => sub { $account->group($_[0]) })
+	my $group    = $self->openObject($session, 'OpenConsole::Group', groupid => sub { $account->group($_[0]) })
 		or error __x"Group has disappeared.";
 
 	my $is_new   = $group->groupId eq 'new';

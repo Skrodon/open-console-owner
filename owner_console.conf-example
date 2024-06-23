@@ -88,7 +88,7 @@
 	#### Batch processing
 	#    Minion is the batch processing framework.
 	minion => {
-		server => 'mongodb://localhost:27017',
+		dbserver => 'mongodb://localhost:27017',
 		# Other options provided by Mojolicious::Backend::Minion
 	},
 }

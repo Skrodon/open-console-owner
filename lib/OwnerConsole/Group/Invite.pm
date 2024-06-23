@@ -2,14 +2,14 @@
 # SPDX-License-Identifier: EUPL-1.2-or-later
 
 package OwnerConsole::Group::Invite;
-use Mojo::Base 'OwnerConsole::Mango::Object';
+use Mojo::Base 'OpenConsole::Mango::Object';
 
 use Log::Report 'open-console-owner';
 
 use List::Util   qw(first);
 use DateTime     ();
 
-use OwnerConsole::Util  qw(bson2datetime new_token);
+use OpenConsole::Util  qw(bson2datetime new_token);
 
 use constant
 {	INVITE_SCHEMA => '20240122',

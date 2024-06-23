@@ -1,0 +1,29 @@
+
+.verify-block {
+	align-items: center !important;
+	padding: 10px;
+//	background-color: $oc-color-light;
+
+	.verify-button {
+		margin: 0 1em 10px 0;
+	}
+
+	.fa-solid {
+		font-size: xx-large;
+	}
+
+	.verify-success {
+		color: var(--bs-green);
+		display: none;
+	}
+
+	.verify-required {
+		color: var(--bs-orange);
+		display: none;
+	}
+
+	.verify-waiting {
+		color: var(--bs-indigo);
+		display: none;
+	}
+}

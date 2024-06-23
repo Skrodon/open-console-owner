@@ -6,9 +6,11 @@ use Mojo::Base 'OwnerConsole::Controller';
 
 use Log::Report 'open-console-owner';
 
-use OwnerConsole::Util            qw(flat :validate new_token);
-use OwnerConsole::Proof::Website1 ();
-use OwnerConsole::Challenge       ();
+use OpenConsole::Util            qw(flat :validate new_token);
+use OpenConsole::Proof::Website1 ();
+
+use OwnerConsole::Challenge      ();
+use OwnerConsole::Session::TaskResults ();
 
 sub index()
 {   my $self = shift;
@@ -20,7 +22,7 @@ sub website(%)
 	my $proofid  = $self->param('proofid');
 	my $account  = $self->account;
 	my $proof    = $proofid eq 'new'
-	  ? OwnerConsole::Proof::Website1->create({owner => $account})
+	  ? OpenConsole::Proof::Website1->create({owner => $account})
 	  : $account->proof(websites => $proofid);
 
 warn "PAGE EDIT PROOF $proofid, $proof.";
@@ -32,11 +34,9 @@ sub _acceptWebsite1()
 {	my ($self, $session, $proof) = @_;
 	$self->acceptProof($session, $proof);
 
-	no warnings 'uninitialized';
-
-	my $url = $session->optionalParam('url');
+	my $url = val_line $session->optionalParam('url');
 	if($proof->isNew)
-	{	if(is_valid_url $url)
+	{	if(is_valid_url $url)    # only a first, simple check
 		{	$proof->setData(url => $url) && $proof->invalidate;
 		}
 		else
@@ -56,7 +56,7 @@ sub configWebsite()
 {   my $self     = shift;
 	my $session  = $self->ajaxSession;
 
-	my $proof    = $session->openProof('OwnerConsole::Proof::Website1')
+	my $proof    = $self->openProof($session, 'OpenConsole::Proof::Website1')
 		or $session->reply;
 
 	my $how      = $session->query;
@@ -75,6 +75,24 @@ warn "HOW=$how";
 	}
 
 	$self->acceptFormData($session, $proof, '_acceptWebsite1');
+
+	if($how eq 'check-url')
+	{
+warn "CHECK URL ", $proof->url;
+		$self->startTask($session, verifyWebsiteURL => { url => $proof->url },
+			poll => 'check-url-task',
+		);
+		return $session->reply;
+	}
+	if($how eq 'check-url-task')
+	{	my $jobid = $session->requiredParam('poll-token');
+warn "CHECK URL POLL $jobid";
+		my $results = OwnerConsole::Session::TaskResults->job($jobid);
+$session->_data->{poll_results} = $results->_data;
+		$self->taskEnded($session);
+		return $session->reply;
+	}
+	$session->ignoreParam('check-url-token');
 
 	if($how eq 'save' && $session->isHappy)
 	{	$proof->save(by_user => 1);

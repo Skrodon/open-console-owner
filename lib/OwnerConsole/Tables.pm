@@ -6,6 +6,13 @@ use Mojo::Base 'Exporter';
 
 use Log::Report 'open-console-owner';
 
+my @is_valid = qw(
+	is_valid_country
+	is_valid_gender
+	is_valid_language
+	is_valid_timezone
+);
+
 our @EXPORT_OK = qw(
 	language_name
 	language_table
@@ -15,6 +22,15 @@ our @EXPORT_OK = qw(
 	gender_name
 	gender_table
 );
+
+our %EXPORT_TAGS = (
+	is_valid => \@is_valid,
+);
+
+sub is_valid_country($)  { defined country_name($_[0]) }
+sub is_valid_gender($)   { defined gender_name($_[0]) }
+sub is_valid_language($) { defined language_name($_[0]) }
+sub is_valid_timezone($) { defined first { $_ eq $_[0] } @{timezone_names()} }
 
 # https://www.internationalphoneticalphabet.org/languages/language-names-in-native-language/
 # Only the languages which have any kind of translation in Open Console.

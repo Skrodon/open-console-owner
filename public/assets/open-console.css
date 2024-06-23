@@ -20400,6 +20400,29 @@ FORM.proof-list I.fa-solid {
   text-align: center;
 }
 
+.verify-block {
+  align-items: center !important;
+  padding: 10px;
+}
+.verify-block .verify-button {
+  margin: 0 1em 10px 0;
+}
+.verify-block .fa-solid {
+  font-size: xx-large;
+}
+.verify-block .verify-success {
+  color: var(--bs-green);
+  display: none;
+}
+.verify-block .verify-required {
+  color: var(--bs-orange);
+  display: none;
+}
+.verify-block .verify-waiting {
+  color: var(--bs-indigo);
+  display: none;
+}
+
 DIV.dashboard NAV.sidebar SPAN.badge {
   background: var(--bs-info);
   color: black;

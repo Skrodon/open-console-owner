@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker;
 use 5.016;
 
 WriteMakefile
- ( NAME     => 'Owner-Console'
+ ( NAME     => 'OwnerConsole'
  , VERSION  => '0.01'
 
  , PREREQ_PM    => { 
@@ -14,7 +14,9 @@ WriteMakefile
 	'Crypt::PBKDF2'          => 0,
 	'Data::Dumper'           => 0,
 	'DateTime'               => 1.50,
+	'Devel::GlobalDestruction' => 0,
 	'Email::Valid'           => 1.202,
+	'HTML::Entities'         => 0,
 	'Lingua::EN::Numbers'    => 2.03,
 	'List::Util'             => 0,
 	'Log::Report'            => 0,
@@ -34,7 +36,7 @@ WriteMakefile
    }
  , EXE_FILES    => []
  , AUTHOR       => 'Open Console <team@open-console.eu>'
- , ABSTRACT     => 'XML Canonicalization'
+ , ABSTRACT     => 'Open Console Owners Website'
  , LICENSE      => 'perl_5'
 
  , META_MERGE =>
@@ -55,14 +57,14 @@ WriteMakefile
 sub MY::postamble { <<'__POSTAMBLE' }
 
 # for DIST
-RAWDIR          = /tmp/Owner-Console/raw
-DISTDIR         = /tmp/Owner-Console/source
+RAWDIR          = /tmp/OwnerConsole/raw
+DISTDIR         = /tmp/OwnerConsole/source
 
 # for POD
 FIRST_YEAR      = 2024
 EMAIL           = mark@open-console.eu
 EXTENDS         = 
-WEBSITE         = http://perl.overmeer.net/owner-console
+WEBSITE         = http://perl.overmeer.net/open-console
 
 css:
 	sass scss/main.scss public/assets/open-console.css

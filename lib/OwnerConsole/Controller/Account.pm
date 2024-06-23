@@ -6,7 +6,8 @@ use Mojo::Base 'OwnerConsole::Controller';
 
 use Log::Report 'open-console-owner';
 
-use OwnerConsole::Util       qw(flat :validate);
+use OpenConsole::Util       qw(flat :validate);
+use OwnerConsolte::Table    qw(:is_valid);
 
 sub index($)
 {	my $self = shift;
@@ -16,7 +17,7 @@ sub index($)
 =subsection Update
 =cut
 
-### Keep this logic in sync with OwnerConsole::Account attributes
+### Keep this logic in sync with OpenConsole::Account attributes
 
 sub _acceptAccount($$)
 {	my ($self, $session, $victim) = @_;
@@ -83,7 +84,7 @@ sub configAccount($)
 	my $session = $self->ajaxSession;
 	my $how     = $session->query || 'validate';
 
-	my $victim  = $session->openObject('OwnerConsole::Account', userid => sub { $::app->users->account($_[0]) })
+	my $victim  = $self->openObject($session, 'OpenConsole::Account', userid => sub { $::app->users->account($_[0]) })
 		or error __x"Account disappeared.";
 
 	$self->user->isAdmin || $victim->userId eq $self->account->userId

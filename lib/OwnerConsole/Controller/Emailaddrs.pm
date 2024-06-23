@@ -6,9 +6,11 @@ use Mojo::Base 'OwnerConsole::Controller';
 
 use Log::Report 'open-console-owner';
 
-use OwnerConsole::Util              qw(flat :validate new_token);
-use OwnerConsole::Proof::EmailAddr1 ();
-use OwnerConsole::Challenge         ();
+use OpenConsole::Util       qw(flat :validate new_token);
+use OpenConsole::Proof::EmailAddr1 ();
+
+use OwnerConsole::Challenge ();
+use OwnerConsole::Email     ();
 
 sub index()
 {   my $self = shift;
@@ -20,7 +22,7 @@ sub emailaddr(%)
 	my $proofid  = $self->param('proofid');
 	my $account  = $self->account;
 	my $proof    = $proofid eq 'new'
-	  ? OwnerConsole::Proof::EmailAddr1->create({owner => $account})
+	  ? OpenConsole::Proof::EmailAddr1->create({owner => $account})
 	  : $account->proof(emailaddrs => $proofid);
 
 warn "PAGE EDIT PROOF $proofid, $proof.";
@@ -60,7 +62,7 @@ sub configEmailaddr()
 {   my $self     = shift;
 	my $session  = $self->ajaxSession;
 
-	my $proof    = $session->openProof('OwnerConsole::Proof::EmailAddr1')
+	my $proof    = $self->openProof($session, 'OpenConsole::Proof::EmailAddr1')
 		or $session->reply;
 
 	my $how      = $session->query;

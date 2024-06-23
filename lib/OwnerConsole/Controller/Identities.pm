@@ -6,7 +6,10 @@ use Mojo::Base 'OwnerConsole::Controller';
 
 use Log::Report 'open-console-owner';
 
-use OwnerConsole::Util   qw(:validate);
+use OpenConsole::Util     qw(:validate);
+use OpenConsole::Identity ();
+
+use OwnerConsole::Tables  qw(:is_valid);
 
 sub index()
 {   my ($self, %args) = @_;
@@ -18,11 +21,11 @@ sub identity()
 	my $identid  = $self->param('identid');
 
 	my $account  = $self->account;
-	my $identity = $identid eq 'new' ? OwnerConsole::Identity->create($account) : $account->identity($identid);
+	my $identity = $identid eq 'new' ? OpenConsole::Identity->create($account) : $account->identity($identid);
 	$self->render(template => 'identities/identity', identity => $identity);
 }
 
-### Keep this logic in sync with OwnerConsole::Identity attributes
+### Keep this logic in sync with OpenConsole::Identity attributes
 
 sub _acceptIdentity($$)
 {	my ($self, $session, $identity) = @_;
@@ -60,10 +63,11 @@ sub configIdentity($)
 	my $how     = $session->query || 'validate';
 
 	my $account  = $self->account;
-	my $identity = $session->openObject('OwnerConsole::Identity', identid => sub { $account->identity($_[0]) })
+	my $identity = $self->openObject($session, 'OpenConsole::Identity', identid => sub { $account->identity($_[0]) })
 		or error __x"Identity has disappeared.";
 
 	if($how eq 'delete') {
+	    $::app->batch->removeEmailsRelatedTo($identity->identityId);
 		$identity->remove;
 		$session->redirect('/dashboard/identities');
 		return $session->reply;

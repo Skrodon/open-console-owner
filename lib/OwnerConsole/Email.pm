@@ -2,7 +2,7 @@
 # SPDX-License-Identifier: EUPL-1.2-or-later
 
 package OwnerConsole::Email;
-use Mojo::Base 'OwnerConsole::Mango::Object';
+use Mojo::Base 'OpenConsole::Mango::Object';
 
 use Log::Report 'open-console-owner';
 
@@ -10,7 +10,7 @@ use Mail::Message ();
 use Mail::Message::Body::String    ();
 use Mail::Message::Body::Multipart ();
 
-use OwnerConsole::Util  qw(new_token);
+use OpenConsole::Util  qw(new_token);
 
 =section DESCRIPTION
 
