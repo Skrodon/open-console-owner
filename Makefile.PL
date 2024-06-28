@@ -6,7 +6,7 @@ use ExtUtils::MakeMaker;
 use 5.016;
 
 WriteMakefile
- ( NAME     => 'OwnerConsole'
+ ( NAME     => 'Open-Console-Owner'
  , VERSION  => '0.01'
 
  , PREREQ_PM    => { 
@@ -28,11 +28,15 @@ WriteMakefile
 
 	# Website and database framwork
 	'Mango'                  => 0,
-	'Minion'                 => 10.28,
-	'Minion::Backend::Mango' => 1.02,
 	'Mojolicious'            => 9.35,
 	'Mojolicious::Plugin::CSRFProtect' => 0.16,
-	'Mojolicious::Plugin::Minion'      => 0,    # expected to be part of Minion
+
+    # Required for the Minion task manager
+	'Mojolicious::Plugin::Minion'        => 0,
+    'Mojolicious::Plugin::Minion::Admin' => 0,
+	'Minion'                 => 10.28,
+	'Minion::Backend::Pg'    => 1.02,
+    'Mojo::Pg'               => 0,
    }
  , EXE_FILES    => []
  , AUTHOR       => 'Open Console <team@open-console.eu>'

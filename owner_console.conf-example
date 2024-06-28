@@ -85,10 +85,32 @@
 		dbname => 'batch',
 	},
 
-	#### Batch processing
-	#    Minion is the batch processing framework.
-	minion => {
-		dbserver => 'mongodb://localhost:27017',
-		# Other options provided by Mojolicious::Backend::Minion
+	#### Tasks implement batch processing
+
+	# First, create the Minion database.  Minion backend PostgreSQL is best supported.
+	# Run this for the defaults:
+	#   su - postgres psql
+	#     create database ocminion_test;     # or ocminion
+	#     create user ocminion with password '$yourpasswd';
+	#     grant all privileges on database ocminion_test to ocminion;
+	#     \c ocminion_test
+	#        grant all on schema public to ocminion;   # why?
+
+	tasks => {
+		# Minion is the batch processing framework.
+		minion => {
+			dbserver   => 'localhost:5432',   # default
+			dbname     => 'ocminion',         # default, or 'ocminion_test'
+			dbuser     => 'ocminion',         # default
+			dbpassword => '$your-passwd',     # required, test passwd != prod passwd!!!
+			# Other options accepted by Mojolicious::Backend::Minion
+		},
+
+		# When enabled, you get an minion administrative interface under /minion.
+		# Not yet tried.
+ 		minion_admin => {
+			enabled => 0,
+		},
+		poll_interval => 2000,                # time between polls for task results
 	},
 }

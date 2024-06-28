@@ -7,7 +7,7 @@ use Mojo::Base 'OwnerConsole::Controller';
 use Log::Report 'open-console-owner';
 
 use OpenConsole::Util       qw(flat :validate new_token);
-use OpenConsole::Proof::EmailAddr1 ();
+use OpenConsole::Proof::EmailAddr ();
 
 use OwnerConsole::Challenge ();
 use OwnerConsole::Email     ();
@@ -22,15 +22,15 @@ sub emailaddr(%)
 	my $proofid  = $self->param('proofid');
 	my $account  = $self->account;
 	my $proof    = $proofid eq 'new'
-	  ? OpenConsole::Proof::EmailAddr1->create({owner => $account})
+	  ? OpenConsole::Proof::EmailAddr->create({owner => $account})
 	  : $account->proof(emailaddrs => $proofid);
 
 warn "PAGE EDIT PROOF $proofid, $proof.";
 
-	$self->render(template => 'emailaddrs/emailaddr1', proof => $proof );
+	$self->render(template => 'emailaddrs/emailaddr', proof => $proof );
 }
 
-sub _acceptEmailaddr1()
+sub _acceptEmailaddr()
 {	my ($self, $session, $proof) = @_;
 	$self->acceptProof($session, $proof);
 
@@ -62,7 +62,7 @@ sub configEmailaddr()
 {   my $self     = shift;
 	my $session  = $self->ajaxSession;
 
-	my $proof    = $self->openProof($session, 'OpenConsole::Proof::EmailAddr1')
+	my $proof    = $self->openProof($session, 'OpenConsole::Proof::EmailAddr')
 		or $session->reply;
 
 	my $how      = $session->query;
@@ -81,7 +81,7 @@ warn "HOW=$how";
 		return $session->reply;
 	}
 
-	$self->acceptFormData($session, $proof, '_acceptEmailaddr1');
+	$self->acceptFormData($session, $proof, '_acceptEmailaddr');
 
 	if($how eq 'save' && $session->isHappy)
 	{	$proof->save(by_user => 1);
@@ -99,14 +99,14 @@ warn "HOW=$how";
 =section Email verification
 =cut
 
-__PACKAGE__->challengeHandler(proof_emailaddr1 => 'challengeEmailaddr1');
+__PACKAGE__->challengeHandler(proof_emailaddr => 'challengeEmailaddr');
 
 sub _startVerification1($%)
 {	my ($self, %args) = @_;
 	my $account   = $self->account;
 	my $proof     = $args{proof};
 	my $challenge = $args{challenge} = OwnerConsole::Challenge->create($account,
-	  {	purpose => 'proof_emailaddr1',
+	  {	purpose => 'proof_emailaddr',
 		payload => { proofid => $proof->proofId },
 	  },
 	);
@@ -125,7 +125,7 @@ sub _startVerification1($%)
 	)->queue;
 }
 
-sub challengeEmailaddr1($$)
+sub challengeEmailaddr($$)
 {	my ($self, $account, $challenge) = @_;
 	my $payload = $challenge->payload;
 	my $proof = $::app->proofs->proof($payload->{proofid});

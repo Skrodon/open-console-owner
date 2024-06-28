@@ -3,19 +3,16 @@
 
 % my $is_new  = $proof->proofId eq 'new';
 % $c->notify(error => 'Development of this kind of proofs is underway.');
-% use OwnerConsole::Util qw(new_token);
-% my $token  = new_token 'C';
-% my $prover = $proof->prover;
 
 <style>TABLE { margin: 10px 20px } </style>
 
-%# https://имена.бг
+% my $url = 'https://имена.бг';
 % my @pages;
 % my $location_form = begin
 
   <div>
     <label for="url" class="form-label">Website address</label>
-    <input name="url" type="text" id="url" class="form-control" placeholder="https://example.com/~user"
+    <input name="url" type="text" id="url" class="form-control" placeholder="https://www.example.com/~user"
       aria-describedby="url_explain" required value="<%= $proof->url %>"
       <%= $is_new ? '' : 'disabled' %>
     />
@@ -45,15 +42,37 @@
   <tr><td>Certificate&nbsp;</td><td>failed</td></tr>
   </table>
 
+  <label class="form-label" for="save-options">Proof website ownership</label>
+  <div class="verify-required"><p>First verify the website address.</p></div>
+  <div id="proof-options" class="verify-success">
+    <a href="/dashboard/website/new?prover=dns" class="btn btn-primary" role="button">
+        <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> via DNS</a>
+    <a href="/dashboard/website/new?prover=html" class="btn btn-primary" role="button">
+        <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> in HTML</a>
+    <a href="/dashboard/website/new?prover=file" class="btn btn-primary" role="button">
+        <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> add File</a>
+  </div>
+
 % end
 
 % my $location_explain = begin
 
-<p>You can proof the ownership of a website.  As URL, you can use IDN
-(<a href="https://en.wikipedia.org/wiki/Internationalized_domain_name">Internationalized Domain Names</a>)</p>
+<p>As URL, you can use IDN
+(<a href="https://en.wikipedia.org/wiki/Internationalized_domain_name">Internationalized Domain Names</a>):
+extended character-set names.</p>
 
 <p>The <b>Website address</b> must be "canonical", which means that it does not redirect to
 another website and matches the '&lt;link rel="canonical"&gt;' in the page (if present).</p>
+
+<p><b>Claim</b> some website, simply by saving this form.  Most services
+do want a proof of ownership, in which case you can add it at when needed.</p>
+
+<p>There are three ways you can deliver a proof with your claim:
+<ul>
+<li><b>DNS</b>: adding a record to your zone file, requires access for your domain-name registration;</li>
+<li><b>HTML</b>: add some meta tags to your HTML front-page; and</li>
+<li><b>File</b>: add a static file to your website.</li>
+</ul>
 
 % end
 
@@ -75,7 +94,7 @@ another website and matches the '&lt;link rel="canonical"&gt;' in the page (if p
 <table>
 <tr><td>name</td><td>_oc-challenge.имена.бг</td></tr>
 <tr><td>record-type&nbsp;</td><td>TXT</td></tr>
-<tr><td>value</td><td>"<%= $token %>"</td></tr>
+<tr><td>value</td><td>"<%= $proof->challenge %>"</td></tr>
 </table>
 
 <p>After you have added above record, start verification:</p>
@@ -106,7 +125,7 @@ which is not dynamically rendered.</p>
 %# This is probably not the current practice.
 <pre>
   &lt;link rel="open-console"
-     value="<%= $token %>"&gt;
+     value="<%= $proof->challenge %>"&gt;
 </pre>
 
 <p>After you have added above line to your frontpage, start verification:</p>
@@ -134,8 +153,12 @@ root directory of you website, containing the following:</p>
 
 <i class="fa-regular fa-copy" aria-hidden="true" style="float: right"></i>
 <pre>
-  owner-token: <%= $token %>
+  website <%= $url %> <%= $proof->challenge %>
 </pre>
+
+<p>The file must be readible for the outside world.  You may test this
+by directing your browser to
+<a href="$url/open-console.txt" target="_blank">the location</a>.</p>
 
 <p>After you have created this file, start verification:</p>
 <button id="verify" class="btn btn-primary">Verify</button>

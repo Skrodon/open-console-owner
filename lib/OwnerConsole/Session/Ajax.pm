@@ -100,7 +100,9 @@ sub reply()
 
 sub pollFor($$%)
 {	my ($self, $where, $token, %args) = @_;
-	$self->_data->{poll} = { where => $where, token => $token, delay => $args{delay} // 5000 };
+	state $delay = $::app->config->{tasks}{poll_interval} // 5000;
+warn "DELAY=$delay";
+	$self->_data->{poll} = { where => $where, token => $token, delay => $args{delay} // $delay };
 }
 
 sub stopPolling()

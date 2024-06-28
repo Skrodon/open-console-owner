@@ -9,16 +9,12 @@ use Log::Report 'open-console-owner';
 use feature 'state';
 
 use Mango;
-use Minion::Backend::Mango      ();
 
 use List::Util  qw(first);
 
 use OpenConsole::Util           qw(reseed_tokens);
 use OwnerConsole::Model::Batch  ();
-#use OwnerConsole::Tasks         ();
-
-my (%dbconfig, %_dbservers);
-my @databases = qw/userdb batchdb proofdb/;
+use OwnerConsole::Tasks         ();
 
 use constant
 {	MONGODB_CONNECT => 'mongodb://localhost:27017',
@@ -33,6 +29,8 @@ OwnerConsole - Open Console Owner's Website
   morbo script/owner_console &
 
 =chapter DESCRIPTION
+This module manages Open Console's "owner" website, where people can proof
+that they own stuff.
 
 =chapter METHODS
 
@@ -40,8 +38,6 @@ OwnerConsole - Open Console Owner's Website
 Standard M<Mojo::Base> constructors.
 
 =section Databases
-The application may configure different MongoDB databases (clusters), for different
-characteristics of tasks.
 
 =method batch
 The C<batch> database (M<OwnerConsole::Model::Batch>) contains run-time
@@ -53,19 +49,14 @@ for expensive protection.
 =cut
 
 sub batch()
-{	my $self   = shift;
-	my $config = $dbconfig{batchdb};
-	state $e   = OwnerConsole::Model::Batch->new(db => $self->_dbserver($config->{server})->db($config->{dbname}))->upgrade;
+{	my $self = shift;
+    state $u = $self->_mango('OpenConsole::Model::Batch' => $self->config->{batchdb});
 }
 
 #----------------
-=section Other
-
-=method isAdmin $account
+=section Running the daemons
 =cut
 
-my %admins;   # emails are case insensitive
-sub isAdmin($) { $admins{lc $_[1]->email} }
 sub tasks() { $_[0]->{O_tasks} }
 
 # This method will run once at server start
@@ -73,23 +64,40 @@ sub startup
 {	my $self = shift;
 	$self->SUPER::startup(@_);
 
-	# Load configuration from hash returned by config file
-	my $config = $self->plugin('Config');
-	$config->{vhost} ||= 'https://' . $ENV{HTTP_HOST};
-
 	### Configure the application
 	$self->renderer->cache->max_keys(0);  # the forms are never the same
-	%admins = map +(lc($_) => 1), @{$config->{admins} || []};
 
 #	$self->plugin('CSRFProtect');
 	$self->plugin('BootstrapAlerts');
 	$self->plugin('I18NUtils');
 
-	$dbconfig{$_}    = $config->{$_} for @databases;
-	my $minion       = $config->{minion} || {};
-#	$self->{O_tasks} = OwnerConsole::Tasks->start(dbserver => MONGODB_CONNECT, %$minion);
+	$self->{O_tasks} = OwnerConsole::Tasks->new->startup($self->config->{tasks});
 
 #$::app->users->db->collection('accounts')->remove({});  #XXX hack clean whole accounts table
+
+	#XXX does each controller create a new Account object?
+
+	# 'user' is the logged-in user, the admin can select to show a different 'account'
+	$self->helper(user      => sub {
+		my $c = shift;
+		my $user;
+		unless($user = $c->stash('user'))
+		{	$user = $self->users->account($c->session('userid'));
+			$c->stash(user => $user);
+		}
+		$user;
+	});
+
+	$self->helper(account   => sub {
+		my $c = shift;
+		my $account;
+		unless($account = $c->stash('account'))
+		{	my $aid = $c->session('account');
+			$account = defined $aid ? $self->users->account($aid) : $c->user;
+			$c->stash(account => $account);
+		}
+		$account;
+	});
 
 	### Routes
 
@@ -142,5 +150,9 @@ sub startup
 
 	$r->get('/invite/:token')->to('groups#inviteChoice');
 }
+
+#----------------
+=section Other
+=cut
 
 1;

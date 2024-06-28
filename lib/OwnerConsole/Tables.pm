@@ -5,6 +5,7 @@ package OwnerConsole::Tables;
 use Mojo::Base 'Exporter';
 
 use Log::Report 'open-console-owner';
+use List::Util  qw(first);
 
 my @is_valid = qw(
 	is_valid_country
@@ -13,7 +14,7 @@ my @is_valid = qw(
 	is_valid_timezone
 );
 
-our @EXPORT_OK = qw(
+our @EXPORT_OK = (qw(
 	language_name
 	language_table
 	timezone_names
@@ -21,7 +22,7 @@ our @EXPORT_OK = qw(
 	country_table
 	gender_name
 	gender_table
-);
+), @is_valid);
 
 our %EXPORT_TAGS = (
 	is_valid => \@is_valid,

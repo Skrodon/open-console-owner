@@ -13,17 +13,17 @@ use OwnerConsole::Tables qw(:is_valid);
 use OwnerConsole::Email  ();
 
 sub index($)
-{   my $self = shift;
-    $self->render(template => 'groups/index');
+{	my $self = shift;
+	$self->render(template => 'groups/index');
 }
 
 sub group($)
-{   my ($self, %args) = @_;
+{	my ($self, %args) = @_;
 	my $groupid  = $self->param('groupid');
 
 	my $account  = $self->account;
 	my $group = $groupid eq 'new' ? OpenConsole::Group->create($account) : $account->group($groupid);
-    $self->render(template => 'groups/group', group => $group);
+	$self->render(template => 'groups/group', group => $group);
 }
 
 ### Keep this logic in sync with OpenConsole::Group attributes
@@ -68,7 +68,7 @@ sub _acceptGroup($$)
 }
 
 sub configGroup()
-{   my $self     = shift;
+{	my $self     = shift;
 	my $session  = $self->ajaxSession;
 	my $how      = $session->query || 'validate';
 
@@ -77,7 +77,7 @@ sub configGroup()
 		or error __x"Group has disappeared.";
 
 	my $is_new   = $group->groupId eq 'new';
-    $how eq 'validate' || $is_new || $group->memberIsAdmin($account)
+	$how eq 'validate' || $is_new || $group->memberIsAdmin($account)
 		or error __x"Tried to modify group '{id}', not being admin.", id => $group->groupId;
 
 	if($how eq 'delete') {
@@ -88,7 +88,7 @@ sub configGroup()
 		$account->save;
 
 		$session->redirect('/dashboard/groups');
-    	return $session->reply;
+		return $session->reply;
 	}
 
 
@@ -113,18 +113,18 @@ sub _emailInvite(%)
 {	my ($self, %args) = @_;
 	my $invite = $args{invite};
 
-    OwnerConsole::Email->create(
-        subject => $args{subject},
-        text    => $self->render_to_string('groups/mail_invite', format => 'txt', %args),
-        html    => $self->render_to_string('groups/mail_invite', format => 'html', %args),
-        sender  => $args{identity} || $invite->invitedBy,
-        sendto  => $invite->email,
-        purpose => 'invite',
-    )->queue;
+	OwnerConsole::Email->create(
+	    subject => $args{subject},
+	    text    => $self->render_to_string('groups/mail_invite', format => 'txt', %args),
+	    html    => $self->render_to_string('groups/mail_invite', format => 'html', %args),
+	    sender  => $args{identity} || $invite->invitedBy,
+	    sendto  => $invite->email,
+	    purpose => 'invite',
+	)->queue;
 }
 
 sub configMember()
-{   my $self     = shift;
+{	my $self     = shift;
 	my $session  = $self->ajaxSession;
 	my $how      = $session->query || '(unspecified)';
 
@@ -134,8 +134,8 @@ sub configMember()
    	my $group    = $account->group($groupid);
 	unless($group)
 	{	# or not linked to this account (anymore)
-        $session->addError(invite => __x"This group seems to have disappeared");
-    	return $session->reply;
+	    $session->addError(invite => __x"This group seems to have disappeared");
+		return $session->reply;
 	}
 
 	my $identity = $group->memberIdentityOf($account)
@@ -146,7 +146,7 @@ sub configMember()
 		if($group->changeIdentity($account, $identid))
 		{	$group->save;  # when change is permitted
 		}
-    	return $session->reply;
+		return $session->reply;
 	}
 
 	if(! $group->memberIsAdmin($account))
@@ -155,7 +155,7 @@ sub configMember()
 	elsif($how eq 'invite_remove')
 	{	my $email = $session->requiredParam('email');
 	 	my $token = $session->requiredParam('token');
-		if($group->removeInvitation($token))
+		if($self->removeInvitation($group, $token))
 		{	$group->log("removed invitation to $email");
 			$group->save;
 		}
@@ -179,8 +179,10 @@ sub configMember()
 			}
 
 			push @added, $email;
-			my $invite = $group->inviteMember($identity, $email);
+			my $invite = OwnerConsole::Group::Invite->create($identity, $self, $email);
+			$::app->batch->saveInvite($invite);
 			$group->log("invited $email");
+
 			$group->save;
 			$self->_emailInvite(invite => $invite, identity => $identity, group => $group,
 				subject => (__x"Your are invited to take part in group '{name}'", name => $group->name));
@@ -190,7 +192,7 @@ sub configMember()
 	elsif($how eq 'invite_resend')
 	{	my $email = $session->requiredParam('email');
 	 	my $token = $session->requiredParam('token');
-		if(my $invite = $group->extendInvitation($token))
+		if(my $invite = $self->extendInvitation($group, $token))
 		{	$self->_sendInvite(invite => $invite, identity => $identity, group => $group,
 				subject => (__x"Your invitation to group '{group}' got extended", group => $group->name));
 			$group->log("extended the invitation for $email");
@@ -203,7 +205,7 @@ sub configMember()
 	{	error __x"No action '{action}' for invite.", id => $group->groupId;
 	}
 
-    $session->reply;
+	$session->reply;
 }
 
 #!!! Outside, so no $account
@@ -229,7 +231,36 @@ sub inviteChoice()
 	}
 	else { panic "inviteChoice:$how#".length($how) }
 
-    $self->render(template => 'groups/invite_choice', invite => $invite);
+	$self->render(template => 'groups/invite_choice', invite => $invite);
+}
+
+sub allInvites($)
+{	my ($self, $group) = @_;
+	my $inv = $::app->batch->invitesForGroup($group);
+	@$inv;
+}
+
+sub inviteWithToken($$)
+{	my ($self, $group, $token) = @_;
+	defined $token or return ();
+	first { lc($_->token) eq lc($token) } $self->allInvites($group);
+}
+
+sub extendInvitation($$)
+{	my ($self, $group, $token) = @_;
+	my $invite = $self->inviteWithToken($group, $token) or return;
+	$invite->extend;
+	$invite->save;
+}
+
+sub removeInvitation($$)
+{	my ($self, $group, $token) = @_;
+	my $invite = $self->inviteWithToken($token) or return 1;
+	return 0 if $invite->state eq 'spam';
+
+	delete $self->{OCG_invites};
+	$::app->batch->removeInvite($token);
+	1;
 }
 
 #!!! Inside, so with $account

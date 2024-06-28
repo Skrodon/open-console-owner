@@ -5,7 +5,7 @@
 %   foreach my $proof (@$proofs) {
     <tr data-proof="<%= $proof->proofId %>" data-editable="<%= $editable ? 'true' : 'false' %>" >
       <td><%= $show->($proof) %></td>
-      <td><span class="badge <%== $proof->statusBgColorClass %>"><%= $proof->statusText %></span></td>
+      <td><span class="badge <%== $c->proofStatusBgColorClass($proof) %>"><%= $c->proofStatusText($proof) %></span></td>
       <td class="score"><%= $proof->score %></td>
       <td class="edit">
 %     if($editable) {

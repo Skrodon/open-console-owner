@@ -1,5 +1,5 @@
 % layout 'dashboard';
-% title 'Create/update email address proof, type 1';
+% title 'Create/update email address proof';
 
 % my $is_new  = $proof->proofId eq 'new';
 

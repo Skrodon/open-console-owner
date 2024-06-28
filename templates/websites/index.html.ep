@@ -1,13 +1,13 @@
 % layout 'dashboard';
 % title 'Overview of website proofs';
 
-<h1><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Website ownership proofs</h1>
+<h1><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Website ownership claims</h1>
 <div class="container">
   <div class="row">
 
     <div class="col-sm-7">
       <div class="card" id="websites-card">
-        <h5 class="card-header">Collected proofs</h5>
+        <h5 class="card-header">Collected websites</h5>
         <div class="card-body">
 
 <form class="proof-list" id="config-website">
@@ -15,22 +15,15 @@
 %= include 'proofs/_proof_list', set => 'websites', element => 'website', show => $show, show_column => "Website";  #XXX translate
 </form>
 
-        </div>
-        <div class="card-body">
-           <h5>New website proof</h5>
-           <a href="/dashboard/website/new?prover=dns" class="btn btn-primary" role="button" %>
-           <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> via DNS</a>
-           <a href="/dashboard/website/new?prover=html" class="btn btn-primary" role="button" %>
-           <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> in HTML</a>
-           <a href="/dashboard/website/new?prover=file" class="btn btn-primary" role="button" %>
-           <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> add File</a>
+           <a href="/dashboard/website/new" class="btn btn-primary" role="button" %>
+           <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> add website</a>
         </div>
       </div>
     </div>
 
     <div class="col-sm-5">
       <div class="card" id="websites-explain">
-        <h5 class="card-header">Proving Websites</h5>
+        <h5 class="card-header">Owning Websites</h5>
         <div class="card-body">
 
 <p>More and more services require a website ownership proof, in their

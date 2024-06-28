@@ -6,8 +6,8 @@ use Mojo::Base 'OwnerConsole::Controller';
 
 use Log::Report 'open-console-owner';
 
-use OpenConsole::Util       qw(flat :validate);
-use OwnerConsolte::Table    qw(:is_valid);
+use OpenConsole::Util      qw(flat :validate);
+use OwnerConsole::Tables   qw(:is_valid);
 
 sub index($)
 {	my $self = shift;

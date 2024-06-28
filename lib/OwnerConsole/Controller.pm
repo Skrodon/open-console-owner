@@ -79,6 +79,29 @@ sub openProof($$)
 	$proof;
 }
 
+my %proof_status = (    # translatable name, bg-color
+	unproven => [ __"Unproven",   'warning' ],
+	verify   => [ __"Verifying",  'info'    ],
+	refresh  => [ __"Refreshing", 'info'    ],
+	proven   => [ __"Proven",     'success' ],
+	expired  => [ __"Expired",    'dark'    ],
+);
+
+sub proofStatusText($;$)
+{	my ($self, $proof, $label) = @_;
+	$label  ||= $proof->status;
+	my $repr  = $proof_status{$label} or return "XX${label}XX";
+	$repr->[0]->toString;
+}
+
+# Returns a badge color class: https://getbootstrap.com/docs/5.3/components/badge/
+sub proofStatusBgColorClass($;$)
+{	my ($self, $proof, $label) = @_;
+	$label ||= $proof->status;
+	my $repr  = $proof_status{$label} or return 'text-bg-danger';
+	'text-bg-' . $repr->[1];
+}
+
 #-------------
 =section Generic code for Challenges
 

@@ -29,8 +29,6 @@ Collect the results from a task ran or still running.  The %options
 are passed to M<new()>.
 =cut
 
-has '_job';
-
 sub job($$)
 {	my ($class, $session, $jobid) = (shift, shift, shift);
 	my $job  = $::app->minion->job($jobid);
@@ -39,7 +37,9 @@ sub job($$)
 		return;
 	}
 
-	$class->new(_job => $job, _data => $job->info->{results});
+use Data::Dumper;
+warn "JOB $jobid RETURNED=", Dumper $job->info;
+	$class->new(_data => $job->info);
 }
 
 #------------------
@@ -50,11 +50,20 @@ sub job($$)
 # Raw job data, see F<https://metacpan.org/pod/Minion::Job#info>.
 # Create abstracted methods!
 
-has _info => sub { my $job = $_[0]->_job; $job ? $job->info : {} };
-
 =method state
 =cut
 
-sub state { $_[0]->_data->{state} };
+sub state  { $_[0]->_data->{state} }
+
+=method result
+=cut
+
+sub result { $_[0]->_data->{result} }
+
+=method finished
+Returns a timestamp (which is also used as a boolean) when the task has finished.
+=cut
+
+sub finished { $_[0]->_data->{finished} }
 
 1;

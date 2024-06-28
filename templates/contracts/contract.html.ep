@@ -1,5 +1,5 @@
 % layout 'dashboard';
-% title 'Create/update contract, type 1';
+% title 'Create/update contract';
 
 % my $is_new  = $proof->proofId eq 'new';
 % $c->notify(error => 'This is just a mock-up, to show you our plans');
