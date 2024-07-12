@@ -71,3 +71,17 @@ DIV.alert {
 	}
 }
 
+/*
+ * Any block PRE block which can be copied
+ */
+
+PRE.copy-code {
+	white-space: pre-wrap;
+	padding: 0 0 0 1ex;
+	background-color: var(--bs-gray-200);
+}
+
+I.copier {
+	float: right;
+	cursor: pointer;
+}

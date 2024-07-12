@@ -22,12 +22,12 @@ sub ajaxSession(%)
 sub acceptFormData($$$)
 {	my ($self, $session, $object, $handler) = @_;
 
-	try {
+	my $r = try {
 		$self->$handler($session, $object);
 	};
 
 	$session->notify(error => $_) for $@->exceptions;
-	$self;
+	$r;
 }
 
 sub acceptObject($$)

@@ -19,13 +19,16 @@ sub website(%)
 {   my ($self, %args) = @_;
 	my $proofid  = $self->param('proofid');
 	my $account  = $self->account;
-	my $proof    = $proofid eq 'new'
-	  ? OpenConsole::Proof::Website->create({owner => $account})
-	  : $account->proof(websites => $proofid);
 
-warn "PAGE EDIT PROOF $proofid, $proof.";
-
-	$self->render(template => 'websites/website', proof => $proof );
+	if($proofid eq 'new')
+	{	my $proof = OpenConsole::Proof::Website->create({owner => $account});
+		return $self->render(template => 'websites/website-new', proof => $proof );
+	}
+	else
+	{	my $proof  = $account->proof(websites => $proofid);
+		my $prover = $self->param('prover') || 'none';
+		return $self->render(template => 'websites/website', proof => $proof, prover => $prover);
+	}
 }
 
 sub _acceptWebsite()
@@ -33,20 +36,23 @@ sub _acceptWebsite()
 	$self->acceptProof($session, $proof);
 
 	my $url = val_line $session->optionalParam('url');
-	$url    = "https://$url" if defined $url && length $url && $url !~ m!^https?://!i;
 
 	if($proof->isNew)
-	{	if(is_valid_url $url)    # only a first, simple check
+	{	# otherwise simple check will fail
+		my $fast = defined $url && length $url && $url !~ m!^https?://!i ? "https://$url" : $url;
+		if(is_valid_url $fast)    # only a first, simple check
 		{	$proof->setData(url => $url) && $proof->invalidate;
 		}
 		else
 		{	$session->addError(url => defined $url
 			  ? (__x"Invalid website address.")
 			  : (__x"Website address is required."));
+			return undef;
 		}
 	}
 	elsif(defined $url && $url ne $proof->url)
 	{	$session->addError(url => __x"Attempt to change website url.");
+		return undef;
 	}
 
 	$self;
@@ -74,7 +80,9 @@ warn "HOW=$how";
 		$session->redirect('/dashboard/websites');
 	}
 
-	$self->acceptFormData($session, $proof, '_acceptWebsite');
+	$self->acceptFormData($session, $proof, '_acceptWebsite')
+		or return $session->reply;
+warn "ACCEPTED";
 
 	if($how eq 'check-url')
 	{
@@ -84,18 +92,35 @@ warn "CHECK URL ", $proof->url;
 		$session->mergeTaskResults($task);
 		return $session->reply;
 	}
+
 	if($how eq 'check-url-task')
 	{	my $taskid = $session->requiredParam('task');
 warn "CHECK URL POLL $taskid";
 		my $task = $::app->tasks->ping($taskid);
 		$session->mergeTaskResults($task);
-		$session->setData(show_trace => $session->showTrace);
-		$proof->setDataCompressed(verifyTrace => $task->trace)
 
-		$session->stopPolling;
+		if($task->finished)
+		{	$session->stopPolling;
+			if($session->isHappy)
+			{	$proof->setData(verifyURL      => $task->results);
+				$proof->setData(verifyURLTrace => $task->trace);
+				my $norm = $proof->printableURL;
+				$proof->setData(url => $norm);
+use Data::Dumper;
+warn "SAVE PROOF=", Dumper $proof->_data;
+				$proof->save;
+
+				$session->setData(proofid => $proof->proofId);
+				$session->setData(url => $norm);
+			}
+		}
+
+		$session->setData(show_trace => $session->showTrace($task->trace));
 		return $session->reply;
 	}
-	$session->ignoreParam('taskid');
+	else
+	{	$session->ignoreParam('taskid');
+	}
 
 	if($how eq 'save' && $session->isHappy)
 	{	$proof->save(by_user => 1);

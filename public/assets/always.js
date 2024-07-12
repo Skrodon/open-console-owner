@@ -33,4 +33,18 @@ $(document).ready(function() {
 
 	// enable tooltips
 	$('[data-bs-toggle="tooltip"]').tooltip();
+
+	// copy-paste text blocks
+	$('PRE.copy-code').each(function () {
+		var pre = $(this);
+		pre.before('<i class="fa-regular fa-copy copier" aria-hidden="true" for="' + pre.attr('id') + '"></i>');
+	});
+
+	$('.copier').each(function () {
+		var icon = $(this);
+		var code = $('PRE#' + icon.attr('for'));
+		icon.on('click', function (event) {
+			navigator.clipboard.writeText(code.text());
+		});
+	});
 });

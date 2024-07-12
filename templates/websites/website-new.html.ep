@@ -1,0 +1,138 @@
+% layout 'dashboard';
+% title 'Website claim';
+
+% $c->notify(error => 'Development of this kind of proofs is underway.');
+
+% my $url = 'https://имена.бг';
+% my @pages;
+% my $location_form = begin
+
+  <div>
+    <label for="url" class="form-label">Website address</label>
+    <input name="url" type="text" id="url" class="form-control" placeholder="https://www.example.com/~user"
+      aria-describedby="url_explain" required value="<%= $proof->url %>" />
+    <div id="url_explain" class="form-text">One of your own or your group's website addresses.</div>
+  </div>
+
+  &nbsp;<br />
+
+  <div class="verify-block" id="check-url">
+    <div class="d-flex">
+      <button type="button" class="btn btn-success verify-button" id="check-url-button">Check</button>
+      <i class="fa-solid fa-check    verify-success"  id="check-url-success"  aria-hidden="true"></i>
+      <i class="fa-solid fa-asterisk verify-required" id="check-url-required" aria-hidden="true"></i>
+      <i class="fa-solid fa-xmark    verify-failed"   id="check-url-failed"   aria-hidden="true"></i>
+      <div class="spinner-border     verify-waiting"  id="check-url-wait"     aria-hidden="true"></div>
+      <i class="fa-regular fa-circle-question verify-info" id="check-url-info" aria-hidden="true"></i>
+    </div>
+    <div class="alert alert-warning verify-required">Check the validity of your website url.</div>
+    <div class="alert alert-info    verify-waiting">Checking may take some time.  Please be patient.</div>
+    <div class="alert alert-danger  verify-failed">The issue needs to be resolved.</div>
+  </div>
+
+%# forms submit with entry in single input field forms :-(
+  <input type="text" name="submit-blocker" style="display: none;" />
+
+  #% pass assigned proof-id after check to the step2
+  <input type="hidden" id="proofid" />
+
+  <div id="proof-options" class="verify-step2">
+	&nbsp;<br />
+	<p>The website address you provided looks valid and working.
+    You may now save your claim, but better immediately add a proof, below.</p>
+  </div>
+
+  <div class="modal" id="check-info-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Website url checking details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <table class="table" id="check-trace">
+          <tr><th colspan="2">Verification trace:</th></tr>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="proof-options" class="verify-step2">
+    <label class="form-label" for="save-options">Proof website ownership</label>
+
+    <p>Pick any of these to proof that you own this website:</p>
+
+    <button class="btn btn-primary" role="button" id="proof-dns">
+        <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> via DNS</button>
+    <button class="btn btn-primary" role="button" id="proof-html">
+        <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> in HTML</button>
+    <button class="btn btn-primary" role="button" id="proof-file">
+        <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> add File</button>
+  </div>
+
+% end
+
+% my $location_explain = begin
+
+<p>As URL, you can use IDN
+(<a href="https://en.wikipedia.org/wiki/Internationalized_domain_name">Internationalized Domain Names</a>):
+extended character-set names.</p>
+
+<p>The <b>Website address</b> must be "canonical", which means that it does not redirect to
+another website and matches the '&lt;link rel="canonical"&gt;' in the page (if present).</p>
+
+<p><b>Claim</b> some website, simply by saving this form.  Most services
+do want a proof of ownership, in which case you can add it at when needed.</p>
+
+<p>There are three ways you can deliver a proof with your claim:
+<ul>
+<li><b>DNS</b>: adding a record to your zone file, requires access for your domain-name registration;</li>
+<li><b>HTML</b>: add some meta tags to your HTML front-page; and</li>
+<li><b>File</b>: add a static file to your website.</li>
+</ul>
+
+% end
+
+% push @pages, [
+%    'website-location',
+%    'Website',
+%    $location_form,
+%    $location_explain,
+% ];
+
+% my $status_form = begin
+
+%= include 'proofs/_status';
+
+% end
+
+% my $status_explain = begin
+
+% end
+
+% push @pages, [
+%    'website-status',
+%    'Status',
+%    $status_form,
+%    $status_explain,
+% ];
+
+
+<script src="/assets/config_form.js"></script>
+<script src="/assets/proof_website.js"></script>
+
+<form id="config-website" class="config-form">
+  <input id="identifier" type="hidden" value="new" />
+
+  <h1><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Claim Website</h1>
+
+% include 'dashboard/_tabbed';
+%= $::tabbed->('website-tabs' => \@pages);
+
+</form>
+

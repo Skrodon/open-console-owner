@@ -20129,6 +20129,9 @@ FORM#config-account TABLE#langtab.table-hover TBODY TR:hover {
   background-color: #e0e0e0;
 }
 
+FORM.config-form {
+  padding-bottom: 5ex;
+}
 FORM.config-form .any-delete-tab {
   color: var(--bs-danger);
 }
@@ -20342,6 +20345,20 @@ DIV.alert BUTTON.close {
   text-shadow: 0 1px 0 #fff;
 }
 
+/*
+ * Any block PRE block which can be copied
+ */
+PRE.copy-code {
+  white-space: pre-wrap;
+  padding: 0 0 0 1ex;
+  background-color: var(--bs-gray-200);
+}
+
+I.copier {
+  float: right;
+  cursor: pointer;
+}
+
 HEADER {
   width: 100%;
   position: absolute;
@@ -20433,6 +20450,9 @@ FORM.proof-list I.fa-solid {
 }
 #config-website .verify-info {
   color: var(--bs-blue);
+  display: none;
+}
+#config-website .verify-step2 {
   display: none;
 }
 
