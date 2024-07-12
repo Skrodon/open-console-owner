@@ -8,19 +8,6 @@
 	# Overrule the automatic detection of the virtual-host of the website
 	vhost    => 'https://open-console.eu',
 
-	#### Sessions
-
-	sessions => {
-		# The amount of time until some-one is logged-out automatically.  If this
-		# is too short, people cannot submit the forms the filled-in.  Time in
-		# seconds.
-		expire => 4 * 3600,
-	},
-
-	# The email addresses of the administrators: they get more pages in the
-	# dashboard.
-	admins   => [ 'email1' ],
-
 	# Secrets are used to encrypt cookies.  Multiple secrets can be active
 	# at the same time, for seemless changes.
 	# You may decide you use https://metacpan.org/pod/Mojolicious::Command::secret
@@ -29,10 +16,23 @@
     #       XXXvvvv replace this one, with any hex string vvvXXX
 	secrets  => [ '9ed5714761d3c28ee83f2fb20d2991a3fe282b93' ],
 
+	# The email addresses of the administrators: they get more pages in the
+	# dashboard.
+	admins   => [ 'email1' ],
+
 	# Select which interface languages you want to show to the end user.  When a
 	# translation is not ready yet, then you can better only add it in the test
 	# setup, not production.
 	interface_languages => [ 'en' ],
+
+	#### Sessions
+
+	sessions => {
+		# The amount of time until some-one is logged-out automatically.  If this
+		# is too short, people cannot submit the forms the filled-in.  Time in
+		# seconds.
+		expire => 4 * 3600,
+	},
 
 	#### Group management
 
@@ -87,30 +87,12 @@
 
 	#### Tasks implement batch processing
 
-	# First, create the Minion database.  Minion backend PostgreSQL is best supported.
-	# Run this for the defaults:
-	#   su - postgres psql
-	#     create database ocminion_test;     # or ocminion
-	#     create user ocminion with password '$yourpasswd';
-	#     grant all privileges on database ocminion_test to ocminion;
-	#     \c ocminion_test
-	#        grant all on schema public to ocminion;   # why?
-
 	tasks => {
-		# Minion is the batch processing framework.
-		minion => {
-			dbserver   => 'localhost:5432',   # default
-			dbname     => 'ocminion',         # default, or 'ocminion_test'
-			dbuser     => 'ocminion',         # default
-			dbpassword => '$your-passwd',     # required, test passwd != prod passwd!!!
-			# Other options accepted by Mojolicious::Backend::Minion
-		},
-
-		# When enabled, you get an minion administrative interface under /minion.
-		# Not yet tried.
- 		minion_admin => {
-			enabled => 0,
-		},
-		poll_interval => 2000,                # time between polls for task results
+		servers => [ {
+			label          => 'local',
+			endpoint       => 'https://localhost:3001',
+			authentication => '... bearer token',     # from tasks server
+		} ],
+		poll_interval => 2000,  # default
 	},
 }

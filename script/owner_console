@@ -3,7 +3,7 @@
 use strict;
 use warnings;
 
-use lib 'lib', '../open-console-core/lib';
+use lib 'lib', '../open-console-core/lib', '../open-console-tasks/lib';
 
 use Mojolicious::Commands;
 

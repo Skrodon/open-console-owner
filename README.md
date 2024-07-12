@@ -10,6 +10,7 @@ The software for Open Console is spread of multiple repositories:
   * <https://github.com/Skrodon/open-console-core> Core (required)
   * <https://github.com/Skrodon/open-console-owner> Owner Website (this repo)
   * <https://github.com/Skrodon/open-console-connect> Connection provider
+  * <https://github.com/Skrodon/open-console-tasks> batch processing
 
 # Open Console, Website Owner Interface
  
@@ -33,4 +34,4 @@ which do something with their website, domain-name, or network.
 
 ## SCSS -> CSS
 
-  * Bootstrap uses [[https://sass-lang.com/dart-sass/|Dart Sass]], so we do as well.  Run `npm install -f sass`, and then 'make css'
+  * Bootstrap uses [[https://sass-lang.com/dart-sass/|Dart Sass]], so we do as well.  Run `npm install -g sass`, and then 'make css'

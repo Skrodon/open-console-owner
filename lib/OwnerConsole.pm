@@ -71,7 +71,7 @@ sub startup
 	$self->plugin('BootstrapAlerts');
 	$self->plugin('I18NUtils');
 
-	$self->{O_tasks} = OwnerConsole::Tasks->new->startup($self->config->{tasks});
+	$self->{O_tasks} = OwnerConsole::Tasks->new(config => $self->config->{tasks});
 
 #$::app->users->db->collection('accounts')->remove({});  #XXX hack clean whole accounts table
 

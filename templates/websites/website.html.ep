@@ -1,10 +1,8 @@
 % layout 'dashboard';
-% title 'Create website proof';
+% title 'Website claim';
 
 % my $is_new  = $proof->proofId eq 'new';
 % $c->notify(error => 'Development of this kind of proofs is underway.');
-
-<style>TABLE { margin: 10px 20px } </style>
 
 % my $url = 'https://имена.бг';
 % my @pages;
@@ -26,25 +24,40 @@
       <button type="button" class="btn btn-success verify-button" id="check-url-button">Check</button>
       <i class="fa-solid fa-check    verify-success"  id="check-url-success"  aria-hidden="true"></i>
       <i class="fa-solid fa-asterisk verify-required" id="check-url-required" aria-hidden="true"></i>
+      <i class="fa-solid fa-xmark    verify-failed"   id="check-url-failed"   aria-hidden="true"></i>
       <div class="spinner-border     verify-waiting"  id="check-url-wait"     aria-hidden="true"></div>
+      <i class="fa-regular fa-circle-question verify-info" id="check-url-info" aria-hidden="true"></i>
     </div>
     <div class="alert alert-warning verify-required">Check the validity of your website url before continuing.</div>
     <div class="alert alert-info    verify-waiting">Checking may take some time.  Please be patient.</div>
     <div class="alert alert-success verify-success">This website address looks valid.</div>
+    <div class="alert alert-danger  verify-failed">The issue needs to be resolved.</div>
   </div>
 
-  <table>
-  <tr><th colspan="2">Verification results:</th></tr>
-  <tr><td>IDN   </td><td><a href="https://xn--80ajiqg.xn--90ae">https://xn--80ajiqg.xn--90ae</a></td></tr>
-  <tr><td>Served&nbsp;by&nbsp;</td><td>server.imena.bg</td></tr>
-  <tr><td>Canonical</td><td>www.imena.bg</td></tr>
-  <tr><td>DNSSEC</td><td>yes</td></tr>
-  <tr><td>Certificate&nbsp;</td><td>failed</td></tr>
-  </table>
+  <div class="modal" id="check-info-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Website url checking details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
 
-  <label class="form-label" for="save-options">Proof website ownership</label>
-  <div class="verify-required"><p>First verify the website address.</p></div>
+          <table class="table" id="check-trace">
+          <tr><th colspan="2">Verification trace:</th></tr>
+          </table>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div id="proof-options" class="verify-success">
+    <label class="form-label" for="save-options">Proof website ownership</label>
+    <p>You may now save your claim, but better immediately add a proof.  Pick any
+    of these:</p>
     <a href="/dashboard/website/new?prover=dns" class="btn btn-primary" role="button">
         <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> via DNS</a>
     <a href="/dashboard/website/new?prover=html" class="btn btn-primary" role="button">
@@ -201,7 +214,7 @@ by directing your browser to
 <form id="config-website" class="config-form">
   <input id="identifier" type="hidden" value="<%= $proof->proofId %>" />
 
-  <h1><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Website proof</h1>
+  <h1><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Claim Website</h1>
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('website-tabs' => \@pages);

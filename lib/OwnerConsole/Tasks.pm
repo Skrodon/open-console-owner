@@ -7,35 +7,32 @@ use Mojo::Base 'OpenConsole::Mango::Object';
 # No parts of the tasks are currently saved in the Mango database, still
 # this object is prepared for it.
 
-# The Minion administration uses PostgreSQL, because that seems to be
-# the backend the developers of Minion are using.  The Mongo/Mango
-# backends do did not get all changes around jobs admistration.
-
 use Log::Report 'open-console-owner';
 
-use Minion                       ();
-use Minion::Backend::Pg          ();
+use Mojo::UserAgent ();
 
-use OwnerConsole::Prover::Website ();
-use OwnerConsole::Session::TaskResults ();
-
-my %tasks;
-use constant {
-	POSTGRESQL_SERVER => 'localhost:5432',
-	MINION_USER       => 'ocminion',
-	MINION_DATABASE   => 'ocminion',
-};
+use OpenConsole::Util            qw(flat);
+use OpenConsole::Session::Task   ();
 
 =chapter NAME
 
-OwnerConsole::Tasks - Coordinate batch processing
+OwnerConsole::Tasks - Coordinate task processing
 
 =chapter SYNOPSIS
 
+	my $tasks = OwnerConsole::Tasks->new(config => \%config);
+	my $tasks = $::app->tasks;
+
 =chapter DESCRIPTION
 
-Batch processing is handled by Minion, which integrates nicely with
-Mojolicious.
+Activities which consume considerable time, for instance waiting for
+external resources, should be handled by a separate daemon: not hinder
+the website processes.  Therefore, we have special daemons, implemented
+in GitHUB project 'open-console-tasks'.
+
+This module implements the interface to these task performing daemons.
+The response of these daemons is fast, very fast compared to the execution
+time of their tasks.
 
 =chapter METHODS
 
@@ -43,87 +40,76 @@ Mojolicious.
 Standard M<Mojo::Base> constructors.
 
 =c_method new %options
+
 =cut
-
-=method startup $config, %options
-=cut
-
-sub startup($%)
-{	my ($self, $config, %args) = @_;
-
-	my %minion = %{$config->{minion} || {}};
-
-	### Connect to the minion support database
-
-	my $dbuser = delete $minion{dbuser}   || MINION_USER;
-	my $dbpwd  = delete $minion{dbpasswd} or panic "Task database configuration requires a password.";
-	my $conn   = Mojo::URL->new;
-	$conn->scheme('postgresql');
-	$conn->host_port(delete $minion{dbserver} || POSTGRESQL_SERVER);
-	$conn->userinfo("$dbuser:$dbpwd");  # no colon in username!
-	$conn->path(delete $minion{dbname} || MINION_DATABASE);
-
-	#XXX it seems not possible to pass the Mojo::URL as object for Mojo::Pg :-(
-	$::app->plugin(Minion => { Pg => $conn->to_unsafe_string }, %minion);
-	my $minion = $self->{OT_minion} = $::app->minion;
-
-	my $admin = $config->{minion_admin} || {};
-	if($admin->{enabled})
-	{	# management under /minion
-		$::app->plugin('Minion::Admin' => %$admin);
-	}
-
-	$::app->plugin('OwnerConsole::Prover::Website');
-	$self;
-}
 
 #----------------
 =section Attributes
 
-=method minion
+=method config
+=method userAgent
 =cut
 
-sub minion() { $_[0]->{OT_minion} }
+has config    => sub { ... };
+has userAgent => sub { Mojo::UserAgent->new };
+
+sub servers() { @{$_[0]->config->{servers}} }
 
 #----------------
 =section Task management
 
-=method run $task, $params, \%args
+=method call $task, \%params, %options
+
+=option  server LABEL
+=default server C<undef>
 =cut
 
-sub run($$)
-{	my ($self, $task, $params, $args) = @_;
-	$params->{lang} ||= $::app->account->ifLang;
+sub call($$)
+{	my ($self, $task, $params, %args) = @_;
+	my $label = $args{server};
 
-	my $jobid = $::app->minion->enqueue($task, [ $params ], $args);
-	($jobid, 'started');
+	my $resp;
+	foreach my $server ($self->servers)
+	{	my $endpoint = $server->{endpoint};
+		next if defined $label && $server->{label} ne $label;
+
+		my $tx = $self->userAgent->post("$endpoint/$task" =>
+			{ Authentication => "Bearer $server->{authentication}" },
+			json => $params,
+		);
+
+		$resp = $tx->res;
+		next unless $resp->is_success;
+
+		my $result = $resp->json;
+use Data::Dumper;
+warn "CALL $endpoint, $label = ", Dumper $result;
+
+		return OpenConsole::Session::Task->fromResponse($result, server => $server);
+	}
+
+	alert "Could not get task $task to " . ($label ? "server $label" : 'any server') . ', '  . $resp->code;
+	undef;
 }
 
-=method ping $session, $jobid, $label
-Returns a M<OwnerConsole::Session::TaskResults>.
+=method ping $ession, $taskid
 =cut
 
 sub ping($$)
-{	my ($self, $session, $jobid) = @_;
-	OwnerConsole::Session::TaskResults->job($session, $jobid);
+{	my ($self, $taskid) = @_;
+	my ($label, $jobid) = split '-', $taskid;
+	$self->call("job/$jobid", {}, server => $label);
 }
 
 #----------------
 =section Specific tasks
 
-
-=method verifyWebsiteURL $url, %options
+=method verifyWebsiteURL \%params, %options
 =cut
 
 sub verifyWebsiteURL($%)
-{	my ($self, $session, $params, %args) = @_;
-	my ($jobid, $status) = $self->run(verifyWebsiteURL => $params);
-	($jobid, $status);
+{	my ($self, $params, %args) = @_;
+	my $task = $self->call('proof/verifyWebsiteURL' => $params);
 }
-
-#----------------
-=section Other
-
-=cut
 
 1;

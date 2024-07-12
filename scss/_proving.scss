@@ -1,15 +1,20 @@
 
-.verify-block {
-	align-items: center !important;
-	padding: 10px;
+#config-website {
+//	align-items: center !important;
+//	padding: 10px;
 //	background-color: $oc-color-light;
+
+	#check-info-modal {
+		--bs-modal-width: 800px;
+	}
 
 	.verify-button {
 		margin: 0 1em 10px 0;
 	}
 
-	.fa-solid {
-		font-size: xx-large;
+	.fa-solid, .fa-regular {
+		font-size: x-large;
+		padding: 0 0.5rem;
 	}
 
 	.verify-success {
@@ -24,6 +29,16 @@
 
 	.verify-waiting {
 		color: var(--bs-indigo);
+		display: none;
+	}
+
+	.verify-failed {
+		color: var(--bs-red);
+		display: none;
+	}
+
+	.verify-info {
+		color: var(--bs-blue);
 		display: none;
 	}
 }

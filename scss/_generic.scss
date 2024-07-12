@@ -3,6 +3,11 @@ BODY {
 	color: white;
 }
 
+TH, TD {
+	vertical-align: baseline;
+	text-align: left;
+}
+
 H1 {
 	color: $oc-color-normal;
 	margin-bottom: 1ex;
@@ -34,6 +39,9 @@ BUTTON.close {
 	padding: 0;
 	background-color: transparent;
 	border: 0;
+	font-size: 1.5rem;
+	font-weight: 700;
+	opacity: .5;
 	-webkit-appearance: none;
 }
 
@@ -57,12 +65,9 @@ DIV.modal {
 DIV.alert {
 	BUTTON.close {
 		float: right;
-		font-size: 1.5rem;
-		font-weight: 700;
 		line-height: 1;
 		color: #000;
 		text-shadow: 0 1px 0 #fff;
-		opacity: .5;
 	}
 }
 

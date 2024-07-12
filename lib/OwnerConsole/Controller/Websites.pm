@@ -6,11 +6,9 @@ use Mojo::Base 'OwnerConsole::Controller';
 
 use Log::Report 'open-console-owner';
 
-use OpenConsole::Util            qw(flat :validate new_token);
-use OpenConsole::Proof::Website ();
+use OpenConsole::Util       qw(flat :validate new_token);
 
-use OwnerConsole::Challenge      ();
-use OwnerConsole::Session::TaskResults ();
+use OwnerConsole::Challenge ();
 
 sub index()
 {   my $self = shift;
@@ -72,7 +70,7 @@ warn "HOW=$how";
 
 	if($how eq 'delete')
 	{	$proof->delete;
-		$session->notify(info => __x"Proof for Website '{url}' removed.", url => $proof->url);
+		$session->notify(info => __x"Claim for Website '{url}' removed.", url => $proof->url);
 		$session->redirect('/dashboard/websites');
 	}
 
@@ -81,20 +79,23 @@ warn "HOW=$how";
 	if($how eq 'check-url')
 	{
 warn "CHECK URL ", $proof->url;
-		$self->startTask($session, verifyWebsiteURL => { url => $proof->url },
-			poll => 'check-url-task',
-		);
+		my $task = $::app->tasks->verifyWebsiteURL({field => 'url', url => $proof->url});
+		$session->startPoll('check-url-task' => $task) if $task;
+		$session->mergeTaskResults($task);
 		return $session->reply;
 	}
 	if($how eq 'check-url-task')
-	{	my $jobid = $session->requiredParam('poll-token');
-warn "CHECK URL POLL $jobid";
-		my $results = OwnerConsole::Session::TaskResults->job($session, $jobid);
-$session->_data->{poll_results} = $results->_data;
-		$self->taskEnded($session) if $results->taskFinished;
+	{	my $taskid = $session->requiredParam('task');
+warn "CHECK URL POLL $taskid";
+		my $task = $::app->tasks->ping($taskid);
+		$session->mergeTaskResults($task);
+		$session->setData(show_trace => $session->showTrace);
+		$proof->setDataCompressed(verifyTrace => $task->trace)
+
+		$session->stopPolling;
 		return $session->reply;
 	}
-	$session->ignoreParam('check-url-token');
+	$session->ignoreParam('taskid');
 
 	if($how eq 'save' && $session->isHappy)
 	{	$proof->save(by_user => 1);

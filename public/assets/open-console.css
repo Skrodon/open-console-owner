@@ -20282,6 +20282,11 @@ BODY {
   color: white;
 }
 
+TH, TD {
+  vertical-align: baseline;
+  text-align: left;
+}
+
 H1 {
   color: #3A6275;
   margin-bottom: 1ex;
@@ -20310,6 +20315,9 @@ BUTTON.close {
   padding: 0;
   background-color: transparent;
   border: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  opacity: 0.5;
   -webkit-appearance: none;
 }
 
@@ -20329,12 +20337,9 @@ DIV.modal .modal-header .close {
  */
 DIV.alert BUTTON.close {
   float: right;
-  font-size: 1.5rem;
-  font-weight: 700;
   line-height: 1;
   color: #000;
   text-shadow: 0 1px 0 #fff;
-  opacity: 0.5;
 }
 
 HEADER {
@@ -20400,26 +20405,34 @@ FORM.proof-list I.fa-solid {
   text-align: center;
 }
 
-.verify-block {
-  align-items: center !important;
-  padding: 10px;
+#config-website #check-info-modal {
+  --bs-modal-width: 800px;
 }
-.verify-block .verify-button {
+#config-website .verify-button {
   margin: 0 1em 10px 0;
 }
-.verify-block .fa-solid {
-  font-size: xx-large;
+#config-website .fa-solid, #config-website .fa-regular {
+  font-size: x-large;
+  padding: 0 0.5rem;
 }
-.verify-block .verify-success {
+#config-website .verify-success {
   color: var(--bs-green);
   display: none;
 }
-.verify-block .verify-required {
+#config-website .verify-required {
   color: var(--bs-orange);
   display: none;
 }
-.verify-block .verify-waiting {
+#config-website .verify-waiting {
   color: var(--bs-indigo);
+  display: none;
+}
+#config-website .verify-failed {
+  color: var(--bs-red);
+  display: none;
+}
+#config-website .verify-info {
+  color: var(--bs-blue);
   display: none;
 }
 

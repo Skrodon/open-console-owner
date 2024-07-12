@@ -56,7 +56,7 @@ console.log('Resend accepted');
 		});
 	});
 
-	$('button', modal).on('click', function () { modal.hide() });
+	$('BUTTON', modal).on('click', function () { modal.hide() });
 }
 
 function activate_invite_add(form) {

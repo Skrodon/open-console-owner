@@ -8,11 +8,11 @@ use Log::Report 'open-console-owner';
 
 use List::Util    qw(first);
 
-use OwnerConsole::Session::Ajax ();
+use OpenConsole::Session::Ajax ();
 
 sub ajaxSession(%)
 {	my ($self, %args) = @_;
-	OwnerConsole::Session::Ajax->new(controller => $self, %args);
+	OpenConsole::Session::Ajax->create(\%args, controller => $self);
 }
 
 #-------------
@@ -155,21 +155,33 @@ sub challenge()
 #-------------
 =section Running tasks
 
-=method startTask $session, $taskname, \%params, %options;
+=method taskStart $session, $taskname, \%params, %options;
 =cut
 
-sub startTask($$$%)
+sub taskStart($$$%)
 {	my ($self, $session, $taskname, $params, %args) = @_;
 	$params->{lang} ||= $session->lang;
-	my ($jobid, $state) = $::app->tasks->$taskname($session, $params);
-warn "Started task $taskname in $jobid\n";
+	my ($taskid, $state) = $::app->tasks->$taskname($session, $params);
+warn "Started task $taskname in $taskid\n";
 
 	if(my $poll = delete $args{poll})
-	{	$session->pollFor($poll, $jobid);
+	{	$session->pollFor($poll, $taskid);
 	}
 
-	$jobid;
+	$taskid;
 }
+
+=method taskPoll $session, $taskid, %options
+=cut
+
+sub taskPoll($%)
+{	my ($self, $session, $taskid, %args) = @_;
+	$::app->tasks->ping($session, $taskid);
+}
+
+=method taskEnded $session, $options
+Flag the user's browser that polling can stop.
+=cut
 
 sub taskEnded($%)
 {	my ($self, $session, %args) = @_;

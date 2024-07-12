@@ -187,7 +187,7 @@ sub configMember()
 			$self->_emailInvite(invite => $invite, identity => $identity, group => $group,
 				subject => (__x"Your are invited to take part in group '{name}'", name => $group->name));
 		}
-		$session->addOtherData(added => \@added);
+		$session->setData(added => \@added);
 	}
 	elsif($how eq 'invite_resend')
 	{	my $email = $session->requiredParam('email');

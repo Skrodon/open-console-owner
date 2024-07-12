@@ -175,6 +175,15 @@ function save_validated_form(form) {
 	});
 }
 
+function show_trace(table, trace) {
+	$('TR.trace', table).remove();
+	trace.forEach((line) => {
+		table.last().append($('<tr>').attr('class', 'trace')
+          .append($('<td>').text(line[0]))
+          .append($('<td>').text(line[1])));
+	});
+}
+
 function install_config_form(form) {
 	$('[required]').each(function () {
 		var p = $(this).attr('placeholder');
