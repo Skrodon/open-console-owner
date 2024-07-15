@@ -163,6 +163,8 @@ sub taskStart($$$%)
 	$params->{lang} ||= $session->lang;
 	my ($taskid, $state) = $::app->tasks->$taskname($session, $params);
 warn "Started task $taskname in $taskid\n";
+	    $session->mergeTaskResults($task);
+
 
 	if(my $poll = delete $args{poll})
 	{	$session->pollFor($poll, $taskid);
@@ -171,12 +173,32 @@ warn "Started task $taskname in $taskid\n";
 	$taskid;
 }
 
-=method taskPoll $session, $taskid, %options
+=method taskWait $session, $task, $poll, %options
+=cut
+
+sub taskWait($$$%)
+{	my ($self, $session, $task, $poll) = @_;
+	$session->startPoll($poll);
+	$session->mergeTaskResults($task);
+	$session;
+}
+
+=method taskPoll $session, %options
+Generic task polling code.
 =cut
 
 sub taskPoll($%)
-{	my ($self, $session, $taskid, %args) = @_;
-	$::app->tasks->ping($session, $taskid);
+{	my ($self, $session, %args) = @_;
+
+	my $taskid = $session->requiredParam('task');
+	my $task = $::app->tasks->ping($taskid);
+	$session->mergeTaskResults($task);
+	$session->setData(show_trace => $self->showTrace($task->trace));
+
+	$session->stopPolling
+		if $task->finished;
+
+	$task;
 }
 
 =method taskEnded $session, $options
@@ -186,6 +208,27 @@ Flag the user's browser that polling can stop.
 sub taskEnded($%)
 {	my ($self, $session, %args) = @_;
 	$session->stopPolling;
+}
+
+=method showTrace
+Convert a trace into user-consumable text.
+=cut
+
+sub showTrace($%)
+{	my ($self, $trace, %args) = @_;
+	$trace && @$trace or return [];
+
+	my @lines;
+	my ($first, @trace) = @$trace;
+	my $start = DateTime->from_epoch(epoch => $first->[0]);
+	my $tz    = $self->account->timezone;
+	$start->set_time_zone($tz) if $tz;
+
+	push @lines, [ $start->stringify =~ s/T/\n/r, $first->[1] ];
+	push @lines, [ (sprintf "+%0.3fs", $_->[0] - $first->[0]), $_->[1] ]
+		for @trace;
+
+	\@lines;
 }
 
 #-------------

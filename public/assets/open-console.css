@@ -20359,6 +20359,11 @@ I.copier {
   cursor: pointer;
 }
 
+I.downloader {
+  float: right;
+  cursor: pointer;
+}
+
 HEADER {
   width: 100%;
   position: absolute;
@@ -20454,6 +20459,9 @@ FORM.proof-list I.fa-solid {
 }
 #config-website .verify-step2 {
   display: none;
+}
+#config-website PRE {
+  overflow: visible;
 }
 
 DIV.dashboard NAV.sidebar SPAN.badge {

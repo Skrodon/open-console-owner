@@ -3,6 +3,8 @@
 
 % $c->notify(error => 'Development of this kind of proofs is underway.');
 
+% my $now = OpenConsole::Util::timestamp();
+
 % my @pages;
 % my $proof_form = begin
 
@@ -29,6 +31,12 @@
 
           <table class="table" id="check-trace">
           <tr><th colspan="2">Verification trace:</th></tr>
+
+  % my $trace = $c->showTrace($proof->verifyURLTrace);
+  % foreach my $line (@$trace) {
+          <tr><td><%= $line->[0] %></td><td><%= $line->[1] %></td></tr>
+  % }
+
           </table>
 
         </div>
@@ -102,19 +110,25 @@ open-console.<%= $proof->hostPunicode %> TXT "<%= $proof->challenge %>"
     <div>
       <label for="verify-file" class="form-label">Proof via File</label>
 
-      <p>Create a file named <tt>open-console.txt</tt> in the
+      <p>Create a file named <tt>/.well-known/open-console.json</tt> in the
       root directory of you website, containing the following:</p>
 
-<pre id="proof-file-text" class="copy-code">
-website <%= $proof->url %> <%= $proof->challenge %>
+<pre id="proof-file-text" class="copy-code xdownload-code-inline"
+   data-ct="application/json" data-file="open-console.json">
+[ { "note" : "Website Ownership Proof",
+    "version" : "website file 20240714",
+    "website" : "<%= $proof->url %>",
+    "created" : "<%= $now %>",
+    "challenge" : "<%= $proof->challenge %>"
+  }
+]
 </pre>
 
-      <p>(This is a single line.  The file may contain blank lines, and comments
-      starting with a "<tt># </tt>")</p>
+      <p>(The file contains one array, potentially with multiple challenges)</p>
 
       <p>The file must be readible for the outside world.  You may test this
       by directing your browser to
-      <a href="<%= $proof->url %>/open-console.txt" target="_blank">the location</a>.</p>
+      <a href="<%= $proof->url %>/.well-known/open-console.json" target="_blank">the location</a>.</p>
 
       <p>After you have created this file, start verification:</p>
       <button id="verify-file" class="btn btn-primary">Verify</button>

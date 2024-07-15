@@ -27,7 +27,11 @@ sub website(%)
 	else
 	{	my $proof  = $account->proof(websites => $proofid);
 		my $prover = $self->param('prover') || 'none';
-		return $self->render(template => 'websites/website', proof => $proof, prover => $prover);
+		return $self->render(
+			template => 'websites/website',
+			proof  => $proof,
+			prover => $prover,
+		);
 	}
 }
 
@@ -58,6 +62,57 @@ sub _acceptWebsite()
 	$self;
 }
 
+sub _checkUrlStart($$)
+{	my ($self, $session, $proof) = @_;
+warn "CHECK URL ", $proof->url;
+	my $task = $::app->tasks->verifyWebsiteURL({field => 'url', url => $proof->url});
+	$session->startPoll('check-url-task' => $task) if $task;
+	$session->mergeTaskResults($task);
+	$session->reply;
+}
+
+sub _checkUrlTask($$)
+{	my ($self, $session, $proof) = @_;
+warn "CHECK URL POLL $taskid";
+	my $taskid = $session->requiredParam('task');
+	my $task = $::app->tasks->ping($taskid);
+	$session->mergeTaskResults($task);
+	$session->setData(show_trace => $self->showTrace($task->trace));
+
+	$task->finished
+		or return $session->reply;
+
+	$session->stopPolling;
+	$session->isHappy
+		or return $session->reply;
+
+	$proof->setData(verifyURL => $task->results, verifyURLTrace => $task->trace, url => $proof->printableURL);
+	$proof->save;
+
+	$session->setData(proofid => $proof->proofId, url => $proof->url);
+	$session->reply;
+}
+
+sub _proofFileStart($$)
+{	my ($self, $session, $proof) = @_;
+warn "proofFile ", $proof->url;
+	my $task = $::app->tasks->proofWebsiteFile({field => 'url', url => $proof->url});
+	$self->taskWait($session, $task, 'proof-file-task');
+	$session->reply;
+}
+
+sub _proofFileTask($$)
+{	my ($self, $session, $proof) = @_;
+	my $task   = $self->taskPoll($session);
+	if($task && $task->finished && $session->isHappy)
+	{	$proof->setData(proofFile => $task->results, proofTrace => $task->trace);
+		$proof->save;
+	}
+
+	$session->reply;
+}
+
+
 sub configWebsite()
 {   my $self     = shift;
 	my $session  = $self->ajaxSession;
@@ -84,43 +139,21 @@ warn "HOW=$how";
 		or return $session->reply;
 warn "ACCEPTED";
 
-	if($how eq 'check-url')
-	{
-warn "CHECK URL ", $proof->url;
-		my $task = $::app->tasks->verifyWebsiteURL({field => 'url', url => $proof->url});
-		$session->startPoll('check-url-task' => $task) if $task;
-		$session->mergeTaskResults($task);
-		return $session->reply;
-	}
+	return $self->_checkUrlStart($session, $proof)
+		if $how eq 'check-url';
 
-	if($how eq 'check-url-task')
-	{	my $taskid = $session->requiredParam('task');
-warn "CHECK URL POLL $taskid";
-		my $task = $::app->tasks->ping($taskid);
-		$session->mergeTaskResults($task);
+	return $self->_checkUrlTask($session, $proof)
+		if $how eq 'check-url-task';
 
-		if($task->finished)
-		{	$session->stopPolling;
-			if($session->isHappy)
-			{	$proof->setData(verifyURL      => $task->results);
-				$proof->setData(verifyURLTrace => $task->trace);
-				my $norm = $proof->printableURL;
-				$proof->setData(url => $norm);
-use Data::Dumper;
-warn "SAVE PROOF=", Dumper $proof->_data;
-				$proof->save;
+	return $self->_proofFileStart($session, $proof)
+		if $how eq 'proof-file';
 
-				$session->setData(proofid => $proof->proofId);
-				$session->setData(url => $norm);
-			}
-		}
+	return $self->_proofFileTask($session, $proof)
+		if $how eq 'proof-file-task';
 
-		$session->setData(show_trace => $session->showTrace($task->trace));
-		return $session->reply;
-	}
-	else
-	{	$session->ignoreParam('taskid');
-	}
+	### Wrap it up
+
+	$session->ignoreParam('taskid');
 
 	if($how eq 'save' && $session->isHappy)
 	{	$proof->save(by_user => 1);

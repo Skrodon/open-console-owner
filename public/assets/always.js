@@ -37,7 +37,7 @@ $(document).ready(function() {
 	// copy-paste text blocks
 	$('PRE.copy-code').each(function () {
 		var pre = $(this);
-		pre.before('<i class="fa-regular fa-copy copier" aria-hidden="true" for="' + pre.attr('id') + '"></i>');
+		pre.before('<i class="fa-regular fa-copy copier" aria-label="copy" for="' + pre.attr('id') + '"></i>');
 	});
 
 	$('.copier').each(function () {
@@ -47,4 +47,28 @@ $(document).ready(function() {
 			navigator.clipboard.writeText(code.text());
 		});
 	});
+
+	// download text blocks
+	$('PRE.download-code-inline').each(function () {
+		var pre = $(this);
+		pre.before('<i class="fa-solid fa-download downloader" aria-label="download" for="' + pre.attr('id') + '"></i>');
+	});
+
+	$('.downloader').each(function () {
+		var icon = $(this);
+		var code = $('PRE#' + icon.attr('for'));
+		icon.on('click', function (event) {
+			var node = $('<a>', {
+				id: 'here',
+				download: code.data('file'),
+				href: 'data:' + code.data('ct') + ';base64,' + window.btoa(code.text()), // only ascii
+                text: 'load' });
+console.log(node);
+			code.append(node);
+			node.click();
+console.log("clicked");
+			$('#here').click();
+		});
+	});
+
 });

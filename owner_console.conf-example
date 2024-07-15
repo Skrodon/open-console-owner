@@ -2,7 +2,7 @@
 
 {
 	# This instance name must be unique within the network.  It is used
-	# as prefix in userid's
+	# as prefix in userid's.  [a-z0-9]{5,8}
 	instance => 'oc001',
 
 	# Overrule the automatic detection of the virtual-host of the website
