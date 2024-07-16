@@ -85,7 +85,7 @@ warn "HOW=$how";
 
 	if($how eq 'save' && $session->isHappy)
 	{	$proof->save(by_user => 1);
-		if($proof->isInvalid)
+		unless($proof->isValid)
 		{	$self->_startVerification1(proof => $proof);
 			$session->notify(info => __x"Follow the instructions in the email.");
 		}

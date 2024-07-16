@@ -4,11 +4,7 @@
 //	padding: 10px;
 //	background-color: $oc-color-light;
 
-	#check-info-modal {
-		--bs-modal-width: 800px;
-	}
-
-	.verify-button {
+	#check-url-button, #start-proof-button {
 		margin: 0 1em 10px 0;
 	}
 
@@ -17,7 +13,7 @@
 		padding: 0 0.5rem;
 	}
 
-	.verify-success {
+	.verify-success, .proof-success {
 		color: var(--bs-green);
 		display: none;
 	}
@@ -27,12 +23,12 @@
 		display: none;
 	}
 
-	.verify-waiting {
+	.verify-waiting, .proof-waiting {
 		color: var(--bs-indigo);
 		display: none;
 	}
 
-	.verify-failed {
+	.verify-failed, .proof-failed {
 		color: var(--bs-red);
 		display: none;
 	}

@@ -21,6 +21,7 @@ function activate_delete_button(form) {
 
 function add_val_message(form, input, level, message) {
 	var unique = unique_counter++;
+console.log("VALMSG " + input + ", level " + level + ", " + message);
 	$('LABEL[for="' + input + '"]', form).each(function() {
 		$(this).parent().append('<div id="msg-' + unique + '" class="val-msg val-' + level + '">'
 			+ jQuery('<div />').text(message).html() + '</div>');

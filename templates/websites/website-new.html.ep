@@ -8,9 +8,9 @@
 % my $location_form = begin
 
   <div>
-    <label for="url" class="form-label">Website address</label>
-    <input name="url" type="text" id="url" class="form-control" placeholder="https://www.example.com/~user"
-      aria-describedby="url_explain" required value="<%= $proof->url %>" />
+    <label for="website" class="form-label">Website address</label>
+    <input name="website" type="text" id="website" class="form-control" placeholder="https://www.example.com/~user"
+      aria-describedby="url_explain" required value="<%= $proof->website %>" />
     <div id="url_explain" class="form-text">One of your own or your group's website addresses.</div>
   </div>
 
@@ -30,10 +30,10 @@
     <div class="alert alert-danger  verify-failed">The issue needs to be resolved.</div>
   </div>
 
-%# forms submit with entry in single input field forms :-(
+  %# forms submit with entry in single input field forms :-(
   <input type="text" name="submit-blocker" style="display: none;" />
 
-  #% pass assigned proof-id after check to the step2
+  %# pass assigned proof-id after check to the step2
   <input type="hidden" id="proofid" />
 
   <div id="proof-options" class="verify-step2">
@@ -42,7 +42,7 @@
     You may now save your claim, but better immediately add a proof, below.</p>
   </div>
 
-  <div class="modal" id="check-info-modal">
+  <div class="modal wide-modal" id="check-info-modal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -103,23 +103,6 @@ do want a proof of ownership, in which case you can add it at when needed.</p>
 %    'Website',
 %    $location_form,
 %    $location_explain,
-% ];
-
-% my $status_form = begin
-
-%= include 'proofs/_status';
-
-% end
-
-% my $status_explain = begin
-
-% end
-
-% push @pages, [
-%    'website-status',
-%    'Status',
-%    $status_form,
-%    $status_explain,
 % ];
 
 

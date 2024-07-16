@@ -81,8 +81,8 @@ sub openProof($$)
 
 my %proof_status = (    # translatable name, bg-color
 	unproven => [ __"Unproven",   'warning' ],
-	verify   => [ __"Verifying",  'info'    ],
-	refresh  => [ __"Refreshing", 'info'    ],
+	verify   => [ __"Verifying",  'info'    ],  # only when verification takes long
+	refresh  => [ __"Refreshing", 'info'    ],  # only when refreshing takes long
 	proven   => [ __"Proven",     'success' ],
 	expired  => [ __"Expired",    'dark'    ],
 );
@@ -155,31 +155,15 @@ sub challenge()
 #-------------
 =section Running tasks
 
-=method taskStart $session, $taskname, \%params, %options;
-=cut
-
-sub taskStart($$$%)
-{	my ($self, $session, $taskname, $params, %args) = @_;
-	$params->{lang} ||= $session->lang;
-	my ($taskid, $state) = $::app->tasks->$taskname($session, $params);
-warn "Started task $taskname in $taskid\n";
-	    $session->mergeTaskResults($task);
-
-
-	if(my $poll = delete $args{poll})
-	{	$session->pollFor($poll, $taskid);
-	}
-
-	$taskid;
-}
-
 =method taskWait $session, $task, $poll, %options
+Initialize the task waiting.
 =cut
 
 sub taskWait($$$%)
 {	my ($self, $session, $task, $poll) = @_;
-	$session->startPoll($poll);
+	$session->startPoll($poll, $task);
 	$session->mergeTaskResults($task);
+    $session->setData(show_trace => $self->showTrace($task->trace));
 	$session;
 }
 
@@ -193,21 +177,7 @@ sub taskPoll($%)
 	my $taskid = $session->requiredParam('task');
 	my $task = $::app->tasks->ping($taskid);
 	$session->mergeTaskResults($task);
-	$session->setData(show_trace => $self->showTrace($task->trace));
-
-	$session->stopPolling
-		if $task->finished;
-
 	$task;
-}
-
-=method taskEnded $session, $options
-Flag the user's browser that polling can stop.
-=cut
-
-sub taskEnded($%)
-{	my ($self, $session, %args) = @_;
-	$session->stopPolling;
 }
 
 =method showTrace

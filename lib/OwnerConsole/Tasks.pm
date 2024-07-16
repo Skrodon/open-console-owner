@@ -112,4 +112,12 @@ sub verifyWebsiteURL($%)
 	my $task = $self->call('proof/verifyWebsiteURL' => $params);
 }
 
+=method proofWebsiteFile \%params, %options
+=cut
+
+sub proofWebsiteFile($%)
+{	my ($self, $params, %args) = @_;
+	my $task = $self->call('proof/proofWebsiteFile' => $params);
+}
+
 1;

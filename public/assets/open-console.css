@@ -20222,6 +20222,9 @@ FORM.config-form .container {
 FORM.config-form .row {
   height: 100%;
 }
+FORM.config-form .wide-modal {
+  --bs-modal-width: 800px;
+}
 
 DIV.dashboard IFRAME#service-window {
   height: 1200px;
@@ -20299,6 +20302,12 @@ H1 {
   white-space: nowrap !important;
 }
 
+PRE {
+  white-space: pre-wrap;
+  background-color: var(--bs-gray-200);
+  padding: 0 0 0 1ex;
+}
+
 LABEL.form-label {
   margin-top: 2ex;
   font-size: larger;
@@ -20348,12 +20357,6 @@ DIV.alert BUTTON.close {
 /*
  * Any block PRE block which can be copied
  */
-PRE.copy-code {
-  white-space: pre-wrap;
-  padding: 0 0 0 1ex;
-  background-color: var(--bs-gray-200);
-}
-
 I.copier {
   float: right;
   cursor: pointer;
@@ -20427,17 +20430,14 @@ FORM.proof-list I.fa-solid {
   text-align: center;
 }
 
-#config-website #check-info-modal {
-  --bs-modal-width: 800px;
-}
-#config-website .verify-button {
+#config-website #check-url-button, #config-website #start-proof-button {
   margin: 0 1em 10px 0;
 }
 #config-website .fa-solid, #config-website .fa-regular {
   font-size: x-large;
   padding: 0 0.5rem;
 }
-#config-website .verify-success {
+#config-website .verify-success, #config-website .proof-success {
   color: var(--bs-green);
   display: none;
 }
@@ -20445,11 +20445,11 @@ FORM.proof-list I.fa-solid {
   color: var(--bs-orange);
   display: none;
 }
-#config-website .verify-waiting {
+#config-website .verify-waiting, #config-website .proof-waiting {
   color: var(--bs-indigo);
   display: none;
 }
-#config-website .verify-failed {
+#config-website .verify-failed, #config-website .proof-failed {
   color: var(--bs-red);
   display: none;
 }

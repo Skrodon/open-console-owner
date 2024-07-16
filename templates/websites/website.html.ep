@@ -3,22 +3,28 @@
 
 % $c->notify(error => 'Development of this kind of proofs is underway.');
 
-% my $now = OpenConsole::Util::timestamp();
+% my $now  = OpenConsole::Util::timestamp();
 
 % my @pages;
 % my $proof_form = begin
 
   <div>
-    <label for="url" class="form-label">Website address</label>
-    <input name="url" type="text" id="url" class="form-control" placeholder="https://www.example.com/~user"
-      aria-describedby="url_explain" required value="<%= $proof->url %>" disabled />
+    <label for="website" class="form-label">Website address</label>
+    <input name="website" type="text" id="website" class="form-control" placeholder="https://www.example.com/~user"
+      aria-describedby="url_explain" required value="<%= $proof->website %>" disabled />
     <a href='#' id="check-url-info">Check details</a>
   </div>
 
-  <input type="hidden" name="selected-prover" id="selected-prover" value="<%= $prover || 'none' %>" />
+  <input type="hidden" name="selected-prover" id="selected-prover" value="<%= $prover %>" />
+  <input type="hidden" name="has-proof" id="has-proof" value="<%= $has_proof %>" />
+
+  % if($proof->hasExpired) {
+  <div class="alert alert-danger">The proof has expired, run it again.</div>
+  % }
+
   &nbsp;<br />
 
-  <div class="modal" id="check-info-modal">
+  <div class="modal wide-modal" id="check-info-modal">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -34,7 +40,7 @@
 
   % my $trace = $c->showTrace($proof->verifyURLTrace);
   % foreach my $line (@$trace) {
-          <tr><td><%= $line->[0] %></td><td><%= $line->[1] %></td></tr>
+          <tr class="trace"><td><%= $line->[0] %></td><td><%= $line->[1] %></td></tr>
   % }
 
           </table>
@@ -48,92 +54,151 @@
 
 %# <pre><%= Data::Dumper::Dumper($proof) %></pre>
 
-  <div id="proof-pages">
-    <h5>No ownership proof provided (yet)</h5>
-    <p>You have not proved ownership of this website.  Some services may not care,
-    where other will require a proof to function.</p>
+  <div id="proof-create">
 
-    <div id="proof-methods">
-	  <div class="form-check">
-  		  <input class="form-check-input" type="radio" name="prover" value="none" id="proof-method-none">
-  		  <label class="form-check-label" for="proof-none">No proof provided (yet)</label>
-	  </div>
-	  <div class="form-check">
-  		  <input class="form-check-input" type="radio" name="prover" value="dns" id="proof-method-dns">
-  		  <label class="form-check-label" for="proof-dns">Proof via DNS</label>
-	  </div>
-	  <div class="form-check">
-  		  <input class="form-check-input" type="radio" name="prover" value="html" id="proof-method-html">
-  		  <label class="form-check-label" for="proof-html">Proof via HTML</label>
-	  </div>
-	  <div class="form-check">
-  		  <input class="form-check-input" type="radio" name="prover" value="file" id="proof-method-file">
-  		  <label class="form-check-label" for="proof-file">Proof via File</label>
-	  </div>
+    <div id="proof-pages">
+      <h5>No ownership proof provided (yet)</h5>
+      <p>You have not proved ownership of this website.  Some services may not care,
+      where other will require a proof to function.</p>
 
-      &nbsp;<br />
+      <div id="proof-methods">
+	    <div class="form-check">
+    		  <input class="form-check-input" type="radio" name="prover" value="none" id="proof-method-none">
+    		  <label class="form-check-label" for="proof-none">No proof provided (yet)</label>
+	    </div>
+	    <div class="form-check">
+    		  <input class="form-check-input" type="radio" name="prover" value="dns" id="proof-method-dns">
+    		  <label class="form-check-label" for="proof-dns">Proof via DNS</label>
+	    </div>
+	    <div class="form-check">
+    		  <input class="form-check-input" type="radio" name="prover" value="html" id="proof-method-html">
+    		  <label class="form-check-label" for="proof-html">Proof via HTML</label>
+	    </div>
+	    <div class="form-check">
+    		  <input class="form-check-input" type="radio" name="prover" value="file" id="proof-method-file">
+    		  <label class="form-check-label" for="proof-file">Proof via File</label>
+	    </div>
+
+        &nbsp;<br />
+      </div>
     </div>
-  </div>
 
-  <div id="proof-page-dns" class="proof-page">
-    <div>
-      <label for="verify-dns" class="form-label">Proof via DNS</label>
+    <div id="proof-page-dns" class="proof-page">
+      <div>
+        <label for="verify-dns" class="form-label">Proof via DNS</label>
 
-      <p>Add this to your DNS configuration:</p>
-<pre id="proof-dns-text" class="copy-code">
-open-console.<%= $proof->hostPunicode %> TXT "<%= $proof->challenge %>"
+        <p>Add this to your DNS configuration:</p>
+<pre   id="proof-dns-text" class="copy-code">
+open-console.<%=   $proof->hostPunicode %> TXT "<%= $proof->challenge %>"
 </pre>
 
-      <p>After you have added above record, start verification:</p>
-      <button id="verify-dns" class="btn btn-primary">Verify</button>
+        <p>After you have added above record, start verification.</p>
+      </div>
     </div>
-  </div>
 
-  <div id="proof-page-html" class="proof-page">
-    <div>
-      <label for="verify-html" class="form-label">Proof via HTML</label>
+    <div id="proof-page-html" class="proof-page">
+      <div>
+        <label for="verify-html" class="form-label">Proof via HTML</label>
 
-      <p>Add this line to your <tt>/index.html</tt> file, in a part
-      which is not dynamically rendered.</p>
+        <p>Add this line to your <tt>/index.html</tt> file, in a part
+        which is not dynamically rendered.</p>
 
-      %# This is probably not the current practice.
-<pre id="proof-html-text" class="copy-code">
-&lt;link rel="open-console" value="<%= $proof->challenge %>"&gt;
+        %# This is probably not the current practice.
+<pre   id="proof-html-text" class="copy-code">
+&lt;link   rel="open-console" value="<%= $proof->challenge %>"&gt;
 </pre>
 
-      <p>After you have added above line to your frontpage, start verification:</p>
-      <button id="verify-html" class="btn btn-primary">Verify</button>
+        <p>After you have added above line to your frontpage, start verification.</p>
+      </div>
     </div>
-  </div>
 
-  <div id="proof-page-file" class="proof-page">
-    <div>
-      <label for="verify-file" class="form-label">Proof via File</label>
+    <div id="proof-page-file" class="proof-page">
+      <div>
+        <label for="verify-file" class="form-label">Proof via File</label>
 
-      <p>Create a file named <tt>/.well-known/open-console.json</tt> in the
-      root directory of you website, containing the following:</p>
+        <p>In your website, create a file named
+<pre>
+<%= $wk_path %>
+</pre>
+        containing the following text:</p>
 
 <pre id="proof-file-text" class="copy-code xdownload-code-inline"
-   data-ct="application/json" data-file="open-console.json">
-[ { "note" : "Website Ownership Proof",
-    "version" : "website file 20240714",
-    "website" : "<%= $proof->url %>",
-    "created" : "<%= $now %>",
-    "challenge" : "<%= $proof->challenge %>"
+     data-ct="application/json" data-file="open-console.json">
+[ { "note": "Website Ownership Proof",
+    "version": "website <%= $file_algo %>",
+    "website": "<%= $proof->website %>",
+    "created": "<%= $now %>",
+    "challenge": "<%= $proof->challenge %>"
   }
 ]
 </pre>
 
-      <p>(The file contains one array, potentially with multiple challenges)</p>
+        <p>(The file contains one JSON array, potentially with multiple challenges)</p>
 
-      <p>The file must be readible for the outside world.  You may test this
-      by directing your browser to
-      <a href="<%= $proof->url %>/.well-known/open-console.json" target="_blank">the location</a>.</p>
+        <p>The file must be readible for the outside world.  You may test this
+        by directing your browser to
+        <a href="<%= $proof->website %><%= $wk_path %>" target="_blank">the location</a>.</p>
 
-      <p>After you have created this file, start verification:</p>
-      <button id="verify-file" class="btn btn-primary">Verify</button>
+        <p>After you have created this file, start verification.</p>
+      </div>
+    </div>
+
+    <div class="proof-block" id="run-proof">
+      <label for="start-proof-button" class="form-label">Start verification</label>
+      <div class="d-flex">
+    	<button id="start-proof-button" class="btn btn-primary">Proof</button>
+        <i class="fa-solid fa-check    proof-success"  id="run-proof-success"  aria-hidden="true"></i>
+        <i class="fa-solid fa-xmark    proof-failed"   id="run-proof-failed"   aria-hidden="true"></i>
+        <div class="spinner-border     proof-waiting"  id="run-proof-wait"     aria-hidden="true"></div>
+        <i class="fa-regular fa-circle-question proof-info" id="run-proof-info" aria-hidden="true"></i>
+      </div>
+      <div class="alert alert-info     proof-waiting">Checking may take some time.  Please be patient.</div>
+      <div class="alert alert-danger   proof-failed">The proof was rejected.</div>
+      <div class="alert alert-success  proof-success">The proof is accepted and saved.</div>
+    </div>
+
+  </div>
+
+  <div class="modal wide-modal" id="proof-info-modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Website proof checking details</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+
+          <table class="table" id="prover-trace">
+          <tr><th colspan="2">Proof checking trace:</th></tr>
+
+  %# Content can be added dynamically or staticly
+  % my $trace = $c->showTrace($proof->proofTrace);
+  % foreach my $line (@$trace) {
+          <tr class="trace"><td><%= $line->[0] %></td><td><%= $line->[1] %></td></tr>
+  % }
+          </table>
+        </div>
+      </div>
     </div>
   </div>
+
+  <div id="proof-show">
+
+    <label for="nothing" class="form-label">Ownership was proven via <%= $has_proof %></label>
+    <p>The proof has been delivered.</p>
+
+    <table class="table" name="proof-abstract">
+    <tr><td>Verified:</td><td><%= $proof->verified %></td></tr>
+    <tr><td>Score:</td><td><%= $proof->score %></td></tr>
+    <tr><td>Expires:</td><td><%= $proof->expires // 'never' %></td></tr>
+    <tr><td>Trace:</td><td><a href='#' id="show-proof-info">proof details</a></td></tr>
+    </table>
+
+    <button class="btn btn-primary" id="redo-proof">Refresh proof</button>
+  </div>
+
 
 % end
 
@@ -154,25 +219,6 @@ open-console.<%= $proof->hostPunicode %> TXT "<%= $proof->challenge %>"
 %    $proof_form,
 %    $proof_explain,
 % ];
-
-
-% my $status_form = begin
-
-%= include 'proofs/_status';
-
-% end
-
-% my $status_explain = begin
-
-% end
-
-% push @pages, [
-%    'website-status',
-%    'Status',
-%    $status_form,
-%    $status_explain,
-% ];
-
 
 <script src="/assets/config_form.js"></script>
 <script src="/assets/proof_website.js"></script>

@@ -17,6 +17,12 @@ H1 {
 	white-space: nowrap !important;
 }
 
+PRE {
+	white-space: pre-wrap;
+	background-color: var(--bs-gray-200);
+	padding: 0 0 0 1ex;
+}
+
 // Form styling
 
 LABEL.form-label {
@@ -74,12 +80,6 @@ DIV.alert {
 /*
  * Any block PRE block which can be copied
  */
-
-PRE.copy-code {
-	white-space: pre-wrap;
-	padding: 0 0 0 1ex;
-	background-color: var(--bs-gray-200);
-}
 
 I.copier {
 	float: right;
