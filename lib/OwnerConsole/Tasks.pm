@@ -120,4 +120,12 @@ sub proofWebsiteFile($%)
 	my $task = $self->call('proof/proofWebsiteFile' => $params);
 }
 
+=method proofWebsiteHTML \%params, %options
+=cut
+
+sub proofWebsiteHTML($%)
+{	my ($self, $params, %args) = @_;
+	my $task = $self->call('proof/proofWebsiteHTML' => $params);
+}
+
 1;

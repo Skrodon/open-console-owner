@@ -88,7 +88,7 @@
         <label for="verify-dns" class="form-label">Proof via DNS</label>
 
         <p>Add this to your DNS configuration:</p>
-<pre   id="proof-dns-text" class="copy-code">
+<pre id="proof-dns-text" class="copy-code">
 open-console.<%=   $proof->hostPunicode %> TXT "<%= $proof->challenge %>"
 </pre>
 
@@ -100,15 +100,21 @@ open-console.<%=   $proof->hostPunicode %> TXT "<%= $proof->challenge %>"
       <div>
         <label for="verify-html" class="form-label">Proof via HTML</label>
 
-        <p>Add this line to your <tt>/index.html</tt> file, in a part
-        which is not dynamically rendered.</p>
+        <p>Add this line to your website's front-page header.  How to do this, depends
+        on wait to produce webpages.</p>
 
-        %# This is probably not the current practice.
-<pre   id="proof-html-text" class="copy-code">
-&lt;link   rel="open-console" value="<%= $proof->challenge %>"&gt;
+<pre id="proof-html-text" class="copy-code">
+&lt;meta name="open-console.website-owner"
+   content="<%= $proof->website %>"
+   data-note="Website Ownership Proof"
+   data-version="website <%= $html_algo %>"
+   data-challenge="<%= $proof->challenge %>"
+   data-created="<%= $now %>"
+ /&gt;
 </pre>
 
-        <p>After you have added above line to your frontpage, start verification.</p>
+		<p>When you need more than one challenge, then simply add multiple of these
+        blocks.  After you have added above line to your frontpage, start verification.</p>
       </div>
     </div>
 
@@ -186,10 +192,11 @@ open-console.<%=   $proof->hostPunicode %> TXT "<%= $proof->challenge %>"
 
   <div id="proof-show">
 
-    <label for="nothing" class="form-label">Ownership was proven via <%= $has_proof %></label>
-    <p>The proof has been delivered.</p>
+    <label for="nothing" class="form-label">Ownership was proven</label>
+    <p>The proof has been delivered successfully.</p>
 
     <table class="table" name="proof-abstract">
+    <tr><td>Algorithm:</td><td><%= $proof->algorithm %> <%= $proof->algoVersion %></td></tr>
     <tr><td>Verified:</td><td><%= $proof->verified %></td></tr>
     <tr><td>Score:</td><td><%= $proof->score %></td></tr>
     <tr><td>Expires:</td><td><%= $proof->expires // 'never' %></td></tr>

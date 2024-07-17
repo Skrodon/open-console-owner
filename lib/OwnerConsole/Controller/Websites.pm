@@ -15,6 +15,7 @@ use Time::HiRes  ();
 use constant
 {	WK_PATH   => '/.well-known/open-console.json',
 	FILE_ALGO_VERSION => '20240716',
+	HTML_ALGO_VERSION => '20240717',
 };
 
 sub index()
@@ -35,7 +36,6 @@ sub website(%)
 	{	my $proof     = $account->proof(websites => $proofid);
 		my $prooftype = $proof->algorithm;
 		my $prover    = $self->param('prover') || $prooftype;    # requested
-warn "PT=$prooftype, P=$prover";
 
 		return $self->render(
 			template  => 'websites/website',
@@ -44,6 +44,7 @@ warn "PT=$prooftype, P=$prover";
 			has_proof => $proof->isValid ? $prooftype : 'none',
 			wk_path   => WK_PATH,
 			file_algo => 'file '. FILE_ALGO_VERSION,
+			html_algo => 'html '. HTML_ALGO_VERSION,
 		);
 	}
 }
@@ -108,8 +109,18 @@ sub _proofFileStart($$$)
 	$session->reply;
 }
 
-sub _proofFileTask($$)
-{	my ($self, $session, $proof) = @_;
+sub _proofHTMLStart($$$)
+{	my ($self, $session, $proof, $poll) = @_;
+	my $task = $::app->tasks->proofWebsiteHTML({
+		field   => 'start-proof-button',
+		website => $proof->website,
+	});
+	$self->taskWait($session, $task, $poll) if $task;
+	$session->reply;
+}
+
+sub _proofFileHTMLTask($$$)
+{	my ($self, $session, $proof, $algo) = @_;
 	my $task  = $self->taskPoll($session);
 	my @trace = @{$task->trace};
 
@@ -120,12 +131,10 @@ sub _proofFileTask($$)
 
 		my $challenge = $proof->challenge;
 		my $match     = first { $_->{challenge} eq $challenge } @$chances;
-#use Data::Dumper;
-#warn "CH($challenge)=", Dumper $chances;
 
 		my %study     = (
-			algorithm => 'file',
-			version   => FILE_ALGO_VERSION,
+			algorithm => $algo,
+			version   => $algo eq 'file' ? FILE_ALGO_VERSION : HTML_ALGO_VERSION,
 			verified  => $fetch->{fetched},
 			challenge => bool(defined $match),
 			use_https => bool($proof->website =~ m!^https://!),
@@ -153,8 +162,6 @@ sub _proofFileTask($$)
 
 	$proof->setData(proofTrace => \@trace);
 	$proof->save;
-#use Data::Dumper;
-#warn Dumper $proof->_data;
 
 	$session->stopPolling if $task->finished;
    	$session->setData(show_trace => $self->showTrace(\@trace));
@@ -200,10 +207,14 @@ warn "ACCEPTED";
 	{
 warn "PROVER = $prover";
 		return $self->_proofFileStart($session, $proof, 'proof-file-task') if $prover eq 'file';
+		return $self->_proofHTMLStart($session, $proof, 'proof-html-task') if $prover eq 'html';
 	}
 
-	return $self->_proofFileTask($session, $proof)
+	return $self->_proofFileHTMLTask($session, $proof, 'file')
 		if $how eq 'proof-file-task';
+
+	return $self->_proofFileHTMLTask($session, $proof, 'html')
+		if $how eq 'proof-html-task';
 
 	### Wrap it up
 
