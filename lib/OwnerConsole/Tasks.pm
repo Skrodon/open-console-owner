@@ -128,4 +128,12 @@ sub proofWebsiteHTML($%)
 	my $task = $self->call('proof/proofWebsiteHTML' => $params);
 }
 
+=method proofWebsiteDNS \%params, %options
+=cut
+
+sub proofWebsiteDNS($%)
+{	my ($self, $params, %args) = @_;
+	my $task = $self->call('proof/proofWebsiteDNS' => $params);
+}
+
 1;

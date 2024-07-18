@@ -13,10 +13,15 @@ use List::Util   qw(first);
 use Time::HiRes  ();
 
 use constant
-{	WK_PATH   => '/.well-known/open-console.json',
-	FILE_ALGO_VERSION => '20240716',
-	HTML_ALGO_VERSION => '20240717',
+{	WELL_KNOWN_PATH => '/.well-known/open-console.json',
+	MAX_DNS_LABEL   => 63,  # rfc1035 2.3.4
 };
+
+my %algo_version = (
+	file => '20240716',
+	html => '20240717',
+	dns  => '20240718',
+);
 
 sub index()
 {   my $self = shift;
@@ -42,9 +47,10 @@ sub website(%)
 			proof     => $proof,
 			prover    => $prover,
 			has_proof => $proof->isValid ? $prooftype : 'none',
-			wk_path   => WK_PATH,
-			file_algo => 'file '. FILE_ALGO_VERSION,
-			html_algo => 'html '. HTML_ALGO_VERSION,
+			file_algo => 'file '. $algo_version{file},
+			html_algo => 'html '. $algo_version{html},
+			dns_algo  => 'dns ' . $algo_version{dns},
+			well_known_path => WELL_KNOWN_PATH,
 		);
 	}
 }
@@ -103,7 +109,7 @@ sub _proofFileStart($$$)
 	my $task = $::app->tasks->proofWebsiteFile({
 		field   => 'start-proof-button',
 		website => $proof->website,
-		file    => $proof->website . WK_PATH,
+		file    => $proof->website . WELL_KNOWN_PATH,
 	});
 	$self->taskWait($session, $task, $poll) if $task;
 	$session->reply;
@@ -119,7 +125,32 @@ sub _proofHTMLStart($$$)
 	$session->reply;
 }
 
-sub _proofFileHTMLTask($$$)
+sub _proofDNSStart($$$)
+{	my ($self, $session, $proof, $poll) = @_;
+	my ($dnshost, $dnszone) = $self->_dnsRecord($proof);
+
+	my $task = $::app->tasks->proofWebsiteDNS({
+		field   => 'start-proof-button',
+		record  => "$dnshost.$dnszone",
+	});
+	$self->taskWait($session, $task, $poll) if $task;
+	$session->reply;
+}
+
+sub _dnsRecord($)
+{	my ($self, $proof) = @_;
+	my ($name, $zone) = split /\./, $proof->hostPunicode, 2;
+
+	# No _ to lead, to avoid IDN issues
+	my $append = length($name) + length('-open-console') > MAX_DNS_LABEL ? '-oc' : '-open-console';
+
+	$append .= '-challenge'
+		if length($name) + length($append) + length('-challenge') <= MAX_DNS_LABEL;
+
+	($name.$append, $zone);
+}
+
+sub _proofAnyTask($$$)
 {	my ($self, $session, $proof, $algo) = @_;
 	my $task  = $self->taskPoll($session);
 	my @trace = @{$task->trace};
@@ -127,19 +158,20 @@ sub _proofFileHTMLTask($$$)
 	if($task && $task->finished && $session->isHappy)
 	{	my $results   = $task->results;
 		my $chances   = $results->{matching_challenges} || [];
-		my $fetch     = $results->{file_fetch};
+		my $fetch     = $results->{fetch};
 
 		my $challenge = $proof->challenge;
 		my $match     = first { $_->{challenge} eq $challenge } @$chances;
 
 		my %study     = (
 			algorithm => $algo,
-			version   => $algo eq 'file' ? FILE_ALGO_VERSION : HTML_ALGO_VERSION,
-			verified  => $fetch->{fetched},
+			version   => $algo_version{$algo},
+			verified  => $fetch->{start},
 			challenge => bool(defined $match),
-			use_https => bool($proof->website =~ m!^https://!),
 		);
-		$proof->setData(proofFile => $fetch, study => \%study);
+		$study{use_https} = bool($proof->website =~ m!^https://!) unless $algo eq 'dns';
+
+		$proof->setData(fetch => $fetch, study => \%study);
 
 		my $now = Time::HiRes::time;
 
@@ -208,13 +240,17 @@ warn "ACCEPTED";
 warn "PROVER = $prover";
 		return $self->_proofFileStart($session, $proof, 'proof-file-task') if $prover eq 'file';
 		return $self->_proofHTMLStart($session, $proof, 'proof-html-task') if $prover eq 'html';
+		return $self->_proofDNSStart ($session, $proof, 'proof-dns-task' ) if $prover eq 'dns';
 	}
 
-	return $self->_proofFileHTMLTask($session, $proof, 'file')
+	return $self->_proofAnyTask($session, $proof, 'file')
 		if $how eq 'proof-file-task';
 
-	return $self->_proofFileHTMLTask($session, $proof, 'html')
+	return $self->_proofAnyTask($session, $proof, 'html')
 		if $how eq 'proof-html-task';
+
+	return $self->_proofAnyTask($session, $proof, 'dns')
+		if $how eq 'proof-dns-task';
 
 	### Wrap it up
 

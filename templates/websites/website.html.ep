@@ -1,8 +1,6 @@
 % layout 'dashboard';
 % title 'Website claim';
 
-% $c->notify(error => 'Development of this kind of proofs is underway.');
-
 % my $now  = OpenConsole::Util::timestamp();
 
 % my @pages;
@@ -87,12 +85,23 @@
       <div>
         <label for="verify-dns" class="form-label">Proof via DNS</label>
 
-        <p>Add this to your DNS configuration:</p>
-<pre id="proof-dns-text" class="copy-code">
-open-console.<%=   $proof->hostPunicode %> TXT "<%= $proof->challenge %>"
+  % my ($dnshost, $dnszone) = $c->_dnsRecord($proof);
+
+        <p>For this proof, you may need the help of someone else: the DNS
+        administrator of zone</p>
+<pre>
+<%= $dnszone %>
 </pre>
 
-        <p>After you have added above record, start verification.</p>
+        <p>Add this DNS record to that zone:</p>
+<pre id="proof-dns-text" class="copy-code">
+<%= $dnshost %> TXT "<%= $proof->challenge %>"
+</pre>
+
+		<p>The record class is "<tt>IN</tt>", as usual.  The record does not need
+        to be cached, so pick something short for the TTL, for instance "<tt>300</tt>".</p>
+
+        <p>After the above record was added, start verification.</p>
       </div>
     </div>
 
@@ -124,7 +133,7 @@ open-console.<%=   $proof->hostPunicode %> TXT "<%= $proof->challenge %>"
 
         <p>In your website, create a file named
 <pre>
-<%= $wk_path %>
+<%= $well_known_path %>
 </pre>
         containing the following text:</p>
 
@@ -143,7 +152,7 @@ open-console.<%=   $proof->hostPunicode %> TXT "<%= $proof->challenge %>"
 
         <p>The file must be readible for the outside world.  You may test this
         by directing your browser to
-        <a href="<%= $proof->website %><%= $wk_path %>" target="_blank">the location</a>.</p>
+        <a href="<%= $proof->website %><%= $well_known_path %>" target="_blank">the location</a>.</p>
 
         <p>After you have created this file, start verification.</p>
       </div>
