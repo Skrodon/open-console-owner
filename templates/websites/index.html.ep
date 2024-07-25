@@ -11,7 +11,7 @@
         <div class="card-body">
 
 <form class="proof-list" id="config-website">
-% my $show = sub { $_[0]->urlUnicode };
+% my $show = sub { $_[0]->website };
 %= include 'proofs/_proof_list', set => 'websites', element => 'website', show => $show, show_column => "Website";  #XXX translate
 </form>
 
@@ -32,7 +32,7 @@ fight against abuse.</p>
 <p>Over time, different practices have emerged to proof ownership: add a
 record in <b>DNS</b>, add a line into the <b>HTML</b> of your front-page,
 or publish a separate text <b>file</b> in your site.  Not all options
-may be available to you.</p>
+may work for you.</p>
 
         </div>
       </div>

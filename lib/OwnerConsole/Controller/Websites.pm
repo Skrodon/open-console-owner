@@ -169,7 +169,12 @@ sub _proofAnyTask($$$)
 			verified  => $fetch->{start},
 			challenge => bool(defined $match),
 		);
-		$study{use_https} = bool($proof->website =~ m!^https://!) unless $algo eq 'dns';
+		if($algo eq 'dns')
+		{	$study{txt_dnssec} = $fetch->{txt_dnssec};
+		}
+		else
+		{	$study{use_https} = bool($proof->website =~ m!^https://!);
+		}
 
 		$proof->setData(fetch => $fetch, study => \%study);
 
@@ -236,11 +241,11 @@ warn "ACCEPTED";
 	my $prover = $session->optionalParam('prover');
 
 	if($how eq 'start-prover')
-	{
-warn "PROVER = $prover";
-		return $self->_proofFileStart($session, $proof, 'proof-file-task') if $prover eq 'file';
-		return $self->_proofHTMLStart($session, $proof, 'proof-html-task') if $prover eq 'html';
-		return $self->_proofDNSStart ($session, $proof, 'proof-dns-task' ) if $prover eq 'dns';
+	{	return
+		    $prover eq 'file' ? $self->_proofFileStart($session, $proof, 'proof-file-task')
+		  : $prover eq 'html' ? $self->_proofHTMLStart($session, $proof, 'proof-html-task')
+		  : $prover eq 'dns'  ? $self->_proofDNSStart ($session, $proof, 'proof-dns-task' )
+		  : panic "Unknown prover $prover";
 	}
 
 	return $self->_proofAnyTask($session, $proof, 'file')

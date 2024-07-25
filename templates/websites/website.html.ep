@@ -10,11 +10,8 @@
     <label for="website" class="form-label">Website address</label>
     <input name="website" type="text" id="website" class="form-control" placeholder="https://www.example.com/~user"
       aria-describedby="url_explain" required value="<%= $proof->website %>" disabled />
-    <a href='#' id="check-url-info">Check details</a>
+    <a href='#' id="check-url-info">website check details</a>
   </div>
-
-  <input type="hidden" name="selected-prover" id="selected-prover" value="<%= $prover %>" />
-  <input type="hidden" name="has-proof" id="has-proof" value="<%= $has_proof %>" />
 
   % if($proof->hasExpired) {
   <div class="alert alert-danger">The proof has expired, run it again.</div>
@@ -208,8 +205,8 @@
     <tr><td>Algorithm:</td><td><%= $proof->algorithm %> <%= $proof->algoVersion %></td></tr>
     <tr><td>Verified:</td><td><%= $proof->verified %></td></tr>
     <tr><td>Score:</td><td><%= $proof->score %></td></tr>
-    <tr><td>Expires:</td><td><%= $proof->expires // 'never' %></td></tr>
-    <tr><td>Trace:</td><td><a href='#' id="show-proof-info">proof details</a></td></tr>
+    <tr><td>Expires:</td><td><%= $proof->expires // 'undetermined' %></td></tr>
+    <tr><td>Details:</td><td><a href='#' id="show-proof-info">proof trace</a></td></tr>
     </table>
 
     <button class="btn btn-primary" id="redo-proof">Refresh proof</button>
@@ -237,10 +234,13 @@
 % ];
 
 <script src="/assets/config_form.js"></script>
+<script src="/assets/proof_form.js"></script>
 <script src="/assets/proof_website.js"></script>
 
-<form id="config-website" class="config-form">
+<form id="config-website" class="config-form proof-form">
   <input id="identifier" type="hidden" value="<%= $proof->proofId %>" />
+  <input type="hidden" name="selected-prover" id="selected-prover" value="<%= $prover %>" />
+  <input type="hidden" name="has-proof" id="has-proof" value="<%= $has_proof %>" />
 
   <h1><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Claim Website</h1>
 

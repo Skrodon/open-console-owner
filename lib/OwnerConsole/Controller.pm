@@ -123,7 +123,7 @@ sub challenge()
 {	my $self     = shift;
 	my $token    = $self->param('token');
 
-	my $challenge = $::app->proofs->challenge($token);
+	my $challenge = $::app->batch->challenge($token);
 	unless($challenge)
 	{	$self->notify(warning => __"The challenge does not exist (anymore).");
 		return $self->redirect_to('/dashboard');

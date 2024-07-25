@@ -26,7 +26,7 @@ which do something with their website, domain-name, or network.
 
 ## Application configuration
 
-  * Copy `owner\_console.conf.example` to `owner\_console.conf` and edit the file.
+  * Copy `owner_console.conf.example` to `owner_console.conf` and edit the file.
      * You <strong>MUST</strong> change the `secrets`.
      * You probably want to insert the email address of your personal Account in Open Console as `admin`, to enabled extra functionality
 

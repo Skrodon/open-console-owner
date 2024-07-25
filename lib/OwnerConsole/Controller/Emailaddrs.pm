@@ -6,11 +6,15 @@ use Mojo::Base 'OwnerConsole::Controller';
 
 use Log::Report 'open-console-owner';
 
-use OpenConsole::Util       qw(flat :validate new_token);
+use OpenConsole::Util       qw(flat :validate new_token true timestamp);
 use OpenConsole::Proof::EmailAddr ();
 
 use OwnerConsole::Challenge ();
 use OwnerConsole::Email     ();
+
+use constant
+{	EMAIL_VERSION => '20240725',
+};
 
 sub index()
 {   my $self = shift;
@@ -26,8 +30,15 @@ sub emailaddr(%)
 	  : $account->proof(emailaddrs => $proofid);
 
 warn "PAGE EDIT PROOF $proofid, $proof.";
+	my $prooftype = $proof->algorithm;
+	my $prover    = $self->param('prover') || $prooftype;
 
-	$self->render(template => 'emailaddrs/emailaddr', proof => $proof );
+	$self->render(
+		template  => 'emailaddrs/emailaddr',
+		proof     => $proof,
+		has_proof => $proof->isValid ? $prooftype : 'none',
+		prover    => $prover,
+	);
 }
 
 sub _acceptEmailaddr()
@@ -83,12 +94,19 @@ warn "HOW=$how";
 
 	$self->acceptFormData($session, $proof, '_acceptEmailaddr');
 
-	if($how eq 'save' && $session->isHappy)
+	my $prover = $session->optionalParam('prover');
+	if($how eq 'start-prover' && $session->isHappy)
 	{	$proof->save(by_user => 1);
-		unless($proof->isValid)
-		{	$self->_startVerification1(proof => $proof);
+warn "PROVER = $prover";
+		if($prover eq 'email')
+		{	$self->_proofEmail(proof => $proof);
 			$session->notify(info => __x"Follow the instructions in the email.");
 		}
+		else { panic "Unknown prover $prover" }
+	}
+
+	if($how eq 'save' && $session->isHappy)
+	{	$proof->isValid or $proof->save(by_user => 1);
 		$session->redirect('/dashboard/emailaddrs');
 	}
 
@@ -101,10 +119,12 @@ warn "HOW=$how";
 
 __PACKAGE__->challengeHandler(proof_emailaddr => 'challengeEmailaddr');
 
-sub _startVerification1($%)
+sub _proofEmail($%)
 {	my ($self, %args) = @_;
 	my $account   = $self->account;
 	my $proof     = $args{proof};
+	my $email     = $proof->email;
+
 	my $challenge = $args{challenge} = OwnerConsole::Challenge->create($account,
 	  {	purpose => 'proof_emailaddr',
 		payload => { proofid => $proof->proofId },
@@ -112,14 +132,13 @@ sub _startVerification1($%)
 	);
 	$challenge->save;
 
-	my $email     = $proof->email;
-	$email =~ s/\@/+oc@/ if $proof->supportsSubAddressing;
+	$email     =~ s/\@/+oc@/ if $proof->supportsSubAddressing;
 
 	OwnerConsole::Email->create(
 		subject => __"Proof email address ownership",
 		text    => $self->render_to_string('emailaddrs/mail_challenge', format => 'txt', %args),
 		html    => $self->render_to_string('emailaddrs/mail_challenge', format => 'html', %args),
-		sender  => $proof->identity($account),
+		sender  => $proof->identity($account) || $account,
 		sendto  => $email,
 		purpose => 'proof_emailaddr',
 	)->queue;
@@ -127,13 +146,20 @@ sub _startVerification1($%)
 
 sub challengeEmailaddr($$)
 {	my ($self, $account, $challenge) = @_;
-	my $payload = $challenge->payload;
-	my $proof = $::app->proofs->proof($payload->{proofid});
 
+	my $payload = $challenge->payload;
+	my $proof   = $::app->proofs->proof($payload->{proofid});
 	unless($proof)
 	{	$self->notify(error => __x"The proof has disappeared.");
 		return $self->redirect_to('/dashboard');
 	}
+
+	$proof->setData(study => {
+		algorithm => 'email',
+		version   => EMAIL_VERSION,
+		verified  => timestamp,
+		challenge => true,
+	});
 
 	$proof->accepted;
 	$proof->save;
