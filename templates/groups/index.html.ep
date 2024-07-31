@@ -16,12 +16,13 @@
         <div class="card-body">
 
 <form id="group_list">
-  <table class="table table-striped table-hover">
+  <table class="table table-striped table-hover text-center align-middle">
 % if(@identities) {
   <thead class="thead-light">
     <tr><th>Group</th>
         <th>Edit</th>
-        <th>Your member identity</th></tr>
+        <th>Your member identity</th>
+        <th>Remove from group</th></tr>
   </thead>
   <tbody>
 %   foreach my $group ($account->groups) {
@@ -43,17 +44,21 @@
     <option value="<%= $identity->identityId %>"<%= $selected eq $identity->identityId ? ' selected' : '' %>><%= $identity->role %></option>
 %      }
     </select>
+        </td><td>
+        <button id="self_remove" class="btn btn-danger">Remove me
+          <i class="fa fa-skull" aria-hidden="true"></i>
+        </button>
         </td></tr>
 %   }
 % } else {
-    <tr><td colspan="3"><div class="alert alert-warning" role="alert">
+    <tr><td colspan="100%"><div class="alert alert-warning" role="alert">
        First create an identity which will become the first member of the group you
        are going to create.</div></td></tr>
 % }
-    <tr class="table-light">
+    <tr class="table-light text-start">
         <td><a href="/dashboard/group/new" class="btn btn-primary<%= @identities ? '' : ' disabled' %>" role="button"
            <%= @identities ? '' : 'aria-disabled="true"' %>><i class="fa-solid fa-circle-plus" aria-hidden="true"></i> Create new Group</a></td>
-        <td colspan="2">&nbsp;</td></tr>
+        <td colspan="100%">&nbsp;</td></tr>
   </tbody>
   </table>
 </form>
