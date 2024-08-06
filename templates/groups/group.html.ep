@@ -7,6 +7,7 @@
 % }
 % my $account = $c->account;
 % my $is_group_admin = $is_new || $group->memberIsAdmin($account);
+% my $user_identid = stash('user_identid');
 
 % my @pages;
 % my $group_form = begin
@@ -160,21 +161,30 @@
 
 <div>
   <label for="members" class="form-label">All Group members</label>
-  <table id="members-table" class="table text-center align-middle">
+  <table id="members-table" class="table text-center align-middle" <%== $group->groupId ? "group-id=\"" . $group->groupId . "\"" : "" %>>
       <thead>
-          <tr><th>Name</th><th>Rights</th></tr>
+          <tr><th>Name</th><th>Rights</th><th>Remove member</th></tr>
       </thead>
       <tbody>
           % my %members = map +($_->{identity}->nameInGroup => $_), $group->allMembers(get_identities => 1);
           % foreach my $name (sort keys %members) {
           %	my $member   = $members{$name};
-          % my $identity = $member->{identity};
           % my $isAdmin  = $group->memberIsAdmin($account);
+          % my $member_id = $member->{member_id};
           <tr class="member-row">
               <td><%= $name %></td>
-              <td class="rights" data-is-admin="<%= $isAdmin ? 'true' : 'false' %>">
+              
+              <td class="rights" data-is-admin="<%= $isAdmin ? 'true' : 'false' %>" id="<%= $member_id %>">
                   <%== $member->{is_admin} ? '<i class="fa-solid fa-user-tie" aria-label="member is admin"></i>' : '' %>
               </td>
+              <%== ($is_group_admin && $user_identid ne $member_id) ? 
+                '<td>
+                  <button class="btn btn-danger" >
+                    Remove
+                    <i class="fa fa-skull" aria-hidden="true"></i>
+                  </button>
+                </td>' :
+                '<td></td>' %>
           </tr>
           % }
       </tbody>

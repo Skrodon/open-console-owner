@@ -1,194 +1,295 @@
 function handle_invite(form, data, groupid, how, success) {
-    var action = '/dashboard/config-member/' + groupid + '?' + how;
-	/* Handled in OwnerConsole::Controller::Groups::configMember() */
+  var action = "/dashboard/config-member/" + groupid + "?" + how;
+  /* Handled in OwnerConsole::Controller::Groups::configMember() */
 
-    $.ajax({
-        type: 'POST',
-        url: action,
-        data: data,
-        dataType: 'json',
-        success: function (response) {
-            process_errors_and_warnings(form, response);
-            update_form_status(form);
-            if(response.redirect) { window.location = response.redirect }
-			success(response);
-        },
-        error: function (response) {
-            alert(action + ', the server could not be reached: ' + response.status);  //XXX translation
-        },
-    });
+  $.ajax({
+    type: "POST",
+    url: action,
+    data: data,
+    dataType: "json",
+    success: function (response) {
+      process_errors_and_warnings(form, response);
+      update_form_status(form);
+      if (response.redirect) {
+        window.location = response.redirect;
+      }
+      success(response);
+    },
+    error: function (response) {
+      alert(action + ", the server could not be reached: " + response.status); //XXX translation
+    },
+  });
 }
 
-//Base on handle_invite not yet checked with backend API
+///XXX Base on handle_invite not yet checked with backend API
 function handle_group_self_remove(form, data, groupid, how, success) {
-    var action = '/dashboard/groups/' + groupid + '?' + how;
+  var action = "/dashboard/groups/" + groupid + "?" + how;
 
-    $.ajax({
-        type: 'POST',
-        url: action,
-        data: data,
-        dataType: 'json',
-        success: function (response) {
-            process_errors_and_warnings(form, response);
-            update_form_status(form);
-            if(response.redirect) { window.location = response.redirect }
-			success(response);
-        },
-        error: function (response) {
-            alert(action + ', the server could not be reached: ' + response.status);  //XXX translation
-        },
-    });
+  $.ajax({
+    type: "POST",
+    url: action,
+    data: data,
+    dataType: "json",
+    success: function (response) {
+      process_errors_and_warnings(form, response);
+      update_form_status(form);
+      if (response.redirect) {
+        window.location = response.redirect;
+      }
+      success(response);
+    },
+    error: function (response) {
+      alert(action + ", the server could not be reached: " + response.status); //XXX translation
+    },
+  });
+}
+
+///XXX Base on handle_invite not yet checked with backend API
+function handle_group_member_remove(form, data, groupid, how, success) {
+  var action = "/dashboard/groups/" + groupid + "?" + how;
+
+  $.ajax({
+    type: "POST",
+    url: action,
+    data: data,
+    dataType: "json",
+    success: function (response) {
+      process_errors_and_warnings(form, response);
+      update_form_status(form);
+      if (response.redirect) {
+        window.location = response.redirect;
+      }
+      success(response);
+    },
+    error: function (response) {
+      alert(action + ", the server could not be reached: " + response.status); //XXX translation
+    },
+  });
 }
 
 function activate_membership_change(form) {
-	form.on('change', '.member', function () {
-		var select = $(this);
-		$("option:selected", select).each(function () {
-			var identid = $(this).val();
-			var groupid = $(select).data('groupid');
-			handle_invite(form, { identid: identid }, groupid, 'change_identity', function () {
-console.log('change identity to ' + identid + " for group " + groupid);
-			});
-		});
-	}).trigger('change');
+  form
+    .on("change", ".member", function () {
+      var select = $(this);
+      $("option:selected", select).each(function () {
+        var identid = $(this).val();
+        var groupid = $(select).data("groupid");
+        handle_invite(
+          form,
+          { identid: identid },
+          groupid,
+          "change_identity",
+          function () {
+            console.log(
+              "change identity to " + identid + " for group " + groupid
+            );
+          }
+        );
+      });
+    })
+    .trigger("change");
 }
 
 function activate_admin_change(form) {
-	//Get number of current admin in group by count fa-user-tie on row
-	var adminNum = $('.member-row .fa-solid.fa-user-tie').length;
+  //Get number of current admin in group by count fa-user-tie on row
+  var adminNum = $(".member-row .fa-solid.fa-user-tie").length;
 
-	$('.member-row').each(function() {
-	  var rights = $(this).find('.rights');
-  
-	  $(this).click(function() {
-		  var rightsInner = rights.html().trim();
-		  if (rightsInner == '') {
-			rights.html('<i class="fa-solid fa-user-tie" style="border: 2px solid blue;"></i>');
-			adminNum++;
-		  } else {
-			if (adminNum == 1) {
-			  oneAdminWarning();
-			  return;
-			} else {
-			  rights.html('');
-			  adminNum--;
-			}
-		  }
-		  changedWarning();
-	  });
-	});
-  
-	function changedWarning() {
-	  var changedText = $('.changed-warning');
-	  changedText.removeAttr('hidden');
-	  changedText.css('color', 'red');
-	}
-  
-	function oneAdminWarning() {
-	  var changedText = $('.last-admin-waring');
-	  changedText.removeAttr('hidden');
-	  changedText.css('color', 'red');
-	}
+  $(".member-row").each(function () {
+    var rights = $(this).find(".rights");
+
+    $(rights).click(function () {
+      var rightsInner = rights.html().trim();
+      if (rightsInner == "") {
+        rights.html(
+          '<i class="fa-solid fa-user-tie" style="border: 2px solid blue;"></i>'
+        );
+        adminNum++;
+      } else {
+        if (adminNum == 1) {
+          oneAdminWarning();
+          return;
+        } else {
+          rights.html("");
+          adminNum--;
+        }
+      }
+      changedWarning();
+    });
+
+    ///### IMPLEMENT SEND DATA WHEN SAVE BUTTON CLICKED
+  });
+
+  function changedWarning() {
+    var changedText = $(".changed-warning");
+    changedText.removeAttr("hidden");
+    changedText.css("color", "red");
+  }
+
+  function oneAdminWarning() {
+    var changedText = $(".last-admin-waring");
+    changedText.removeAttr("hidden");
+    changedText.css("color", "red");
+  }
 }
 
 function activate_group_self_remove(modal, form) {
-	var id = modal.attr('id');
-	var adminnum = modal.data('adminnum');
-	var membernum = modal.data('membernum');
-	var isadmin = modal.data('isadmin');
-	var groupid = modal.data('groupid');
-	var email = modal.data('email');
-	var button = $('A[for="' + id + '"]', form);
+  var id = modal.attr("id");
+  var adminnum = modal.data("adminnum");
+  var membernum = modal.data("membernum");
+  var isadmin = modal.data("isadmin");
+  var groupid = modal.data("groupid");
+  var email = modal.data("email");
+  var button = $('A[for="' + id + '"]', form);
 
-	button.on('click', function(event)  {
-		event.preventDefault();
-		modal.show();
-	});
+  button.on("click", function (event) {
+    event.preventDefault();
+    modal.show();
+  });
 
-	if (membernum === 1) {
-		$('.last-member', modal).show();
-		$('#confirm_remove', modal).hide();
-	} else if (isadmin === 1 && adminnum === 1) {
-		$('.last-admin', modal).show();
-		$('#confirm_remove', modal).hide();
-	} else {
-		$('.normal', modal).show();
-	}
+  if (membernum === 1) {
+    $(".last-member", modal).show();
+    $("#confirm_remove", modal).hide();
+  } else if (isadmin === 1 && adminnum === 1) {
+    $(".last-admin", modal).show();
+    $("#confirm_remove", modal).hide();
+  } else {
+    $(".normal", modal).show();
+  }
 
-	$('#confirm_remove', modal).on('click', function(e) {
-		handle_group_self_remove(form, { email: email }, groupid, 'group_self_remove', function () {
-			console.log('Group self remove accepted');
-		});
-	});
+  $("#confirm_remove", modal).on("click", function (e) {
+    handle_group_self_remove(
+      form,
+      { email: email },
+      groupid,
+      "group_self_remove",
+      function () {
+        console.log("Group self remove accepted");
+      }
+    );
+  });
 
-	$('button', modal).on('click', function () { modal.hide() });
+  $("button", modal).on("click", function () {
+    modal.hide();
+  });
+}
+
+function activate_group_member_remove(form) {
+  // removedMembersIdArr is a array ids of members will be removed in group
+  const removedMembersIdArr = [];
+  const groupId = $("#members-table").attr("group-id");
+
+  $(".btn-danger").click(function (e) {
+    e.preventDefault();
+
+    const memberRow = $(this).closest(".member-row");
+    const memberId = memberRow.find(".rights").attr("id");
+    const changedText = $(".changed-warning");
+
+    console.log(groupId);
+
+    removedMembersIdArr.push(memberId);
+
+    $(this).closest(".member-row").remove();
+
+    // Show warning that removed only apply when form is saved
+    changedText.removeAttr("hidden");
+    changedText.css("color", "red");
+
+    console.log(removedMembersIdArr);
+  });
+
+  ///### IMPLEMENT SEND DATA WHEN SAVE BUTTON CLICKED
 }
 
 function activate_invitation_modal(modal, form) {
-	var id      = modal.attr('id');
-	var email   = modal.data('email');
-	var token   = modal.data('token');
-	var button  = $('A[for="' + id + '"]', form);
-	var groupid = $('#identifier', form).val();
+  var id = modal.attr("id");
+  var email = modal.data("email");
+  var token = modal.data("token");
+  var button = $('A[for="' + id + '"]', form);
+  var groupid = $("#identifier", form).val();
 
-	button.on('click', function(event)  {
-		event.preventDefault();
-		modal.show();
-	});
+  button.on("click", function (event) {
+    event.preventDefault();
+    modal.show();
+  });
 
-	$('#resend_button', modal).on('click', function () {
-		handle_invite(form, { email: email, token: token }, groupid, 'invite_resend', function () {
-console.log('Resend accepted');
-		});
-	});
+  $("#resend_button", modal).on("click", function () {
+    handle_invite(
+      form,
+      { email: email, token: token },
+      groupid,
+      "invite_resend",
+      function () {
+        console.log("Resend accepted");
+      }
+    );
+  });
 
-	$('#remove_button', modal).on('click', function () {
-		handle_invite(form, { email: email, token: token }, groupid, 'invite_remove', function () {
-			button.parent().parent().remove();  // remove the line with the invitation
-		});
-	});
+  $("#remove_button", modal).on("click", function () {
+    handle_invite(
+      form,
+      { email: email, token: token },
+      groupid,
+      "invite_remove",
+      function () {
+        button.parent().parent().remove(); // remove the line with the invitation
+      }
+    );
+  });
 
-	$('button', modal).on('click', function () { modal.hide() });
+  $("button", modal).on("click", function () {
+    modal.hide();
+  });
 }
 
 function activate_invite_add(form) {
-	var button  = $('BUTTON#invite', form);
-	var table   = $('TABLE#list_invitations TBODY', form);
-	var groupid = $('#identifier', form).val();
+  var button = $("BUTTON#invite", form);
+  var table = $("TABLE#list_invitations TBODY", form);
+  var groupid = $("#identifier", form).val();
 
-	button.on('click', function () {
-		event.preventDefault();
-		var emails = $('TEXTAREA#invite_emails', form);
-		handle_invite(form, { emails: emails.val() }, groupid, 'invite_new', function (answer) {
-			for (email of answer.added) {
-				table.append('<tr><td>' + email + '</td><td>invited</td></tr>');
-			}
-			emails.val('');
-		});
-	});
+  button.on("click", function () {
+    event.preventDefault();
+    var emails = $("TEXTAREA#invite_emails", form);
+    handle_invite(
+      form,
+      { emails: emails.val() },
+      groupid,
+      "invite_new",
+      function (answer) {
+        for (email of answer.added) {
+          table.append("<tr><td>" + email + "</td><td>invited</td></tr>");
+        }
+        emails.val("");
+      }
+    );
+  });
 }
 
 function only_for_admins(form) {
-	if($('#is_group_admin', form).val()==1) {
-		activate_admin_change(form);
-		activate_delete_button(form);
-		activate_invite_add(form);
-	} else {
-		$(":input:not([role=tab])", form).prop('disabled', true);
-	}
+  if ($("#is_group_admin", form).val() == 1) {
+    activate_admin_change(form);
+    activate_delete_button(form);
+    activate_invite_add(form);
+    activate_group_member_remove(form);
+  } else {
+    $(":input:not([role=tab])", form).prop("disabled", true);
+  }
 }
 
-$(document).ready(function() {
-	$("form#config-group").map(function () {
-		var form = $(this);
-		$(".manage_invitation", form).each(function () { activate_invitation_modal( $(this), form ) });
-		only_for_admins(form);
-	});
+$(document).ready(function () {
+  $("form#config-group").map(function () {
+    var form = $(this);
+    $(".manage_invitation", form).each(function () {
+      activate_invitation_modal($(this), form);
+    });
+    only_for_admins(form);
+  });
 
-	$("form#group_list").map(function () {
-		var form = $(this);
-		activate_membership_change(form);
-		$(".mangage-self-remove", form).each(function () { activate_group_self_remove( $(this), form ) });
-	});
-})
-
+  $("form#group_list").map(function () {
+    var form = $(this);
+    activate_membership_change(form);
+    $(".mangage-self-remove", form).each(function () {
+      activate_group_self_remove($(this), form);
+    });
+  });
+});

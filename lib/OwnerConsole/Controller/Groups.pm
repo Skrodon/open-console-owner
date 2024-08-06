@@ -9,19 +9,66 @@ use Log::Report 'open-console-owner';
 use OwnerConsole::Util   qw(:validate);
 use OwnerConsole::Email  ();
 
+
+use Data::Dumper;
+
+
 sub index($)
 {   my $self = shift;
     $self->render(template => 'groups/index');
 }
 
-sub group($)
-{   my ($self, %args) = @_;
-	my $groupid  = $self->param('groupid');
+### Group with groupid and user_identid pass to template
+sub group {
+    my $self = shift;
+    my $groupid = $self->param('groupid');
 
-	my $account  = $self->account;
-	my $group = $groupid eq 'new' ? OwnerConsole::Group->create($account) : $account->group($groupid);
-    $self->render(template => 'groups/group', group => $group);
+    my $account = $self->account;
+    my $group = $groupid eq 'new' ? OwnerConsole::Group->create($account) : $account->group($groupid);
+
+    # Check if group exist
+    unless ($group) {
+        $self->render(text => 'Group not found', status => 404);
+        return;
+    }
+
+    # Get user indentid in group
+    my $user_identid = $self->get_identid_by_userid($group);
+
+    # Pass user_identid in group to group template
+    $self->stash(
+        group => $group,
+        user_identid => $user_identid,
+    );
+
+    $self->render(template => 'groups/group');
 }
+
+### Get user identid in group with userid
+sub get_identid_by_userid {
+    my ($self, $group) = @_;
+
+    my $user_id = $self->account->userId;
+    my $account = $self->account;
+
+	# Get all user identities
+    my @user_identities = $account->identities;
+
+    # Extract identities
+    my @identity_ids = map { $_->{_data}{identid} } @user_identities;
+
+    # Check user identity is in group identid
+    my $user_identid;
+    foreach my $identid (@identity_ids) {
+        if ($group->has_member_with_identity($identid)) {
+            $user_identid = $identid;
+            last;
+        }
+    }
+
+    return $user_identid;
+}
+
 
 ### Keep this logic in sync with OwnerConsole::Group attributes
 

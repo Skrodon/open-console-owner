@@ -119,6 +119,46 @@ Structure: ARRAY of
 
 =cut
 
+# Get identity in group base on userid
+sub get_current_user_identity_id {
+    my ($self, $user_id) = @_;
+
+    # Ensure we have a user_id
+    unless ($user_id) {
+        $self->log("User ID is required to fetch identity ID.");
+        return;
+    }
+
+    # Get all group members
+    my @members = $self->members;
+
+    foreach my $member (@members) {
+        my $identid = $member->{identid};
+
+        # get account by identid
+        my $account = $::app->users->db->collection('accounts')->find_one({ 'identities.identid' => $identid });
+
+        # check if account match with identid
+        if ($account && $account->{userid} eq $user_id) {
+            return $identid;
+        }
+    }
+
+    $self->log("No matching identity ID found for user ID $user_id in the group.");
+    return;
+}
+
+# Check member with identid exist
+sub has_member_with_identity {
+    my ($self, $identid) = @_;
+    
+    foreach my $member ($self->members) {
+        return 1 if $member->{identid} && $member->{identid} eq $identid;
+    }
+    
+    return 0;
+}
+
 sub addMember($$)
 {	my ($self, $account, $identity) = @_;
 	my $id  = blessed $identity ? $identity->identityId : $identity;
@@ -185,7 +225,11 @@ sub allMembers(%)
 				next MEMBER;
 			}
 		}
-		push @members, $info;
+
+		# Add member_id - identid for removing member in group
+        $info->{member_id} = $identid;  
+        
+        push @members, $info;
 	}
 
 	# There must be at least one admin left
