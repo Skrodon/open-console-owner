@@ -9,10 +9,6 @@ use Log::Report 'open-console-owner';
 use OwnerConsole::Util   qw(:validate);
 use OwnerConsole::Email  ();
 
-
-use Data::Dumper;
-
-
 sub index($)
 {   my $self = shift;
     $self->render(template => 'groups/index');
