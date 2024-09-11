@@ -88,8 +88,9 @@ warn "CALL $endpoint, $label = ", Dumper $result;
 		return OpenConsole::Session::Task->fromResponse($result, server => $server);
 	}
 
-	alert "Could not get task $task to " . ($label ? "server $label" : 'any server') . ', '  . $resp->code;
-	undef;
+	error $label
+		? __x("Could not get task {task} to server {label}.", task => $task, label => $label)
+		: __x("Could not get task {task} to any server.", task => $task);
 }
 
 =method ping $ession, $taskid

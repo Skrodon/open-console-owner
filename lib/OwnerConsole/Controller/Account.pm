@@ -9,12 +9,19 @@ use Log::Report 'open-console-owner';
 use OpenConsole::Util      qw(flat :validate);
 use OwnerConsole::Tables   qw(:is_valid);
 
+=chapter NAME
+OwnerConsole::Controller::Account - manage Account related pages
+
+=chapter METHODS
+=cut
+
 sub index($)
 {	my $self = shift;
 	$self->render(template => 'account/index');
 }
 
-=subsection Update
+#-------------
+=section Update
 =cut
 
 ### Keep this logic in sync with OpenConsole::Account attributes

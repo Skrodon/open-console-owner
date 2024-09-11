@@ -236,8 +236,7 @@ sub inviteChoice()
 
 sub allInvites($)
 {	my ($self, $group) = @_;
-	my $inv = $::app->batch->invitesForGroup($group);
-	@$inv;
+	$::app->batch->invitesForGroup($group);
 }
 
 sub inviteWithToken($$)

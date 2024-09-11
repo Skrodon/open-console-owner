@@ -1,45 +1,91 @@
 % layout 'dashboard';
 % title 'Create/update contract';
 
-% my $is_new  = $proof->proofId eq 'new';
+% my $contract = $proof;
+% my $is_new  = $contract->isNew;
 % $c->notify(error => 'This is just a mock-up, to show you our plans');
 
 % my @pages;
 % my $parties_form = begin
 
   <div>
-    <label for="name" class="form-label">Symbolic name</label>
-    <input name="name" type="text" id="name" class="form-control" placeholder="Connected Organization"
-      aria-describedby="name-explain" required value="<%= $proof->name %>"
+    <label for="name" class="form-label">Provider</label>
+    <p>Provided by: OpenWebSearch.EU<br>
+       Website: <a href="https://openwebsearch.eu" target="_blank">https://openwebsearch.eu</a><br>
+       Contact: <a href="mailto:me@example.com">me@example.com</a><br>
+    </p>
+    <input type="hidden" name="service_id" id="provider value="xyz">
+    <blockquote class="blockquote">OpenWebSearch.EU produces indexes of crawled website texts, which
+      is used for various research purposes.
+    </blockquote>
+  </div>
+
+  <div id="service-picker">
+    <label for="all" class="form-label">Included Services</label>
+
+    <p>Select the services you would like to include:</p>
+    <div class="form-check">
+       <input class="form-check-input" type="radio" name="all" value="1" id="all-services"/>
+       <label class="form-check-label" for="all-services">All services offered, now and in the future</label>
+    </div>
+    <div class="form-check">
+       <input class="form-check-input" type="radio" name="all" value="0" id="some-services" checked/>
+       <label class="form-check-label" for="some-services">Only the following services:</label>
+    </div>
+    <div id="selected-services" style="padding-left: 2em">
+       <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="on" id="service-dashboard"/>
+          <label class="form-check-label" for="service-dashboard">Crawl activity dashboard</label>
+       </div>
+       <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="on" id="service-takedown"/>
+          <label class="form-check-label" for="service-takedown">Take-down procedure</label>
+       </div>
+       <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="on" id="service-location"/>
+          <label class="form-check-label" for="service-location">Geolocation extraction</label>
+       </div>
+       <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="on" id="service-impressum"/>
+          <label class="form-check-label" for="service-impressum">Impressum extraction</label>
+       </div>
+    </div>
+  </div>
+
+  <div>
+    <label class="form-label" for="user">Your Identity</label>
+    <p>When you change this identity later, the contract gets invalidated.</p>
+    <select name="user" id="user" aria-describedby="user-explain">
+
+% foreach my $line (@$id_picker) {
+    <option value="<%= $line->[0] %>"><%= $line->[1] %></option>
+% }
+	</select>
+    <div id="user-explain" class="form-text">Select the identity which manages this contract.</div>
+  </div>
+
+  &nbsp;<br>
+
+  <div>
+    <label class="form-label" for="name">Your contract reference</label>
+    <input name="name" type="text" id="name" class="form-control"
+      aria-describedby="name-explain" value="<%= $contract->name || 'OpenWebSearch.EU' %>"
     />
-    <div id="name-explain" class="form-text">Your own reference name for this contract.</div>
-  </div>
-
-%= include 'proofs/_owner_pick';
-
-  <div>
-    <label for="org" class="form-label">Provider of the service</label>
-    <select name="org" class="form-select" aria-describedby="org-explain">
-    <option>OpenWebSearch.EU, crawling</option>
-    <option>OpenWebSearch.EU, indexing</option>
-    </select>
-    <div id="org-explain" class="form-text">Organization providing the service.</div>
-  </div>
-
-  <div>
-    <label for="service" class="form-label">Select services</label>
-    <select name="service" class="form-select" aria-describedby="serv-explain">
-    <option>&mdash; all by this provider &mdash;</option>
-    <option>Crawl statistics</option>
-    <option>Take-down requests</option>
-    <option>Geo-location detection</option>
-    </select>
-    <div id="serv-explain" class="form-text">Which services are you interested in?</div>
+    <div id="name-explain" class="form-text">Your own name for this contract.</div>
   </div>
 
 % end
 
 % my $parties_explain = begin
+
+<p>"Sign" an agreement with the party which offers you some services.
+This is like creating a login at the provider, without the need to
+configure your personal facts again: simply use one you the identities
+you have already defined.</p>
+
+<p>The <strong>provider</strong>'s website and contact email are verified
+to be owned by the party offering these services.  The provider- and
+service names, however, are not verified.</p>
 
 &nbsp;
 
@@ -52,12 +98,11 @@
 %    $parties_explain,
 % ];
 
-
-% my $share_form = begin
+% my $you_form = begin
 
 % end
 
-% my $share_explain = begin
+% my $you_explain = begin
 
 <p>To be able to use this service, you have to share personal
 or group information.  You may also need to share some of your
@@ -66,14 +111,16 @@ proofs.</p>
 % end
 
 % push @pages, [
-%    'contract-share',
+%    'contract-you',
 %    'Share',
-%    $share_form,
-%    $share_explain,
+%    $you_form,
+%    $you_explain,
 % ];
 
-
 % my $status_form = begin
+
+This page will show when the contract was signed, and how it was changed
+over time.
 
 % end
 
@@ -92,9 +139,10 @@ proofs.</p>
 
 
 <script src="/assets/config_form.js"></script>
+<script src="/assets/contract_form.js"></script>
 
 <form id="config-contract" class="config-form">
-  <input id="identifier" type="hidden" value="<%= $proof->proofId %>" />
+  <input id="identifier" type="hidden" value="<%= $contract->id %>" />
 
   <h1><i class="fa-solid fa-handshake-simple" aria-hidden="true"></i> Service Contract</h1>
 

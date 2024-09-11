@@ -26,7 +26,9 @@ WriteMakefile
 	# Website and database framwork
 	'Mango'                  => 0,
 	'Mojolicious'            => 9.35,
-	'Mojolicious::Plugin::CSRFProtect' => 0.16,
+	'Mojolicious::Plugin::BootstrapAlerts' => 0.07,
+	'Mojolicious::Plugin::CSRFProtect'     => 0.16,
+	'Mojolicious::Plugin::I18NUtils'       => 0.21,
    }
  , EXE_FILES    => []
  , AUTHOR       => 'Open Console <team@open-console.eu>'
@@ -51,8 +53,8 @@ WriteMakefile
 sub MY::postamble { <<'__POSTAMBLE' }
 
 # for DIST
-RAWDIR          = /tmp/OwnerConsole/raw
-DISTDIR         = /tmp/OwnerConsole/source
+RAWDIR          =
+DISTDIR         = /home/markov/shared/perl/public_html/open-console-owner/source
 
 # for POD
 FIRST_YEAR      = 2024

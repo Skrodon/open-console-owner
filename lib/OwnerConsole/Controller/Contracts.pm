@@ -7,7 +7,7 @@ use Mojo::Base 'OwnerConsole::Controller';
 use Log::Report 'open-console-owner';
 
 use OpenConsole::Util       qw(flat :validate new_token);
-use OpenConsole::Proof::Contract ();
+use OpenConsole::Contract   ();
 
 use OwnerConsole::Tables    qw(:is_valid);
 use OwnerConsole::Challenge ();
@@ -17,17 +17,40 @@ sub index()
 	$self->render(template => 'contracts/index');
 }
 
+sub _identityPicker($)
+{	my ($self, $account) = @_;
+	my @table   = +[ $account->userId => 'Account' ];
+
+	my %ingroups;
+	push @{$ingroups{$_->memberIdentityOf($account)->identityId}}, $_ for $account->groups;
+	foreach my $personal ($account->identities)
+	{	my $name = $personal->nickname // $personal->role;
+		if(my $groups = $ingroups{$personal->identityId})
+		{	push @table, [ $_->groupId => "$name @ " . $_->name ] for @$groups;
+		}
+		else
+		{	push @table, [ $personal->identityId => $name ];
+		}
+	}
+
+	[ sort { $a->[1] cmp $b->[1] } @table ];
+}
+
 sub contract(%)
 {   my ($self, %args) = @_;
 	my $proofid  = $self->param('proofid');
 	my $account  = $self->account;
 	my $proof    = $proofid eq 'new'
-	  ? OpenConsole::Proof::Contract->create({owner => $account})
+	  ? OpenConsole::Contract->create({owner => $account})
 	  : $account->proof(contracts => $proofid);
 
 warn "PAGE EDIT PROOF $proofid, $proof.";
 
-	$self->render(template => 'contracts/contract', proof => $proof );
+	$self->render(
+		template  => 'contracts/contract',
+		proof     => $proof,
+		id_picker => $self->_identityPicker($account),
+	);
 }
 
 sub _acceptContract()
@@ -48,7 +71,7 @@ sub configContract()
 {   my $self     = shift;
 	my $session  = $self->ajaxSession;
 
-	my $proof    = $self->openProof($session, 'OpenConsole::Proof::Contract')
+	my $proof    = $self->openProof($session, 'OpenConsole::Contract')
 		or $session->reply;
 
 	my $how      = $session->query;

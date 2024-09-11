@@ -1,7 +1,7 @@
 % layout 'dashboard';
 % title 'Website claim';
 
-% $c->notify(error => 'Development of this kind of proofs is underway.');
+%# $c->notify(error => 'Development of this kind of proofs is underway.');
 
 % my $url = 'https://имена.бг';
 % my @pages;
@@ -107,6 +107,7 @@ do want a proof of ownership, in which case you can add it at when needed.</p>
 
 
 <script src="/assets/config_form.js"></script>
+<script src="/assets/proof_form.js"></script>
 <script src="/assets/proof_website.js"></script>
 
 <form id="config-website" class="config-form">

@@ -16,17 +16,21 @@ use constant
 	SECS_IN_DAY   => 24 * 60 * 60,
 };
 
-sub fromDB($)
-{	my ($class, $data) = @_;
-	$data->{invited} ||= $data->{expires};   #XXX remove after restart DB
-	$class->SUPER::fromDB($data);
-}
+=chapter NAME
+OwnerConsole::Group::Invite - handle group invites
 
 =chapter DESCRIPTION
 
 =chapter METHODS
 =section Constructors
 =cut
+
+
+sub fromDB($)
+{	my ($class, $data) = @_;
+	$data->{invited} ||= $data->{expires};   #XXX remove after restart DB
+	$class->SUPER::fromDB($data);
+}
 
 sub create($$$)
 {	my ($class, $identity, $group, $email) = @_;

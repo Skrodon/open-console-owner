@@ -17,6 +17,17 @@
 
         </div>
       </div>
+
+      <div class="card" id="new-contracts-card">
+        <h5 class="card-header">Establish a new contract</h5>
+        <div class="card-body">
+           <select name="provider" id="contract-provider">
+           <option disabled>&mdash; Select a provider from the list &mdash;</option>
+           <option>OpenWebSearch.EU</option>
+           </select>
+        </div>
+      </div>
+
     </div>
 
     <div class="col-sm-5">

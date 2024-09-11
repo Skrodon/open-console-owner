@@ -85,7 +85,7 @@ sub _acceptWebsite()
 sub _checkUrlStart($$)
 {	my ($self, $session, $proof, $poll) = @_;
 	my $task = $::app->tasks->verifyWebsiteURL({field => 'website', website => $proof->website});
-	$self->taskWait($session, $task, $poll) if $task;
+	$self->taskWait($session, $task, $poll);
 	$session->reply;
 }
 
@@ -111,7 +111,7 @@ sub _proofFileStart($$$)
 		website => $proof->website,
 		file    => $proof->website . WELL_KNOWN_PATH,
 	});
-	$self->taskWait($session, $task, $poll) if $task;
+	$self->taskWait($session, $task, $poll);
 	$session->reply;
 }
 
@@ -121,7 +121,7 @@ sub _proofHTMLStart($$$)
 		field   => 'start-proof-button',
 		website => $proof->website,
 	});
-	$self->taskWait($session, $task, $poll) if $task;
+	$self->taskWait($session, $task, $poll);
 	$session->reply;
 }
 
@@ -133,7 +133,7 @@ sub _proofDNSStart($$$)
 		field   => 'start-proof-button',
 		record  => "$dnshost.$dnszone",
 	});
-	$self->taskWait($session, $task, $poll) if $task;
+	$self->taskWait($session, $task, $poll);
 	$session->reply;
 }
 
@@ -230,13 +230,16 @@ warn "HOW=$how";
 
 	$self->acceptFormData($session, $proof, '_acceptWebsite')
 		or return $session->reply;
-warn "ACCEPTED";
+
+	### Checking the website address
 
 	return $self->_checkUrlStart($session, $proof, 'check-url-task')
 		if $how eq 'check-url';
 
 	return $self->_checkUrlTask($session, $proof)
 		if $how eq 'check-url-task';
+
+	### The three ways to prove
 
 	my $prover = $session->optionalParam('prover');
 

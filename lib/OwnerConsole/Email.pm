@@ -12,15 +12,13 @@ use Mail::Message::Body::Multipart ();
 
 use OpenConsole::Util  qw(new_token);
 
-=section DESCRIPTION
-
-=section Constructors
-=cut
-
 use constant MAIL_SCHEMA => '20240116';
 
-=section DESCRIPTION
+=chapter NAME
+OwnerConsole::Email - Email abstraction
 
+=chapter DESCRIPTION
+=chapter METHODS
 =section Constructors
 =cut
 

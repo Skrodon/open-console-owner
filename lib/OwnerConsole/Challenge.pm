@@ -14,6 +14,9 @@ use constant
 {	CHALLENGE_SCHEMA => '20240216',
 };
 
+=chapter NAME
+OwnerConsole::Challenge - handles (email address) challenges
+
 =chapter DESCRIPTION
 
 =chapter METHODS

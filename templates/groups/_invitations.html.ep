@@ -8,7 +8,7 @@
     <tbody>
 
 % my $seq = 'inv000';
-% my @invites = $group->invites;
+% my @invites = $self->allInvites($group);
 % foreach my $invite (@invites) {
 %    $seq++;
 %    my $email = $invite->email;

@@ -12,6 +12,12 @@ use OpenConsole::Proof::EmailAddr ();
 use OwnerConsole::Challenge ();
 use OwnerConsole::Email     ();
 
+=chapter NAME
+OwnerConsole::Controller::Emailaddrs - webpages about email-address proofs
+
+=chapter METHODS
+=cut
+
 use constant
 {	EMAIL_VERSION => '20240725',
 };

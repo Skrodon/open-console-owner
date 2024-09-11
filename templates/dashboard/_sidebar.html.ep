@@ -84,7 +84,7 @@ Services:
 </li>
 <li class="nav-item">
   <a class="nav-link" href="#">
-    <i class="fa-solid fa-chart-line" aria-hidden="true"></i> Offered Services
+    <i class="fa-solid fa-chart-line" aria-hidden="true"></i> Services
   </a>
 </li>
 </ul>

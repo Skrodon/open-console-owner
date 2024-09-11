@@ -10,14 +10,16 @@ use List::Util    qw(first);
 
 use OpenConsole::Session::Ajax ();
 
+=chapter NAME
+OwnerConsole::Controller - base-class for Mojo C's
+
+=chapter METHODS
+=cut
+
 sub ajaxSession(%)
 {	my ($self, %args) = @_;
 	OpenConsole::Session::Ajax->create(\%args, controller => $self);
 }
-
-#-------------
-=section Generic code for any database object loading
-=cut
 
 sub acceptFormData($$$)
 {	my ($self, $session, $object, $handler) = @_;
@@ -156,11 +158,13 @@ sub challenge()
 =section Running tasks
 
 =method taskWait $session, $task, $poll, %options
-Initialize the task waiting.
+Initialize the task waiting.  Does nothing when the C<$task> is undefined.
 =cut
 
 sub taskWait($$$%)
 {	my ($self, $session, $task, $poll) = @_;
+	defined $task or return $session;
+
 	$session->startPoll($poll, $task);
 	$session->mergeTaskResults($task);
     $session->setData(show_trace => $self->showTrace($task->trace));
@@ -215,7 +219,7 @@ sub detectLanguage()
 	if(my $if = $self->session('iflang')) { return $if }
 
     $iflangs ||= $self->config->{interface_languages};
-warn "IFLANGS=@$iflangs";
+#warn "IFLANGS=@$iflangs";
     $langs   ||= +{ map +($_ => 1), @$iflangs };
 
 	my @wants = $self->browser_languages;

@@ -10,7 +10,10 @@ use OwnerConsole::Email         ();
 use OwnerConsole::Group::Invite ();
 use OwnerConsole::Challenge      ();
 
-=section DESCRIPTION
+=chapter NAME
+OwnerConsole::Model::Batch - database with only temporary information
+
+=chapter DESCRIPTION
 Collections which are located in this database do rapidly change, which makes
 the database (cluster) slower.  The data stored inhere is also less critical
 than in the user's database, so need less or no redundancy.
@@ -22,6 +25,7 @@ collections:
 =item * 'challenges': state machine for challenges
 =back
 
+=chapter METHODS
 =cut
 
 has db         => undef;

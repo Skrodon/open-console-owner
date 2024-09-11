@@ -20308,6 +20308,10 @@ PRE {
   padding: 0 0 0 1ex;
 }
 
+.blockquote {
+  font-size: 1rem;
+}
+
 LABEL.form-label {
   margin-top: 2ex;
   font-size: larger;
@@ -20435,7 +20439,6 @@ FORM.proof-list I.fa-solid {
 }
 #config-website .fa-solid, #config-website .fa-regular {
   font-size: x-large;
-  padding: 0 0.5rem;
 }
 #config-website .verify-success, #config-website .proof-success {
   color: var(--bs-green);
