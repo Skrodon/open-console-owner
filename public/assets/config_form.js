@@ -21,7 +21,7 @@ function activate_delete_button(form) {
 
 function add_val_message(form, input, level, message) {
 	var unique = unique_counter++;
-console.log("VALMSG " + input + ", level " + level + ", " + message);
+//console.log("VALMSG " + input + ", level " + level + ", " + message);
 	$('LABEL[for="' + input + '"]', form).each(function() {
 		$(this).parent().append('<div id="msg-' + unique + '" class="val-msg val-' + level + '">'
 			+ jQuery('<div />').text(message).html() + '</div>');
@@ -148,6 +148,8 @@ function accept_form_data(form, how, param, success) {
 			if(response.redirect) { window.location = response.redirect }
 		},
 		error: function (response) {
+console.log("ERROR");
+console.log(reponse);
 			alert('Form ' + form.attr('id') + ', the server could not be reached: ' + response.status);  //XXX translation
 		},
 	});

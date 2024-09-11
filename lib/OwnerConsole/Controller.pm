@@ -167,7 +167,7 @@ sub taskWait($$$%)
 
 	$session->startPoll($poll, $task);
 	$session->mergeTaskResults($task);
-    $session->setData(show_trace => $self->showTrace($task->trace));
+	$session->setData(show_trace => $self->showTrace($task->trace));
 	$session;
 }
 
@@ -181,6 +181,7 @@ sub taskPoll($%)
 	my $taskid = $session->requiredParam('task');
 	my $task = $::app->tasks->ping($taskid);
 	$session->mergeTaskResults($task);
+	$session->setData(show_trace => $self->showTrace($task->trace));
 	$task;
 }
 
@@ -218,9 +219,9 @@ sub detectLanguage()
 {	my $self  = shift;
 	if(my $if = $self->session('iflang')) { return $if }
 
-    $iflangs ||= $self->config->{interface_languages};
+	$iflangs ||= $self->config->{interface_languages};
 #warn "IFLANGS=@$iflangs";
-    $langs   ||= +{ map +($_ => 1), @$iflangs };
+	$langs   ||= +{ map +($_ => 1), @$iflangs };
 
 	my @wants = $self->browser_languages;
 	my $code  = first { exists $langs->{$_} } @wants;

@@ -1,19 +1,4 @@
 
-function wait_for_task(form, poll, trace, success, failed) {
-	setTimeout(function () {
-		accept_form_data(form, poll.where, { "task": poll.task }, function (form, answer) {
-			process_errors_and_warnings(form, answer);
-// console.log(answer);
-			if(answer.task_ready) {
-				show_trace(trace, answer.show_trace);
-				if(answer.task_ready==='success') { success(answer) } else { failed(answer) }
-			} else {
-				wait_for_task(form, poll, trace, success, failed);
-			}
-		});
-	}, poll.delay);
-}
-
 /*
  * Website URL verifier
  */
@@ -30,22 +15,33 @@ function verifier_status(form, status) {
 function activate_url_check(form) {	
 	var url_input   = $('INPUT#website', form);
 	var check_block = $('DIV#check-url', form);
+	var starter     = $('#check-url-button', check_block);
 
 	url_input.on('change focus', function () {
 		verifier_status(form, 'todo');
 	});
 
-	$('#check-url-button', check_block).on('click', function () {
+	url_input.on('keydown', function (event) {
+		if(event.keyCode==13) {
+console.log("STARTER!");
+			starter.click();
+			return false;
+		}
+	});
+
+	starter.on('click', function () {
 		accept_form_data(form, 'check-url', undefined, function (form, response) {
 			process_errors_and_warnings(form, response);
 			var poll = response.poll;
 			if(poll) {
 				verifier_status(form, 'waiting');
 				wait_for_task(form, poll, $('TABLE#check-trace'), function (answer) {
+console.log("SUCCESS");
 					$('INPUT#proofid', form).val(answer.proofid);
 					$('INPUT#website', form).val(answer.website);
 					verifier_status(form, 'success');
 				}, function (answer) {
+console.log("FAILED");
 					verifier_status(form, 'failed');
 				});
 			}

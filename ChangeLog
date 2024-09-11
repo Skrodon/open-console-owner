@@ -1,4 +1,8 @@
 --------- version history of Open-Console-Owner
 
-version 0.01:
+version 0.02:
+	- fix show_trace on error
+	- website-url check starts on <enter>
+
+version 0.01: Wed 09 Sep 12:07:38 CEST 2024
 	- initial release

@@ -1,14 +1,14 @@
 
-function wait_for_task(form, poll, trace, success, failed) {
+function wait_for_task(form, poll, trace_table, success, failed) {
 	setTimeout(function () {
 		accept_form_data(form, poll.where, { "task": poll.task }, function (form, answer) {
 			process_errors_and_warnings(form, answer);
 // console.log(answer);
 			if(answer.task_ready) {
-				show_trace(trace, answer.show_trace);
+				show_trace(trace_table, answer.show_trace);
 				if(answer.task_ready==='success') { success(answer) } else { failed(answer) }
 			} else {
-				wait_for_task(form, poll, trace, success, failed);
+				wait_for_task(form, poll, trace_table, success, failed);
 			}
 		});
 	}, poll.delay);
