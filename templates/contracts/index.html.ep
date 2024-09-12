@@ -22,7 +22,7 @@
         <h5 class="card-header">Establish a new contract</h5>
         <div class="card-body">
            <select name="provider" id="contract-provider">
-           <option disabled>&mdash; Select a provider from the list &mdash;</option>
+           <option disabled selected>&mdash; Select a provider from the list &mdash;</option>
            <option>OpenWebSearch.EU</option>
            </select>
         </div>
@@ -38,6 +38,14 @@
 <p>You need to establish a <b>contract</b> with a service provide to access
 the data it has to offer.  You will informed when the conditions change,
 later.</p>
+
+<p>Services are provided by different organizations and companies, which have
+proven an email address and their website ownership for Open Console.</p>
+
+<p>The term `contract' may sound a bit heavy for you, but it simply means
+that you agree to exchange information.  It registers very clearly what
+you and the service provider expect from each other.  This is negotiated
+in the next steps of this process: first pick an <b>provider</b>.</p>
 
         </div>
       </div>

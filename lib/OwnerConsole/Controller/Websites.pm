@@ -144,17 +144,26 @@ sub _dnsRecord($)
 	my $zone = $registered ? "$registered.$suffix" : $suffix;  # will we see suffix owners?
 warn "($host, $registered, $suffix) = ", $proof->hostUTF8;
 
-	$host
-		or return ("open-console-challenge", $zone);
+	# The "random" is added to be able to have different proofs for the
+	# same thing.  For instance, in case different users can claim the
+	# same domain, which is fair.
+	my $random = substr $proof->id, 0, 4;
 
+	$host
+		or return ("open-console-challenge-$random", $zone);
+
+	my $opt1  = "-open-console-challenge-$random";
+	my $opt2  = "-open-console-$random";
+	my $opt3  = "-oc-$random";
+
+	# Punicode encoded utf8 must also fit in a MAX_DNS_LABEL (64).  In this,
+	# too much utf8 may be chopped off... I do not care.
 	my $hostp = (split /\./, $proof->hostPunicode, 2)[0];
 	my $name
-	  = length $hostp + length('-open-console') <= MAX_DNS_LABEL ? "$host-open-console"
-	  : length $hostp + length('-oc') <= MAX_DNS_LABEL           ? "$host-oc"
-	  :   substr($host, 0, MAX_DNS_LABEL-3) . '-oc';
-
-	$name .= '-challenge'
-		if length($name) + length('-challenge') <= MAX_DNS_LABEL;
+	  = length $hostp + length $opt1 <= MAX_DNS_LABEL ? "$host$opt1"
+	  : length $hostp + length $opt2 <= MAX_DNS_LABEL ? "$host$opt2"
+	  : length $hostp + length $opt3 <= MAX_DNS_LABEL ? "$host$opt3"
+	  :   substr($host, 0, MAX_DNS_LABEL - length $opt3) . $opt3;
 
 warn "WITH HOST ($name, $zone)";
 	($name, $zone);
