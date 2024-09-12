@@ -6,7 +6,7 @@ use Mojo::Base 'OwnerConsole::Controller';
 
 use Log::Report 'open-console-owner';
 
-use OpenConsole::Util       qw(:validate :bool new_token);
+use OpenConsole::Util       qw(:validate :bool new_token domain_suffix);
 use OwnerConsole::Challenge ();
 
 use List::Util   qw(first);
@@ -139,15 +139,25 @@ sub _proofDNSStart($$$)
 
 sub _dnsRecord($)
 {	my ($self, $proof) = @_;
-	my ($name, $zone) = split /\./, $proof->hostPunicode, 2;
 
-	# No _ to lead, to avoid IDN issues
-	my $append = length($name) + length('-open-console') > MAX_DNS_LABEL ? '-oc' : '-open-console';
+	my ($host, $registered, $suffix) = domain_suffix $proof->hostUTF8;
+	my $zone = $registered ? "$registered.$suffix" : $suffix;  # will we see suffix owners?
+warn "($host, $registered, $suffix) = ", $proof->hostUTF8;
 
-	$append .= '-challenge'
-		if length($name) + length($append) + length('-challenge') <= MAX_DNS_LABEL;
+	$host
+		or return ("open-console-challenge", $zone);
 
-	($name.$append, $zone);
+	my $hostp = (split /\./, $proof->hostPunicode, 2)[0];
+	my $name
+	  = length $hostp + length('-open-console') <= MAX_DNS_LABEL ? "$host-open-console"
+	  : length $hostp + length('-oc') <= MAX_DNS_LABEL           ? "$host-oc"
+	  :   substr($host, 0, MAX_DNS_LABEL-3) . '-oc';
+
+	$name .= '-challenge'
+		if length($name) + length('-challenge') <= MAX_DNS_LABEL;
+
+warn "WITH HOST ($name, $zone)";
+	($name, $zone);
 }
 
 sub _proofAnyTask($$$)
@@ -214,7 +224,6 @@ sub configWebsite()
 		or $session->reply;
 
 	my $how      = $session->query;
-warn "HOW=$how";
 	if($how eq 'reown')
 	{	my $ownerid = $session->requiredParam('new_owner');
 		$proof->changeOwner($session->account, $ownerid);

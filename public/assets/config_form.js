@@ -149,7 +149,7 @@ function accept_form_data(form, how, param, success) {
 		},
 		error: function (response) {
 console.log("ERROR");
-console.log(reponse);
+console.log(response);
 			alert('Form ' + form.attr('id') + ', the server could not be reached: ' + response.status);  //XXX translation
 		},
 	});
