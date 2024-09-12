@@ -1,10 +1,8 @@
 % use DateTime ();
 % my $now = DateTime->now;
 
-    <table class="table" id="list_invitations">
-    <thead>
-      <tr><th colspan="3"><label for="invite" class="form-label">Invitations</label></th></tr>
-    </thead>
+    <table class="table text-center align-middle" id="list_invitations">
+    <label for="members" class="form-label">Invitations</label>
     <tbody>
 
 % my $seq = 'inv000';
@@ -82,7 +80,7 @@
 % unless(@invites) {
       <tr><td colspan="3">There are no pending older invitations.</td></tr>
 % }
-      <tr class="table-light">
+      <tr class="table-light text-start">
         <td><label for="invite_emails" class="form-label">New invitations</label>
             <textarea id="invite_emails" type="text" rows="3" placeholder="Email-addresses of potential members" class="form-control"></textarea></td>
         <td style="vertical-align: middle" colspan="2"><button id="invite" class="btn btn-primary"><i class="fa-solid fa-envelope-open-text" aria-hidden="true"></i>&nbsp;Invite</button></td>
