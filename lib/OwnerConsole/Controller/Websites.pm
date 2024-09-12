@@ -233,7 +233,12 @@ sub configWebsite()
 
 	if($how eq 'delete')
 	{	$proof->delete;
-		$session->notify(info => __x"Claim for Website '{url}' removed.", url => $proof->website);
+
+        my $msg = $proof->isValid
+          ? __x("Proof for website '{url}' removed.", url => $proof->website)
+          : __x("Incomplete claim for website '{url}' removed.", url => $proof->website);
+
+		$session->notify(info => $msg);
 		$session->redirect('/dashboard/websites');
 	}
 

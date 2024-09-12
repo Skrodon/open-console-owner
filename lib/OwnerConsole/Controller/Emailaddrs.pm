@@ -93,7 +93,12 @@ warn "HOW=$how";
 
 	if($how eq 'delete')
 	{	$proof->delete;
-		$session->notify(info => __x"Proof for Email address '{email}' removed.", email => $proof->email);
+
+		my $msg = $proof->isValid
+		  ? __x("Proof for email address '{email}' removed.", email => $proof->email)
+		  : __x("Incomplete proof for email address '{email}' removed.", email => $proof->email);
+
+		$session->notify(info => $msg);
 		$session->redirect('/dashboard/emailaddrs');
 		return $session->reply;
 	}

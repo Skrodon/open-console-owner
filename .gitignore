@@ -2,6 +2,7 @@
 
 # private confuration
 owner_console.conf
+start
 
 #### Standard Perl mess
 !Build/

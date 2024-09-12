@@ -1,9 +1,13 @@
 --------- version history of Open-Console-Owner
 
 version 0.02:
+	Fixes:
 	- fix show_trace on error
-	- website-url check starts on <enter>
 	- fix website dns proof domain-suffix issues
+
+	Improvements:
+	- website-url check starts on <enter>
+	- friendlier delete message
 
 version 0.01: Wed 09 Sep 12:07:38 CEST 2024
 	- initial release
