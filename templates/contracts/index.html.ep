@@ -18,13 +18,22 @@
         </div>
       </div>
 
-      <div class="card" id="new-contracts-card">
+      <div class="card" id="new-contracts-card" style="margin-top: 1ex">
         <h5 class="card-header">Establish a new contract</h5>
         <div class="card-body">
-           <select name="provider" id="contract-provider">
-           <option disabled selected>&mdash; Select a provider from the list &mdash;</option>
-           <option>OpenWebSearch.EU</option>
-           </select>
+           <script src="/assets/contracts.js"></script>
+           Step 1:
+           <form id="pick-provider">
+              <select name="provider" id="service-provider">
+              <option disabled selected>&mdash; Select a provider from the list &mdash;</option>
+              <option>OpenWebSearch.EU</option>
+              </select><br />
+           </form>
+           Step 2: select from the services which the provider offers<br />
+           Step 3: provide some information to the provider<br />
+           Step 4: agree with terms and conditions<br />
+           &rarr;&nbsp;contract signed
+
         </div>
       </div>
 

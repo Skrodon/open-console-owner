@@ -83,7 +83,7 @@ Services:
   </a>
 </li>
 <li class="nav-item">
-  <a class="nav-link" href="#">
+  <a class="nav-link" href="/dashboard/services">
     <i class="fa-solid fa-chart-line" aria-hidden="true"></i> Services
   </a>
 </li>

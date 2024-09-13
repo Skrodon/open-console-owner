@@ -6,11 +6,8 @@ use Mojo::Base 'OwnerConsole::Controller';
 
 use Log::Report 'open-console-owner';
 
-use OpenConsole::Util       qw(flat :validate new_token);
+use OpenConsole::Util       qw();
 use OpenConsole::Contract   ();
-
-use OwnerConsole::Tables    qw(:is_valid);
-use OwnerConsole::Challenge ();
 
 sub index()
 {   my $self = shift;

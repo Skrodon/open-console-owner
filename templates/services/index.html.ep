@@ -1,0 +1,46 @@
+% layout 'dashboard';
+% title 'Overview of offered services';
+
+<h1><i class="fa-solid fa-handshake-simple" aria-hidden="true"></i> Services</h1>
+<div class="container">
+  <div class="row">
+
+    <div class="col-sm-7">
+      <div class="card" id="services-card">
+        <h5 class="card-header">Offered Services</h5>
+        <div class="card-body">
+
+<form class="proof-list" id="config-service">
+% my $show = sub { $_[0]->name };
+%= include 'proofs/_proof_list', set => 'services', element => 'service', show => $show, show_column => "Service", add_text => "Add a service";  #XXX translate
+</form>
+
+        </div>
+      </div>
+
+      <div class="card" id="new-services-card" style="margin-top: 1ex">
+        <h5 class="card-header">Establish a new service</h5>
+        <div class="card-body">
+
+        </div>
+      </div>
+
+    </div>
+
+    <div class="col-sm-5">
+      <div class="card" id="services-explain">
+        <h5 class="card-header">Establishing Services</h5>
+        <div class="card-body">
+
+          <p>Services are web-applications which you offer to other people.</p>
+
+          <p>You can set the rules for accessing your service.  When a
+          person agrees with your requirements, it will be secured
+          in a <b>contract</b>.  When you change the rules later, the
+          contract holders will be informed.</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -2,8 +2,7 @@
 function activate_service_selector(form) {
 	$("SELECT#service", form).on('change', function () {
 		$(this).find('OPTION:selected').each( function(index, service) {
-			var page = '/dashboard/service/' + $(service).val();
-console.log("LOAD " + page);
+			var page = '/dashboard/viewport/' + $(service).val();
 			$("IFRAME#service-window").attr('src', page);
 		} );
 	} );

@@ -15,6 +15,7 @@ use List::Util  qw(first);
 use OpenConsole::Util           qw(reseed_tokens);
 use OwnerConsole::Model::Batch  ();
 use OwnerConsole::Tasks         ();
+use OwnerConsole::Controller    ();
 
 use constant
 {	MONGODB_CONNECT => 'mongodb://localhost:27017',
@@ -104,6 +105,7 @@ sub startup
 	my $r = $self->routes;
 	$r->get('/')->to('outsider#frontpage');
 	$r->get('/set')->to('outsider#set');
+
 	$r->get('/login')->to('login#index');
 	$r->post('/login')->to('login#tryLogin');
 	$r->get('/logout')->to('login#logout');
@@ -130,10 +132,13 @@ sub startup
 	$dashboard->post('/config-group/:groupid')->to('groups#configGroup');
 	$dashboard->post('/config-member/:groupid')->to('groups#configMember');
 	$dashboard->any('/invite-accept/:token')->to('groups#inviteAccept');
+	$r->get('/invite/:token')->to('groups#inviteChoice');
 
 	$dashboard->get('/emailaddrs')->to('emailaddrs#index');
 	$dashboard->get('/emailaddr/:proofid')->to('emailaddrs#emailaddr');
 	$dashboard->post('/config-emailaddr/:proofid')->to('emailaddrs#configEmailaddr');
+	my $challenge = $r->under('/challenge')->to('login#mustBeLoggedIn');
+	$challenge->get('/:token')->to('emailaddrs#challenge');  #XXX may get own controller later
 
 	$dashboard->get('/websites')->to('websites#index');
 	$dashboard->get('/website/:proofid')->to('websites#website');
@@ -143,12 +148,17 @@ sub startup
 	$dashboard->get('/contract/:proofid')->to('contracts#contract');
 	$dashboard->post('/config-contract/:proofid')->to('contracts#configContract');
 
-	$dashboard->get('/service/:demo')->to('dashboard#demo');
+	$dashboard->get('/services')->to('services#index');
+	$dashboard->get('/service/:proofid')->to('services#service');
+	$dashboard->post('/config-service/:proofid')->to('services#configService');
 
-	my $challenge = $r->under('/challenge')->to('login#mustBeLoggedIn');
-	$challenge->get('/:token')->to('emailaddrs#challenge');  #XXX may get own controller later
+	$dashboard->get('/viewport/:demo')->to('dashboard#demo');
 
-	$r->get('/invite/:token')->to('groups#inviteChoice');
+	#XXX To be separated out later (into open-console-connect)
+	$r->get('/connect/application/login')->to('connect#appLogin');
+	$r->get('/connect/application/logout')->to('connect#appLogout');
+
+	$self;
 }
 
 #----------------

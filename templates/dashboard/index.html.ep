@@ -13,7 +13,7 @@
   allowfullscreen="false"
   allowpaymentrequest="false"
   loading="lazy"
-  src="/dashboard/service/intro"
+  src="/dashboard/viewport/intro"
 >
 </iframe>
 

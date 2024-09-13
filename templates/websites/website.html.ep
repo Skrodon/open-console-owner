@@ -96,7 +96,8 @@
 </pre>
 
 		<p>The record class is "<tt>IN</tt>", as usual.  The record does not need
-        to be cached, so pick something short for the TTL, for instance "<tt>300</tt>".</p>
+        to be cached, so pick something short for the TTL, for instance "<tt>300</tt>".
+        Multiple records with the same label may exist: parallel proofs.</p>
 
         <p>After the above record was added, start verification.</p>
       </div>

@@ -10,6 +10,33 @@ use List::Util    qw(first);
 
 use OpenConsole::Session::Ajax ();
 
+# Required by extensions at load time, so before their 'use'
+my %challenge_handlers;
+sub challengeHandler($$)
+{	my ($class, $purpose, $method) = @_;
+	$class->isa(__PACKAGE__) or panic;
+
+	$challenge_handlers{$purpose} = sub {
+		my $self = (bless shift, $class);  # upgrade
+		$self->$method(@_);
+	};
+}
+
+# When missing, the controllers get autoloaded.
+use OwnerConsole::Controller::Account;
+use OwnerConsole::Controller::Contracts;
+use OwnerConsole::Controller::Dashboard;
+use OwnerConsole::Controller::Emailaddrs;
+use OwnerConsole::Controller::Groups;
+use OwnerConsole::Controller::Identities;
+use OwnerConsole::Controller::Login;
+use OwnerConsole::Controller::Outsider;
+use OwnerConsole::Controller::Services;
+use OwnerConsole::Controller::Websites;
+
+#XXX To be separated out later
+use OwnerConsole::Controller::Connect;
+
 =chapter NAME
 OwnerConsole::Controller - base-class for Mojo C's
 
@@ -109,17 +136,6 @@ sub proofStatusBgColorClass($;$)
 
 The "challenge dispatcher".
 =cut
-
-my %challenge_handlers;
-sub challengeHandler($$)
-{	my ($class, $purpose, $method) = @_;
-	$class->isa(__PACKAGE__) or panic;
-
-	$challenge_handlers{$purpose} = sub {
-		my $self = (bless shift, $class);  # upgrade
-		$self->$method(@_);
-	};
-}
 
 sub challenge()
 {	my $self     = shift;
