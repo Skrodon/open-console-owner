@@ -28,7 +28,7 @@ sub create($$%)
 	$insert->{purpose} or panic;
 
 	$insert->{schema}  ||= CHALLENGE_SCHEMA;
-	$insert->{token}   ||= new_token 'C';
+	$insert->{token}   ||= new_token 'H';
 	$insert->{created} ||= Mango::BSON::Time->new;
 	$insert->{userid}  ||= $account->userId;
 

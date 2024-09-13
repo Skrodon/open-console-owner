@@ -93,7 +93,7 @@ sub _checkUrlTask($$)
 {	my ($self, $session, $proof) = @_;
 	my $task = $self->taskPoll($session);
 	if($task && $task->finished && $session->isHappy)
-	{	$proof->setData(verifyURL => $task->results, verifyURLTrace => $task->trace, challenge => new_token 'C');
+	{	$proof->setData(verifyURL => $task->results, verifyURLTrace => $task->trace, challenge => new_token 'H');
 		$proof->setData(website => $proof->printableURL);  # needs verifyURL set first
 		$proof->save;
 		$session->setData(proofid => $proof->proofId, website => $proof->website);
@@ -140,21 +140,16 @@ sub _proofDNSStart($$$)
 sub _dnsRecord($)
 {	my ($self, $proof) = @_;
 
-	my ($host, $registered, $suffix) = domain_suffix $proof->hostUTF8;
+	my ($host, $registered, $suffix) = domain_suffix(lc $proof->hostUTF8);
 	my $zone = $registered ? "$registered.$suffix" : $suffix;  # will we see suffix owners?
 warn "($host, $registered, $suffix) = ", $proof->hostUTF8;
 
-	# The "random" is added to be able to have different proofs for the
-	# same thing.  For instance, in case different users can claim the
-	# same domain, which is fair.
-	my $random = substr $proof->id, 0, 4;
-
 	$host
-		or return ("open-console-challenge-$random", $zone);
+		or return ("open-console-challenge", $zone);
 
-	my $opt1  = "-open-console-challenge-$random";
-	my $opt2  = "-open-console-$random";
-	my $opt3  = "-oc-$random";
+	my $opt1  = "-open-console-challenge";
+	my $opt2  = "-open-console";
+	my $opt3  = "-oc";
 
 	# Punicode encoded utf8 must also fit in a MAX_DNS_LABEL (64).  In this,
 	# too much utf8 may be chopped off... I do not care.
