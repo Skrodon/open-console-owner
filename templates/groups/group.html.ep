@@ -1,7 +1,7 @@
 % layout 'dashboard';
 % title 'Configure Group';
 
-% my $is_new = $group->id eq 'new';
+% my $is_new = $group->isNew;
 % if($c->user->isAdmin) {
 %#   <p class="admin">IdentID = <%= $group->id %></p>
 % }

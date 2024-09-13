@@ -1,5 +1,5 @@
 % my @groups = $account->groups;
-% my $is_new = $asset->id eq 'new';
+% my $is_new = $asset->isNew;
 % my $mine   = $asset->isOwnedByMe || $is_new;
 
 <div>

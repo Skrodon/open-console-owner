@@ -1,7 +1,7 @@
 % layout 'dashboard';
 % title 'Create/update email address proof';
 
-% my $is_new  = $proof->id eq 'new';
+% my $is_new  = $proof->isNew;
 
 % my @pages;
 % my $settings_form = begin
