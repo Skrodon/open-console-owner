@@ -30,7 +30,7 @@ sub create($$%)
 	$insert->{schema}  ||= CHALLENGE_SCHEMA;
 	$insert->{token}   ||= new_token 'H';
 	$insert->{created} ||= Mango::BSON::Time->new;
-	$insert->{userid}  ||= $account->userId;
+	$insert->{userid}  ||= $account->id;
 
 	my $self = $class->SUPER::create($insert, %args);
 	$self;
@@ -53,7 +53,7 @@ sub payload() { $_[0]->_data->{payload} ||= {} }
 
 sub isFor($)
 {	my ($self, $account) = @_;
-	$self->userId eq $account->userId;
+	$self->userId eq $account->id;
 }
 
 sub expires()

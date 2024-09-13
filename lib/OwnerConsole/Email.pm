@@ -12,8 +12,6 @@ use Mail::Message::Body::Multipart ();
 
 use OpenConsole::Util  qw(new_token);
 
-use constant MAIL_SCHEMA => '20240116';
-
 =chapter NAME
 OwnerConsole::Email - Email abstraction
 
@@ -28,9 +26,8 @@ sub create($%)
 	my $sender = $args{sender};
 
 	my %insert = (
-    	emailid  => (new_token 'M'),
-    	schema   => MAIL_SCHEMA,
-    	sender   => $sender ? $sender->userId : undef,
+    	id       => (new_token 'M'),
+    	sender   => $sender ? $sender->id : undef,
 		subject  => $args{subject} // (panic "No subject"),
 		related  => $args{related} // [],
 		sendto   => $to,
@@ -47,7 +44,8 @@ sub create($%)
 =section Attributes
 =cut
 
-sub emailId()    { $_[0]->_data->{emailid} }
+sub schema()     { '20240116' }
+
 sub sendTo()     { $_[0]->_data->{sendto} }
 sub senderId()   { $_[0]->_data->{sender} }
 sub subject()    { $_[0]->_data->{subject} }

@@ -16,17 +16,17 @@ sub index()
 
 sub _identityPicker($)
 {	my ($self, $account) = @_;
-	my @table   = +[ $account->userId => 'Account' ];
+	my @table   = +[ $account->id => 'Account' ];
 
 	my %ingroups;
-	push @{$ingroups{$_->memberIdentityOf($account)->identityId}}, $_ for $account->groups;
+	push @{$ingroups{$_->memberIdentityOf($account)->id}}, $_ for $account->groups;
 	foreach my $personal ($account->identities)
 	{	my $name = $personal->nickname // $personal->role;
-		if(my $groups = $ingroups{$personal->identityId})
-		{	push @table, [ $_->groupId => "$name @ " . $_->name ] for @$groups;
+		if(my $groups = $ingroups{$personal->id})
+		{	push @table, [ $_->id => "$name @ " . $_->name ] for @$groups;
 		}
 		else
-		{	push @table, [ $personal->identityId => $name ];
+		{	push @table, [ $personal->id => $name ];
 		}
 	}
 

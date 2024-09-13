@@ -2335,8 +2335,8 @@ templates/login/mail_reset.html.ep
 templates/login/mail_reset.txt.ep
 templates/login/register.html.ep
 templates/login/reset.html.ep
-templates/proofs/_owner.html.ep
-templates/proofs/_owner_pick.html.ep
+templates/assets/_owner.html.ep
+templates/assets/_owner_pick.html.ep
 templates/proofs/_proof_list.html.ep
 templates/proofs/_status.html.ep
 templates/shared/_country.html.ep

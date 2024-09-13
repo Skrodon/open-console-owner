@@ -120,7 +120,7 @@ The document is maintained by M<OwnerConsole::Group::Invite> objects.
 
 sub invitesForGroup($)
 {	my ($self, $group) = @_;
-	my $data = $self->invites->find({groupid => $group->groupId})->all;
+	my $data = $self->invites->find({groupid => $group->id})->all;
 	map OwnerConsole::Group::Invite->fromDB($_), @$data;
 }
 

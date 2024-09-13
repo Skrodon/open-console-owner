@@ -67,7 +67,7 @@ sub configIdentity($)
 		or error __x"Identity has disappeared.";
 
 	if($how eq 'delete') {
-	    $::app->batch->removeEmailsRelatedTo($identity->identityId);
+	    $::app->batch->removeEmailsRelatedTo($identity->id);
 		$identity->remove;
 		$session->redirect('/dashboard/identities');
 		return $session->reply;
@@ -75,17 +75,13 @@ sub configIdentity($)
 
 	$self->acceptFormData($session, $identity, '_acceptIdentity');
 
-use Data::Dumper;
-warn Dumper $session;
 	if($how eq 'save' && $session->isHappy)
-	{	my $is_new = $identity->identityId eq 'new';
-		$identity->save(by_user => 1);
-
-		if($is_new)
+	{	if($identity->isNew)
 		{	$account->addIdentity($identity);
 			$account->save;
 			$session->notify(info => __x"New identity created");
 		}
+		$identity->save(by_user => 1);
 		$session->redirect('/dashboard/identities');
 	}
 

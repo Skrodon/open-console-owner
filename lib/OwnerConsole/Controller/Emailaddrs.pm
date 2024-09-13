@@ -138,7 +138,7 @@ sub _proofEmail($%)
 
 	my $challenge = $args{challenge} = OwnerConsole::Challenge->create($account,
 	  {	purpose => 'proof_emailaddr',
-		payload => { proofid => $proof->proofId },
+		payload => { proofid => $proof->id },
 	  },
 	);
 	$challenge->save;

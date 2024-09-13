@@ -73,9 +73,9 @@
 	},
 
 	# Medium critical data, mild in performance requirements.
-	proofdb  => {
+	assetsdb  => {
 		server => 'mongodb://localhost:27017',
-		dbname => 'proofs',
+		dbname => 'assets',
 	},
 
 	# Low cricital data, but many writes: outgoing emails, presented tokens.

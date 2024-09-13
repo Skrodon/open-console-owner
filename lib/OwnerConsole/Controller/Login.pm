@@ -42,7 +42,7 @@ sub login($)
 
 	# Create session cookie
 	$self->session(is_auth    => 1);
-	$self->session(userid     => $account->userId);
+	$self->session(userid     => $account->id);
 	$self->session(expiration => $self->config->{sessions}{expire} || 600);
 }
 

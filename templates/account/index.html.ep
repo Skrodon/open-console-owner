@@ -4,7 +4,7 @@
 
 % my $account = $c->account;
 % if($c->user->isAdmin) {
-%#   <p class="admin">UserID = <%= $account->userId %></p>
+%#   <p class="admin">UserID = <%= $account->id %></p>
 % }
 
 % my @pages;
@@ -244,7 +244,7 @@
 <script src="/assets/config_form.js"></script>
 
 <form id="config-account" class="config-form">
-  <input id="identifier" type="hidden" value="<%= $account->userId %>" />
+  <input id="identifier" type="hidden" value="<%= $account->id %>" />
 
   <h1><i class="fa-solid fa-user" aria-hidden="true"></i> Account</h1>
 

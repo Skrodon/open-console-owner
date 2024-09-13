@@ -1,9 +1,9 @@
 % layout 'dashboard';
 % title 'Configure Identity';
 
-% my $is_new = $identity->identityId eq 'new';
+% my $is_new = $identity->id eq 'new';
 % if($c->user->isAdmin) {
-%#   <p class="admin">IdentID = <%= $identity->identityId %></p>
+%#   <p class="admin">IdentID = <%= $identity->id %></p>
 % }
 % my $account = $c->account;
 

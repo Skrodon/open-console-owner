@@ -94,7 +94,7 @@ sub configAccount($)
 	my $victim  = $self->openObject($session, 'OpenConsole::Account', userid => sub { $::app->users->account($_[0]) })
 		or error __x"Account disappeared.";
 
-	$self->user->isAdmin || $victim->userId eq $self->account->userId
+	$self->user->isAdmin || $victim->id eq $self->account->id
 		or error __x"You cannot modify the account of someone else.";
 
 	if($how eq 'delete')

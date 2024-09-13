@@ -239,7 +239,7 @@
 <script src="/assets/proof_website.js"></script>
 
 <form id="config-website" class="config-form proof-form">
-  <input id="identifier" type="hidden" value="<%= $proof->proofId %>" />
+  <input id="identifier" type="hidden" value="<%= $proof->id %>" />
   <input type="hidden" name="selected-prover" id="selected-prover" value="<%= $prover %>" />
   <input type="hidden" name="has-proof" id="has-proof" value="<%= $has_proof %>" />
 

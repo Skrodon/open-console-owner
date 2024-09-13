@@ -1,7 +1,7 @@
 % layout 'dashboard';
 % title 'Create/update email address proof';
 
-% my $is_new  = $proof->proofId eq 'new';
+% my $is_new  = $proof->id eq 'new';
 
 % my @pages;
 % my $settings_form = begin
@@ -140,7 +140,7 @@ with "+<something>" per use.  For instance, "<code>me+oc@example.com</code>" whe
 <script src="/assets/proof_form.js"></script>
 
 <form id="config-emailaddr" class="config-form proof-form">
-  <input id="identifier" type="hidden" value="<%= $proof->proofId %>" />
+  <input id="identifier" type="hidden" value="<%= $proof->id %>" />
   <input type="hidden" name="selected-prover" id="selected-prover" value="<%= $prover %>" />
   <input type="hidden" name="has-proof" id="has-proof" value="<%= $has_proof %>" />
 

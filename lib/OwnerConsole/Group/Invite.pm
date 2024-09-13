@@ -45,8 +45,8 @@ sub create($$$)
         invited   => Mango::BSON::Time->new($start * 1000),
         expires   => Mango::BSON::Time->new($expires * 1000),
         email     => $email,
-        identid   => $identity->identityId,
-        groupid   => $group->groupId,
+        identid   => $identity->id,
+        groupid   => $group->id,
 	});
 }
 

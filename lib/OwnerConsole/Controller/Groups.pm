@@ -76,13 +76,12 @@ sub configGroup()
 	my $group    = $self->openObject($session, 'OpenConsole::Group', groupid => sub { $account->group($_[0]) })
 		or error __x"Group has disappeared.";
 
-	my $is_new   = $group->groupId eq 'new';
-	$how eq 'validate' || $is_new || $group->memberIsAdmin($account)
-		or error __x"Tried to modify group '{id}', not being admin.", id => $group->groupId;
+	$how eq 'validate' || $group->isNew || $group->memberIsAdmin($account)
+		or error __x"Tried to modify group '{id}', not being admin.", id => $group->id;
 
 	if($how eq 'delete') {
 		$::app->users->removeGroup($group);
-		$::app->batch->removeEmailsRelatedTo($group->groupId);
+		$::app->batch->removeEmailsRelatedTo($group->id);
 
 		$account->removeGroup($group);
 		$account->save;
@@ -98,7 +97,7 @@ sub configGroup()
 	{	$group->save(by_user => 1);
 		$account->save(by_user => 1);
 
-		if($is_new)
+		if($group->isNew)
 		{	$session->notify(info => __x"New group created");
 			$account->addGroup($group);
 			$account->save;
@@ -202,7 +201,7 @@ sub configMember()
 		}
 	}
 	else
-	{	error __x"No action '{action}' for invite.", id => $group->groupId;
+	{	error __x"No action '{action}' for invite.", id => $group->id;
 	}
 
 	$session->reply;

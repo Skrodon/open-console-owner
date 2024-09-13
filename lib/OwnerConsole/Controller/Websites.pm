@@ -96,7 +96,7 @@ sub _checkUrlTask($$)
 	{	$proof->setData(verifyURL => $task->results, verifyURLTrace => $task->trace, challenge => new_token 'H');
 		$proof->setData(website => $proof->printableURL);  # needs verifyURL set first
 		$proof->save;
-		$session->setData(proofid => $proof->proofId, website => $proof->website);
+		$session->setData(proofid => $proof->id, website => $proof->website);
     	$session->setData(show_trace => $self->showTrace($task->trace));
 	}
 

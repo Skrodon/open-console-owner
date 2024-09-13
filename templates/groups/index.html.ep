@@ -30,17 +30,17 @@
         <td>
 %     if($group->memberIsAdmin($account)) {
             <i class="fa-solid fa-user-tie" aria-label="you are admin"></i>
-            <a href="/dashboard/group/<%= $group->groupId %>"><i class="fa-solid fa-pen" aria-label="edit group"></i></a>
+            <a href="/dashboard/group/<%= $group->id %>"><i class="fa-solid fa-pen" aria-label="edit group"></i></a>
 % } else {
-            <a href="/dashboard/group/<%= $group->groupId %>"><i class="fa-solid fa-magnifying-glass" aria-label="view group"></a></i>
+            <a href="/dashboard/group/<%= $group->id %>"><i class="fa-solid fa-magnifying-glass" aria-label="view group"></a></i>
 % }
         </td><td>
 
-    <select class="form-select member" data-groupid="<%= $group->groupId %>">
+    <select class="form-select member" data-groupid="<%= $group->id %>">
 %      my $member   = $group->memberIdentityOf($account) or next;
-%      my $selected = $member->identityId;
+%      my $selected = $member->id;
 %      foreach my $identity (@identities) {
-    <option value="<%= $identity->identityId %>"<%= $selected eq $identity->identityId ? ' selected' : '' %>><%= $identity->role %></option>
+    <option value="<%= $identity->id %>"<%= $selected eq $identity->id ? ' selected' : '' %>><%= $identity->role %></option>
 %      }
     </select>
         </td></tr>
