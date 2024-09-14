@@ -7,7 +7,7 @@ use Mojo::Base 'OwnerConsole::Controller';
 use Log::Report 'open-console-owner';
 
 use OpenConsole::Util       qw();
-use OpenConsole::Contract   ();
+use OpenConsole::Asset::Contract ();
 
 sub index()
 {   my $self = shift;
@@ -38,7 +38,7 @@ sub contract(%)
 	my $proofid  = $self->param('proofid');
 	my $account  = $self->account;
 	my $proof    = $proofid eq 'new'
-	  ? OpenConsole::Contract->create({owner => $account})
+	  ? OpenConsole::Asset::Contract->create({owner => $account})
 	  : $account->proof(contracts => $proofid);
 
 warn "PAGE EDIT PROOF $proofid, $proof.";
@@ -68,7 +68,7 @@ sub configContract()
 {   my $self     = shift;
 	my $session  = $self->ajaxSession;
 
-	my $proof    = $self->openProof($session, 'OpenConsole::Contract')
+	my $proof    = $self->openProof($session, 'OpenConsole::Asset::Contract')
 		or $session->reply;
 
 	my $how      = $session->query;

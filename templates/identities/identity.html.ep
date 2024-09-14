@@ -247,7 +247,7 @@
 <script src="/assets/config_form.js"></script>
 
 <form id="config-identity" class="config-form">
-  <input id="identifier"     type="hidden" value="<%= $identity->identityId %>" />
+  <input id="identifier"     type="hidden" value="<%= $identity->id %>" />
   <input id="object_version" type="hidden" value="<%= $identity->schema %>" />
 
   <h1><i class="fa-solid fa-ghost" aria-hidden="true"></i> Identity</h1>

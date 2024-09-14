@@ -76,12 +76,14 @@ sub configIdentity($)
 	$self->acceptFormData($session, $identity, '_acceptIdentity');
 
 	if($how eq 'save' && $session->isHappy)
-	{	if($identity->isNew)
+	{	my $is_new = $identity->isNew;  # id = new?
+		$identity->save(by_user => 1);  # now it gets an id
+
+		if($is_new)
 		{	$account->addIdentity($identity);
 			$account->save;
 			$session->notify(info => __x"New identity created");
 		}
-		$identity->save(by_user => 1);
 		$session->redirect('/dashboard/identities');
 	}
 

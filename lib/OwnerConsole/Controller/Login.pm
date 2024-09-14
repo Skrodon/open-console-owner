@@ -17,7 +17,7 @@ sub index()
 {	my $self = shift;
 
 	return $self->redirect_to('/dashboard')
-		if $self->session('is_auth');
+		if $self->session('is_auth') && $self->account;
 
 	$self->render(template => 'login/index');
 }

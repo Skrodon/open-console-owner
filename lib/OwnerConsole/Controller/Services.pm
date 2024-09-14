@@ -6,7 +6,7 @@ use Mojo::Base 'OwnerConsole::Controller';
 
 use Log::Report 'open-console-owner';
 
-use OpenConsole::Service   ();
+use OpenConsole::Asset::Service   ();
 
 sub index()
 {   my $self = shift;
@@ -18,7 +18,7 @@ sub service(%)
 	my $proofid  = $self->param('proofid');
 	my $account  = $self->account;
 	my $proof    = $proofid eq 'new'
-	  ? OpenConsole::Service->create({owner => $account})
+	  ? OpenConsole::Asset::Service->create({owner => $account})
 	  : $account->proof(services => $proofid);
 
 warn "PAGE EDIT SERVICE $proofid, $proof.";
@@ -47,7 +47,7 @@ sub configService()
 {   my $self     = shift;
 	my $session  = $self->ajaxSession;
 
-	my $proof    = $self->openProof($session, 'OpenConsole::Service')
+	my $proof    = $self->openProof($session, 'OpenConsole::Asset::Service')
 		or $session->reply;
 
 	my $how      = $session->query;

@@ -51,7 +51,7 @@ for expensive protection.
 
 sub batch()
 {	my $self = shift;
-    state $u = $self->_mango('OwnerConsole::Model::Batch' => $self->config->{batchdb});
+    state $u = $self->_mango('OwnerConsole::Model::Batch' => 'batchdb');
 }
 
 #----------------

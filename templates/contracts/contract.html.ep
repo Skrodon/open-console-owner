@@ -2,7 +2,7 @@
 % title 'Create/update contract';
 
 % my $contract = $proof;
-% my $is_new  = $contract->isNew;
+% my $is_new   = $contract->isNew;
 % $c->notify(error => 'This is just a mock-up, to show you our plans');
 
 % my @pages;

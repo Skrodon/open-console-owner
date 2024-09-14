@@ -94,10 +94,11 @@ sub configGroup()
 	$self->acceptFormData($session, $group, '_acceptGroup');
 
 	if($how eq 'save' && $session->isHappy)
-	{	$group->save(by_user => 1);
+	{	my $is_new = $group->isNew;    # id eq new?
+		$group->save(by_user => 1);    # now gets id
 		$account->save(by_user => 1);
 
-		if($group->isNew)
+		if($is_new)
 		{	$session->notify(info => __x"New group created");
 			$account->addGroup($group);
 			$account->save;
