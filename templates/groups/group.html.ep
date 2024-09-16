@@ -158,22 +158,30 @@
   </div>
 % }
 
-  <div>
-    <label for="members" class="form-label">All Group members</label>
-    <table class="table">
-    <thead>
-      <tr><th>Name</th><th>Rights</th></tr>
-    </thead>
-    <tbody>
-% my %members = map +($_->{identity}->nameInGroup => $_), $group->allMembers(get_identities => 1);
-% foreach my $name (sort keys %members) {
-%	my $member   = $members{$name};
-%   my $identity = $member->{identity};
-      <tr><td><%= $name %></td><td><%== $member->{is_admin} ? '<i class="fa-solid fa-user-tie" aria-label="member is admin"></i>' : '' %></td></tr>
-% }
-    </tbody>
+<div>
+  <label for="members" class="form-label">All Group members</label>
+  <table id="members-table" class="table text-center align-middle">
+      <thead>
+          <tr><th>Name</th><th>Rights</th></tr>
+      </thead>
+      <tbody>
+          % my %members = map +($_->{identity}->nameInGroup => $_), $group->allMembers(get_identities => 1);
+          % foreach my $name (sort keys %members) {
+          %	my $member   = $members{$name};
+          % my $identity = $member->{identity};
+          % my $isAdmin  = $group->memberIsAdmin($account);
+          <tr class="member-row">
+              <td><%= $name %></td>
+              <td class="rights" data-is-admin="<%= $isAdmin ? 'true' : 'false' %>">
+                  <%== $member->{is_admin} ? '<i class="fa-solid fa-user-tie" aria-label="member is admin"></i>' : '' %>
+              </td>
+          </tr>
+          % }
+      </tbody>
     </table>
-  </div>
+    <p class="changed-warning" hidden>Changes will only be applied when you save this form</p>
+    <p class="last-admin-waring" hidden>There must be at least one admin in the group</p>
+</div>
 
 % end
 
