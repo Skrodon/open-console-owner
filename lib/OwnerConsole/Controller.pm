@@ -98,7 +98,7 @@ sub openProof($$)
 		return $objclass->create({ owner => $self->account })
 	}
 
-	my $proof = $self->account->proof($objclass->set, $proofid);
+	my $proof = $self->account->asset($objclass->set, $proofid);
 	unless($proof)
 	{	info "Proof $proofid of type $objclass has disappeared.";
 	$session->internalError(__x"Proof has disappeared.");

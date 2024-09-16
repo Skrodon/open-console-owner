@@ -38,7 +38,7 @@ sub website(%)
 		return $self->render(template => 'websites/website-new', proof => $proof);
 	}
 	else
-	{	my $proof     = $account->proof(websites => $proofid);
+	{	my $proof     = $account->asset(websites => $proofid);
 		my $prooftype = $proof->algorithm;
 		my $prover    = $self->param('prover') || $prooftype;    # requested
 

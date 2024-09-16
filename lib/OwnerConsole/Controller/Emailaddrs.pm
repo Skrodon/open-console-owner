@@ -33,7 +33,7 @@ sub emailaddr(%)
 	my $account  = $self->account;
 	my $proof    = $proofid eq 'new'
 	  ? OpenConsole::Proof::EmailAddr->create({owner => $account})
-	  : $account->proof(emailaddrs => $proofid);
+	  : $account->asset(emailaddrs => $proofid);
 
 warn "PAGE EDIT PROOF $proofid, $proof.";
 	my $prooftype = $proof->algorithm;
@@ -159,7 +159,7 @@ sub challengeEmailaddr($$)
 {	my ($self, $account, $challenge) = @_;
 
 	my $payload = $challenge->payload;
-	my $proof   = $::app->proofs->proof($payload->{proofid});
+	my $proof   = $::app->assets->proof($payload->{proofid});
 	unless($proof)
 	{	$self->notify(error => __x"The proof has disappeared.");
 		return $self->redirect_to('/dashboard');
@@ -174,6 +174,7 @@ sub challengeEmailaddr($$)
 
 	$proof->accepted;
 	$proof->save;
+	$self->notify(info => __x"The proof is accepted.");
 	$self->redirect_to('/dashboard/emailaddrs');
 }
 

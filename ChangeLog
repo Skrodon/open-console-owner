@@ -11,6 +11,7 @@ version 0.02:
 	- add Contracts and Services
 	- move to new 'id' policy of core
 	- use $obj->isNew
+	- move to new proof manager "assets"
 
 version 0.01: Wed 09 Sep 12:07:38 CEST 2024
 	- initial release

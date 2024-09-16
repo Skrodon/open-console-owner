@@ -20,7 +20,7 @@
         <div class="card-body">
           <h5>New email address proof</h5>
           <a href="/dashboard/emailaddr/new?prover=email" class="btn btn-primary" role="button" %>
-          <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> via email</a>
+          <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> get email</a>
         </div>
       </div>
     </div>

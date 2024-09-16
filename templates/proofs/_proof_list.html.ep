@@ -42,7 +42,7 @@
       <th class="edit"><i class="fa-solid fa-user-tie owner" aria-hidden="true"></i></th>
     </tr>
 
-%= $rows->([ $account->proofs->for($set) ], 1);
+%= $rows->([ $account->assets->for($set, undef) ], 1);
 
 %### Bound to Identities
 
@@ -53,7 +53,7 @@
       <th class="edit"><i class="fa-solid fa-user-tie owner" aria-hidden="true"></i></th>
     </tr>
 
-%=   $rows->([ $identity->proofs->for($set) ], 1);
+%=   $rows->([ $account->assets->for($set, $identity) ], 1);
 % }
 
 %### Bound to Groups
@@ -66,7 +66,7 @@
       <th class="edit"><%== $group_admin ? '<i class="fa-solid fa-user-tie owner" aria-label="you are group owner"></i>' : '' %></th>
     </tr>
 
-%=   $rows->([ $group->proofs->for($set) ], $group_admin);
+%=   $rows->([ $group->assets->for($set) ], $group_admin);
 
 % }
   </tbody>

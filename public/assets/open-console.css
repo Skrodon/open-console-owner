@@ -20432,6 +20432,7 @@ FORM.proof-list I.fa-regular,
 FORM.proof-list I.fa-solid {
   width: 1.2em;
   text-align: center;
+  margin-right: 2px;
 }
 
 #config-website #check-url-button, #config-website #start-proof-button {
