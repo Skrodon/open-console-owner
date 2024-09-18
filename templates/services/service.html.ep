@@ -1,0 +1,108 @@
+% layout 'dashboard';
+% title 'Create/update a service definition';
+
+% my $is_new  = $service->isNew;
+
+% my @pages;
+% my $settings_form = begin
+
+%   if($is_new) {
+  <div>
+    <p>Define a new service.</p>
+  </div>
+%   } else {
+  <div>
+    <p>When you make changes to this service, then the contract users will get informed.</p>
+  </div>
+%   }
+
+  <div>
+    <label for="name" class="form-label">Name</label>
+    <input name="name" type="text" id="name" class="form-control" placeholder="Public service name"
+      aria-describedby="name_explain" required value="<%= $service->name %>"
+    />
+    <div id="name_explain" class="form-text">The name of this service.  Do not include your
+      organizational name in this, because that will be clearly visual around this service
+      for other reason.</div>
+  </div>
+
+  <div>
+    <label for="descr" class="form-label">Description</label>
+    <textarea name="descr" type="text" id="descr" class="form-control"
+      aria-describedby="descr_explain"
+    ><%= $service->description // '' %></textarea>
+    <div id="descr_explain" class="form-text"> Describe what this service provides, in English.</div>
+  </div>
+
+  <div>
+    <label for="endpoint" class="form-label">Endpoint</label>
+    <input name="endpoint" type="text" id="endpoint" class="form-control" placeholder="https://"
+      aria-describedby="endpoint_explain" required value="<%= $service->endpoint %>"
+    />
+    <div id="endpoint_explain" class="form-text">The location of your service.  This location
+      must be within a website of which you have proven ownership already.</div>
+  </div>
+
+  <div>
+    <label for="secret" class="form-label">Your Secret</label>
+    <input name="secret" type="text" id="secret" class="form-control" aria-describedby="secret_explain" value=""
+% if($is_new) {
+      required placeholder="Pick a good secret."
+% } else {
+      placeholder="Not stored in a readible state, hence not shown."
+% }
+    />
+    <div id="secret_explain" class="form-text">This secret is used by your instances to log-in to
+       "connect", for instance to get the user's details.  You may fill-in a (new) value to (re)set it.
+    </div>
+  </div>
+
+  <div>
+    <label for="serviceid" class="form-label">Service Identitier</label>
+% if($is_new) {
+    <p>This identifier will be assigned on the moment this service is saved for the first
+    time.</p>
+% } else {
+    <input name="serviceid" type="text" id="serviceid" class="form-control"
+      value="<%= $service->id %>" disabled
+      aria-describedby="service_explain" required value="<%= $service->secret %>"
+    />
+% }
+    <div id="service_explain" class="form-text">This is the other component which you need to
+       login your instance to "connect".</div>
+  </div>
+
+
+  <div>
+
+  &nbsp;<br />
+%#<pre><%= Data::Dumper::Dumper($service) %></pre>
+
+  </div>
+
+% end
+
+% my $settings_explain = begin
+
+% end
+
+% push @pages, [
+%    'service-settings',
+%    'Settings',
+%    $settings_form,
+%    $settings_explain,
+% ];
+
+<script src="/assets/config_form.js"></script>
+<script src="/assets/service_form.js"></script>
+
+<form id="config-service" class="config-form service-form">
+  <input id="identifier" type="hidden" value="<%= $service->id %>" />
+
+  <h1><i class="fa-solid fa-envelope-circle-check" aria-hidden="true"></i> Define a service</h1>
+
+% include 'dashboard/_tabbed';
+%= $::tabbed->('service-tabs' => \@pages);
+
+</form>
+

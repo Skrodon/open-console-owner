@@ -7,6 +7,7 @@ use Mojo::Base 'OwnerConsole::Controller';
 use Log::Report 'open-console-owner';
 
 use OpenConsole::Asset::Service   ();
+use OpenConsole::Util             qw(:validate);
 
 sub index()
 {   my $self = shift;
@@ -15,29 +16,43 @@ sub index()
 
 sub service(%)
 {   my ($self, %args) = @_;
-	my $proofid  = $self->param('proofid');
+	my $id       = $self->param('assetid');
 	my $account  = $self->account;
-	my $proof    = $proofid eq 'new'
+	my $service  = $id eq 'new'
 	  ? OpenConsole::Asset::Service->create({owner => $account})
-	  : $account->proof(services => $proofid);
+	  : $account->assets->asset(services => $id);
 
-warn "PAGE EDIT SERVICE $proofid, $proof.";
+warn "PAGE EDIT SERVICE $id, $service.";
 
 	$self->render(
 		template  => 'services/service',
-		proof     => $proof,
+		service   => $service,
 	);
 }
 
 sub _acceptService()
-{	my ($self, $session, $proof) = @_;
-	$self->acceptProof($session, $proof);
+{	my ($self, $session, $service) = @_;
 
 	no warnings 'uninitialized';
 
-	my $name = $session->optionalParam('name');
-	if($proof->isNew)
-	{	
+	my $endpoint = val_line $session->requiredParam('endpoint');
+	$endpoint eq 'missing' || is_valid_url $endpoint
+		or $session->addError(endpoint => __x"Invalid url.");
+
+	$service->setData(
+		name        => val_line $session->requiredParam('name'),
+		description => val_text $session->optionalParam('descr'),
+		endpoint    => $endpoint,
+		status      => 'enabled',
+	);
+
+	#XXX here, we need to check whether the service provider owns the domain.
+
+	if($service->isNew)
+	{	$service->changeSecret(val_line $session->requiredParam('secret'));
+	}
+	elsif(my $secret = val_line $session->optionalParam('secret'))
+	{	$service->changeSecret($secret);
 	}
 
 	$self;
@@ -47,28 +62,28 @@ sub configService()
 {   my $self     = shift;
 	my $session  = $self->ajaxSession;
 
-	my $proof    = $self->openProof($session, 'OpenConsole::Asset::Service')
+	my $service  = $self->openAsset($session, 'OpenConsole::Asset::Service')
 		or $session->reply;
 
 	my $how      = $session->query;
 warn "HOW=$how";
 	if($how eq 'reown')
 	{	my $ownerid = $session->requiredParam('new_owner');
-		$proof->changeOwner($session->account, $ownerid);
-		$proof->save;
+		$service->changeOwner($session->account, $ownerid);
+		$service->save;
 		return $session->reply;
 	}
 
 	if($how eq 'delete')
-	{	$proof->delete;
-		$session->notify(info => __x"Service '{name}' removed.", name => $proof->name);
+	{	$service->delete;
+		$session->notify(info => __x"Service '{name}' removed.", name => $service->name);
 		$session->redirect('/dashboard/services');
 	}
 
-	$self->acceptFormData($session, $proof, '_acceptService');
+	$self->acceptFormData($session, $service, '_acceptService');
 
 	if($how eq 'save' && $session->isHappy)
-	{	$proof->save(by_user => 1);
+	{	$service->save(by_user => 1);
 		$session->redirect('/dashboard/services');
 	}
 

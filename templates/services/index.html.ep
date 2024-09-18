@@ -15,16 +15,9 @@
 %= include 'proofs/_proof_list', set => 'services', element => 'service', show => $show, show_column => "Service", add_text => "Add a service";  #XXX translate
 </form>
 
+             <a href="/dashboard/service/new" class="btn btn-primary"><i class="fa-solid fa-circle-plus" aria-hidden="true"></i> Offer a new Service</a>
         </div>
       </div>
-
-      <div class="card" id="new-services-card" style="margin-top: 1ex">
-        <h5 class="card-header">Establish a new service</h5>
-        <div class="card-body">
-
-        </div>
-      </div>
-
     </div>
 
     <div class="col-sm-5">
