@@ -20,7 +20,7 @@ sub service(%)
 	my $account  = $self->account;
 	my $service  = $id eq 'new'
 	  ? OpenConsole::Asset::Service->create({owner => $account})
-	  : $account->assets->asset(services => $id);
+	  : $account->asset(services => $id);
 
 warn "PAGE EDIT SERVICE $id, $service.";
 

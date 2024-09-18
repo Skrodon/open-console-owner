@@ -39,7 +39,7 @@ sub contract(%)
 	my $account  = $self->account;
 	my $proof    = $proofid eq 'new'
 	  ? OpenConsole::Asset::Contract->create({owner => $account})
-	  : $account->proof(contracts => $proofid);
+	  : $account->asset(contracts => $proofid);
 
 warn "PAGE EDIT PROOF $proofid, $proof.";
 
