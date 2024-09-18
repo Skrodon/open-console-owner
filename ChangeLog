@@ -1,6 +1,7 @@
 --------- version history of Open-Console-Owner
 
-version 0.02:
+version 0.02: Wed 18 Sep 14:49:00 CEST 2024
+
 	Fixes:
 	- fix show_trace on error
 	- fix website dns proof domain-suffix issues
