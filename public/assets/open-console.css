@@ -20409,6 +20409,7 @@ DIV#page {
   padding-top: 140px;
 }
 DIV#page NAV.sidebar A[href="#"] {
+  display: none;
   text-decoration: line-through;
 }
 DIV#page NAV.sidebar A {

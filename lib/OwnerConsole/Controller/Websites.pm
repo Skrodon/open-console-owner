@@ -30,7 +30,7 @@ sub index()
 
 sub website(%)
 {   my ($self, %args) = @_;
-	my $proofid  = $self->param('proofid');
+	my $proofid  = $self->param('assetid');
 	my $account  = $self->account;
 
 	if($proofid eq 'new')
@@ -97,7 +97,7 @@ sub _checkUrlTask($$)
 		$proof->setData(website => $proof->printableURL);  # needs verifyURL set first
 		$proof->save;
 		$session->setData(proofid => $proof->id, website => $proof->website);
-    	$session->setData(show_trace => $self->showTrace($task->trace));
+		$session->setData(show_trace => $self->showTrace($task->trace));
 	}
 
 	$session->stopPolling if $task->finished;
@@ -224,7 +224,7 @@ sub configWebsite()
 	my $session  = $self->ajaxSession;
 	$session->ignoreParam('selected-prover');
 
-	my $proof    = $self->openProof($session, 'OpenConsole::Proof::Website')
+	my $proof    = $self->openAsset($session, 'OpenConsole::Proof::Website')
 		or $session->reply;
 
 	my $how      = $session->query;
@@ -238,9 +238,9 @@ sub configWebsite()
 	if($how eq 'delete')
 	{	$proof->delete;
 
-        my $msg = $proof->isValid
-          ? __x("Proof for website '{url}' removed.", url => $proof->website)
-          : __x("Incomplete claim for website '{url}' removed.", url => $proof->website);
+		my $msg = $proof->isValid
+		  ? __x("Proof for website '{url}' removed.", url => $proof->website)
+		  : __x("Incomplete claim for website '{url}' removed.", url => $proof->website);
 
 		$session->notify(info => $msg);
 		$session->redirect('/dashboard/websites');

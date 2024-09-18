@@ -29,7 +29,7 @@ sub index()
 
 sub emailaddr(%)
 {   my ($self, %args) = @_;
-	my $proofid  = $self->param('proofid');
+	my $proofid  = $self->param('assetid');
 	my $account  = $self->account;
 	my $proof    = $proofid eq 'new'
 	  ? OpenConsole::Proof::EmailAddr->create({owner => $account})
@@ -53,7 +53,7 @@ sub _acceptEmailaddr()
 
 	no warnings 'uninitialized';
 
-	my $email   = $session->optionalParam('email');
+	my $email   = val_line $session->optionalParam('email');
 	if($proof->isNew)
 	{	# Cannot change email-address unless a new proof is created
 		if(! defined $email || $email eq '')
@@ -79,7 +79,7 @@ sub configEmailaddr()
 {   my $self     = shift;
 	my $session  = $self->ajaxSession;
 
-	my $proof    = $self->openProof($session, 'OpenConsole::Proof::EmailAddr')
+	my $proof    = $self->openAsset($session, 'OpenConsole::Proof::EmailAddr')
 		or $session->reply;
 
 	my $how      = $session->query;

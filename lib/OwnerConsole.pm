@@ -135,27 +135,27 @@ sub startup
 	$r->get('/invite/:token')->to('groups#inviteChoice');
 
 	$dashboard->get('/emailaddrs')->to('emailaddrs#index');
-	$dashboard->get('/emailaddr/:proofid')->to('emailaddrs#emailaddr');
-	$dashboard->post('/config-emailaddr/:proofid')->to('emailaddrs#configEmailaddr');
+	$dashboard->get('/emailaddr/:assetid')->to('emailaddrs#emailaddr');
+	$dashboard->post('/config-emailaddr/:assetid')->to('emailaddrs#configEmailaddr');
 	my $challenge = $r->under('/challenge')->to('login#mustBeLoggedIn');
 	$challenge->get('/:token')->to('emailaddrs#challenge');  #XXX may get own controller later
 
 	$dashboard->get('/websites')->to('websites#index');
-	$dashboard->get('/website/:proofid')->to('websites#website');
-	$dashboard->post('/config-website/:proofid')->to('websites#configWebsite');
+	$dashboard->get('/website/:assetid')->to('websites#website');
+	$dashboard->post('/config-website/:assetid')->to('websites#configWebsite');
 
 	$dashboard->get('/contracts')->to('contracts#index');
-	$dashboard->get('/contract/:proofid')->to('contracts#contract');
-	$dashboard->post('/config-contract/:proofid')->to('contracts#configContract');
+	$dashboard->get('/contract/:assetid')->to('contracts#contract');
+	$dashboard->post('/config-contract/:assetid')->to('contracts#configContract');
 
 	$dashboard->get('/services')->to('services#index');
-	$dashboard->get('/service/:proofid')->to('services#service');
-	$dashboard->post('/config-service/:proofid')->to('services#configService');
+	$dashboard->get('/service/:assetid')->to('services#service');
+	$dashboard->post('/config-service/:assetid')->to('services#configService');
 
 	$dashboard->get('/viewport/:demo')->to('dashboard#demo');
 
 	#XXX To be separated out later (into open-console-connect)
-	$r->get('/connect/application/login')->to('connect#appLogin');
+	$r->post('/connect/application/login')->to('connect#appLogin');
 	$r->get('/connect/application/logout')->to('connect#appLogout');
 
 	$self;

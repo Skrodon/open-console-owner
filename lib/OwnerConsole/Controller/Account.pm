@@ -30,12 +30,13 @@ sub _acceptAccount($$)
 {	my ($self, $session, $victim) = @_;
 	$self->acceptObject($session, $victim);
 
-	my $email = is_valid_email $session->requiredParam('email')
-		or $session->addError(email => __x"Invalid email address");
+	my $email = val_line $session->requiredParam('email');
+	defined $email && ! is_valid_email $email
+		or $session->addError(email => __x"Invalid email address.");
 	$victim->setData(email => $email);
 
-	my $passwd  = $session->optionalParam(password => '');
-	my $confirm = $session->optionalParam(confirm  => '');
+	my $passwd  = val_line $session->optionalParam(password => '');
+	my $confirm = val_line $session->optionalParam(confirm  => '');
 
 	if(length $passwd && length $confirm)
 	{	if($passwd ne $confirm)

@@ -95,4 +95,10 @@
 		} ],
 		poll_interval => 2000,  # default
 	},
+
+	#XXX To be moved to 'connect' later
+
+	connect => {
+		default_logout_grace => 'P1D',        # duration
+	},
 }

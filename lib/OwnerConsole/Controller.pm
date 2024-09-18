@@ -80,6 +80,25 @@ sub openObject($$$$)
 	$object;
 }
 
+sub openAsset($$)
+{	my ($self, $session, $objclass) = @_;
+	my $assetid = $session->about('assetid');
+
+	if($assetid eq 'new')
+	{	trace "Create new $objclass asset";
+		return $objclass->create({ owner => $self->account })
+	}
+
+	my $asset = $self->account->asset($objclass->set, $assetid);
+	unless($asset)
+	{	info "Asset $assetid of type $objclass has disappeared.";
+		$session->internalError(__x"Proof has disappeared.");
+		return undef;
+	}
+
+	$asset;
+}
+
 #-------------
 =section Generic code for Proofs
 =cut
@@ -89,26 +108,9 @@ sub acceptProof($$)
 	$self;
 }
 
-sub openProof($$)
-{	my ($self, $session, $objclass) = @_;
-	my $proofid = $session->about('proofid');
-
-  	if($proofid eq 'new')
-	{	trace "Create new $objclass proof";
-		return $objclass->create({ owner => $self->account })
-	}
-
-	my $proof = $self->account->asset($objclass->set, $proofid);
-	unless($proof)
-	{	info "Proof $proofid of type $objclass has disappeared.";
-	$session->internalError(__x"Proof has disappeared.");
-		return undef;
-	}
-
-	$proof;
-}
-
 my %proof_status = (    # translatable name, bg-color
+	enabled  => [ __"Enabled",    'success' ],
+	disabled => [ __"Disabled",   'warning' ],
 	unproven => [ __"Unproven",   'warning' ],
 	verify   => [ __"Verifying",  'info'    ],  # only when verification takes long
 	refresh  => [ __"Refreshing", 'info'    ],  # only when refreshing takes long

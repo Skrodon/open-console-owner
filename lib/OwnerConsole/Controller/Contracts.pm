@@ -35,7 +35,7 @@ sub _identityPicker($)
 
 sub contract(%)
 {   my ($self, %args) = @_;
-	my $proofid  = $self->param('proofid');
+	my $proofid  = $self->param('assetid');
 	my $account  = $self->account;
 	my $proof    = $proofid eq 'new'
 	  ? OpenConsole::Asset::Contract->create({owner => $account})
@@ -67,29 +67,28 @@ sub _acceptContract()
 sub configContract()
 {   my $self     = shift;
 	my $session  = $self->ajaxSession;
-
-	my $proof    = $self->openProof($session, 'OpenConsole::Asset::Contract')
+	my $contract = $self->openAsset($session, 'OpenConsole::Asset::Contract')
 		or $session->reply;
 
 	my $how      = $session->query;
 warn "HOW=$how";
 	if($how eq 'reown')
 	{	my $ownerid = $session->requiredParam('new_owner');
-		$proof->changeOwner($session->account, $ownerid);
-		$proof->save;
+		$contract->changeOwner($session->account, $ownerid);
+		$contract->save;
 		return $session->reply;
 	}
 
 	if($how eq 'delete')
-	{	$proof->delete;
-		$session->notify(info => __x"Contract '{name}' removed.", name => $proof->name);
+	{	$contract->delete;
+		$session->notify(info => __x"Contract '{name}' removed.", name => $contract->name);
 		$session->redirect('/dashboard/contracts');
 	}
 
-	$self->acceptFormData($session, $proof, '_acceptContract');
+	$self->acceptFormData($session, $contract, '_acceptContract');
 
 	if($how eq 'save' && $session->isHappy)
-	{	$proof->save(by_user => 1);
+	{	$contract->save(by_user => 1);
 		$session->redirect('/dashboard/contracts');
 	}
 
