@@ -1,10 +1,13 @@
 % layout 'dashboard';
 % title 'Create/update a service definition';
 
-% my $is_new  = $service->isNew;
+% my $is_new   = $service->isNew;
+% my $owner    = $service->owner($account);
+% my @emails   = $account->assetSearch(emailaddrs => owner => $owner, min_score => 0);
+% my @websites = $account->assetSearch(websites   => owner => $owner, min_score => 0);
 
 % my @pages;
-% my $settings_form = begin
+% my $connect_form = begin
 
 %   if($is_new) {
   <div>
@@ -21,26 +24,37 @@
     <input name="name" type="text" id="name" class="form-control" placeholder="Public service name"
       aria-describedby="name_explain" required value="<%= $service->name %>"
     />
-    <div id="name_explain" class="form-text">The name of this service.  Do not include your
-      organizational name in this, because that will be clearly visual around this service
-      for other reason.</div>
-  </div>
-
-  <div>
-    <label for="descr" class="form-label">Description</label>
-    <textarea name="descr" type="text" id="descr" class="form-control"
-      aria-describedby="descr_explain"
-    ><%= $service->description // '' %></textarea>
-    <div id="descr_explain" class="form-text"> Describe what this service provides, in English.</div>
+    <div id="name_explain" class="form-text">
+       The nice name of this service.
+    </div>
   </div>
 
   <div>
     <label for="endpoint" class="form-label">Endpoint</label>
-    <input name="endpoint" type="text" id="endpoint" class="form-control" placeholder="https://"
-      aria-describedby="endpoint_explain" required value="<%= $service->endpoint %>"
+    <select name="endpoint-website" id="endpoint-websites" class="form-select">
+% my $endweb = $service->endpointWebsite || '';
+% foreach my $website (@websites) {
+    <option value="<%= $website->id %>"<%= $website->id eq $endweb ? ' selected' : ''%>><%= $website->website %></option>
+% }
+    </select>
+    <input name="endpoint" type="text" id="endpoint" class="form-control"
+      aria-describedby="endpoint_explain" value="<%= $service->endpointPath || '/' %>"
     />
-    <div id="endpoint_explain" class="form-text">The location of your service.  This location
-      must be within a website of which you have proven ownership already.</div>
+    <div id="endpoint_explain" class="form-text">The location of your service consists of a
+       proven website and a path within that site.
+    </div>
+  </div>
+
+  <div>
+    <label for="contact" class="form-label">Contact email</label>
+    <select name="contact" id="contact" class="form-select">
+% foreach my $email (@emails) {
+    <option value="<%= $email->id %>"><%= $email->email %></option>
+% }
+    </select>
+    <div id="contact_explain" class="form-text">
+        The contact address for this service.
+    </div>
   </div>
 
   <div>
@@ -53,7 +67,7 @@
 % }
     />
     <div id="secret_explain" class="form-text">This secret is used by your instances to log-in to
-       "connect", for instance to get the user's details.  You may fill-in a (new) value to (re)set it.
+       "connect".  You may fill-in a (new) value to (re)set it.
     </div>
   </div>
 
@@ -76,21 +90,289 @@
   <div>
 
   &nbsp;<br />
-%#<pre><%= Data::Dumper::Dumper($service) %></pre>
+<pre><%= Data::Dumper::Dumper($service) %></pre>
 
   </div>
 
 % end
 
-% my $settings_explain = begin
+% my $connect_explain = begin
+
+<p>On this first page, we satisfy minimal interface needs.  After successful saving,
+a <b>service identifier</b> will be assigned.</p>
+
+<p>Do not include your organizational name in the <b>name</b> of this
+service, because that will be clearly visual around this service for
+other reason.
+
+<p>The <b>endpoint</b> contains two parts: one of your proven websites, and a path
+within that website.</p>
+
+<p>The <b>contact email</b> is only used by Open Console to inform
+you about events which affect your service.  For instance, down-time,
+technical issues, or protocol extensions.
+
+<p><b>Please,</b> add additional information to this service on the other pages for this
+form, to improve the communication with the (potential) users.</p>
 
 % end
 
 % push @pages, [
-%    'service-settings',
-%    'Settings',
-%    $settings_form,
-%    $settings_explain,
+%    'service-connect',
+%    'Connect',
+%    $connect_form,
+%    $connect_explain,
+% ];
+
+% my $inform_form = begin
+
+  <div>
+    <label for="info-site" class="form-label">Service webpage</label>
+    <select name="info-site" id="info-site" class="form-select" aria-describedby="info_explain">
+% my $info = $service->infoWebsite || '';
+    <option value="<%= $info eq '' ? ' selected' : '' %>>&mdash; no additional information</option>
+% foreach my $website (@websites) {
+    <option value="<%= $website->id %>"<%= $website->id eq $info ? ' selected' : '' %>><%= $website->website %></option>
+% }
+    </select>
+    <input type="text" name="info-path" class="form-control" placeholder="/"
+       value="<%= $service->infoPath || '' %>" />
+    <div id="info_explain" class="form-text">The webpage which is a start for more detailed
+       information about this service.
+    </div>
+  </div>
+ 
+  <div>
+    <label for="descr" class="form-label">Description</label>
+    <textarea name="descr" type="text" id="descr" class="form-control"
+      aria-describedby="descr_explain"><%= $service->description // '' %></textarea>
+    <div id="descr_explain" class="form-text">
+      Summerize what this service provides, in English.
+    </div>
+  </div>
+
+  <div>
+    <label for="support" class="form-label">Support email</label>
+    <select name="support" id="support" class="form-select" aria-describedby="support_explain">
+% my $support = $service->support || '';
+    <option value=""<%= $support eq '' ? ' selected' : '' %>>&mdash; no support offered</option>
+% foreach my $email (@emails) {
+    <option value="<%= $email->id %>"<%= $email->id eq $support ? ' selected' : '' %>><%= $email->email %></option>
+% }
+    </select>
+    <div id="support_explain" class="form-text">Select the email address which will be
+       published to your users.
+    </div>
+  </div>
+
+% end
+
+% my $inform_explain = begin
+
+<p>Please provide a bit more information about the Service, to communicate to
+the users.  Probably, you made a <b>webpage</b> (or whole website) which provides more details
+about this service.</p>
+
+<p>The <b>description</b> is only shown within Open Console, to help people select your
+service.</p>
+
+<p>The <b>support</b> email address will be marked as the place
+to get in touch with the service provider.  It will be shown
+in the Contract and overview pages.</p>
+
+% end
+
+% push @pages, [
+%    'service-inform',
+%    'Inform',
+%    $inform_form,
+%    $inform_explain,
+% ];
+
+% my $asset_row = begin
+% 	my ($set, $name, $data) = @_;
+%   my $status = $data->{status} // 'proven';
+
+       <tr><td><%= $name %></td>
+           <td><input type="text" name="<%= $set %>_min" size="3" value="<%= $data->{min} // 0   %>"></td>
+           <td><input type="text" name="<%= $set %>_max" size="3" value="<%= $data->{min} // 100 %>"></td>
+           <td><select name="<%= $set %>_status">
+               <option value="proven" <%= $status eq 'proven'  ? ' selected' : '' %>>Proven</option>
+               <option value="claimed"<%= $status eq 'claimed' ? ' selected' : '' %>>Claimed</option>
+               </select></td>
+       </tr>
+
+% end
+
+% my $usage_form = begin
+
+  <div class="form-intro">
+    <p>This page speaks about the data which is being exchanged.</p>
+  </div>
+
+  <div>
+    <label for="assets" class="form-label">Assets</label>
+	<table class="table" id="selected-assets">
+    <thead class="thead-light">
+    <tr><th>Asset</th>
+        <th>Min</th>
+        <th>Max</th>
+        <th>Status</th></tr>
+    </thead>
+    <tbody>
+
+%   my $assets = $service->needsAssets;
+%=  $asset_row->(emailaddrs => 'Email addresses', $assets->{emailaddrs} || {});
+%=  $asset_row->(websites   => 'Websites', $assets->{websites} || {});
+
+    </tbody>
+    </table>
+  </div>
+
+  <div>
+    <label for="terms" class="form-label">Terms &amp; Conditions</label>
+    <input type="text" name="terms" id="terms" aria-describedby="terms_explain"
+       class="form-control" placeholder="https://" value="<%= $service->terms || '' %>" />
+    <div id="terms_explain" class="form-text">
+       The user needs to confirm to agree with these terms.
+    </div>
+  </div>
+
+  <div>
+    <label for="license" class="form-label">License</label>
+    <input type="text" name="license" id="license" aria-describedby="license_explain"
+       class="form-control" placeholder="CC BY-NC-SA" value="<%= $service->license // '' %>" />
+    <div id="license_explain" class="form-text">
+       Specify the license on the data provided by the Service.
+    </div>
+  </div>
+% end
+
+% my $usage_explain = begin
+
+<p>Describe which kinds of information you need from the user, to be able to
+work.  <b>Assets</b> are values which the user has configured, but ownership
+may not have been proven.</p>
+
+<p>When an Asset is <b>Claimed</b>, then it is checked for validity, but not
+(yet) proven to be owned.  Or, the poof may have expired.  In some cases, your
+application may not care about proofs.</p>
+
+<p>The <b>Terms</b> are specified as a URL, pointing to a web-page or a PDF.
+When the Contract gets signed by the user, a checkbox has to be clicked to
+confirm acceptance.</p>
+
+% end
+
+% push @pages, [
+%    'service-usage',
+%    'Usage',
+%    $usage_form,
+%    $usage_explain,
+% ];
+
+% my $user_form = begin
+
+  <div class="form-intro">
+    <p>Are there facts you want or need to know from the person who wants
+    to access your service?</p>
+  </div>
+
+  <div>
+    <label for="personal-user" class="form-label">Personal facts</label>
+
+	<table class="table" id="selected-personal">
+    <thead class="thead-light">
+      <tr><th>Field</th><th>Provide</th></tr>
+    </thead>
+    <tbody>
+% foreach my $field (qw/Full-name Email Gender Phone Language Country/) {
+      <tr><td><%= $field %></td>
+          <td><select><option>No<option>Optional<option>Please<option>Required</select></td></tr>
+% }
+    </tbody>
+    </table>
+  </div>
+
+  <div>
+    <label for="explain-user" class="form-label">Explain</label>
+    <textarea name="explain-user" type="text" id="explain-user" class="form-control"
+      aria-describedby="expluser_explain" rows="7"><%= $service->explainUser // ''  %></textarea>
+    <div id="expluser_explain" class="form-text">
+      Can you explain to the user why you need these facts?  Can you promise how you
+      will protect these personal facts?
+    </div>
+  </div>
+
+% end
+
+% my $user_explain = begin
+
+<p>Describe which kinds of user describing facts you wish for.  The more details
+you require, probably the fewer people will accept it.</p>
+
+% end
+
+% push @pages, [
+%    'service-user',
+%    'User',
+%    $user_form,
+%    $user_explain,
+% ];
+
+% my $group_form = begin
+
+  <div class="form-intro">
+    <p>Are there things you need or want to know about the Group of the user?</p>
+  </div>
+
+  <div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="" id="requires-group">
+      <label class="form-check-label" for="requires-group">This service can only be contracted by a group.</label>
+    </div>
+  </div>
+
+  <div>
+    <label for="group-facts" class="form-label">Group facts</label>
+
+	<table class="table" id="selected-personal">
+    <thead class="thead-light">
+      <tr><th>Field</th><th>Provide</th></tr>
+    </thead>
+    <tbody>
+% foreach my $field (qw/Name Department Email Phone Language Postal-Address Country/) {
+      <tr><td><%= $field %></td>
+          <td><select><option>No<option>Optional<option>Please<option>Required</select></td></tr>
+% }
+    </tbody>
+    </table>
+  </div>
+
+  <div>
+    <label for="explain-group" class="form-label">Explain</label>
+    <textarea name="explain-group" type="text" id="explain-group" class="form-control"
+      aria-describedby="explgroup_explain" rows="7"><%= $service->explainGroup // '' %></textarea>
+    <div id="explgroup_explain" class="form-text">
+      Can you explain to the user why you need these facts?  Can you promise how you
+      will use these group facts?
+    </div>
+  </div>
+
+% end
+
+% my $group_explain = begin
+
+<p>Describe which group describing facts you wish for.  The more details
+you require, probably the fewer people will accept it.</p>
+
+% end
+
+% push @pages, [
+%    'service-group',
+%    'Group',
+%    $group_form,
+%    $group_explain,
 % ];
 
 <script src="/assets/config_form.js"></script>

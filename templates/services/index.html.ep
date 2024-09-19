@@ -11,11 +11,9 @@
         <div class="card-body">
 
 <form class="proof-list" id="config-service">
-% my $show = sub { $_[0]->name };
-%= include 'proofs/_proof_list', set => 'services', element => 'service', show => $show, show_column => "Service", add_text => "Add a service";  #XXX translate
+%= include 'services/_list';
 </form>
 
-             <a href="/dashboard/service/new" class="btn btn-primary"><i class="fa-solid fa-circle-plus" aria-hidden="true"></i> Offer a new Service</a>
         </div>
       </div>
     </div>

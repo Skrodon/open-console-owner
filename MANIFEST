@@ -2302,7 +2302,6 @@ scss/main.scss
 templates/_colophon.html.ep
 templates/_standard_header.html.ep
 templates/account/index.html.ep
-templates/assets/_asset_list.html.ep
 templates/assets/_owner.html.ep
 templates/assets/_owner_pick.html.ep
 templates/contracts/contract.html.ep

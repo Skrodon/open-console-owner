@@ -1,11 +1,11 @@
-%# Parameters 'set' (proof set name), 'show_column' (name), 'show' (sub), 'add_text' (button text)
+%# Parameters 'set' (proof set name), 'show_column' (name), 'show' (sub)
 
 % my $rows = begin
 %   my ($proofs, $editable) = @_;
 %   foreach my $proof (@$proofs) {
     <tr data-proof="<%= $proof->id %>" data-editable="<%= $editable ? 'true' : 'false' %>" >
       <td><%= $show->($proof) %></td>
-      <td><span class="badge <%== $c->proofStatusBgColorClass($proof) %>"><%= $c->proofStatusText($proof) %></span></td>
+      <td><span class="badge <%== $c->statusBgColorClass($proof) %>"><%= $c->statusText($proof) %></span></td>
       <td class="score"><%= $proof->score %></td>
       <td class="edit">
 %     if($editable) {

@@ -118,7 +118,7 @@ my %proof_status = (    # translatable name, bg-color
 	expired  => [ __"Expired",    'dark'    ],
 );
 
-sub proofStatusText($;$)
+sub statusText($;$)
 {	my ($self, $proof, $label) = @_;
 	$label  ||= $proof->status;
 	my $repr  = $proof_status{$label} or return "XX${label}XX";
@@ -126,7 +126,7 @@ sub proofStatusText($;$)
 }
 
 # Returns a badge color class: https://getbootstrap.com/docs/5.3/components/badge/
-sub proofStatusBgColorClass($;$)
+sub statusBgColorClass($;$)
 {	my ($self, $proof, $label) = @_;
 	$label ||= $proof->status;
 	my $repr  = $proof_status{$label} or return 'text-bg-danger';
