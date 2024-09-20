@@ -2,6 +2,7 @@
 % title 'Create/update a service definition';
 
 % my $is_new   = $service->isNew;
+% my $is_admin = $c->user->isAdmin;
 % my $owner    = $service->owner($account);
 % my @emails   = $account->assetSearch(emailaddrs => owner => $owner, min_score => 0);
 % my @websites = $account->assetSearch(websites   => owner => $owner, min_score => 0);
@@ -26,6 +27,41 @@
     />
     <div id="name_explain" class="form-text">
        The nice name of this service.
+    </div>
+  </div>
+
+  <div id="visibility">
+    <div>
+      <label for="status" class="form-label">Visibility</label>
+% my $status  = $service->status // 'testing';
+% my $blocked = $status eq 'blocked' && ! $is_admin ? ' disabled' : '';
+      <div class="form-check">
+        <input class="form-check-input" name="status" type="radio" value="testing" id="vis-testing"
+           <%= $status eq 'testing' ? ' checked' : '' %> <%= $blocked %> />
+        <label class="form-check-label" for="vis-testing">Testing; cannot be found by users.</label>
+      </div>
+    </div>
+    <div>
+      <div class="form-check">
+        <input class="form-check-input" name="status" type="radio" value="production" id="vis-prod"
+           <%= $status eq 'production' ? ' checked' : ''%> <%= $blocked %> />
+        <label class="form-check-label" for="vis-prod">Production; users are welcome.</label>
+      </div>
+    </div>
+    <div>
+      <div class="form-check">
+        <input class="form-check-input" name="status" type="radio" value="disabled" id="vis-disabled"
+           <%= $status eq 'production' ? ' checked' : ''%> <%= $blocked %> />
+        <label class="form-check-label" for="vis-disabled">Disabled; currently not to be used.</label>
+      </div>
+    </div>
+    <div>
+      <div class="form-check">
+        <input class="form-check-input" name="status" type="radio" value="blocked" id="vis-blocked"
+           <%= $status eq 'blocked' ? ' checked' : '' %>
+           <%= $is_admin ? '' : ' disabled' %> />
+        <label class="form-check-label" for="vis-blocked">Blocked; abnormalities have been detected.</label>
+      </div>
     </div>
   </div>
 
@@ -66,8 +102,8 @@
       placeholder="Not stored in a readible state, hence not shown."
 % }
     />
-    <div id="secret_explain" class="form-text">This secret is used by your instances to log-in to
-       "connect".  You may fill-in a (new) value to (re)set it.
+    <div id="secret_explain" class="form-text">
+       This secret is used by your instances to log-in to "connect".
     </div>
   </div>
 
@@ -90,7 +126,7 @@
   <div>
 
   &nbsp;<br />
-<pre><%= Data::Dumper::Dumper($service) %></pre>
+<pre><%= Data::Dumper::Dumper($service->_data) %></pre>
 
   </div>
 
@@ -112,6 +148,9 @@ within that website.</p>
 you about events which affect your service.  For instance, down-time,
 technical issues, or protocol extensions.
 
+<p>Your <b>Secret</b> cannot be displayed, because it is stored encrypted internally.
+Like a password.  Fill-in this field to reset its value.</p>
+
 <p><b>Please,</b> add additional information to this service on the other pages for this
 form, to improve the communication with the (potential) users.</p>
 
@@ -127,10 +166,19 @@ form, to improve the communication with the (potential) users.</p>
 % my $inform_form = begin
 
   <div>
+    <label for="descr" class="form-label">Description</label>
+    <textarea name="descr" type="text" id="descr" class="form-control" rows="8"
+      aria-describedby="descr_explain"><%= $service->description // '' %></textarea>
+    <div id="descr_explain" class="form-text">
+      Summerize what this service provides, in English.
+    </div>
+  </div>
+
+  <div>
     <label for="info-site" class="form-label">Service webpage</label>
     <select name="info-site" id="info-site" class="form-select" aria-describedby="info_explain">
 % my $info = $service->infoWebsite || '';
-    <option value="<%= $info eq '' ? ' selected' : '' %>>&mdash; no additional information</option>
+    <option value="" <%= $info eq '' ? ' selected' : '' %>>&mdash; no additional information</option>
 % foreach my $website (@websites) {
     <option value="<%= $website->id %>"<%= $website->id eq $info ? ' selected' : '' %>><%= $website->website %></option>
 % }
@@ -139,15 +187,6 @@ form, to improve the communication with the (potential) users.</p>
        value="<%= $service->infoPath || '' %>" />
     <div id="info_explain" class="form-text">The webpage which is a start for more detailed
        information about this service.
-    </div>
-  </div>
- 
-  <div>
-    <label for="descr" class="form-label">Description</label>
-    <textarea name="descr" type="text" id="descr" class="form-control"
-      aria-describedby="descr_explain"><%= $service->description // '' %></textarea>
-    <div id="descr_explain" class="form-text">
-      Summerize what this service provides, in English.
     </div>
   </div>
 
@@ -165,6 +204,40 @@ form, to improve the communication with the (potential) users.</p>
     </div>
   </div>
 
+  <div>
+    <label for="payments" class="form-label">Payments</label>
+% my $pay = $service->payments // 'free';
+    <div>
+      <div class="form-check">
+        <input class="form-check-input" name="pay" type="radio" id="pay-free" value="free"
+           <%= $pay eq 'free' ? ' checked' : ''%> />
+        <label class="form-check-label" for="pay-free">Free; (at the moment) there are no fees.</label>
+      </div>
+    </div>
+    <div>
+      <div class="form-check">
+        <input class="form-check-input" name="pay" type="radio" id="pay-extras" value="extras"
+           <%= $pay eq 'extras' ? ' checked' : ''%> />
+        <label class="form-check-label" for="pay-extras">Extras; one can pay for extra features.</label>
+      </div>
+    </div>
+    <div>
+      <div class="form-check">
+        <input class="form-check-input" name="pay" type="radio" id="pay-demo" value="demo"
+           <%= $pay eq 'demo' ? ' checked' : ''%> />
+        <label class="form-check-label" for="pay-demo">Demo; only a demo version is free of charge.</label>
+      </div>
+    </div>
+    <div>
+      <div class="form-check">
+        <input class="form-check-input" name="pay" type="radio" id="pay-always" value="always"
+           <%= $pay eq 'always' ? ' checked' : ''%> />
+        <label class="form-check-label" for="pay-always">Always; the user will need to pay for any useful
+           functionality.</label>
+      </div>
+    </div>
+  </div>
+
 % end
 
 % my $inform_explain = begin
@@ -174,11 +247,15 @@ the users.  Probably, you made a <b>webpage</b> (or whole website) which provide
 about this service.</p>
 
 <p>The <b>description</b> is only shown within Open Console, to help people select your
-service.</p>
+service.  Use plain text.  Paragraphs will be preserved in the HTML display.</p>
 
 <p>The <b>support</b> email address will be marked as the place
 to get in touch with the service provider.  It will be shown
 in the Contract and overview pages.</p>
+
+<p>Be aware that Open Console does not implement a <b>payment</b> system: you will need to couple
+this to the user's session yourself.  Please, contribute a little bit of your profit to Open
+Console, to support the project.</p>
 
 % end
 
@@ -240,10 +317,13 @@ in the Contract and overview pages.</p>
 
   <div>
     <label for="license" class="form-label">License</label>
+    <input type="text" name="license-link" id="license-link"
+       class="form-control" placeholder="https://" value="<%= $service->licenseLink || '' %>" />
     <input type="text" name="license" id="license" aria-describedby="license_explain"
        class="form-control" placeholder="CC BY-NC-SA" value="<%= $service->license // '' %>" />
     <div id="license_explain" class="form-text">
-       Specify the license on the data provided by the Service.
+       Specify the license on the data provided by the Service, both as link to the license
+       text, as name for the nicer display.
     </div>
   </div>
 % end
@@ -280,15 +360,16 @@ confirm acceptance.</p>
 
   <div>
     <label for="personal-user" class="form-label">Personal facts</label>
+    <div class="alert alert-info">Work in progress: this section is a mock-up.</div>
 
 	<table class="table" id="selected-personal">
     <thead class="thead-light">
       <tr><th>Field</th><th>Provide</th></tr>
     </thead>
     <tbody>
-% foreach my $field (qw/Full-name Email Gender Phone Language Country/) {
+% foreach my $field (qw/Full-name Email Gender Date-of-Birth Phone-Number Language Country/) {
       <tr><td><%= $field %></td>
-          <td><select><option>No<option>Optional<option>Please<option>Required</select></td></tr>
+          <td><select disabled><option>No<option>Optional<option>Please<option>Required</select></td></tr>
 % }
     </tbody>
     </table>
@@ -308,9 +389,13 @@ confirm acceptance.</p>
 
 % my $user_explain = begin
 
-<p>Describe which kinds of user describing facts you wish for.  The more details
-you require, probably the fewer people will accept it.</p>
+<p>Describe which kinds of user describing facts you wish for.</p>
 
+<p>For each of the facts a potential visitor can <b>provide</b>, you need
+to configure whether you wish to receive that detail.  The more details
+you ask for, probably the fewer people will accept the contract.</p>
+
+<p>Your options are: No, I do not want to receive that data.  
 % end
 
 % push @pages, [
@@ -328,13 +413,15 @@ you require, probably the fewer people will accept it.</p>
 
   <div>
     <div class="form-check">
-      <input class="form-check-input" type="checkbox" value="" id="requires-group">
-      <label class="form-check-label" for="requires-group">This service can only be contracted by a group.</label>
+      <input class="form-check-input" type="checkbox" name="group-only" id="group-only"
+        value="on" <%= $service->groupOnly ? ' checked' : '' %> />
+      <label class="form-check-label" for="group-only">Only a group can contract this service.</label>
     </div>
   </div>
 
   <div>
     <label for="group-facts" class="form-label">Group facts</label>
+    <div class="alert alert-info">Work in progress: this section is a mock-up.</div>
 
 	<table class="table" id="selected-personal">
     <thead class="thead-light">
@@ -343,7 +430,7 @@ you require, probably the fewer people will accept it.</p>
     <tbody>
 % foreach my $field (qw/Name Department Email Phone Language Postal-Address Country/) {
       <tr><td><%= $field %></td>
-          <td><select><option>No<option>Optional<option>Please<option>Required</select></td></tr>
+          <td><select disabled><option>No<option>Optional<option>Please<option>Required</select></td></tr>
 % }
     </tbody>
     </table>

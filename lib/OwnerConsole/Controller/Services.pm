@@ -51,12 +51,17 @@ warn "PAGE EDIT SERVICE $id, $service.";
 sub _acceptService()
 {	my ($self, $session, $service) = @_;
 
-	no warnings 'uninitialized';
-
 	my $account  = $self->account;
+	my $is_admin = $self->user->isAdmin;
 	my $owner    = $service->owner($account);
 	my %emails   = map +($_->id => $_), $account->assetSearch('emailaddrs', min_score => 1, owner => $owner);
 	my %webaddrs = map +($_->id => $_), $account->assetSearch('websites',   min_score => 1, owner => $owner);
+
+	my $status   = $session->optionalParam('status') || 'testing';
+	$status =~ m/^(?:testing|production|disabled|blocked)$/
+		or $session->addError(status => __x"Incorrect service status.");
+	$status eq 'blocked' || $service->status ne 'blocked' || $is_admin
+		or $session->addError(status => __x"Illegal attempt to unblock this service reported.");
 
 	my $endpoint = $session->requiredParam('endpoint-website');
 	$endpoint eq 'missing' || ! $webaddrs{$endpoint}
@@ -85,12 +90,16 @@ sub _acceptService()
 	! $support   || $emails{$support}
 		or $session->addError(support => __x"Incorrect support email.");
 
+	my $pay      = $session->optionalParam('pay') || 'free';
+	$pay =~ m/^(?:free|extras|demo|always)$/
+		or $session->addError(status => __x"Incorrect service payment.");
+
 	my (%assets, @illegal);
 	foreach my $set (qw/emailaddrs websites/)
-	{   my $min    = $session->optionalParam("${set}_min") // 0;
-		my $max    = $session->optionalParam("${set}_max") // 100;
-	 	my $status = $session->optionalParam("${set}_status") // 'proven';
-		$assets{$set} = +{ min => $min, max => $max, status => $status };
+	{   my $min   = $session->optionalParam("${set}_min") // 0;
+		my $max   = $session->optionalParam("${set}_max") // 100;
+	 	my $state = $session->optionalParam("${set}_status") // 'proven';
+		$assets{$set} = +{ min => $min, max => $max, state => $state };
 
 		push @illegal, $min if $min !~ /^[0-9]+$/;
 		push @illegal, $max if $max !~ /^[0-9]+$/;
@@ -102,22 +111,36 @@ sub _acceptService()
 	! defined $terms || $terms =~ m!^https?://!i
 		or $session->addError(terms => __x"This URL must be absolute.");
 
+	my $license = val_line $session->optionalParam('license');
+	my $liclink = val_line $session->optionalParam('license-link');
+	! defined $liclink || $liclink =~ m!^https?://!i
+		or $session->addError(license => __x"The license URL must be absolute.");
+	! defined $license || defined $liclink
+		or $session->addError(license => __x"Only a reference to the license text makes this valid.");
+
+	my $group_only = $session->optionalParam('group-only') || 'off';
+
+	###!!! Keep in sync with OpenConsole::Asset::Service fields
+
 	$service->setData(
 		name          => val_line $session->requiredParam('name'),
-		description   => val_text $session->optionalParam('descr'),
+		status        => $status,
 		endpoint_ws   => $endpoint,
 		endpoint_path => $endpath,
 		endpoint      => $endpoint . $endpath,
 		contact       => $contact,
+		description   => val_text $session->optionalParam('descr'),
 		info_ws       => $info_site,
 		info_path     => val_line $session->optionalParam('info-path') || '/',
 		support       => $support,
+		payments      => $pay,
 		needs_assets  => \%assets,
 		terms         => $terms,
-		license       => val_line $session->optionalParam('license'),
+		license       => $license,
+		license_link  => $liclink,
 		explain_user  => val_text $session->optionalParam('explain-user'),
+        group_only    => $group_only eq 'on',
 		explain_group => val_text $session->optionalParam('explain-group'),
-		status        => 'enabled',
 	);
 
 	#XXX here, we need to check whether the service provider owns the domain.
