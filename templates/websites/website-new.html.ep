@@ -113,7 +113,7 @@ do want a proof of ownership, in which case you can add it at when needed.</p>
 <form id="config-website" class="config-form">
   <input id="identifier" type="hidden" value="new" />
 
-  <h1><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Claim Website</h1>
+  <h1><%== $proof->iconElem %></h1>
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('website-tabs' => \@pages);

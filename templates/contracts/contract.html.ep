@@ -1,66 +1,67 @@
 % layout 'dashboard';
-% title 'Create/update contract';
+% title 'Create/update a contract';
 
-% my $contract = $proof;
+% my $account  = $c->account;
 % my $is_new   = $contract->isNew;
+% my $service  = $contract->service;
+% my $provider = $service->owner($account);
+
+<pre><% warn Data::Dumper::Dumper($service); %></pre>
+
 % $c->notify(error => 'This is just a mock-up, to show you our plans');
 
 % my @pages;
 % my $parties_form = begin
 
   <div>
-    <label for="name" class="form-label">Provider</label>
-    <p>Provided by: OpenWebSearch.EU<br>
-       Website: <a href="https://openwebsearch.eu" target="_blank">https://openwebsearch.eu</a><br>
-       Contact: <a href="mailto:me@example.com">me@example.com</a><br>
-    </p>
-    <input type="hidden" name="service_id" id="provider value="xyz">
-    <blockquote class="blockquote">OpenWebSearch.EU produces indexes of crawled website texts, which
-      is used for various research purposes.
-    </blockquote>
+    <label for="service" class="form-label">Service</label>
+% if(my $descr = $service->description) {
+    <blockquote class="blockquote"><%= $descr %></blockquote>
+% }
+    <p>Provided by: <%= $provider->name %><br/>
+    Website:
+% if(my ($ws, $wslink) = $service->useInfoWebsite) {
+%=   include 'assets/_show', asset => $ws, link => $wslink;
+% }
+    <br />
+    Support: 
+
+%=   include 'assets/_show', asset => $service->support, link => sub { 'mailto:'.$_[1]->email };
+    <br />
+% my $pay = $service->payments;
+% if($pay eq 'free') {
+    This is a fully free service.
+% } elsif($pay eq 'extras') {
+    You can pay to get extra features.
+% } elsif($pay eq 'demo') {
+    You will get access to a demonstration version only.
+% } elsif($pay eq 'always') {
+    You will need to pay before you access this service.
+% } else {
+    <i>Unknown payment status <%= $pay %>.</i>
+% }
+    <br />
   </div>
 
-  <div id="service-picker">
-    <label for="all" class="form-label">Included Services</label>
-
-    <p>Select the services you would like to include:</p>
-    <div class="form-check">
-       <input class="form-check-input" type="radio" name="all" value="1" id="all-services"/>
-       <label class="form-check-label" for="all-services">All services offered, now and in the future</label>
-    </div>
-    <div class="form-check">
-       <input class="form-check-input" type="radio" name="all" value="0" id="some-services" checked/>
-       <label class="form-check-label" for="some-services">Only the following services:</label>
-    </div>
-    <div id="selected-services" style="padding-left: 2em">
-       <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="on" id="service-dashboard"/>
-          <label class="form-check-label" for="service-dashboard">Crawl activity dashboard</label>
-       </div>
-       <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="on" id="service-takedown"/>
-          <label class="form-check-label" for="service-takedown">Take-down procedure</label>
-       </div>
-       <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="on" id="service-location"/>
-          <label class="form-check-label" for="service-location">Geolocation extraction</label>
-       </div>
-       <div class="form-check">
-          <input class="form-check-input" type="checkbox" value="on" id="service-impressum"/>
-          <label class="form-check-label" for="service-impressum">Impressum extraction</label>
-       </div>
-    </div>
-  </div>
-
+% my $ownerid = $contract->ownerId // $account->id;
   <div>
     <label class="form-label" for="user">Your Identity</label>
-    <p>When you change this identity later, the contract gets invalidated.</p>
-    <select name="user" id="user" aria-describedby="user-explain">
 
-% foreach my $line (@$id_picker) {
-    <option value="<%= $line->[0] %>"><%= $line->[1] %></option>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="person" id="id-account" value="<%= $account->id %>"
+        <%= $ownerid eq $account->id ? ' checked' : '' %> />
+      <label class="form-check-label" for="id-account"><%== $account->iconElem %></label>
+    </div>
+
+% my $counter = '001';
+% foreach my $identity ($account->identities) {
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="person" id="id-<%= $counter %>" value="<%= $account->id %>"
+        <%= $ownerid eq $account->id ? ' checked' : '' %> />
+      <label class="form-check-label" for="id-<%= $counter++ %>"><%== $identity->iconName %></label>
+    </div>
 % }
-	</select>
+
     <div id="user-explain" class="form-text">Select the identity which manages this contract.</div>
   </div>
 
@@ -69,11 +70,40 @@
   <div>
     <label class="form-label" for="name">Your contract reference</label>
     <input name="name" type="text" id="name" class="form-control"
-      aria-describedby="name-explain" value="<%= $contract->name || 'OpenWebSearch.EU' %>"
+      aria-describedby="name-explain" value="<%= $contract->name || '' %>"
     />
-    <div id="name-explain" class="form-text">Your own name for this contract.</div>
+    <div id="name-explain" class="form-text">
+      Your own name for this contract, which may help your overview.
+    </div>
   </div>
 
+  <div>
+    <label class="form-label" for="sign">Confirm the Contract</label><br />
+
+% if(my $terms = $service->terms // 'link') {
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="terms" id="terms" value="on"
+        <%= $contract->agreedTerms ? ' check' : '' %> />
+      <label class="form-check-label" for="terms">
+         I agree with <a href="<%= $terms %>" target="_blank">the Terms &amp; Conditions <i class="fa-solid fa-up-right-from-square"></i></a>
+      </label>
+    </div>
+% }
+
+% if(my $license = $service->licenseLink // 'link') {
+%   my $licname = $service->license;
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="license" id="terms" value="on"
+        <%= $contract->acceptedLicense ? ' check' : '' %> />
+      <label class="form-check-label" for="terms">
+         I will respect <a href="<%= $license %>" target="_blank">the License <%= $licname %> <i class="fa-solid fa-up-right-from-square"></i></a>
+      </label>
+    </div>
+% }
+
+    <br />
+    <button class="btn btn-primary">Sign</button>
+  </div>
 % end
 
 % my $parties_explain = begin
@@ -144,7 +174,7 @@ over time.
 <form id="config-contract" class="config-form">
   <input id="identifier" type="hidden" value="<%= $contract->id %>" />
 
-  <h1><i class="fa-solid fa-handshake-simple" aria-hidden="true"></i> Service Contract</h1>
+  <h1><%== $contract->iconElem %></h1>
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('contract-tabs' => \@pages);

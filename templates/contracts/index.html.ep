@@ -1,7 +1,7 @@
 % layout 'dashboard';
 % title 'Overview of contract proofs';
 
-<h1><i class="fa-solid fa-handshake-simple" aria-hidden="true"></i> Contracts</h1>
+<h1><%== OpenConsole::Asset::Contract->iconSet %></h1>
 <div class="container">
   <div class="row">
 
@@ -22,16 +22,24 @@
         <h5 class="card-header">Establish a new contract</h5>
         <div class="card-body">
            <script src="/assets/contracts.js"></script>
-           Step 1:
-           <form id="pick-provider">
-              <select name="provider" id="service-provider">
-              <option disabled selected>&mdash; Select a provider from the list &mdash;</option>
-              <option>OpenWebSearch.EU</option>
-              </select><br />
-           </form>
-           Step 2: select from the services which the provider offers<br />
-           Step 3: provide some information to the provider<br />
-           Step 4: agree with terms and conditions<br />
+           <div class="dropdown">
+             Step 1:
+             <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" id="service-provider">
+                Pick a service from the list
+             </button>
+             <ul class="dropdown-menu">
+% my $index = $service_index->();
+% foreach my $owner (@$index) {
+             <li><span class="dropdown-item-text">Provided by <%= $owner->{name} %>:</span></li>
+%   foreach my $service (@{$owner->{services}}) {
+             <li><a class="dropdown-item" href="/dashboard/contract/new?service=<%= $service->{id} %>">
+                &middot; <%= $service->{name} %></a></li>
+%   }
+% }
+             </ul>
+           </div>
+           Step 2: pass some information to the provider<br />
+           Step 3: agree with terms and conditions<br />
            &rarr;&nbsp;contract signed
 
         </div>

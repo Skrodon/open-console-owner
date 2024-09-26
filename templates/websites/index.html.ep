@@ -1,13 +1,14 @@
 % layout 'dashboard';
 % title 'Overview of website proofs';
 
-<h1><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Website ownership claims</h1>
+<h1><%== OpenConsole::Proof::Website->iconSet %></h1>
+
 <div class="container">
   <div class="row">
 
     <div class="col-sm-7">
       <div class="card" id="websites-card">
-        <h5 class="card-header">Collected websites</h5>
+        <h5 class="card-header">Claimed websites</h5>
         <div class="card-body">
 
 <form class="proof-list" id="config-website">

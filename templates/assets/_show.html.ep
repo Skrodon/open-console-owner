@@ -1,0 +1,12 @@
+%# Show one asset to the user.  Parameters: 'asset' (object or id), link (optional) as CODE or string
+
+% $asset = $::app->assets->asset($asset) unless ref $asset;
+% $link = $link->($c, $asset) if defined $link && ref $link eq 'CODE' && ref $asset;
+
+% if(! defined $asset) {
+    (went missing, sorry)
+% } elsif(defined $link) {
+  <a href="<%= $link %>"><%= $asset->name %></a> <%== $c->badge($asset) %>
+% } else {
+  <%= $asset->name %> <%== $c->badge($asset) %>
+% }

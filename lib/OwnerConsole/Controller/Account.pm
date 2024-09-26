@@ -31,7 +31,7 @@ sub _acceptAccount($$)
 	$self->acceptObject($session, $victim);
 
 	my $email = val_line $session->requiredParam('email');
-	defined $email && ! is_valid_email $email
+	defined $email && is_valid_email $email
 		or $session->addError(email => __x"Invalid email address.");
 	$victim->setData(email => $email);
 

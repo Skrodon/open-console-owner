@@ -274,7 +274,7 @@ which Identity that user will use for your group.</p>
   <input id="object_version" type="hidden" value="<%= $group->schema %>"  />
   <input id="is_group_admin" type="hidden" value="<%= $is_group_admin ? 1 : 0 %>" />
 
-  <h1><i class="fa-solid fa-people-group" aria-hidden="true"></i> Group</h1>
+  <h1><%== $group->iconElem %></h1>
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('group-tabs' => \@pages);

@@ -1,7 +1,6 @@
 % layout 'outsider';
 <script src="/assets/login.js"></script>
 
-
 <div class="container">
   <form method="post" id="login">
     <div class="col-8">

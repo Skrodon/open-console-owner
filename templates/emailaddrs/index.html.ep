@@ -1,14 +1,14 @@
 % layout 'dashboard';
 % title 'Overview of email address proofs';
 
-<h1><i class="fa-solid fa-envelope-circle-check" aria-hidden="true"></i> Email addresses</h1>
+<h1><%== OpenConsole::Proof::EmailAddr->iconSet %></h1>
 
 <div class="container">
   <div class="row">
 
     <div class="col-sm-7">
       <div class="card" id="emailaddrs-card">
-        <h5 class="card-header">Collected proofs</h5>
+        <h5 class="card-header">Claimed email addresses</h5>
         <div class="card-body">
 
 <form class="proof-list" id="config-emailaddr">

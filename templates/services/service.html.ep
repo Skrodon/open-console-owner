@@ -14,10 +14,6 @@
   <div>
     <p>Define a new service.</p>
   </div>
-%   } else {
-  <div>
-    <p>When you make changes to this service, then the contract users will get informed.</p>
-  </div>
 %   }
 
   <div>
@@ -31,28 +27,28 @@
   </div>
 
   <div id="visibility">
-    <div>
-      <label for="status" class="form-label">Visibility</label>
 % my $status  = $service->status // 'testing';
 % my $blocked = $status eq 'blocked' && ! $is_admin ? ' disabled' : '';
+    <div>
+      <label for="status" class="form-label">Visibility</label>
       <div class="form-check">
-        <input class="form-check-input" name="status" type="radio" value="testing" id="vis-testing"
-           <%= $status eq 'testing' ? ' checked' : '' %> <%= $blocked %> />
-        <label class="form-check-label" for="vis-testing">Testing; cannot be found by users.</label>
+        <input class="form-check-input" name="status" type="radio" value="public" id="vis-prod"
+           <%= $status eq 'public' ? ' checked' : ''%> <%= $blocked %> />
+        <label class="form-check-label" for="vis-prod"><%== $c->badge('public') %> users are welcome.</label>
       </div>
     </div>
     <div>
       <div class="form-check">
-        <input class="form-check-input" name="status" type="radio" value="production" id="vis-prod"
-           <%= $status eq 'production' ? ' checked' : ''%> <%= $blocked %> />
-        <label class="form-check-label" for="vis-prod">Production; users are welcome.</label>
+        <input class="form-check-input" name="status" type="radio" value="testing" id="vis-testing"
+           <%= $status eq 'testing' ? ' checked' : '' %> <%= $blocked %> />
+        <label class="form-check-label" for="vis-testing"><%== $c->badge('testing') %> cannot be found by users.</label>
       </div>
     </div>
     <div>
       <div class="form-check">
         <input class="form-check-input" name="status" type="radio" value="disabled" id="vis-disabled"
            <%= $status eq 'production' ? ' checked' : ''%> <%= $blocked %> />
-        <label class="form-check-label" for="vis-disabled">Disabled; currently not to be used.</label>
+        <label class="form-check-label" for="vis-disabled"><%== $c->badge('disabled') %> currently not to be used.</label>
       </div>
     </div>
     <div>
@@ -60,7 +56,34 @@
         <input class="form-check-input" name="status" type="radio" value="blocked" id="vis-blocked"
            <%= $status eq 'blocked' ? ' checked' : '' %>
            <%= $is_admin ? '' : ' disabled' %> />
-        <label class="form-check-label" for="vis-blocked">Blocked; abnormalities have been detected.</label>
+        <label class="form-check-label" for="vis-blocked"><%== $c->badge('blocked') %> abnormalities have been detected.</label>
+      </div>
+    </div>
+  </div>
+
+  <div id="usability">
+% my $use = $service->usability || 'person';
+% my ($a, $i, $g) = (OpenConsole::Account->icon, OpenConsole::Identity->icon, OpenConsole::Group->icon);
+    <div>
+      <label for="usability" class="form-label">Usablility</label>
+      <div class="form-check">
+        <input class="form-check-input" name="use" type="radio" value="person" id="use-person"
+           <%= $use eq 'person' ? ' checked' : ''%>
+        <label class="form-check-label" for="use-person">Only for people, <%== $a .' / '. $i %></label>
+      </div>
+    </div>
+    <div>
+      <div class="form-check">
+        <input class="form-check-input" name="use" type="radio" value="any" id="use-any"
+             <%= $use eq 'any' ? ' checked' : ''%>
+        <label class="form-check-label" for="use-any">People and groups, <%== $a .' / '. $i .' / '. $g %></label>
+      </div>
+    </div>
+    <div>
+      <div class="form-check">
+        <input class="form-check-input" name="use" type="radio" value="group" id="use-group"
+           <%= $use eq 'group' ? ' checked' : ''%>
+        <label class="form-check-label" for="use-group">Only for groups, <%== $g %></label>
       </div>
     </div>
   </div>
@@ -89,7 +112,7 @@
 % }
     </select>
     <div id="contact_explain" class="form-text">
-        The contact address for this service.
+        The hidden contact address for this service, used by Open Console.
     </div>
   </div>
 
@@ -118,15 +141,15 @@
       aria-describedby="service_explain" required value="<%= $service->secret %>"
     />
 % }
-    <div id="service_explain" class="form-text">This is the other component which you need to
-       login your instance to "connect".</div>
+    <div id="service_explain" class="form-text">Your secret and this identitier are required
+       by your instance to "connect".</div>
   </div>
 
 
   <div>
 
   &nbsp;<br />
-<pre><%= Data::Dumper::Dumper($service->_data) %></pre>
+%# <pre><%= Data::Dumper::Dumper($service->_data) %></pre>
 
   </div>
 
@@ -135,11 +158,16 @@
 % my $connect_explain = begin
 
 <p>On this first page, we satisfy minimal interface needs.  After successful saving,
-a <b>service identifier</b> will be assigned.</p>
+a <b>service identifier</b> will be assigned. When you make changes to this service,
+then the contract user may get informed.</p>
 
 <p>Do not include your organizational name in the <b>name</b> of this
 service, because that will be clearly visual around this service for
 other reason.
+
+<p>The <b>Usablilty</b> influences the data which you can collect from your
+visitor.  Of course, a person can always start a Group for itself.  However,
+that Group can contain different facts.</p>
 
 <p>The <b>endpoint</b> contains two parts: one of your proven websites, and a path
 within that website.</p>
@@ -409,14 +437,6 @@ you ask for, probably the fewer people will accept the contract.</p>
 
   <div class="form-intro">
     <p>Are there things you need or want to know about the Group of the user?</p>
-  </div>
-
-  <div>
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" name="group-only" id="group-only"
-        value="on" <%= $service->groupOnly ? ' checked' : '' %> />
-      <label class="form-check-label" for="group-only">Only a group can contract this service.</label>
-    </div>
   </div>
 
   <div>

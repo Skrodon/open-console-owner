@@ -1,7 +1,8 @@
 % layout 'dashboard';
 % title 'Overview of offered services';
 
-<h1><i class="fa-solid fa-handshake-simple" aria-hidden="true"></i> Services</h1>
+<h1><%== OpenConsole::Asset::Service->iconSet %></h1>
+
 <div class="container">
   <div class="row">
 

@@ -6,7 +6,7 @@
 
 <script src="/assets/group.js"></script>
 
-<h1><i class="fa-solid fa-people-group" aria-hidden="true"></i> Groups</h1>
+<h1><%== OpenConsole::Group->iconSet %></h1>
 
 <div class="container">
   <div class="row">

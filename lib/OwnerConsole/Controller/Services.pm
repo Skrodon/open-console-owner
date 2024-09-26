@@ -56,15 +56,16 @@ sub _acceptService()
 	my $owner    = $service->owner($account);
 	my %emails   = map +($_->id => $_), $account->assetSearch('emailaddrs', min_score => 1, owner => $owner);
 	my %webaddrs = map +($_->id => $_), $account->assetSearch('websites',   min_score => 1, owner => $owner);
+warn "WEBSITES=", join ',', keys %webaddrs;
 
 	my $status   = $session->optionalParam('status') || 'testing';
-	$status =~ m/^(?:testing|production|disabled|blocked)$/
+	$status =~ m/^(?:testing|public|disabled|blocked)$/
 		or $session->addError(status => __x"Incorrect service status.");
 	$status eq 'blocked' || $service->status ne 'blocked' || $is_admin
 		or $session->addError(status => __x"Illegal attempt to unblock this service reported.");
 
-	my $endpoint = $session->requiredParam('endpoint-website');
-	$endpoint eq 'missing' || ! $webaddrs{$endpoint}
+	my $endws = $session->requiredParam('endpoint-website');
+	$endws eq 'missing' || $webaddrs{$endws}
 		or $session->addError(endpoint => __x"Incorrect endpoint website.");
 
 	my $endpath  = val_line $session->optionalParam('endpoint') || '/';
@@ -79,7 +80,7 @@ sub _acceptService()
 		or $session->addError(endpoint => __x"No fragment permitted in the path.");
 
 	my $contact  = $session->requiredParam('contact');
-	$contact eq 'missing' || ! $emails{$contact}
+	$contact eq 'missing' || $emails{$contact}
 		or $session->addError(contact => __x"Incorrect contact email.");
 
 	my $info_site = $session->optionalParam('info-site');
@@ -125,9 +126,8 @@ sub _acceptService()
 	$service->setData(
 		name          => val_line $session->requiredParam('name'),
 		status        => $status,
-		endpoint_ws   => $endpoint,
+		endpoint_ws   => $endws,
 		endpoint_path => $endpath,
-		endpoint      => $endpoint . $endpath,
 		contact       => $contact,
 		description   => val_text $session->optionalParam('descr'),
 		info_ws       => $info_site,

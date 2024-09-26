@@ -108,29 +108,32 @@ sub acceptProof($$)
 	$self;
 }
 
-my %proof_status = (    # translatable name, bg-color
-	enabled  => [ __"Enabled",    'success' ],
+=method badge ($asset|$status)
+Returns an HTML fragment which displays the badge which matched the asset's status.
+Not all assets support the same statusses: more important here, is a consequent use
+of colors.
+=cut
+
+my %asset_status = (    # translatable name, bg-color
+	blocked  => [ __"Blocked",    'dark'    ],
 	disabled => [ __"Disabled",   'warning' ],
+	enabled  => [ __"Enabled",    'success' ],
+	expired  => [ __"Expired",    'dark'    ],
+	proven   => [ __"Proven",     'success' ],
+	public   => [ __"Public",     'success' ],
+	refresh  => [ __"Refreshing", 'info'    ],  # only when refreshing takes long
+	testing  => [ __"Testing",    'info'    ],
 	unproven => [ __"Unproven",   'warning' ],
 	verify   => [ __"Verifying",  'info'    ],  # only when verification takes long
-	refresh  => [ __"Refreshing", 'info'    ],  # only when refreshing takes long
-	proven   => [ __"Proven",     'success' ],
-	expired  => [ __"Expired",    'dark'    ],
 );
 
-sub statusText($;$)
-{	my ($self, $proof, $label) = @_;
-	$label  ||= $proof->status;
-	my $repr  = $proof_status{$label} or return "XX${label}XX";
-	$repr->[0]->toString;
-}
-
-# Returns a badge color class: https://getbootstrap.com/docs/5.3/components/badge/
-sub statusBgColorClass($;$)
-{	my ($self, $proof, $label) = @_;
-	$label ||= $proof->status;
-	my $repr  = $proof_status{$label} or return 'text-bg-danger';
-	'text-bg-' . $repr->[1];
+sub badge($)
+{	my ($self, $asset) = @_;
+	my $status = ref $asset ? $asset->status : $asset;
+	my $config = $asset_status{$status};
+	my $label  = $config ? $config->[0]->toString : "XX${status}XX";
+	my $color  = 'text-bg-' . ($config ? $config->[1] : 'danger');
+	qq{<span class="badge $color">$label</span>};
 }
 
 #-------------

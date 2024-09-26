@@ -11,55 +11,42 @@ use OpenConsole::Asset::Contract ();
 
 sub index()
 {   my $self = shift;
-	$self->render(template => 'contracts/index');
-}
-
-sub _identityPicker($)
-{	my ($self, $account) = @_;
-	my @table   = +[ $account->id => 'Account' ];
-
-	my %ingroups;
-	push @{$ingroups{$_->memberIdentityOf($account)->id}}, $_ for $account->groups;
-	foreach my $personal ($account->identities)
-	{	my $name = $personal->nickname // $personal->role;
-		if(my $groups = $ingroups{$personal->id})
-		{	push @table, [ $_->id => "$name @ " . $_->name ] for @$groups;
-		}
-		else
-		{	push @table, [ $personal->id => $name ];
-		}
-	}
-
-	[ sort { $a->[1] cmp $b->[1] } @table ];
+	$self->render(
+		template      => 'contracts/index',
+#	service_index => sub { $::app->assets->publicServiceIndex },
+		service_index => sub { my $x = $::app->assets->publicServiceIndex;
+use Data::Dumper;
+warn "INDEX=", Dumper $x;
+$x },
+	);
 }
 
 sub contract(%)
 {   my ($self, %args) = @_;
-	my $proofid  = $self->param('assetid');
-	my $account  = $self->account;
-	my $proof    = $proofid eq 'new'
-	  ? OpenConsole::Asset::Contract->create({owner => $account})
-	  : $account->asset(contracts => $proofid);
+	my $contractid = $self->param('assetid');
+	my $account    = $self->account;
+	my $contract  = $contractid eq 'new'
+	  ? OpenConsole::Asset::Contract->create({owner => $account, serviceid => $self->param('service')})
+	  : $account->asset(contracts => $contractid);
 
-warn "PAGE EDIT PROOF $proofid, $proof.";
+warn "PAGE EDIT Contract $contractid, $contract.";
 
 	$self->render(
 		template  => 'contracts/contract',
-		proof     => $proof,
-		id_picker => $self->_identityPicker($account),
+		contract  => $contract,
 	);
 }
 
 sub _acceptContract()
-{	my ($self, $session, $proof) = @_;
-	$self->acceptProof($session, $proof);
-
-	no warnings 'uninitialized';
+{	my ($self, $session, $contract) = @_;
+	$self->acceptProof($session, $contract);
 
 	my $name = $session->optionalParam('name');
-	if($proof->isNew)
+	if($contract->isNew)
 	{	
 	}
+
+	$contract->setData();
 
 	$self;
 }

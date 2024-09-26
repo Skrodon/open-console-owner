@@ -19,23 +19,15 @@
 
 Identification:
 <ul class="nav flex-column">
-<li class="nav-item">
-  <a class="nav-link" href="/dashboard/account">
-    <i class="fa-solid fa-user" aria-hidden="true"></i> Account
-  </a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="/dashboard/identities">
-    <i class="fa-solid fa-ghost" aria-hidden="true"></i> Identities
+<li class="nav-item"><a class="nav-link" href="/dashboard/account"><%== OpenConsole::Account->iconElem %></a></li>
+<li class="nav-item"><a class="nav-link" href="/dashboard/identities"><%== OpenConsole::Identity->iconElem %>
 % my $nrIds = $account->nrIdentities;
 % if($nrIds) {
   <span class="badge badge-pill"><%= $nrIds %></span>
 % }
   </a>
 </li>
-<li class="nav-item">
-  <a class="nav-link" href="/dashboard/groups">
-    <i class="fa-solid fa-people-group" aria-hidden="true"></i> Groups
+<li class="nav-item"><a class="nav-link" href="/dashboard/groups"><%== OpenConsole::Group->iconSet %>
 % my $nrGroups = $account->nrGroups;
 % if($nrGroups) {
   <span class="badge badge-pill"><%= $nrGroups %></span>
@@ -46,12 +38,8 @@ Identification:
 <br />
 Ownership:
 <ul class="nav flex-column">
-<li class="nav-item">
-  <a class="nav-link" href="/dashboard/emailaddrs"><i class="fa-solid fa-envelope-circle-check" aria-hidden="true"></i> Email addresses</a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="/dashboard/websites"><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Websites</a>
-</li>
+<li class="nav-item"><a class="nav-link" href="/dashboard/emailaddrs"><%== OpenConsole::Proof::EmailAddr->iconSet %></a></li>
+<li class="nav-item"><a class="nav-link" href="/dashboard/websites"><%== OpenConsole::Proof::Website->iconSet %></a></li>
 <li class="nav-item">
   <a class="nav-link" href="#"><i class="fa-solid fa-piggy-bank" aria-hidden="true"></i> Bank accounts</a>
 </li>
@@ -77,14 +65,6 @@ Ownership:
 <br />
 Services:
 <ul class="nav flex-column">
-<li class="nav-item">
-  <a class="nav-link" href="/dashboard/contracts">
-    <i class="fa-solid fa-handshake-simple" aria-hidden="true"></i> Contracts
-  </a>
-</li>
-<li class="nav-item">
-  <a class="nav-link" href="/dashboard/services">
-    <i class="fa-solid fa-chart-line" aria-hidden="true"></i> Services
-  </a>
-</li>
+<li class="nav-item"><a class="nav-link" href="/dashboard/contracts"><%== OpenConsole::Asset::Contract->iconSet %></a></li>
+<li class="nav-item"><a class="nav-link" href="/dashboard/services"><%== OpenConsole::Asset::Service->iconSet %></a></li>
 </ul>

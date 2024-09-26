@@ -3,7 +3,7 @@
 <tbody>
 
 <tr><td>Status</td>
-    <td><span class="badge <%== $c->statusBgColorClass($proof) %>"><%= $c->statusText($proof) %></span></td></tr>
+    <td><%== $c->badge($proof) %></tr>
 
 % if(my $expires = $proof->expires) {
 <tr><td>Expires</td>

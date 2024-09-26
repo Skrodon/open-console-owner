@@ -144,7 +144,7 @@ with "+<something>" per use.  For instance, "<code>me+oc@example.com</code>" whe
   <input type="hidden" name="selected-prover" id="selected-prover" value="<%= $prover %>" />
   <input type="hidden" name="has-proof" id="has-proof" value="<%= $has_proof %>" />
 
-  <h1><i class="fa-solid fa-envelope-circle-check" aria-hidden="true"></i> Claim Email address</h1>
+  <h1><%== $proof->iconElem %></h1>
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('emailaddr-tabs' => \@pages);

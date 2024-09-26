@@ -243,7 +243,7 @@
   <input type="hidden" name="selected-prover" id="selected-prover" value="<%= $prover %>" />
   <input type="hidden" name="has-proof" id="has-proof" value="<%= $has_proof %>" />
 
-  <h1><i class="fa-solid fa-file-circle-plus" aria-hidden="true"></i> Claim Website</h1>
+  <h1><%== $proof->iconElem %></h1>
 
 % include 'dashboard/_tabbed';
 %= $::tabbed->('website-tabs' => \@pages);

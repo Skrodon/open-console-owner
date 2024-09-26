@@ -8,7 +8,7 @@
 %   foreach my $service (@$services) {
     <tr data-proof="<%= $service->id %>" data-editable="<%= $editable ? 'true' : 'false' %>" >
       <td><%= $service->name %></td>
-      <td><span class="badge <%== $c->statusBgColorClass($service) %>"><%= $c->statusText($service) %></span></td>
+      <td><%== $c->badge($service) %></span></td>
       <td class="edit">
 %     if($editable) {
           <a href="<%= $service->elemLink %>"><i class="fa-solid fa-pen" aria-label="edit"></i></a>
@@ -49,7 +49,7 @@
 %### Bound to account
 
     <tr data-owner="<%= $account->id %>">
-      <th colspan="2"><i class="fa-solid fa-user" aria-hidden="true"></i> Personal services</th>
+      <th colspan="2"><%== $account->iconName %></th>
       <th class="edit"><i class="fa-solid fa-user-tie owner" aria-hidden="true"></i></th>
     </tr>
 
@@ -60,7 +60,7 @@
 % foreach my $identity ($account->identities) {
 
     <tr data-owner="<%= $identity->id %>">
-      <th colspan="2"><i class="fa-solid fa-ghost" aria-hidden="true"></i> <%= $identity->role %></th>
+      <th colspan="2"><%== $identity->iconName %></th>
       <th class="edit"><i class="fa-solid fa-user-tie owner" aria-hidden="true"></i></th>
     </tr>
 
@@ -73,7 +73,7 @@
 %    my $group_admin = $group->memberIsAdmin($account);
 
     <tr data-owner="<%= $group->id %>" data-admin="<%= $group_admin ? 'true' : 'false' %>">
-      <th colspan="2"><i class="fa-solid fa-people-group" aria-hidden="true"></i> <%= $group->name %></th>
+      <th colspan="2"><%== $group->iconName %></th>
       <th class="edit"><%== $group_admin ? '<i class="fa-solid fa-user-tie owner" aria-label="you are group owner"></i>' : '' %></th>
     </tr>
 

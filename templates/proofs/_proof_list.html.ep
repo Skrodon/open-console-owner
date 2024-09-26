@@ -5,7 +5,7 @@
 %   foreach my $proof (@$proofs) {
     <tr data-proof="<%= $proof->id %>" data-editable="<%= $editable ? 'true' : 'false' %>" >
       <td><%= $show->($proof) %></td>
-      <td><span class="badge <%== $c->statusBgColorClass($proof) %>"><%= $c->statusText($proof) %></span></td>
+      <td><%== $c->badge($proof) %></td>
       <td class="score"><%= $proof->score %></td>
       <td class="edit">
 %     if($editable) {
@@ -38,7 +38,7 @@
 %### Bound to account
 
     <tr data-owner="<%= $account->id %>">
-      <th colspan="3"><i class="fa-solid fa-user" aria-hidden="true"></i> Personal properties</th>
+      <th colspan="3"><%== $account->iconName %></th>
       <th class="edit"><i class="fa-solid fa-user-tie owner" aria-hidden="true"></i></th>
     </tr>
 
@@ -49,7 +49,7 @@
 % foreach my $identity ($account->identities) {
 
     <tr data-owner="<%= $identity->id %>">
-      <th colspan="3"><i class="fa-solid fa-ghost" aria-hidden="true"></i> <%= $identity->role %></th>
+      <th colspan="3"><%== $identity->iconName %></th>
       <th class="edit"><i class="fa-solid fa-user-tie owner" aria-hidden="true"></i></th>
     </tr>
 
@@ -62,7 +62,7 @@
 %    my $group_admin = $group->memberIsAdmin($account);
 
     <tr data-owner="<%= $group->id %>" data-admin="<%= $group_admin ? 'true' : 'false' %>">
-      <th colspan="3"><i class="fa-solid fa-people-group" aria-hidden="true"></i> <%= $group->name %></th>
+      <th colspan="3"><%== $group->iconName %></th>
       <th class="edit"><%== $group_admin ? '<i class="fa-solid fa-user-tie owner" aria-label="you are group owner"></i>' : '' %></th>
     </tr>
 
