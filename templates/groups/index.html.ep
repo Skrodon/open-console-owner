@@ -2,8 +2,10 @@
 % title 'Overview of configured identity Groups';
 
 % my $account    = $self->account;
+% my @groups     = $account->groups;
 % my @identities = sort { $a->role cmp $b->role } $account->identities;
 
+<script src="/assets/config_form.js"></script>
 <script src="/assets/group.js"></script>
 
 <h1><%== OpenConsole::Group->iconSet %></h1>
@@ -15,16 +17,16 @@
         <h5 class="card-header">Your group memberships</h5>
         <div class="card-body">
 
-<form id="group_list">
+<form id="group-list">
   <table class="table table-striped table-hover">
 % if(@identities) {
   <thead class="thead-light">
-    <tr><th>Group</th>
+    <tr><th><%== $groups[0]->icon %> Group</th>
         <th>Edit</th>
-        <th>Your member identity</th></tr>
+        <th><%== $identities[0]->icon %> Your member identity</th></tr>
   </thead>
   <tbody>
-%   foreach my $group ($account->groups) {
+%   foreach my $group (@groups) {
 
     <tr><td><%= $group->name %></td>
         <td>
@@ -36,11 +38,10 @@
 % }
         </td><td>
 
-    <select class="form-select member" data-groupid="<%= $group->id %>">
 %      my $member   = $group->memberIdentityOf($account) or next;
-%      my $selected = $member->id;
+    <select class="form-select member" data-groupid="<%= $group->id %>" data-pick="<%= $member->id %>">
 %      foreach my $identity (@identities) {
-    <option value="<%= $identity->id %>"<%= $selected eq $identity->id ? ' selected' : '' %>><%= $identity->role %></option>
+    <option value="<%= $identity->id %>"><%= $identity->name %></option>
 %      }
     </select>
         </td></tr>

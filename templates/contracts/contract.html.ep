@@ -8,16 +8,19 @@
 
 <pre><% warn Data::Dumper::Dumper($service); %></pre>
 
-% $c->notify(error => 'This is just a mock-up, to show you our plans');
-
 % my @pages;
 % my $parties_form = begin
 
   <div>
-    <label for="service" class="form-label">Service</label>
-% if(my $descr = $service->description) {
-    <blockquote class="blockquote"><%= $descr %></blockquote>
-% }
+    <label for="service" class="form-label">The Service</label>
+    <div class="alert alert-success">
+      <h5><%= $service->name %></h5>
+      <%= $service->description %>
+    </div>
+  </div>
+
+  <div>
+    <label for="provider" class="form-label">Its Provider</label>
     <p>Provided by: <%= $provider->name %><br/>
     Website:
 % if(my ($ws, $wslink) = $service->useInfoWebsite) {
@@ -26,7 +29,11 @@
     <br />
     Support: 
 
-%=   include 'assets/_show', asset => $service->support, link => sub { 'mailto:'.$_[1]->email };
+% if(my $support = $service->support) {
+%=   include 'assets/_show', asset => $support, link => sub { 'mailto:'.$_[1]->email };
+% } else {
+    <i>no support email address shared.</i>
+% }
     <br />
 % my $pay = $service->payments;
 % if($pay eq 'free') {
@@ -40,69 +47,101 @@
 % } else {
     <i>Unknown payment status <%= $pay %>.</i>
 % }
-    <br />
   </div>
 
-% my $ownerid = $contract->ownerId // $account->id;
-  <div>
-    <label class="form-label" for="user">Your Identity</label>
+  <div data-radio="owner" data-pick="<%= $contract->identityId // $contract->ownerId // $account->id %>">
+    <label class="form-label" for="user">Your management</label>
 
+% if($service->contractPersons) {
     <div class="form-check">
-      <input class="form-check-input" type="radio" name="person" id="id-account" value="<%= $account->id %>"
-        <%= $ownerid eq $account->id ? ' checked' : '' %> />
+      <input class="form-check-input" type="radio" name="owner" id="id-account" value="<%= $account->id %>" />
       <label class="form-check-label" for="id-account"><%== $account->iconElem %></label>
     </div>
 
-% my $counter = '001';
-% foreach my $identity ($account->identities) {
+%   my $counter = '001';
+%   foreach my $identity ($account->identities) {
     <div class="form-check">
-      <input class="form-check-input" type="radio" name="person" id="id-<%= $counter %>" value="<%= $account->id %>"
-        <%= $ownerid eq $account->id ? ' checked' : '' %> />
+      <input class="form-check-input" type="radio" name="owner" id="id-<%= $counter %>" value="<%= $identity->id %>" />
       <label class="form-check-label" for="id-<%= $counter++ %>"><%== $identity->iconName %></label>
     </div>
+%   }
+% } else {
+   <p>The service provider does not contract persons.</p>
 % }
 
-    <div id="user-explain" class="form-text">Select the identity which manages this contract.</div>
-  </div>
+% if($service->contractGroups) {
+%   my $counter = '001';
+%   foreach my $group ($account->groups) {
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="owner" id="gr-<%= $counter %>" value="<%= $group->id %>" />
+      <label class="form-check-label" for="gr-<%= $counter++ %>"><%== $group->iconName %>
+%     if(my $indent = $group->memberIdentityOf($account)) {
+        &mdash; <%== $indent->iconName %>
+%     }
+          </label>
+    </div>
+%   }
+% } else {
+   <p>The service provider does not contract groups.</p>
+% }
 
-  &nbsp;<br>
+    <div id="user-explain" class="form-text">Select where you administer this contract.</div>
+  </div>
 
   <div>
     <label class="form-label" for="name">Your contract reference</label>
     <input name="name" type="text" id="name" class="form-control"
-      aria-describedby="name-explain" value="<%= $contract->name || '' %>"
+      aria-describedby="name-explain" value="<%= $contract->name || $provider->name . ', ' .$service->name %>"
     />
     <div id="name-explain" class="form-text">
-      Your own name for this contract, which may help your overview.
+      Your own name for this service, which may help your overview.
     </div>
   </div>
 
   <div>
     <label class="form-label" for="sign">Confirm the Contract</label><br />
 
+% my $signed = $contract->isSigned;
+
+    <div class="form-check" data-checkbox="annex" data-pick="<%= $contract->agreedAnnex ? 'on' : 'off' %>">
+      <input class="form-check-input" type="checkbox" name="annex" id="annex" value="on"
+        <%= $signed ? ' disabled' : '' %> />
+      <label class="form-check-label" for="annex">
+         I have looked at the enclosed pages, like Share and Assets, and agree that I am willing to share
+         those details with the service provider.
+      </label>
+    </div>
+
 % if(my $terms = $service->terms // 'link') {
-    <div class="form-check">
+    <div class="form-check" data-checkbox="terms" data-pick="<%= $contract->agreedTerms ? 'on' : 'off' %>">
       <input class="form-check-input" type="checkbox" name="terms" id="terms" value="on"
-        <%= $contract->agreedTerms ? ' check' : '' %> />
+        <%= $signed ? ' disabled' : '' %> />
       <label class="form-check-label" for="terms">
-         I agree with <a href="<%= $terms %>" target="_blank">the Terms &amp; Conditions <i class="fa-solid fa-up-right-from-square"></i></a>
+         I agree with <a href="<%= $terms %>" target="_blank">the Terms &amp; Conditions <i class="fa-solid fa-up-right-from-square"></i> of the provider.</a>
       </label>
     </div>
 % }
 
 % if(my $license = $service->licenseLink // 'link') {
 %   my $licname = $service->license;
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" name="license" id="terms" value="on"
-        <%= $contract->acceptedLicense ? ' check' : '' %> />
+    <div class="form-check" data-checkbox="license" data-pick="<%= $contract->acceptedLicense ? 'on' : 'off' %>">
+      <input class="form-check-input" type="checkbox" name="license" id="license" value="on"
+        <%= $signed ? ' disabled' : '' %> />
       <label class="form-check-label" for="terms">
-         I will respect <a href="<%= $license %>" target="_blank">the License <%= $licname %> <i class="fa-solid fa-up-right-from-square"></i></a>
+         I will respect <a href="<%= $license %>" target="_blank">the License <%= $licname %> <i class="fa-solid fa-up-right-from-square"></i></a> on the data, received from the provider.
       </label>
     </div>
 % }
 
     <br />
-    <button class="btn btn-primary">Sign</button>
+% if($signed) {
+%    my $who = $::app->users->account($signed->{by});
+    <p>This contract was signed <%= $who ? $who->name : '(unknown)' %> on <%= $signed->{when} %>.</p>
+% } else {
+    <button class="btn btn-primary" id="sign">
+       <i class="fa-solid fa-signature" aria-hidden="true"></i>&nbsp; Sign
+    </button>
+% }
   </div>
 % end
 
@@ -130,6 +169,8 @@ service names, however, are not verified.</p>
 
 % my $you_form = begin
 
+  <div class="alert alert-info">Work in progress: this section will appear later.</div>
+
 % end
 
 % my $you_explain = begin
@@ -147,7 +188,87 @@ proofs.</p>
 %    $you_explain,
 % ];
 
+% my $assets_form = begin
+
+% my $needs = $service->needsAssets;
+% my @sets  = qw/emailaddrs websites/;
+% my $any_assets = 0; $any_assets += $needs->{$_}{max} for @sets;
+
+% if($any_assets) {
+
+<p>The Services accepts the following assets.  You will pick them on
+the moment you use the service (for the first time).</p>
+
+%   foreach my $set (qw/emailaddrs websites/) {
+%     my $need = $needs->{$set} or next;
+%     my $max  = $need->{max}   or next;
+%     my $min  = $need->{min} // 0;
+
+<div id="<%= $set %>">
+  <label class="form-label"><%== OpenConsole::Assets->assetClass($set)->iconSet %></label>
+
+  <p>
+%     if($min==$max) {
+  Exactly <%= $min %> of these are required.
+%     } elsif($min==0) {
+  At most <%= $max %> of these can be passed on.
+%     } else {
+  From <%= $min %> up to <%= $max %> of these can be passed.
+%     }
+
+%     if($need->{state} eq 'proven') {
+  All which are passed must be proven.
+%     }
+
+  </p>
+
+  <div data-radio="<%= $set %>" data-pick="<%= $contract->presel($set)->{from} // 'owner' %>">
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="<%= $set %>" id="<%= $set %>-owner" value="owner" />
+      <label class="form-check-label" for="<%= $set %>-owner">From the selected personal identity only</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="<%= $set %>" id="<%= $set %>-personal" value="personal" />
+      <label class="form-check-label" for="<%= $set %>-personal">Combine all personal identities</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="<%= $set %>" id="<%= $set %>-group" value="group" />
+      <label class="form-check-label" for="<%= $set %>-group">All personal and group assets</label>
+    </div>
+  </div>
+</div>
+
+%   }
+
+% } else {
+
+  <div class="alert alert-info">The Service does not need any proofs or claims.</div>
+
+% }
+
+% end
+
+% my $assets_explain = begin
+
+<p><b>Assets</b> are the things you collect: proofs and other items
+which are owned.  For instance, email addresses and claimed websites.</p>
+
+<p>Some services require some assets, because otherwise they can not
+work properly.  Other services are only interested to know you better,
+but could very well do without these details.</p>
+
+% end
+
+% push @pages, [
+%    'contract-assets',
+%    'Assets',
+%    $assets_form,
+%    $assets_explain,
+% ];
+
 % my $status_form = begin
+
+<div class="alert alert-info">Work in progress: this section will appear later.</div>
 
 This page will show when the contract was signed, and how it was changed
 over time.
@@ -173,6 +294,7 @@ over time.
 
 <form id="config-contract" class="config-form">
   <input id="identifier" type="hidden" value="<%= $contract->id %>" />
+  <input type="hidden" name="service" value="<%= $service->id %>" />
 
   <h1><%== $contract->iconElem %></h1>
 

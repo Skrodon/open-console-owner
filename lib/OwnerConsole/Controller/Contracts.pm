@@ -13,11 +13,7 @@ sub index()
 {   my $self = shift;
 	$self->render(
 		template      => 'contracts/index',
-#	service_index => sub { $::app->assets->publicServiceIndex },
-		service_index => sub { my $x = $::app->assets->publicServiceIndex;
-use Data::Dumper;
-warn "INDEX=", Dumper $x;
-$x },
+		service_index => sub { $::app->assets->publicServiceIndex },
 	);
 }
 
@@ -26,10 +22,11 @@ sub contract(%)
 	my $contractid = $self->param('assetid');
 	my $account    = $self->account;
 	my $contract  = $contractid eq 'new'
-	  ? OpenConsole::Asset::Contract->create({owner => $account, serviceid => $self->param('service')})
+	  ? OpenConsole::Asset::Contract->create({owner => $account, service => $self->param('service')})
 	  : $account->asset(contracts => $contractid);
 
-warn "PAGE EDIT Contract $contractid, $contract.";
+use Data::Dumper;
+warn "PAGE EDIT Contract $contractid, ", Dumper $contract;
 
 	$self->render(
 		template  => 'contracts/contract',
@@ -41,13 +38,40 @@ sub _acceptContract()
 {	my ($self, $session, $contract) = @_;
 	$self->acceptProof($session, $contract);
 
-	my $name = $session->optionalParam('name');
+	my $account   = $self->account;
+	my $serviceid = $session->requiredParam('service');
+	my $service   = $::app->assets->service($serviceid) or panic;
+
 	if($contract->isNew)
 	{	
 	}
 
-	$contract->setData();
+	my $annex   = ($session->optionalParam('annex')   // 'off') eq 'on';
+	my $terms   = ($session->optionalParam('terms')   // 'off') eq 'on';
+	my $license = ($session->optionalParam('license') // 'off') eq 'on';
 
+	my %presel;
+	foreach my $set (qw/emailaddrs websites/)
+	{	$presel{$set} = +{ from => $session->optionalParam($set) // 'owner' };
+		# this will get more complex
+	}
+
+	$contract->setData(
+		name      => $session->optionalParam('name') // $service->name,
+		serviceid => $service->id,
+		annex     => $annex   || 0,
+		terms     => $terms   || 0,
+		license   => $license || 0,
+		presel    => \%presel,
+	);
+	$contract->changeOwner($account, $session->requiredParam('owner'));
+
+	$contract->sign($self->user)
+		if $session->optionalParam('sign')
+		&& $annex && $terms && $license;
+
+use Data::Dumper;
+warn "COLLECTED: ", Dumper $contract->_data;
 	$self;
 }
 
@@ -58,7 +82,7 @@ sub configContract()
 		or $session->reply;
 
 	my $how      = $session->query;
-warn "HOW=$how";
+warn "CONTRACT HOW=$how";
 	if($how eq 'reown')
 	{	my $ownerid = $session->requiredParam('new_owner');
 		$contract->changeOwner($session->account, $ownerid);

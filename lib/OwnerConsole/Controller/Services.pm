@@ -56,7 +56,6 @@ sub _acceptService()
 	my $owner    = $service->owner($account);
 	my %emails   = map +($_->id => $_), $account->assetSearch('emailaddrs', min_score => 1, owner => $owner);
 	my %webaddrs = map +($_->id => $_), $account->assetSearch('websites',   min_score => 1, owner => $owner);
-warn "WEBSITES=", join ',', keys %webaddrs;
 
 	my $status   = $session->optionalParam('status') || 'testing';
 	$status =~ m/^(?:testing|public|disabled|blocked)$/
@@ -64,11 +63,15 @@ warn "WEBSITES=", join ',', keys %webaddrs;
 	$status eq 'blocked' || $service->status ne 'blocked' || $is_admin
 		or $session->addError(status => __x"Illegal attempt to unblock this service reported.");
 
+	my $use = $session->optionalParam('status') || 'person';
+	$use =~ m/^(?:person|any|group)$/
+		or $session->addError(usability => __x"Incorrect usability setting.");
+
 	my $endws = $session->requiredParam('endpoint-website');
 	$endws eq 'missing' || $webaddrs{$endws}
 		or $session->addError(endpoint => __x"Incorrect endpoint website.");
 
-	my $endpath  = val_line $session->optionalParam('endpoint') || '/';
+	my $endpath = val_line $session->optionalParam('endpoint') || '/';
 	$endpath !~ m!^https?\:!
 		or $session->addError(endpoint => __x"Provide only the path, no protocol or hostname.");
 
@@ -104,6 +107,7 @@ warn "WEBSITES=", join ',', keys %webaddrs;
 
 		push @illegal, $min if $min !~ /^[0-9]+$/;
 		push @illegal, $max if $max !~ /^[0-9]+$/;
+		push @illegal, $max if $max < $min;
 	}
 	!@illegal
 		or $session->addError(assets => __x"Illegal count values {values}.", values => \@illegal);
@@ -123,9 +127,10 @@ warn "WEBSITES=", join ',', keys %webaddrs;
 
 	###!!! Keep in sync with OpenConsole::Asset::Service fields
 
-	$service->setData(
+	$service->setData(   # accidentally in form order
 		name          => val_line $session->requiredParam('name'),
 		status        => $status,
+		usability     => $use,
 		endpoint_ws   => $endws,
 		endpoint_path => $endpath,
 		contact       => $contact,

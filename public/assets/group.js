@@ -92,9 +92,10 @@ $(document).ready(function() {
 		only_for_admins(form);
 	});
 
-	$("form#group_list").map(function () {
+	$("form#group-list").map(function () {
 		var form = $(this);
 		activate_membership_change(form);
+		set_selections(form);
 	});
-})
+});
 

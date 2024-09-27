@@ -172,8 +172,7 @@ function save_validated_form(form) {
 			// missing before real validation, to have less work on the server
 			update_form_status(form);
 		} else {
-			accept_form_data(form, 'save', undefined, function () {
-			});
+			accept_form_data(form, 'save', undefined, function () { });
 		}
 	});
 }
@@ -187,18 +186,39 @@ function show_trace(table, trace) {
 	});
 }
 
-function install_config_form(form) {
+function add_required_to_placeholders(form) {
 	$('[required]').each(function () {
 		var p = $(this).attr('placeholder');
 		$(this).attr('placeholder', p + ' (required)');   //XXX translation
 	});
+}
 
+function set_selections(form) {
+	$('DIV[data-radio]', form).each(function () {
+		var div = $(this);
+		$('[name=' + div.data('radio') + ']', div).val([div.data('pick')]);
+	});
+
+	$('DIV[data-checkbox]', form).each(function () {
+		var div = $(this);
+		$('[name=' + div.data('checkbox') + ']', div).val([div.data('pick').split(",")]);
+	});
+
+	$('SELECT[data-pick]', form).each(function () {
+		var sel = $(this);
+		sel.val(sel.data('pick'));
+	});
+}
+
+function install_config_form(form) {
+	add_required_to_placeholders(form);
 	activate_delete_button(form);
 	create_field_versioning(form);
 	cancel_without_saving(form);
 	save_validated_form(form);
 	accept_form_data(form, 'validate');
 	monitor_form_changes(form);
+	set_selections(form);
 };
 
 $(document).ready(function() {

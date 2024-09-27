@@ -20226,6 +20226,15 @@ FORM.config-form .wide-modal {
   --bs-modal-width: 800px;
 }
 
+INPUT#sign:before {
+  font-family: "FontAwesome";
+  content: "\f5bf";
+  display: inline-block;
+  padding-right: 3px;
+  vertical-align: middle;
+  font-weight: 900;
+}
+
 DIV.dashboard IFRAME#service-window {
   height: 1200px;
   width: 100%;

@@ -26,74 +26,66 @@
     </div>
   </div>
 
-  <div id="visibility">
 % my $status  = $service->status // 'testing';
 % my $blocked = $status eq 'blocked' && ! $is_admin ? ' disabled' : '';
+  <div id="visibility" data-radio="status" data-pick="<%= $status %>">
     <div>
       <label for="status" class="form-label">Visibility</label>
       <div class="form-check">
-        <input class="form-check-input" name="status" type="radio" value="public" id="vis-prod"
-           <%= $status eq 'public' ? ' checked' : ''%> <%= $blocked %> />
+        <input class="form-check-input" name="status" type="radio" value="public" id="vis-prod" />
         <label class="form-check-label" for="vis-prod"><%== $c->badge('public') %> users are welcome.</label>
       </div>
     </div>
     <div>
       <div class="form-check">
-        <input class="form-check-input" name="status" type="radio" value="testing" id="vis-testing"
-           <%= $status eq 'testing' ? ' checked' : '' %> <%= $blocked %> />
+        <input class="form-check-input" name="status" type="radio" value="testing" id="vis-testing" />
         <label class="form-check-label" for="vis-testing"><%== $c->badge('testing') %> cannot be found by users.</label>
       </div>
     </div>
     <div>
       <div class="form-check">
-        <input class="form-check-input" name="status" type="radio" value="disabled" id="vis-disabled"
-           <%= $status eq 'production' ? ' checked' : ''%> <%= $blocked %> />
+        <input class="form-check-input" name="status" type="radio" value="disabled" id="vis-disabled" />
         <label class="form-check-label" for="vis-disabled"><%== $c->badge('disabled') %> currently not to be used.</label>
       </div>
     </div>
     <div>
       <div class="form-check">
-        <input class="form-check-input" name="status" type="radio" value="blocked" id="vis-blocked"
-           <%= $status eq 'blocked' ? ' checked' : '' %>
-           <%= $is_admin ? '' : ' disabled' %> />
+        <input class="form-check-input" name="status" type="radio" value="blocked" id="vis-blocked" <%= $is_admin ? '' : ' disabled' %> />
         <label class="form-check-label" for="vis-blocked"><%== $c->badge('blocked') %> abnormalities have been detected.</label>
       </div>
     </div>
   </div>
 
-  <div id="usability">
-% my $use = $service->usability || 'person';
+  <div id="usability" data-radio="use" data-pick="<%= $service->usability || 'person' %>">
 % my ($a, $i, $g) = (OpenConsole::Account->icon, OpenConsole::Identity->icon, OpenConsole::Group->icon);
     <div>
-      <label for="usability" class="form-label">Usablility</label>
+      <label for="usability" class="form-label">Usability</label>
       <div class="form-check">
-        <input class="form-check-input" name="use" type="radio" value="person" id="use-person"
-           <%= $use eq 'person' ? ' checked' : ''%>
+        <input class="form-check-input" name="use" type="radio" value="person" id="use-person" />
         <label class="form-check-label" for="use-person">Only for people, <%== $a .' / '. $i %></label>
       </div>
     </div>
     <div>
       <div class="form-check">
-        <input class="form-check-input" name="use" type="radio" value="any" id="use-any"
-             <%= $use eq 'any' ? ' checked' : ''%>
+        <input class="form-check-input" name="use" type="radio" value="any" id="use-any" disabled />
         <label class="form-check-label" for="use-any">People and groups, <%== $a .' / '. $i .' / '. $g %></label>
       </div>
     </div>
     <div>
       <div class="form-check">
-        <input class="form-check-input" name="use" type="radio" value="group" id="use-group"
-           <%= $use eq 'group' ? ' checked' : ''%>
+        <input class="form-check-input" name="use" type="radio" value="group" id="use-group" disabled />
         <label class="form-check-label" for="use-group">Only for groups, <%== $g %></label>
       </div>
     </div>
+    <div id="use_explain" class="form-text">Group contracts not yet implemented.</div>
   </div>
 
   <div>
     <label for="endpoint" class="form-label">Endpoint</label>
-    <select name="endpoint-website" id="endpoint-websites" class="form-select">
-% my $endweb = $service->endpointWebsite || '';
+    <select name="endpoint-website" id="endpoint-websites" class="form-select"
+      data-pick="<%= $service->endpointWebsite || $websites[0] %>">
 % foreach my $website (@websites) {
-    <option value="<%= $website->id %>"<%= $website->id eq $endweb ? ' selected' : ''%>><%= $website->website %></option>
+    <option value="<%= $website->id %>"><%= $website->website %></option>
 % }
     </select>
     <input name="endpoint" type="text" id="endpoint" class="form-control"
@@ -106,7 +98,7 @@
 
   <div>
     <label for="contact" class="form-label">Contact email</label>
-    <select name="contact" id="contact" class="form-select">
+    <select name="contact" id="contact" class="form-select" data-pick="<%= $service->contact // $emails[0] %>">
 % foreach my $email (@emails) {
     <option value="<%= $email->id %>"><%= $email->email %></option>
 % }
@@ -149,7 +141,7 @@
   <div>
 
   &nbsp;<br />
-%# <pre><%= Data::Dumper::Dumper($service->_data) %></pre>
+ <pre><%= Data::Dumper::Dumper($service->_data) %></pre>
 
   </div>
 
@@ -204,11 +196,11 @@ form, to improve the communication with the (potential) users.</p>
 
   <div>
     <label for="info-site" class="form-label">Service webpage</label>
-    <select name="info-site" id="info-site" class="form-select" aria-describedby="info_explain">
-% my $info = $service->infoWebsite || '';
-    <option value="" <%= $info eq '' ? ' selected' : '' %>>&mdash; no additional information</option>
+    <select name="info-site" id="info-site" class="form-select" aria-describedby="info_explain"
+      data-pick="<%= $service->infoWebsite || '' %>">
+    <option value="">&mdash; no additional information</option>
 % foreach my $website (@websites) {
-    <option value="<%= $website->id %>"<%= $website->id eq $info ? ' selected' : '' %>><%= $website->website %></option>
+    <option value="<%= $website->id %>"><%= $website->website %></option>
 % }
     </select>
     <input type="text" name="info-path" class="form-control" placeholder="/"
@@ -220,11 +212,11 @@ form, to improve the communication with the (potential) users.</p>
 
   <div>
     <label for="support" class="form-label">Support email</label>
-    <select name="support" id="support" class="form-select" aria-describedby="support_explain">
-% my $support = $service->support || '';
-    <option value=""<%= $support eq '' ? ' selected' : '' %>>&mdash; no support offered</option>
+    <select name="support" id="support" class="form-select" aria-describedby="support_explain"
+      data-pick="<%= $service->support || '' %>">
+    <option value="">&mdash; no support offered</option>
 % foreach my $email (@emails) {
-    <option value="<%= $email->id %>"<%= $email->id eq $support ? ' selected' : '' %>><%= $email->email %></option>
+    <option value="<%= $email->id %>"><%= $email->email %></option>
 % }
     </select>
     <div id="support_explain" class="form-text">Select the email address which will be
@@ -232,34 +224,30 @@ form, to improve the communication with the (potential) users.</p>
     </div>
   </div>
 
-  <div>
-    <label for="payments" class="form-label">Payments</label>
 % my $pay = $service->payments // 'free';
+  <div data-radio="pay" data-pick="<%= $pay %>">
+    <label for="payments" class="form-label">Payments</label>
     <div>
       <div class="form-check">
-        <input class="form-check-input" name="pay" type="radio" id="pay-free" value="free"
-           <%= $pay eq 'free' ? ' checked' : ''%> />
+        <input class="form-check-input" name="pay" type="radio" id="pay-free" value="free" />
         <label class="form-check-label" for="pay-free">Free; (at the moment) there are no fees.</label>
       </div>
     </div>
     <div>
       <div class="form-check">
-        <input class="form-check-input" name="pay" type="radio" id="pay-extras" value="extras"
-           <%= $pay eq 'extras' ? ' checked' : ''%> />
+        <input class="form-check-input" name="pay" type="radio" id="pay-extras" value="extras" />
         <label class="form-check-label" for="pay-extras">Extras; one can pay for extra features.</label>
       </div>
     </div>
     <div>
       <div class="form-check">
-        <input class="form-check-input" name="pay" type="radio" id="pay-demo" value="demo"
-           <%= $pay eq 'demo' ? ' checked' : ''%> />
+        <input class="form-check-input" name="pay" type="radio" id="pay-demo" value="demo" />
         <label class="form-check-label" for="pay-demo">Demo; only a demo version is free of charge.</label>
       </div>
     </div>
     <div>
       <div class="form-check">
-        <input class="form-check-input" name="pay" type="radio" id="pay-always" value="always"
-           <%= $pay eq 'always' ? ' checked' : ''%> />
+        <input class="form-check-input" name="pay" type="radio" id="pay-always" value="always" />
         <label class="form-check-label" for="pay-always">Always; the user will need to pay for any useful
            functionality.</label>
       </div>
