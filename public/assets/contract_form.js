@@ -23,7 +23,6 @@ function activate_confirm(form) {
 	sign.on('click', function (event) {
 		event.preventDefault();
 		$('INPUT#sign-submit', form).val('yes');
-console.log("SUBMIT = " + $('INPUT#sign-submit', form).val());
 		accept_form_data(form, 'save', undefined, function () {});
 	});
 }
