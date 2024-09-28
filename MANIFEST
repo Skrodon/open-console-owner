@@ -2304,6 +2304,7 @@ templates/_standard_header.html.ep
 templates/account/index.html.ep
 templates/assets/_owner.html.ep
 templates/assets/_owner_pick.html.ep
+templates/contracts/_list.html.ep
 templates/contracts/contract.html.ep
 templates/contracts/index.html.ep
 templates/dashboard/_need_ids.html.ep
@@ -2341,6 +2342,7 @@ templates/login/register.html.ep
 templates/login/reset.html.ep
 templates/proofs/_proof_list.html.ep
 templates/proofs/_status.html.ep
+templates/services/_list.html.ep
 templates/services/index.html.ep
 templates/services/service.html.ep
 templates/shared/_country.html.ep

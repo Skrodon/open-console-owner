@@ -1,7 +1,9 @@
 % layout 'dashboard';
 % title 'Overview of contract proofs';
 
+<script src="/assets/contracts.js"></script>
 <h1><%== OpenConsole::Asset::Contract->iconSet %></h1>
+
 <div class="container">
   <div class="row">
 
@@ -11,8 +13,7 @@
         <div class="card-body">
 
 <form class="proof-list" id="config-contract">
-% my $show = sub { $_[0]->name };
-%= include 'proofs/_proof_list', set => 'contracts', element => 'contract', show => $show, show_column => "Contract", add_text => "Add a contract";  #XXX translate
+%= include 'contracts/_list';
 </form>
 
         </div>
@@ -21,27 +22,31 @@
       <div class="card" id="new-contracts-card" style="margin-top: 1ex">
         <h5 class="card-header">Establish a new contract</h5>
         <div class="card-body">
-           <script src="/assets/contracts.js"></script>
+% if($c->account->nrIdentities) {
+			Step 0: Create an Identity, and maybe a Group.<br />
            <div class="dropdown">
              Step 1:
              <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown" id="service-provider">
                 Pick a service from the list
              </button>
              <ul class="dropdown-menu">
-% my $index = $service_index->();
-% foreach my $owner (@$index) {
+%   my $index = $service_index->();
+%   foreach my $owner (@$index) {
              <li><span class="dropdown-item-text">Provided by <%= $owner->{name} %>:</span></li>
-%   foreach my $service (@{$owner->{services}}) {
+%     foreach my $service (@{$owner->{services}}) {
              <li><a class="dropdown-item" href="/dashboard/contract/new?service=<%= $service->{id} %>">
                 &middot; <%= $service->{name} %></a></li>
+%     }
 %   }
-% }
              </ul>
            </div>
-           Step 2: pass some information to the provider<br />
-           Step 3: agree with terms and conditions<br />
-           &rarr;&nbsp;contract signed
-
+% } else {
+           Step 0: <a href="/dashboard/identity/new" class="btn btn-primary">Create an identity</a>, and maybe a Group.<br />
+           Step 1: pick a service from the list.<br />
+% }
+           Step 2: pass some information to the provider.<br />
+           Step 3: agree with terms and conditions.<br />
+           &rarr;&nbsp;contract signed, &rarr;&nbsp;use service
         </div>
       </div>
 

@@ -148,7 +148,7 @@ function accept_form_data(form, how, param, success) {
 			if(response.redirect) { window.location = response.redirect }
 		},
 		error: function (response) {
-console.log("ERROR");
+console.log("FORM SUBMIT ERROR");
 console.log(response);
 			alert('Form ' + form.attr('id') + ', the server could not be reached: ' + response.status);  //XXX translation
 		},

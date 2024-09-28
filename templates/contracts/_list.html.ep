@@ -1,0 +1,67 @@
+%# Create the "offered contracts" table
+
+% my $account = $c->account;
+% my $set = 'contracts';
+
+% my $rows = begin
+%   my ($owner, $contracts, $editable) = @_;
+%   foreach my $contract (@$contracts) {
+    <tr data-proof="<%= $contract->id %>" data-editable="<%= $editable ? 'true' : 'false' %>" >
+      <td><%= $contract->name %></td>
+      <td><%== $c->badge($contract) %></span></td>
+      <td class="edit">
+%     if($editable) {
+          <a href="<%= $contract->elemLink %>"><i class="fa-solid fa-pen" aria-label="edit"></i></a>
+          <a href="#" class="remove-proof"><i class="fa-solid fa-skull" aria-label="delete"></i></a>
+%     } else {
+          <a href="<%= $contract->elemLink %>"><i class="fa-solid fa-magnifying-glass" aria-label="view"></i></a>
+%     }
+      </td>
+    </tr>
+%   }
+% end
+
+% my $account = $c->account;
+
+  <script src="/assets/proof_list.js"></script>
+
+  <input type="hidden" name="set" value="<%= $set %>" />
+  <table class="table table-striped table-hover" id="prooflisttab">
+  <thead class="thead-light">
+    <tr>
+      <th>Service</th>
+      <th>Status</th>
+      <th class="edit">Edit</th>
+    </tr>
+  </thead>
+  <tbody>
+
+%### Bound to Identities
+
+% foreach my $identity ($account->identities) {
+
+    <tr data-owner="<%= $identity->id %>">
+      <th colspan="2"><%== $identity->iconName %></th>
+      <th class="edit"><i class="fa-solid fa-user-tie owner" aria-hidden="true"></i></th>
+    </tr>
+
+%=   $rows->($identity, [ $account->assets->for($set, $identity) ], 1);
+% }
+
+%### Bound to Groups
+
+%# XXX showing groups would make it possible to move the contract there
+% my @groups;  # = $account->groups
+% foreach my $group (@groups) {
+%    my $group_admin = $group->memberIsAdmin($account);
+
+    <tr data-owner="<%= $group->id %>" data-admin="<%= $group_admin ? 'true' : 'false' %>">
+      <th colspan="2"><%== $group->iconName %></th>
+      <th class="edit"><%== $group_admin ? '<i class="fa-solid fa-user-tie owner" aria-label="you are group owner"></i>' : '' %></th>
+    </tr>
+
+%=   $rows->($group, [ $group->assets->for($set) ], $group_admin);
+
+% }
+  </tbody>
+  </table>

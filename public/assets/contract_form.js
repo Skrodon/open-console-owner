@@ -20,7 +20,10 @@ function activate_confirm(form) {
 	license.on('click', set_sign);
 	set_sign();
 
-	sign.on('click', function () {
+	sign.on('click', function (event) {
+		event.preventDefault();
+		$('INPUT#sign-submit', form).val('yes');
+console.log("SUBMIT = " + $('INPUT#sign-submit', form).val());
 		accept_form_data(form, 'save', undefined, function () {});
 	});
 }

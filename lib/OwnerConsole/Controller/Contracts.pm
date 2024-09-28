@@ -66,9 +66,13 @@ sub _acceptContract()
 	);
 	$contract->changeOwner($account, $session->requiredParam('owner'));
 
-	$contract->sign($self->user)
-		if $session->optionalParam('sign')
-		&& $annex && $terms && $license;
+	my $signing = $session->optionalParam('sign');
+	if($annex && $terms && $license)
+	{	$contract->sign($self->user) if $signing eq 'yes';
+	}
+	else
+	{	$contract->invalidate;
+	}
 
 use Data::Dumper;
 warn "COLLECTED: ", Dumper $contract->_data;
