@@ -41,12 +41,12 @@
              </ul>
            </div>
 % } else {
-           Step 0: <a href="/dashboard/identity/new" class="btn btn-primary">Create an identity</a>, and maybe a Group.<br />
+           Step 0: <a href="/dashboard/identity/new" class="btn btn-primary">Create an identity</a> and maybe a Group.<br />
            Step 1: pick a service from the list.<br />
 % }
            Step 2: pass some information to the provider.<br />
            Step 3: agree with terms and conditions.<br />
-           &rarr;&nbsp;contract signed, &rarr;&nbsp;use service
+           &rarr;&nbsp;contract signed &rarr;&nbsp;use service
         </div>
       </div>
 
