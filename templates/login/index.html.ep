@@ -6,10 +6,10 @@
     <div class="col-8">
       <h1>Welcome back to Open Console</h1>
       <p>When you are new to Open Console, please register first.  When you do not
-      remember your password, use the "reset-password" procedure.  You will get an
+      remember your password, use the password reset procedure.  You will get an
       email with instructions.</p>
-      <a href="/login/register" class="btn btn-secondary">Register</a>
-      <a href="/login/reset" class="btn btn-secondary">Reset password</a>
+      <a href="/login/register" class="btn btn-secondary"><i class="fa-regular fa-address-card" aria-hidden="true"></i> Register</a>
+      <a href="/login/reset" class="btn btn-secondary"><i class="fa-solid fa-unlock" aria-hidden="true"></i> Reset password</a>
       &nbsp;<br/>
       &nbsp;<br/>
     </div>

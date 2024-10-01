@@ -1,17 +1,18 @@
 % layout 'outsider';
 <script src="/assets/login.js"></script>
 
-<h1>Registration for Open Console</h1>
+<h1>Register for use of Open Console</h1>
 
 <p>Please, fill in this form to gain access to Open Console.</p>
 
 <div class="container">
   <div class="card" id="login-card">
-    <h5 class="card-header">User Register</h5>
+    <h5 class="card-header">User registeration</h5>
     <div class="card-body">
       <form id="register" method="post">
 
-        <p>Welcome to Open Console.  Open Console is a single interface
+        <p><b>Welcome to Open Console</b><br />
+        Open Console is a single interface
         to various internet services which know something about your
         websites, domain-names, or networks.  Create an account to be
         able to contact them.</p>

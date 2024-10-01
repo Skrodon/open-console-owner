@@ -106,13 +106,13 @@ sub submitResetPassword()
 	$self->stash(link => "$vhost/reset?user=$email&token=$token");
 
 	OwnerConsole::Email->create(
-		subject => __x"Password reset requested",
+		subject => __x("Password reset requested"),
        	text    => $self->render_to_string('login/mail_reset', format => 'txt'),
        	html    => $self->render_to_string('login/mail_reset', format => 'html'),
        	sender  => undef,
        	sendto  => $email,
        	purpose => 'password reset',
-   	)->queueEmail;
+   	)->queue;
 
 	$self->notify(info => __x"Password reset procedure started: await an email.");
 	$self->startResetPassword;

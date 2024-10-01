@@ -4,11 +4,13 @@ version 0.04:
 
 	Fixes:
 	- minor contract typos.
+	- reset procedure email handling.
 
 	Improvements:
 	- fork some programming instructions off to core.
 	- move appSessions table to connect repo.
 	- move database logic for connect to its repo, with minimal integration.
+	- cleanup of login pages.
 
 version 0.03: Sat 28 Sep 13:06:29 CEST 2024
 

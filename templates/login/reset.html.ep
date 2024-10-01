@@ -5,37 +5,33 @@
   <form method="post" id="login">
 
     <div class="card col-8" id="login-card">
-      <h5 class="card-header">Reset Password Procedure</h5>
+      <h5 class="card-header">Password Reset Procedure</h5>
       <div class="card-body">
         <p>When you do not know your password anymore, then you can request to start
-        the reset procedure here.  You will receive an email with instructions, typically
-        within a few minutes.</p>
+        the reset procedure here.</p>
 
         <div class="col-12">
           <label for="email" class="form-label">Your account name</label>
           <div class="input-group mb-3">
-            <span class="input-group-text">
-              <i class="fa-solid fa-user" aria-hidden="true"></i>
-            </span>
+            <span class="input-group-text"><i class="fa-solid fa-user" aria-hidden="true"></i></span>
             <input name="email" id="email" type="email" class="form-control" placeholder="Your email-address">
           </div>
         </div>
 
         <div class="col-12">
-          &nbsp;<br />
           <label for="human-check" class="form-label">Spam reducing challenge</label>
           <input name="human-check" type="text" id="human-check" class="form-control" aria-describedby="human-explain"
             placeholder="<%= $human_check %>" />
           <div id="human-explain" class="form-text">Please enter the place-holder text in numeric.</div>
         </div>
 
-        <div class="col-6">
-          <div class="col-12">
+        <div class="col-12">
             &nbsp;<br />
-            <button class="btn btn-primary" type="submit">
-              <i class="fa-regular fa-circle-question" aria-hidden="true"></i>&nbsp;Request reset
-            </button>
-          </div>
+          <button class="btn btn-primary" type="submit">
+            <i class="fa-solid fa-unlock" aria-hidden="true"></i>&nbsp;Request reset
+          </button>
+          <p>You will receive an email <i class="fa-solid fa-envelope"></i> with instructions, typically within
+          a <i class="fa-solid fa-stopwatch"></i> few minutes.</p>
         </div>
 
       </div>
