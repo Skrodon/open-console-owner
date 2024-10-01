@@ -1,5 +1,13 @@
 --------- version history of Open-Console-Owner
 
+version 0.04:
+
+	Fixes:
+	- minor contract typos.
+
+	Improvements:
+	- fork some programming instructions off to core.
+
 version 0.03: Sat 28 Sep 13:06:29 CEST 2024
 
 	Improvements:
