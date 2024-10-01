@@ -13,7 +13,7 @@
 	# You may decide you use https://metacpan.org/pod/Mojolicious::Command::secret
 	# to bake your cookie secrets.
 
-    #       XXXvvvv replace this one, with any hex string vvvXXX
+	#       XXXvvvv replace this one, with any hex string vvvXXX
 	secrets  => [ '9ed5714761d3c28ee83f2fb20d2991a3fe282b93' ],
 
 	# The email addresses of the administrators: they get more pages in the
@@ -37,7 +37,7 @@
 	#### Group management
 
 	groups => {
-        # expiration of invitations (in days, float)
+		# expiration of invitations (in days, float)
 		invite_expiration  => 7,    # after which it cannot be used anymore
 		extend_invitation  => 14,   # when explicitly extended/revived by group owner
 		cleanup_invitation => 30,   # punish spam
@@ -96,9 +96,18 @@
 		poll_interval => 2000,  # default
 	},
 
-	#XXX To be moved to 'connect' later
+	#XXX BEGIN
+	#XXX This should move to a the Connect configuration, once these are separate
+	#XXX daemons.
+
+	connectdb => {
+		server => 'mongodb://localhost:27017',
+		dbname => 'connect',
+	},
 
 	connect => {
 		default_logout_grace => 'P1D',        # duration
 	},
+
+	#XXX END
 }

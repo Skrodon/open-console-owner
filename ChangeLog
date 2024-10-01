@@ -8,6 +8,7 @@ version 0.04:
 	Improvements:
 	- fork some programming instructions off to core.
 	- move appSessions table to connect repo.
+	- move database logic for connect to its repo, with minimal integration.
 
 version 0.03: Sat 28 Sep 13:06:29 CEST 2024
 

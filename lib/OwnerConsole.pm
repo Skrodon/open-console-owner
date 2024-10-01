@@ -17,10 +17,6 @@ use OwnerConsole::Model::Batch  ();
 use OwnerConsole::Tasks         ();
 use OwnerConsole::Controller    ();
 
-use constant
-{	MONGODB_CONNECT => 'mongodb://localhost:27017',
-};
-
 =chapter NAME
 
 OwnerConsole - Open Console Owner's Website
@@ -51,7 +47,21 @@ for expensive protection.
 
 sub batch()
 {	my $self = shift;
-    state $u = $self->_mango('OwnerConsole::Model::Batch' => 'batchdb');
+	state $u = $self->_mango('OwnerConsole::Model::Batch' => 'batchdb');
+}
+
+=method connect
+Connects to the C<connect> database (M<ConnectConsole::Model::Connect>) which
+contains the run-time administration for the connections between external
+applications and their users.
+=cut
+
+#XXX Move to ConnectConsole.pm once that runs separate daemons.
+
+sub connect()
+{	my $self = shift;
+	require ConnectConsole::Model::Connect;
+	state $u = $self->_mango('ConnectConsole::Model::Connect' => 'connectdb');
 }
 
 #----------------
