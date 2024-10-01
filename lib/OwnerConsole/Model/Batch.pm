@@ -10,9 +10,6 @@ use OwnerConsole::Email         ();
 use OwnerConsole::Group::Invite ();
 use OwnerConsole::Challenge     ();
 
-# The "connect" related tables should move to their own database.
-use ConnectConsole::AppSession  ();
-
 =chapter NAME
 OwnerConsole::Model::Batch - database with only temporary information
 
@@ -26,7 +23,6 @@ collections:
 =item * 'emails': outgoing emails
 =item * 'invites': group invites
 =item * 'challenges': state machine for challenges
-=item * 'appsession': connect application sessions
 =back
 
 =chapter METHODS
@@ -37,15 +33,12 @@ has emails     => sub { $_[0]->{OMB_emails}  ||= $_[0]->db->collection('emails')
 has invites    => sub { $_[0]->{OMB_invites} ||= $_[0]->db->collection('invites')};
 has challenges => sub { $_[0]->{OMB_chall}   ||= $_[0]->db->collection('challenges')};
 
-has appsession => sub { $_[0]->{OMB_appsess} ||= $_[0]->db->collection('appsession') };
-
 sub upgrade
 {	my $self = shift;
 
 	$self->_upgrade_emails
 		->_upgrade_invites
-		->_upgrade_challenges
-		->_upgrade_appsession;
+		->_upgrade_challenges;
 
 	$self;
 }
@@ -161,10 +154,10 @@ showing a token.
 
 sub _upgrade_challenges()
 {	my $self = shift;
-    $self->challenges->ensure_index({ token => 1 }, { unique => bson_true  });
+	$self->challenges->ensure_index({ token => 1 }, { unique => bson_true  });
 
-    my $expire_challenges = $::app->config('proofs')->{expire_challenge} || 30;  # days
-    $self->challenges->ensure_index({ changed => 1 }, { expireAfterSeconds => int($expire_challenges * 86400) });
+	my $expire_challenges = $::app->config('proofs')->{expire_challenge} || 30;  # days
+	$self->challenges->ensure_index({ changed => 1 }, { expireAfterSeconds => int($expire_challenges * 86400) });
 	$self;
 }
 
@@ -177,34 +170,6 @@ sub challenge($)
 {	my ($self, $token) = @_;
 	my $data = $self->challenges->find_one({token => $token});
 	$data ? OwnerConsole::Challenge->fromDB($data) : undef;
-}
-
-#---------------------
-=section Application Session
-Keeps track on (connect) logged-in application instances.
-=cut
-
-sub _upgrade_appsession()
-{	my $self = shift;
-    $self->appsession->ensure_index({ id => 1 }, { unique => bson_true  });
-	$self;
-}
-
-sub removeAppSession($)
-{	my ($self, $id) = @_;
-	$self->appsession->remove({ id => $id });
-}
-
-sub saveAppSession($)
-{	my ($self, $appsession) = @_;
-	$self->appsession->save($appsession->toDB);
-}
-
-sub appSession($)
-{	my ($self, $id) = @_;
-
-	my $data = $self->appsession->find_one({id => $id});
-	$data ? ConnectConsole::AppSession->fromDB($data) : undef;
 }
 
 1;
