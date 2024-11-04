@@ -1,4 +1,6 @@
 % layout 'outsider';
+% title 'Open Console, register';
+
 <script src="/assets/login.js"></script>
 
 <h1>Register for use of Open Console</h1>

@@ -1,5 +1,7 @@
 
 % layout 'frontpage';
+% title 'Open Console';
+
 %# div class="col-2"><img src="/images/monitoring%20data.svg" width="100%" /></div>
 %# class="col-2"><img src="/images/group%20id.svg" width="100%" /></div>
 %# div class="col-2"><img src="/images/website%20owner.svg" width="100%" /></div>
