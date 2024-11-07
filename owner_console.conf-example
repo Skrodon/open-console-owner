@@ -105,8 +105,17 @@
 		dbname => 'connect',
 	},
 
+	#XXX these will become top-level configuration parameters
 	connect => {
-		default_logout_grace => 'P1D',        # duration
+		endpoint  => 'https://connect.open-console.eu',
+
+		logout => {
+			default_grace => 'P1D',        # duration
+		},
+
+		# Once the "Connect" has its own daemons, it sometimes need to redirect to
+		# the user website, for instance to Comply.
+		ownersite => 'https://open-console.eu',
 	},
 
 	#XXX END

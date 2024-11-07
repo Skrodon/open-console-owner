@@ -1,0 +1,61 @@
+% layout 'outsider';
+% title 'Service login error';
+% my $error = $c->param('error') || 'missing';
+
+<div class="container" style="width: 70%">
+
+<h1>Service login error</h1>
+
+<p>The connection to the service you try to use cannot be established, for
+the following reason:</p>
+
+<div class="alert alert-danger">
+
+% if($error eq 'missing') {
+No error-code has been provided.
+
+% } elsif($error eq 'A01') {
+The 'response_type=code' query parameter is required.
+% } elsif($error eq 'A02') {
+Only 'response_type' type 'code' is supported.
+% } elsif($error eq 'A03') {
+The 'redirect_uri' is specified in the Service definition.
+% } elsif($error eq 'A04') {
+The 'state' parameter is required, see OAuth2 security reason.
+% } elsif($error eq 'A05') {
+The 'client_id' parameter is missing.
+% } elsif($error eq 'A06') {
+The 'client_id' parameter does not contain a valid Open Console token.
+% } elsif($error eq 'A07') {
+The 'client_id' parameter contains a wrong token type, should be an AppSession token.
+
+% } elsif($error eq 'U01') {
+The service provider did not connect itself recently.
+% } elsif($error eq 'U02') {
+The connection of the service provider has expired.
+
+% } else {
+Unknown error code '[% $error %]'.
+% }
+
+</div>
+
+% if($error =~ m/^A/) {
+<p>This is an <b>implementation error:</b> the service provider did
+not implement the login button correctly.</p>
+
+<p>Probably, this login button has never worked: incomplete development.</p>
+% }
+
+% if($error =~ m/^U/) {
+<p>This is a <b>processing error,</b> which may be resolved when you
+reload the page which contains the button you pressed.  Go back to the
+service (<i class="fa-solid fa-arrow-left"></i>), then try shift-reload
+(press shift button + <i class="fa-solid fa-rotate-right"></i> at the
+same time) on that page.</p>
+
+<p>When the problem persists, you may need to seek the help of the
+service provider.</p>
+% }
+
+</div>

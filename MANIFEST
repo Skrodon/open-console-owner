@@ -11,6 +11,7 @@ lib/OwnerConsole/Challenge.pm
 lib/OwnerConsole/Controller.pm
 lib/OwnerConsole/Controller/Account.pm
 lib/OwnerConsole/Controller/Contracts.pm
+lib/OwnerConsole/Controller/Comply.pm
 lib/OwnerConsole/Controller/Dashboard.pm
 lib/OwnerConsole/Controller/Emailaddrs.pm
 lib/OwnerConsole/Controller/Groups.pm
@@ -2183,7 +2184,7 @@ public/style/bullet-1.png
 public/style/favicon.png
 public/style/open-console.png
 public/style/top3.jpg
-script/owner_console
+script/owner-console
 scss/_admin.scss
 scss/_colophon.scss
 scss/_config_account.scss
@@ -2308,6 +2309,7 @@ templates/account/index.html.ep
 templates/assets/_owner.html.ep
 templates/assets/_owner_pick.html.ep
 templates/assets/_show.html.ep
+templates/comply/error.html.ep
 templates/contracts/_list.html.ep
 templates/contracts/contract.html.ep
 templates/contracts/index.html.ep

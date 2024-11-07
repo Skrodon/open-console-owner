@@ -50,27 +50,17 @@ sub batch()
 	state $u = $self->_mango('OwnerConsole::Model::Batch' => 'batchdb');
 }
 
-=method connect
-Connects to the C<connect> database (M<ConnectConsole::Model::Connect>) which
-contains the run-time administration for the connections between external
-applications and their users.
-=cut
-
-#XXX Move to ConnectConsole.pm once that runs separate daemons.
-
-sub connect()
-{	my $self = shift;
-	require ConnectConsole::Model::Connect;
-	state $u = $self->_mango('ConnectConsole::Model::Connect' => 'connectdb');
-}
-
 #----------------
 =section Running the daemons
+
+=method tasks
+Returns the object which communicates with the task daemons.
 =cut
 
 sub tasks() { $_[0]->{O_tasks} }
 
 # This method will run once at server start
+# It cannot/shall not be called later.
 sub startup
 {	my $self = shift;
 	$self->SUPER::startup(@_);
@@ -164,10 +154,7 @@ sub startup
 
 	$dashboard->get('/viewport/:demo')->to('dashboard#demo');
 
-	#XXX To be separated out later (into open-console-connect)
-	$r->post('/connect/application/login')->to('connect#appLogin');
-	$r->get('/connect/application/logout')->to('connect#appLogout');
-
+	$r->get('/comply/error')->to('comply#show_error');
 	$self;
 }
 

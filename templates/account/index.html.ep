@@ -103,7 +103,6 @@
     </select>
     <div id="iflang_explain" class="form-text">The languages used for this Open Console website (changes
     after "Save")</div>
-
   </div>
 
   <div>
@@ -125,6 +124,10 @@
 
   <p>When possible, the selected <strong>time-zone</strong> will be used in reports
   you receive.</p>
+
+    <div class="history history-change" for="iflang" data-schema="20250101" data-reason="change">
+      The interface is now also available in Estonian.
+    </div>
 
 % end
 
