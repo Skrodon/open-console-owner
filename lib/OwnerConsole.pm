@@ -53,6 +53,12 @@ sub batch()
 #----------------
 =section Running the daemons
 
+=method isAdmin $account
+=cut
+
+my %admins;   # emails are case insensitive
+sub isAdmin($) { $admins{lc $_[1]->email} }
+
 =method tasks
 Returns the object which communicates with the task daemons.
 =cut
@@ -65,6 +71,8 @@ sub startup
 {	my $self = shift;
 	$self->SUPER::startup(@_);
 
+	my $config = $self->config;
+
 	### Configure the application
 	$self->renderer->cache->max_keys(0);  # the forms are never the same
 
@@ -72,7 +80,9 @@ sub startup
 	$self->plugin('BootstrapAlerts');
 	$self->plugin('I18NUtils');
 
-	$self->{O_tasks} = OwnerConsole::Tasks->new(config => $self->config->{tasks});
+	$self->{O_tasks} = OwnerConsole::Tasks->new(config => $config->{tasks});
+    %admins = map +(lc($_) => 1), @{$config->{admins} || []};
+
 
 #$::app->users->db->collection('accounts')->remove({});  #XXX hack clean whole accounts table
 
@@ -99,6 +109,7 @@ sub startup
 		}
 		$account;
 	});
+
 
 	### Routes
 

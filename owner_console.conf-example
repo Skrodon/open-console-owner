@@ -86,6 +86,7 @@
 	},
 
 	#### Tasks implement batch processing
+	#    These are run in separate clusters.
 
 	tasks => {
 		servers => [ {
@@ -96,27 +97,12 @@
 		poll_interval => 2000,  # default
 	},
 
-	#XXX BEGIN
-	#XXX This should move to a the Connect configuration, once these are separate
-	#XXX daemons.
+	#### Connection to the 'connect' daemons
+	#    We can write some data into their database.  Other activities, like
+	#    fill-out complies are managed via those daemons.
 
 	connectdb => {
 		server => 'mongodb://localhost:27017',
 		dbname => 'connect',
 	},
-
-	#XXX these will become top-level configuration parameters
-	connect => {
-		endpoint  => 'https://connect.open-console.eu',
-
-		logout => {
-			default_grace => 'P1D',        # duration
-		},
-
-		# Once the "Connect" has its own daemons, it sometimes need to redirect to
-		# the user website, for instance to Comply.
-		ownersite => 'https://open-console.eu',
-	},
-
-	#XXX END
 }

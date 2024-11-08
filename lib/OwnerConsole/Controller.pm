@@ -24,6 +24,7 @@ sub challengeHandler($$)
 
 # When missing, the controllers get autoloaded.
 use OwnerConsole::Controller::Account;
+use OwnerConsole::Controller::Comply;
 use OwnerConsole::Controller::Contracts;
 use OwnerConsole::Controller::Dashboard;
 use OwnerConsole::Controller::Emailaddrs;
@@ -34,13 +35,26 @@ use OwnerConsole::Controller::Outsider;
 use OwnerConsole::Controller::Services;
 use OwnerConsole::Controller::Websites;
 
-#XXX To be separated out later
-use OwnerConsole::Controller::Connect;
-
 =chapter NAME
 OwnerConsole::Controller - base-class for Mojo C's
 
 =chapter METHODS
+
+=section Constructors
+
+=section Running the daemons
+=cut
+
+sub startup(@)
+{	my $self = shift;
+	$self->SUPER::startup(@_);
+
+	$self->users->upgrade;
+	$self->assets->upgrade;
+	$self;
+}
+
+=section Other
 =cut
 
 sub ajaxSession(%)

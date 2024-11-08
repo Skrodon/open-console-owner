@@ -13,7 +13,7 @@ version 0.04:
 	- move database logic for connect to its repo, with minimal integration.
 	- cleanup of login pages.
 	- Comply
-	- script rename to open-console
+	- script rename to owner-console
 
 version 0.03: Sat 28 Sep 13:06:29 CEST 2024
 
