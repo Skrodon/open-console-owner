@@ -9,7 +9,7 @@
   <div>
     <label for="website" class="form-label">Website address</label>
     <input name="website" type="text" id="website" class="form-control" placeholder="https://www.example.com/~user"
-      aria-describedby="url_explain" required value="<%== $proof->website %>" disabled />
+      aria-describedby="url_explain" data-need="required" value="<%== $proof->website %>" disabled />
     <a href='#' id="check-url-info">website check details</a>
   </div>
 

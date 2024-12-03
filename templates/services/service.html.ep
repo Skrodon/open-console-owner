@@ -19,7 +19,7 @@
   <div>
     <label for="name" class="form-label">Name</label>
     <input name="name" type="text" id="name" class="form-control" placeholder="Public service name"
-      aria-describedby="name_explain" required value="<%= $service->name %>"
+      aria-describedby="name_explain" data-need="required" value="<%= $service->name %>"
     />
     <div id="name_explain" class="form-text">
        The nice name of this service.
@@ -83,7 +83,9 @@
   <div>
     <label for="endpoint" class="form-label">Endpoint</label>
     <select name="endpoint-website" id="endpoint-websites" class="form-select"
-      data-pick="<%== $service->endpointWebsite || $websites[0] %>">
+      data-pick="<%== $service->endpointWebsite || $websites[0] %>"
+      data-placeholder="&mdash; one of the websites you own &mdash;">
+    <option></option>
 % foreach my $website (@websites) {
     <option value="<%== $website->id %>"><%== $website->website %></option>
 % }
@@ -98,7 +100,9 @@
 
   <div>
     <label for="contact" class="form-label">Contact email</label>
-    <select name="contact" id="contact" class="form-select" data-pick="<%== $service->contact // $emails[0] %>">
+    <select name="contact" id="contact" class="form-select" data-pick="<%== $service->contact // $emails[0] %>"
+       data-placeholder="&mdash; one of your email addresses &mdash;">
+    <option></option>
 % foreach my $email (@emails) {
     <option value="<%== $email->id %>"><%== $email->email %></option>
 % }
@@ -112,7 +116,7 @@
     <label for="secret" class="form-label">Your Secret</label>
     <input name="secret" type="text" id="secret" class="form-control" aria-describedby="secret_explain" value=""
 % if($is_new) {
-      required placeholder="Pick a good secret."
+      data-need="required" placeholder="Pick a good secret."
 % } else {
       placeholder="Not stored in a readible state, hence not shown."
 % }
@@ -129,8 +133,8 @@
     time.</p>
 % } else {
     <input name="serviceid" type="text" id="serviceid" class="form-control"
-      value="<%== $service->id %>" disabled
-      aria-describedby="service_explain" required value="<%== $service->secret %>"
+      value="<%== $service->id %>" disabled data-need="required"
+      aria-describedby="service_explain"
     />
 % }
     <div id="service_explain" class="form-text">Your secret and this identitier are required
@@ -197,8 +201,9 @@ form, to improve the communication with the (potential) users.</p>
   <div>
     <label for="info-site" class="form-label">Service webpage</label>
     <select name="info-site" id="info-site" class="form-select" aria-describedby="info_explain"
-      data-pick="<%== $service->infoWebsite || '' %>">
-    <option value="">&mdash; no additional information</option>
+      data-pick="<%== $service->infoWebsite || '' %>"
+      data-placeholder="&mdash; no additional information">
+    <option></option>
 % foreach my $website (@websites) {
     <option value="<%== $website->id %>"><%== $website->website %></option>
 % }
@@ -213,8 +218,9 @@ form, to improve the communication with the (potential) users.</p>
   <div>
     <label for="support" class="form-label">Support email</label>
     <select name="support" id="support" class="form-select" aria-describedby="support_explain"
-      data-pick="<%== $service->support || '' %>">
-    <option value="">&mdash; no support offered</option>
+      data-pick="<%== $service->support || '' %>"
+      data-placeholder="p&mdash; support offered">
+    <option></option>
 % foreach my $email (@emails) {
     <option value="<%== $email->id %>"><%== $email->email %></option>
 % }
@@ -331,7 +337,7 @@ confirm acceptance.</p>
 %   my $fact  = $facts->{$field};
 %   my $need  = $needs->{$field} // $fact->{default} // 'no';
       <tr><td class="align-middle"><%= $fact->{label}->toString %></td>
-          <td><select name="<%== $field %>" id="<%== $field %>" data-pick="<%== $need %>" class="form-select">
+          <td><select name="<%== $field %>" id="<%== $field %>" data-pick="<%== $need %>" class="form-select" data-need="required">
 %# the option texts may get translated later
               <option value="no">No
               <option value="optional">Optional
@@ -415,9 +421,9 @@ required fields may come with a verification proof.</p>
        <tr><td><%= $name %></td>
            <td><input type="text" name="<%== $set %>_min" size="3" value="<%== $data->{min} // 0   %>"></td>
            <td><input type="text" name="<%== $set %>_max" size="3" value="<%== $data->{min} // 100 %>"></td>
-           <td><select name="<%== $set %>_status">
-               <option value="proven" <%== $status eq 'proven'  ? ' selected' : '' %>>Proven</option>
-               <option value="claimed"<%== $status eq 'claimed' ? ' selected' : '' %>>Claimed</option>
+           <td><select name="<%== $set %>_status" data-need="required" data-pick="<%== $status %>" style="width: 100%">
+               <option value="proven" >Proven</option>
+               <option value="claimed">Claimed</option>
                </select></td>
        </tr>
 

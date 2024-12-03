@@ -20,7 +20,7 @@
   <div>
     <label for="email" class="form-label">Email address</label>
     <input name="email" type="email" id="email" class="form-control" placeholder="name@example.com"
-      aria-describedby="email_explain" required value="<%= $proof->email %>"
+      aria-describedby="email_explain" data-need="required" value="<%= $proof->email %>"
       <%== $is_new ? '' : 'disabled' %>
     />
     <div id="email_explain" class="form-text">Your or the group's email address to be verified.</div>

@@ -14,7 +14,7 @@
 	<label for="role" class="form-label">Role</label>
     <input name="role" type="text" id="role" class="form-control" 
      placeholder="Purpose" value="<%= $identity->role || '' %>"
-     aria-describedby="role_explain" required />
+     aria-describedby="role_explain" data-need="required" />
     <div id="role_explain" class="form-text">A hint about the purpose of this Identity.</div>
   </div>
 
@@ -36,12 +36,11 @@
 
   <div>
     <label for="language" class="form-label">Language</label>
-    <select class="form-select" id="language" aria-label="identity language preference" aria-describedby="language_explain">
+    <select class="form-select" id="language" aria-label="identity language preference" aria-describedby="language_explain" data-need="required" data-pick="<%== $identity->language %>">
 
 % use OwnerConsole::Tables qw(language_name);
-% my $language = $identity->language;
 % foreach my $code ($account->languages) {
-    <option value="<%== $code %>"<%== $code eq $language ? ' selected' : '' %>><%= language_name($code) %></option>
+    <option value="<%== $code %>"><%= language_name($code) %></option>
 % }
     </select>
 	<div id="language_explain" class="form-text">Which language (as pre-selected in your Account) do you prefer for this identity.</div>
@@ -94,7 +93,7 @@
     <div id="gender_explain" class="form-text">The gender you want to express in this identity.</div>
   </div>
 
-  <div>
+  <div data-pick="<%== $identity->avatar %>">
     <label for="avatar" class="form-label">Avatar</label>
     <div class="form-check">
       <input name="avatar" type="radio" id="avatar-account" value="account" checked>

@@ -23,13 +23,25 @@ function password_visibility_toggle() {
 	});
 }
 
+function set_selections() {
+	$('DIV[data-radio]').each(function () {
+		var div = $(this);
+		$('[name="' + div.data('radio') + '"]', div).val([div.data('pick')]);
+	});
+
+	$('DIV[data-checkbox]').each(function () {
+		var div = $(this);
+		$('[name="' + div.data('checkbox') + '"]', div).val([div.data('pick').split(",")]);
+	});
+}
+
 // https://select2.org
 function enable_select2_selectors() {
 	// Anywhere we can find select boxes which need search
-	$('.search-select, .select2').each(function () {
+	$('SELECT').each(function () {
         var sel  = $(this);
 		var need = sel.data('need');
-        sel.val(sel.data('pickd'));
+        sel.val(sel.data('pick'));
 		sel.select2({
 			theme: 'bootstrap-5',
             minimumResultsForSearch: 20,

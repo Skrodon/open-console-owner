@@ -13,7 +13,7 @@
   <div>
     <label for="email" class="form-label">Email</label>
     <input name="email" type="text" id="email" class="form-control" placeholder="Your login"
-       aria-describedby="email_explain" required value="<%= $account->email %>" />
+       aria-describedby="email_explain" data-need="required" value="<%= $account->email %>" />
     <div id="email_explain" class="form-text">Configure your default email-address, which is also used for signing in to
       the Open Console website.</div>
   </div>
@@ -98,7 +98,8 @@
 
   <div>
     <label for="iflang" class="form-label">Interface language</label>
-    <select name="iflang" id="iflang" class="form-select" aria-describedby="iflang_explain" data-pick="<%== $account->iflang %>">
+    <select name="iflang" id="iflang" class="form-select" aria-describedby="iflang_explain"
+       data-pick="<%== $account->iflang %>" data-need="required">
 %= include 'shared/_iflanguage';
     </select>
     <div id="iflang_explain" class="form-text">The languages used for this Open Console website (changes

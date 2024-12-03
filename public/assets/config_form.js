@@ -187,26 +187,9 @@ function show_trace(table, trace) {
 }
 
 function add_required_to_placeholders(form) {
-	$('[required]').each(function () {
+	$('INPUT[data-need=required]').each(function () {
 		var p = $(this).attr('placeholder');
 		$(this).attr('placeholder', p + ' (required)');   //XXX translation
-	});
-}
-
-function set_selections(form) {
-	$('DIV[data-radio]', form).each(function () {
-		var div = $(this);
-		$('[name="' + div.data('radio') + '"]', div).val([div.data('pick')]);
-	});
-
-	$('DIV[data-checkbox]', form).each(function () {
-		var div = $(this);
-		$('[name="' + div.data('checkbox') + '"]', div).val([div.data('pick').split(",")]);
-	});
-
-	$('SELECT[data-pick]', form).each(function () {
-		var sel = $(this);
-		sel.val(sel.data('pick'));
 	});
 }
 
@@ -220,6 +203,5 @@ $(document).ready(function() {
 		save_validated_form(form);
 		accept_form_data(form, 'validate');
 		monitor_form_changes(form);
-		set_selections(form);
 	});
 });

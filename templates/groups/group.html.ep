@@ -15,7 +15,7 @@
 	<label for="name" class="form-label">Group's short name</label>
     <input name="name" type="text" id="name" class="form-control" 
      placeholder="Short identifier" value="<%= $group->name || '' %>"
-     aria-describedby="group_explain" required />
+     aria-describedby="group_explain" data-need="required" />
     <div id="role_explain" class="form-text">A hint about the coverage of this Group.</div>
   </div>
 

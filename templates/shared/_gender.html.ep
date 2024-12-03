@@ -1,6 +1,7 @@
 % use OwnerConsole::Tables qw(gender_table);
 
-    <select name="gender" id="gender" class="form-select" aria-describedby="gender_explain" data-pick="<%== $gender %>">
+    <select name="gender" id="gender" class="form-select" aria-describedby="gender_explain"
+       data-pick="<%== $gender %>" data-need="required">
 % my $g_table = gender_table;
 % foreach my $code (sort { $g_table->{$a} cmp $g_table->{$b} } keys %$g_table) {
     <option value="<%== $code %>"><%= $g_table->{$code}->toString %></option>

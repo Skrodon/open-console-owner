@@ -39,7 +39,7 @@
         </td><td>
 
 %      my $member   = $group->memberIdentityOf($account) or next;
-    <select class="form-select member" data-groupid="<%== $group->id %>" data-pick="<%== $member->id %>">
+    <select class="form-select member" data-groupid="<%== $group->id %>" data-pick="<%== $member->id %>" data-need="required">
 %      foreach my $identity (@identities) {
     <option value="<%== $identity->id %>"><%= $identity->name %></option>
 %      }

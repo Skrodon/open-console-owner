@@ -20,7 +20,7 @@
 %   my $sel     = first { $_->{selected} } @$alts;
 %   my $need    = $choice->{need};
     <select id="<%== $fact %>" class="form-select select2"
-      data-pickd="<%= $sel ? $sel->{value} : '' %>"
+      data-pick="<%= $sel ? $sel->{value} : '' %>"
       data-need="<%== $need %>"
 %   if($need ne 'required') {
       data-placeholder="&mdash; select when you want to pass a value &mdash;"><option></option>
