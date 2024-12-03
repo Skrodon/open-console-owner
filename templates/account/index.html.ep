@@ -4,7 +4,7 @@
 
 % my $account = $c->account;
 % if($c->user->isAdmin) {
-%#   <p class="admin">UserID = <%= $account->id %></p>
+%#   <p class="admin">UserID = <%== $account->id %></p>
 % }
 
 % my @pages;
@@ -98,8 +98,8 @@
 
   <div>
     <label for="iflang" class="form-label">Interface language</label>
-    <select name="iflang" id="iflang" class="form-select" aria-describedby="iflang_explain">
-%= include 'shared/_iflanguage', iflang => $account->iflang;
+    <select name="iflang" id="iflang" class="form-select" aria-describedby="iflang_explain" data-pick="<%== $account->iflang %>">
+%= include 'shared/_iflanguage';
     </select>
     <div id="iflang_explain" class="form-text">The languages used for this Open Console website (changes
     after "Save")</div>
@@ -247,7 +247,7 @@
 <script src="/assets/config_form.js"></script>
 
 <form id="config-account" class="config-form">
-  <input id="identifier" type="hidden" value="<%= $account->id %>" />
+  <input type="hidden" id="identifier" value="<%== $account->id %>" />
 
   <h1><%== $account->iconElem %></h1>
 

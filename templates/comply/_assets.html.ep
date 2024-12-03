@@ -1,0 +1,51 @@
+%# Make an asset picker
+%# Parameters: sel, min (default 0), max (default 1000), items = [ { name, label, state } ]
+%#   select = always | yes | may | never
+
+% my $min = $list->{min_select} // 0;
+% my $max = $list->{max_select} // 1000;
+
+% if(@$items < 10) {
+%# RADIOS/CHECKBOXES
+%   my $type = $min==1 && $max==1 ? 'radio' : 'checkbox';
+
+<div id="<%== $sel %>" class="checklist asset-select">
+
+%   my $seq;
+%   foreach my $item (@$items) {
+%      $seq++;
+%      my $state = $item->{state};
+%      my $on    = $state eq 'always' || $state eq 'yes';
+  <div class="form-check" <%== $on ? 'class="selected-at-start"' : '' %>>
+    <input class="form-check-input" type="<%== $type %>"
+      name="<%== $name %>" id="<%== "$sel-$seq" %>" value="<%= $item->{label} %>"
+      <%== $on ? ' checked'  : '' %>
+      <%== $state eq 'always' || $state eq 'never' ? ' disabled' : '' %>
+    />
+    <label class="form-check-label" for="<%== "$sel-$seq" %>"><%= $item->{label} %></label>
+  </div>
+%   }
+
+</div>
+
+% } else {
+%#  SELECT
+
+<select class="form-select asset-select" id="<%== $sel %>"
+     <%== $max > 1 ? '' : 'multiple' %>
+  >
+
+%   foreach my $item (@$items) {
+%      my $seq   = $item->{seq};
+%      my $state = $item->{state};
+%      my $on    = $state eq 'always' || $state eq 'yes';
+
+   <item <%== $on ? ' selected class="selected-at-start"' : '' %>
+      <%== $state eq 'always' || $state eq 'never' ? ' disabled' : '' %>
+   ><%= $item->{label} %></item>
+
+%   }
+
+</select>
+
+% }

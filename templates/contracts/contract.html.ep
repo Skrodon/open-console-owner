@@ -3,7 +3,6 @@
 
 % my $account  = $c->account;
 % my $is_new   = $contract->isNew;
-% my $service  = $contract->service;
 % my $provider = $service->owner($account);
 
 <pre><% warn Data::Dumper::Dumper($service); %></pre>
@@ -15,7 +14,7 @@
     <label for="service" class="form-label">The Service</label>
     <div class="alert alert-success">
       <h5><%= $service->name %></h5>
-      <%= $service->description %>
+      <%== $c->plain2html($service->description) %>
     </div>
   </div>
 
@@ -45,20 +44,20 @@
 % } elsif($pay eq 'always') {
     You will need to pay before you access this service.
 % } else {
-    <i>Unknown payment status <%= $pay %>.</i>
+    <i>Unknown payment status <%== $pay %>.</i>
 % }
   </div>
 
 % my @identities = $account->identities;
-  <div data-radio="owner" data-pick="<%= $contract->identityId // $contract->ownerId // $identities[0] %>">
+  <div data-radio="owner" data-pick="<%== $contract->identityId // $identities[0]->id %>">
     <label class="form-label" for="user">Your management</label>
 
 % if($service->contractPersons) {
 %   my $counter = '001';
 %   foreach my $identity (@identities) {
     <div class="form-check">
-      <input class="form-check-input" type="radio" name="owner" id="id-<%= $counter %>" value="<%= $identity->id %>" />
-      <label class="form-check-label" for="id-<%= $counter++ %>"><%== $identity->iconName %></label>
+      <input class="form-check-input" type="radio" name="owner" id="id-<%== $counter %>" value="<%== $identity->id %>" />
+      <label class="form-check-label" for="id-<%== $counter++ %>"><%== $identity->iconName %></label>
     </div>
 %   }
 % } else {
@@ -69,8 +68,8 @@
 %   my $counter = '001';
 %   foreach my $group ($account->groups) {
     <div class="form-check">
-      <input class="form-check-input" type="radio" name="owner" id="gr-<%= $counter %>" value="<%= $group->id %>" />
-      <label class="form-check-label" for="gr-<%= $counter++ %>"><%== $group->iconName %>
+      <input class="form-check-input" type="radio" name="owner" id="gr-<%== $counter %>" value="<%== $group->id %>" />
+      <label class="form-check-label" for="gr-<%== $counter++ %>"><%== $group->iconName %>
 %     if(my $indent = $group->memberIdentityOf($account)) {
         &mdash; <%== $indent->iconName %>
 %     }
@@ -99,7 +98,7 @@
 
 % my $signed = $contract->isSigned;
 
-    <div class="form-check" data-checkbox="annex" data-pick="<%= $contract->agreedAnnex ? 'on' : 'off' %>">
+    <div class="form-check" data-checkbox="annex" data-pick="<%== $contract->agreedAnnex ? 'on' : 'off' %>">
       <input class="form-check-input" type="checkbox" name="annex" id="annex" value="on" />
       <label class="form-check-label" for="annex">
          I have looked at the enclosed pages, like Share and Assets, and agree that I am willing to share
@@ -108,20 +107,20 @@
     </div>
 
 % if(my $terms = $service->terms // 'link') {
-    <div class="form-check" data-checkbox="terms" data-pick="<%= $contract->agreedTerms ? 'on' : 'off' %>">
+    <div class="form-check" data-checkbox="terms" data-pick="<%== $contract->agreedTerms ? 'on' : 'off' %>">
       <input class="form-check-input" type="checkbox" name="terms" id="terms" value="on" />
       <label class="form-check-label" for="terms">
-         I agree with <a href="<%= $terms %>" target="_blank">the Terms &amp; Conditions <i class="fa-solid fa-up-right-from-square"></i> of the provider.</a>
+         I agree with <a href="<%== $terms %>" target="_blank">the Terms &amp; Conditions <i class="fa-solid fa-up-right-from-square"></i> of the provider.</a>
       </label>
     </div>
 % }
 
 % if(my $license = $service->licenseLink // 'link') {
 %   my $licname = $service->license;
-    <div class="form-check" data-checkbox="license" data-pick="<%= $contract->acceptedLicense ? 'on' : 'off' %>">
+    <div class="form-check" data-checkbox="license" data-pick="<%== $contract->acceptedLicense ? 'on' : 'off' %>">
       <input class="form-check-input" type="checkbox" name="license" id="license" value="on" />
       <label class="form-check-label" for="terms">
-         I will respect <a href="<%= $license %>" target="_blank">the License <%= $licname %> <i class="fa-solid fa-up-right-from-square"></i></a> on the data, received from the provider.
+         I will respect <a href="<%== $license %>" target="_blank">the License <%= $licname %> <i class="fa-solid fa-up-right-from-square"></i></a> on the data, received from the provider.
       </label>
     </div>
 % }
@@ -129,7 +128,7 @@
     <br />
     <button class="btn btn-primary" id="sign">
 %# Could not get the press of this button into the form submit in an other way
-       <input type="hidden" name="sign" value="<%= $contract->isSigned ? 'yes' : 'no' %>" id="sign-submit" />
+       <input type="hidden" name="sign" value="<%== $contract->isSigned ? 'yes' : 'no' %>" id="sign-submit" />
        <i class="fa-solid fa-signature" aria-hidden="true"></i>&nbsp; Sign
     </button>
 
@@ -167,18 +166,49 @@ service names, however, are not verified.</p>
 %    $parties_explain,
 % ];
 
+% my $needs   = $service->needsFacts;
+% my $factrow = begin
+%   my ($fact, %args) = @_;
+%   my $config = $facts->{$fact};
+%   my $take   = $needs->{$fact};
+%#  return if $take eq 'no';
+    <li><%= $config->{label}->toString %>: <%= $take %><%= ($needs->{"$fact.proof"} // 'no') eq 'yes' ? ', proof required' : '' %></li>
+% end
+
 % my $you_form = begin
 
-  <div class="alert alert-info">Work in progress: this section will appear later.</div>
+  <div>
+    <h4>Shared personal facts</h4>
+    <ul>
+%=  $factrow->('person.fullname');
+%=  $factrow->('person.nickname');
+%=  $factrow->('person.timezone');
+%=  $factrow->('person.email');
+%=  $factrow->('person.phone');
+%=  $factrow->('person.gender');
+%=  $factrow->('person.birthdate');
+    </ul>
+  </div>
+
+% if(defined(my $explain = $service->explainUser)) {
+  <div id="explain-user">
+    <h4>The service provider explains:</h4>
+    <%== $c->plain2html($explain) %>
+  </div>
+% }
 
 % end
 
 % my $you_explain = begin
 
-<p>To be able to use this service, you have to share personal
-or group information.  You may also need to share some of your
-proofs.</p>
+<p>To be able to use this service, you have to share personal and/or
+group information with the service provider.  You may also need to share
+some of your proofs.</p>
 
+These details need to be selected on the first use of service, so this
+page is informational only.</p>
+
+<p>You will be informed when the Service changes its requirements.</p>
 % end
 
 % push @pages, [
@@ -204,16 +234,16 @@ the moment you use the service (for the first time).</p>
 %     my $max  = $need->{max}   or next;
 %     my $min  = $need->{min} // 0;
 
-<div id="<%= $set %>">
+<div id="<%== $set %>">
   <label class="form-label"><%== OpenConsole::Assets->assetClass($set)->iconSet %></label>
 
   <p>
 %     if($min==$max) {
-  Exactly <%= $min %> of these are required.
+  Exactly <%== $min %> of these are required.
 %     } elsif($min==0) {
-  At most <%= $max %> of these can be passed on.
+  At most <%== $max %> of these can be passed on.
 %     } else {
-  From <%= $min %> up to <%= $max %> of these can be passed.
+  From <%== $min %> up to <%== $max %> of these can be passed.
 %     }
 
 %     if($need->{state} eq 'proven') {
@@ -222,18 +252,18 @@ the moment you use the service (for the first time).</p>
 
   </p>
 
-  <div data-radio="<%= $set %>" data-pick="<%= $contract->presel($set)->{from} // 'owner' %>">
+  <div data-radio="<%== $set %>" data-pick="<%== $contract->presel($set)->{from} // 'owner' %>">
     <div class="form-check">
-      <input class="form-check-input" type="radio" name="<%= $set %>" id="<%= $set %>-owner" value="owner" />
-      <label class="form-check-label" for="<%= $set %>-owner">From the selected personal identity only</label>
+      <input class="form-check-input" type="radio" name="<%== $set %>" id="<%== $set %>-owner" value="owner" />
+      <label class="form-check-label" for="<%== $set %>-owner">From the selected personal identity only</label>
     </div>
     <div class="form-check">
-      <input class="form-check-input" type="radio" name="<%= $set %>" id="<%= $set %>-personal" value="personal" />
-      <label class="form-check-label" for="<%= $set %>-personal">Combine all personal identities</label>
+      <input class="form-check-input" type="radio" name="<%== $set %>" id="<%== $set %>-personal" value="personal" />
+      <label class="form-check-label" for="<%== $set %>-personal">Combine all personal identities</label>
     </div>
     <div class="form-check">
-      <input class="form-check-input" type="radio" name="<%= $set %>" id="<%= $set %>-group" value="group" />
-      <label class="form-check-label" for="<%= $set %>-group">All personal and group assets</label>
+      <input class="form-check-input" type="radio" name="<%== $set %>" id="<%== $set %>-group" value="group" />
+      <label class="form-check-label" for="<%== $set %>-group">All personal and group assets</label>
     </div>
   </div>
 </div>
@@ -270,8 +300,10 @@ but could very well do without these details.</p>
 
 <div class="alert alert-info">Work in progress: this section will appear later.</div>
 
-This page will show when the contract was signed, and how it was changed
-over time.
+<p>This page will show when the contract was signed, and how it was changed
+over time.</p>
+
+<p><a href="/dashboard/comply/<%== $service->id %>">Comply to this contract.</a> <b>Link for development</b></p>
 
 % end
 
@@ -290,11 +322,11 @@ over time.
 
 
 <script src="/assets/config_form.js"></script>
-<script src="/assets/contract_form.js"></script>
+<script src="/assets/contract.js"></script>
 
 <form id="config-contract" class="config-form">
-  <input id="identifier" type="hidden" value="<%= $contract->id %>" />
-  <input type="hidden" name="service" value="<%= $service->id %>" />
+  <input id="identifier" type="hidden" value="<%== $contract->id %>" />
+  <input type="hidden" name="service" value="<%== $service->id %>" />
 
   <h1><%== $contract->iconElem %></h1>
 

@@ -6,7 +6,7 @@
 % if(! defined $asset) {
     (went missing, sorry)
 % } elsif(defined $link) {
-  <a href="<%= $link %>"><%= $asset->name %></a> <%== $c->badge($asset) %>
+  <a href="<%== $link %>"><%= $asset->name %></a> <%== $c->badge($asset) %>
 % } else {
   <%= $asset->name %> <%== $c->badge($asset) %>
 % }

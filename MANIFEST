@@ -29,8 +29,9 @@ owner_console.conf
 owner_console.conf-example
 public/assets/account.js
 public/assets/always.js
+public/assets/comply.js
 public/assets/config_form.js
-public/assets/contract_form.js
+public/assets/contract.js
 public/assets/contracts.js
 public/assets/dashboard.js
 public/assets/frontpage.css
@@ -41,7 +42,7 @@ public/assets/open-console.css.map
 public/assets/proof_form.js
 public/assets/proof_list.js
 public/assets/proof_website.js
-public/assets/service_form.js
+public/assets/service.js
 public/fontawesome-free-6.5.1-web/LICENSE.txt
 public/fontawesome-free-6.5.1-web/css/all.css
 public/fontawesome-free-6.5.1-web/css/all.min.css
@@ -2310,6 +2311,7 @@ templates/assets/_owner.html.ep
 templates/assets/_owner_pick.html.ep
 templates/assets/_show.html.ep
 templates/comply/error.html.ep
+templates/comply/comply.html.ep
 templates/contracts/_list.html.ep
 templates/contracts/contract.html.ep
 templates/contracts/index.html.ep

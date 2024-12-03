@@ -19,18 +19,22 @@ sub index()
 
 sub contract(%)
 {   my ($self, %args) = @_;
-	my $contractid = $self->param('assetid');
-	my $account    = $self->account;
-	my $contract  = $contractid eq 'new'
-	  ? OpenConsole::Asset::Contract->create({owner => $account, service => $self->param('service')})
-	  : $account->asset(contracts => $contractid);
+	my $contract_id = $self->param('assetid');
+	my $account     = $self->account;
 
+	my $contract  = $contract_id eq 'new'
+	  ? OpenConsole::Asset::Contract->create({owner => $account, service => $self->param('service')})
+	  : $account->asset(contracts => $contract_id);
+
+	my $service     = $::app->assets->service($contract->serviceId) or panic;
 use Data::Dumper;
-warn "PAGE EDIT Contract $contractid, ", Dumper $contract;
+warn "PAGE EDIT Contract $contract_id, ", Dumper $contract;
 
 	$self->render(
 		template  => 'contracts/contract',
 		contract  => $contract,
+		service   => $service,
+		facts     => OwnerConsole::Controller::Comply->listFacts,
 	);
 }
 

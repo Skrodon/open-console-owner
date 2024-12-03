@@ -21,7 +21,7 @@
     <label for="email" class="form-label">Email address</label>
     <input name="email" type="email" id="email" class="form-control" placeholder="name@example.com"
       aria-describedby="email_explain" required value="<%= $proof->email %>"
-      <%= $is_new ? '' : 'disabled' %>
+      <%== $is_new ? '' : 'disabled' %>
     />
     <div id="email_explain" class="form-text">Your or the group's email address to be verified.</div>
   </div>
@@ -30,15 +30,15 @@
     <label for="subaddr" class="form-label">Sub-Addressing ('+'-trick)</label>
     <div class="form-check">
       <input type="checkbox" class="form-check-input" name="subaddr" id="subaddr"
-        value="yes" <%= $proof->supportsSubAddressing ? 'checked' : '' %>
-        aria-describedby="subaddr_explain" <%= $is_new ? '' : 'disabled' %> >
+        value="yes" <%== $proof->supportsSubAddressing ? 'checked' : '' %>
+        aria-describedby="subaddr_explain" <%== $is_new ? '' : 'disabled' %> >
       <label class="form-check-label" for="subaddr"> Supports sub-addressing</label>
     </div>
     <div id="subaddr_explain" class="form-text">Permit the "+"-trick on the proven email address.</div>
   </div>
 
   &nbsp;<br />
-%# <pre><%= Data::Dumper::Dumper($proof) %></pre>
+%# <pre><%== Data::Dumper::Dumper($proof) %></pre>
 
   <div id="proof-create">
 
@@ -89,9 +89,9 @@
     either a personal address or belongs to a list which you can read.</p>
 
     <table class="table" name="proof-abstract">
-    <tr><td>Algorithm:</td><td><%= $proof->algorithm %> <%= $proof->algoVersion %></td></tr>
-    <tr><td>Verified:</td><td><%= $proof->verified %></td></tr>
-    <tr><td>Score:</td><td><%= $proof->score %></td></tr>
+    <tr><td>Algorithm:</td><td><%== $proof->algorithm %> <%== $proof->algoVersion %></td></tr>
+    <tr><td>Verified:</td><td><%== $proof->verified %></td></tr>
+    <tr><td>Score:</td><td><%== $proof->score %></td></tr>
     <tr><td>Expires:</td><td><%= $proof->expires // 'undetermined' %></td></tr>
     </table>
 
@@ -140,9 +140,9 @@ with "+<something>" per use.  For instance, "<code>me+oc@example.com</code>" whe
 <script src="/assets/proof_form.js"></script>
 
 <form id="config-emailaddr" class="config-form proof-form">
-  <input id="identifier" type="hidden" value="<%= $proof->id %>" />
-  <input type="hidden" name="selected-prover" id="selected-prover" value="<%= $prover %>" />
-  <input type="hidden" name="has-proof" id="has-proof" value="<%= $has_proof %>" />
+  <input id="identifier" type="hidden" value="<%== $proof->id %>" />
+  <input type="hidden" name="selected-prover" id="selected-prover" value="<%== $prover %>" />
+  <input type="hidden" name="has-proof" id="has-proof" value="<%== $has_proof %>" />
 
   <h1><%== $proof->iconElem %></h1>
 

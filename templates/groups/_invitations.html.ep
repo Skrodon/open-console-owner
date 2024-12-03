@@ -15,7 +15,7 @@
 %    my $state = $invite->state;
 %    my $sname = $invite->stateName;
 
-      <tr><td><%= $email %></td>
+      <tr><td><%== $email %></td>
           <td>
 %    if($state eq 'spam') {
               <span class="badge rounded-pill text-bg-danger"><%= $sname %></span>
@@ -25,13 +25,13 @@
               <%= $sname %>
 %    }
           </td>
-          <td><a href="#" for="<%= $seq %>"><i class="fa-solid fa-pen" aria-label="inspect invite"></i></a></td>
+          <td><a href="#" for="<%== $seq %>"><i class="fa-solid fa-pen" aria-label="inspect invite"></i></a></td>
           <td>
 % if($invite->hasExpired) {
              <span class="badge badge-pill badge-warning">Expired</span>
 % }
 
-  <div class="manage_invitation modal" id="<%= $seq %>" data-email="<%= $email %>" data-token="<%= $invite->token %>" style="display: none;">
+  <div class="manage_invitation modal" id="<%== $seq %>" data-email="<%== $email %>" data-token="<%== $invite->token %>" style="display: none;">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -48,12 +48,12 @@
 % }
           <p>Group membership invitation:
           <table class="table">
-          <tr><td>sent to</td><td><tt><%= $email %></tt></td></tr>
+          <tr><td>sent to</td><td><tt><%== $email %></tt></td></tr>
           <tr><td>created</td><td><%= $invite->invited->stringify %></td></tr>
           <tr><td>expires</td><td><%= $invite->expires->stringify %></td></tr>
           <tr><td>status </td><td><%= $invite->stateName %></td></tr>
 % if($c->user->isAdmin) {
-          <tr class="admin"><td>token</td><td><%= $invite->token %></td></tr>
+          <tr class="admin"><td>token</td><td><%== $invite->token %></td></tr>
 % }
           </table>
         </div>

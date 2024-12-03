@@ -34,7 +34,7 @@
 %   foreach my $owner (@$index) {
              <li><span class="dropdown-item-text">Provided by <%= $owner->{name} %>:</span></li>
 %     foreach my $service (@{$owner->{services}}) {
-             <li><a class="dropdown-item" href="/dashboard/contract/new?service=<%= $service->{id} %>">
+             <li><a class="dropdown-item" href="/dashboard/contract/new?service=<%== $service->{id} %>">
                 &middot; <%= $service->{name} %></a></li>
 %     }
 %   }

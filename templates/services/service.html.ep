@@ -28,7 +28,7 @@
 
 % my $status  = $service->status // 'testing';
 % my $blocked = $status eq 'blocked' && ! $is_admin ? ' disabled' : '';
-  <div id="visibility" data-radio="status" data-pick="<%= $status %>">
+  <div id="visibility" data-radio="status" data-pick="<%== $status %>">
     <div>
       <label for="status" class="form-label">Visibility</label>
       <div class="form-check">
@@ -50,13 +50,13 @@
     </div>
     <div>
       <div class="form-check">
-        <input class="form-check-input" name="status" type="radio" value="blocked" id="vis-blocked" <%= $is_admin ? '' : ' disabled' %> />
+        <input class="form-check-input" name="status" type="radio" value="blocked" id="vis-blocked" <%== $is_admin ? '' : ' disabled' %> />
         <label class="form-check-label" for="vis-blocked"><%== $c->badge('blocked') %> abnormalities have been detected.</label>
       </div>
     </div>
   </div>
 
-  <div id="usability" data-radio="use" data-pick="<%= $service->usability || 'person' %>">
+  <div id="usability" data-radio="use" data-pick="<%== $service->usability || 'person' %>">
 % my ($a, $i, $g) = (OpenConsole::Account->icon, OpenConsole::Identity->icon, OpenConsole::Group->icon);
     <div>
       <label for="usability" class="form-label">Usability</label>
@@ -83,13 +83,13 @@
   <div>
     <label for="endpoint" class="form-label">Endpoint</label>
     <select name="endpoint-website" id="endpoint-websites" class="form-select"
-      data-pick="<%= $service->endpointWebsite || $websites[0] %>">
+      data-pick="<%== $service->endpointWebsite || $websites[0] %>">
 % foreach my $website (@websites) {
-    <option value="<%= $website->id %>"><%= $website->website %></option>
+    <option value="<%== $website->id %>"><%== $website->website %></option>
 % }
     </select>
     <input name="endpoint" type="text" id="endpoint" class="form-control"
-      aria-describedby="endpoint_explain" value="<%= $service->endpointPath || '/' %>"
+      aria-describedby="endpoint_explain" value="<%== $service->endpointPath || '/' %>"
     />
     <div id="endpoint_explain" class="form-text">The location of your service consists of a
        proven website and a path within that site.
@@ -98,9 +98,9 @@
 
   <div>
     <label for="contact" class="form-label">Contact email</label>
-    <select name="contact" id="contact" class="form-select" data-pick="<%= $service->contact // $emails[0] %>">
+    <select name="contact" id="contact" class="form-select" data-pick="<%== $service->contact // $emails[0] %>">
 % foreach my $email (@emails) {
-    <option value="<%= $email->id %>"><%= $email->email %></option>
+    <option value="<%== $email->id %>"><%== $email->email %></option>
 % }
     </select>
     <div id="contact_explain" class="form-text">
@@ -129,8 +129,8 @@
     time.</p>
 % } else {
     <input name="serviceid" type="text" id="serviceid" class="form-control"
-      value="<%= $service->id %>" disabled
-      aria-describedby="service_explain" required value="<%= $service->secret %>"
+      value="<%== $service->id %>" disabled
+      aria-describedby="service_explain" required value="<%== $service->secret %>"
     />
 % }
     <div id="service_explain" class="form-text">Your secret and this identitier are required
@@ -141,7 +141,7 @@
   <div>
 
   &nbsp;<br />
- <pre><%= Data::Dumper::Dumper($service->_data) %></pre>
+ <pre><%== Data::Dumper::Dumper($service->_data) %></pre>
 
   </div>
 
@@ -197,14 +197,14 @@ form, to improve the communication with the (potential) users.</p>
   <div>
     <label for="info-site" class="form-label">Service webpage</label>
     <select name="info-site" id="info-site" class="form-select" aria-describedby="info_explain"
-      data-pick="<%= $service->infoWebsite || '' %>">
+      data-pick="<%== $service->infoWebsite || '' %>">
     <option value="">&mdash; no additional information</option>
 % foreach my $website (@websites) {
-    <option value="<%= $website->id %>"><%= $website->website %></option>
+    <option value="<%== $website->id %>"><%== $website->website %></option>
 % }
     </select>
     <input type="text" name="info-path" class="form-control" placeholder="/"
-       value="<%= $service->infoPath || '' %>" />
+       value="<%== $service->infoPath || '' %>" />
     <div id="info_explain" class="form-text">The webpage which is a start for more detailed
        information about this service.
     </div>
@@ -213,44 +213,14 @@ form, to improve the communication with the (potential) users.</p>
   <div>
     <label for="support" class="form-label">Support email</label>
     <select name="support" id="support" class="form-select" aria-describedby="support_explain"
-      data-pick="<%= $service->support || '' %>">
+      data-pick="<%== $service->support || '' %>">
     <option value="">&mdash; no support offered</option>
 % foreach my $email (@emails) {
-    <option value="<%= $email->id %>"><%= $email->email %></option>
+    <option value="<%== $email->id %>"><%== $email->email %></option>
 % }
     </select>
     <div id="support_explain" class="form-text">Select the email address which will be
        published to your users.
-    </div>
-  </div>
-
-% my $pay = $service->payments // 'free';
-  <div data-radio="pay" data-pick="<%= $pay %>">
-    <label for="payments" class="form-label">Payments</label>
-    <div>
-      <div class="form-check">
-        <input class="form-check-input" name="pay" type="radio" id="pay-free" value="free" />
-        <label class="form-check-label" for="pay-free">Free; (at the moment) there are no fees.</label>
-      </div>
-    </div>
-    <div>
-      <div class="form-check">
-        <input class="form-check-input" name="pay" type="radio" id="pay-extras" value="extras" />
-        <label class="form-check-label" for="pay-extras">Extras; one can pay for extra features.</label>
-      </div>
-    </div>
-    <div>
-      <div class="form-check">
-        <input class="form-check-input" name="pay" type="radio" id="pay-demo" value="demo" />
-        <label class="form-check-label" for="pay-demo">Demo; only a demo version is free of charge.</label>
-      </div>
-    </div>
-    <div>
-      <div class="form-check">
-        <input class="form-check-input" name="pay" type="radio" id="pay-always" value="always" />
-        <label class="form-check-label" for="pay-always">Always; the user will need to pay for any useful
-           functionality.</label>
-      </div>
     </div>
   </div>
 
@@ -282,32 +252,188 @@ Console, to support the project.</p>
 %    $inform_explain,
 % ];
 
+% my $usage_form = begin
+
+  <div class="form-intro">
+    <p>This page speaks about the conditions of delivery.</p>
+  </div>
+
+% my $pay = $service->payments // 'free';
+  <div data-radio="pay" data-pick="<%== $pay %>">
+    <label for="payments" class="form-label">Payments</label>
+    <div>
+      <div class="form-check">
+        <input class="form-check-input" name="pay" type="radio" id="pay-free" value="free" />
+        <label class="form-check-label" for="pay-free">Free; (at the moment) there are no fees.</label>
+      </div>
+    </div>
+    <div>
+      <div class="form-check">
+        <input class="form-check-input" name="pay" type="radio" id="pay-extras" value="extras" />
+        <label class="form-check-label" for="pay-extras">Extras; one can pay for extra features.</label>
+      </div>
+    </div>
+    <div>
+      <div class="form-check">
+        <input class="form-check-input" name="pay" type="radio" id="pay-demo" value="demo" />
+        <label class="form-check-label" for="pay-demo">Demo; only a demo version is free of charge.</label>
+      </div>
+    </div>
+    <div>
+      <div class="form-check">
+        <input class="form-check-input" name="pay" type="radio" id="pay-always" value="always" />
+        <label class="form-check-label" for="pay-always">Always; the user will need to pay for any useful
+           functionality.</label>
+      </div>
+    </div>
+  </div>
+
+  <div>
+    <label for="terms" class="form-label">Terms &amp; Conditions</label>
+    <input type="text" name="terms" id="terms" aria-describedby="terms_explain"
+       class="form-control" placeholder="https://" value="<%== $service->terms || '' %>" />
+    <div id="terms_explain" class="form-text">
+       The user needs to confirm to agree with these terms.
+    </div>
+  </div>
+
+  <div>
+    <label for="license" class="form-label">License</label>
+    <input type="text" name="license-link" id="license-link"
+       class="form-control" placeholder="https://" value="<%== $service->licenseLink || '' %>" />
+    <input type="text" name="license" id="license" aria-describedby="license_explain"
+       class="form-control" placeholder="CC BY-NC-SA" value="<%= $service->license // '' %>" />
+    <div id="license_explain" class="form-text">
+       Specify the license on the data provided by the Service, both as link to the license
+       text, as name for the nicer display.
+    </div>
+  </div>
+% end
+
+% my $usage_explain = begin
+
+<p>The <b>Terms</b> are specified as a URL, pointing to a web-page or a PDF.
+When the Contract gets signed by the user, a checkbox has to be clicked to
+confirm acceptance.</p>
+
+% end
+
+% push @pages, [
+%    'service-usage',
+%    'Terms',
+%    $usage_form,
+%    $usage_explain,
+% ];
+
+% my $needs = $service->needsFacts || {};
+% my $simple_fact = begin
+%   my ($field, %args) = @_;
+%   my $fact  = $facts->{$field};
+%   my $need  = $needs->{$field} // $fact->{default} // 'no';
+      <tr><td class="align-middle"><%= $fact->{label}->toString %></td>
+          <td><select name="<%== $field %>" id="<%== $field %>" data-pick="<%== $need %>" class="form-select">
+%# the option texts may get translated later
+              <option value="no">No
+              <option value="optional">Optional
+              <option value="please">Please
+              <option value="required">Required
+              </select>
+%   if($fact->{can_proof}) {
+%      my $tag = "$field.proof";
+              <div class="form-check" data-checkbox="<%== $tag %>" data-pick="<%== $needs->{$tag} // 'no' %>">
+                <input class="form-check-input" type="checkbox" name="<%== $tag %>" id="<%== $tag %>" value="yes">
+                <label class="form-check-label" for="<%== $tag %>">must be proven</label>
+              </div>
+%   }
+          </td></tr>
+% end
+
+% my $facts_form = begin
+
+  <div class="form-intro">
+    <p>Are there facts you want or need to know from the person who wants
+    to access your service?</p>
+  </div>
+
+  <div>
+    <label for="personal-user" class="form-label">Personal facts</label>
+
+	<table class="table" id="selected-personal">
+    <thead class="thead-light">
+      <tr><th>Field</th><th>Provide</th></tr>
+    </thead>
+    <tbody>
+%=     $simple_fact->('person.fullname');
+%=     $simple_fact->('person.nickname');
+%=     $simple_fact->('person.timezone');
+%=     $simple_fact->('person.email');
+%=     $simple_fact->('person.phone');
+%=     $simple_fact->('person.gender');
+%=     $simple_fact->('person.birthdate');
+    </tbody>
+    </table>
+  </div>
+
+  <div>
+    <label for="explain-user" class="form-label">Explain</label>
+    <textarea name="explain-user" type="text" id="explain-user" class="form-control"
+      aria-describedby="explfacts_explain" rows="7"><%= $service->explainUser // ''  %></textarea>
+    <div id="explfacts_explain" class="form-text">
+      Can you explain to the user why you need these facts?  Can you promise how you
+      will protect these personal facts?
+    </div>
+  </div>
+
+% end
+
+% my $facts_explain = begin
+
+<p>Describe which kinds of facts you wish for.</p>
+
+<p>For each of the facts a potential visitor can <b>provide</b>, you need
+to configure whether you wish to receive that detail.  The more details
+you ask for, probably the fewer people will accept the contract.</p>
+
+<p>Your options are: <b>No</b> I do not want to receive that data;
+Providing this is <b>optional</b>, but not really important;
+<b>Please</b> provide this information for a better experience or
+communication; The fact is <b>required</b>.  Where available,
+required fields may come with a verification proof.</p>
+% end
+
+% push @pages, [
+%    'service-facts',
+%    'Facts',
+%    $facts_form,
+%    $facts_explain,
+% ];
+
 % my $asset_row = begin
 % 	my ($set, $name, $data) = @_;
 %   my $status = $data->{status} // 'proven';
 
        <tr><td><%= $name %></td>
-           <td><input type="text" name="<%= $set %>_min" size="3" value="<%= $data->{min} // 0   %>"></td>
-           <td><input type="text" name="<%= $set %>_max" size="3" value="<%= $data->{min} // 100 %>"></td>
-           <td><select name="<%= $set %>_status">
-               <option value="proven" <%= $status eq 'proven'  ? ' selected' : '' %>>Proven</option>
-               <option value="claimed"<%= $status eq 'claimed' ? ' selected' : '' %>>Claimed</option>
+           <td><input type="text" name="<%== $set %>_min" size="3" value="<%== $data->{min} // 0   %>"></td>
+           <td><input type="text" name="<%== $set %>_max" size="3" value="<%== $data->{min} // 100 %>"></td>
+           <td><select name="<%== $set %>_status">
+               <option value="proven" <%== $status eq 'proven'  ? ' selected' : '' %>>Proven</option>
+               <option value="claimed"<%== $status eq 'claimed' ? ' selected' : '' %>>Claimed</option>
                </select></td>
        </tr>
 
 % end
 
-% my $usage_form = begin
+% my $assets_form = begin
 
   <div class="form-intro">
-    <p>This page speaks about the data which is being exchanged.</p>
+    <p>This page specifies which proofs you wish to receive.</p>
   </div>
 
   <div>
     <label for="assets" class="form-label">Assets</label>
 	<table class="table" id="selected-assets">
     <thead class="thead-light">
-    <tr><th>Asset</th>
+    <tr><th>Set</th>
         <th>Min</th>
         <th>Max</th>
         <th>Status</th></tr>
@@ -321,160 +447,30 @@ Console, to support the project.</p>
     </tbody>
     </table>
   </div>
-
-  <div>
-    <label for="terms" class="form-label">Terms &amp; Conditions</label>
-    <input type="text" name="terms" id="terms" aria-describedby="terms_explain"
-       class="form-control" placeholder="https://" value="<%= $service->terms || '' %>" />
-    <div id="terms_explain" class="form-text">
-       The user needs to confirm to agree with these terms.
-    </div>
-  </div>
-
-  <div>
-    <label for="license" class="form-label">License</label>
-    <input type="text" name="license-link" id="license-link"
-       class="form-control" placeholder="https://" value="<%= $service->licenseLink || '' %>" />
-    <input type="text" name="license" id="license" aria-describedby="license_explain"
-       class="form-control" placeholder="CC BY-NC-SA" value="<%= $service->license // '' %>" />
-    <div id="license_explain" class="form-text">
-       Specify the license on the data provided by the Service, both as link to the license
-       text, as name for the nicer display.
-    </div>
-  </div>
 % end
 
-% my $usage_explain = begin
+% my $assets_explain = begin
 
-<p>Describe which kinds of information you need from the user, to be able to
-work.  <b>Assets</b> are values which the user has configured, but ownership
+<p><b>Assets</b> are values which the user has configured, but ownership
 may not have been proven.</p>
 
 <p>When an Asset is <b>Claimed</b>, then it is checked for validity, but not
 (yet) proven to be owned.  Or, the poof may have expired.  In some cases, your
 application may not care about proofs.</p>
-
-<p>The <b>Terms</b> are specified as a URL, pointing to a web-page or a PDF.
-When the Contract gets signed by the user, a checkbox has to be clicked to
-confirm acceptance.</p>
-
 % end
 
 % push @pages, [
-%    'service-usage',
-%    'Usage',
-%    $usage_form,
-%    $usage_explain,
-% ];
-
-% my $user_form = begin
-
-  <div class="form-intro">
-    <p>Are there facts you want or need to know from the person who wants
-    to access your service?</p>
-  </div>
-
-  <div>
-    <label for="personal-user" class="form-label">Personal facts</label>
-    <div class="alert alert-info">Work in progress: this section is a mock-up.</div>
-
-	<table class="table" id="selected-personal">
-    <thead class="thead-light">
-      <tr><th>Field</th><th>Provide</th></tr>
-    </thead>
-    <tbody>
-% foreach my $field (qw/Full-name Email Gender Date-of-Birth Phone-Number Language Country/) {
-      <tr><td><%= $field %></td>
-          <td><select disabled><option>No<option>Optional<option>Please<option>Required</select></td></tr>
-% }
-    </tbody>
-    </table>
-  </div>
-
-  <div>
-    <label for="explain-user" class="form-label">Explain</label>
-    <textarea name="explain-user" type="text" id="explain-user" class="form-control"
-      aria-describedby="expluser_explain" rows="7"><%= $service->explainUser // ''  %></textarea>
-    <div id="expluser_explain" class="form-text">
-      Can you explain to the user why you need these facts?  Can you promise how you
-      will protect these personal facts?
-    </div>
-  </div>
-
-% end
-
-% my $user_explain = begin
-
-<p>Describe which kinds of user describing facts you wish for.</p>
-
-<p>For each of the facts a potential visitor can <b>provide</b>, you need
-to configure whether you wish to receive that detail.  The more details
-you ask for, probably the fewer people will accept the contract.</p>
-
-<p>Your options are: No, I do not want to receive that data.  
-% end
-
-% push @pages, [
-%    'service-user',
-%    'User',
-%    $user_form,
-%    $user_explain,
-% ];
-
-% my $group_form = begin
-
-  <div class="form-intro">
-    <p>Are there things you need or want to know about the Group of the user?</p>
-  </div>
-
-  <div>
-    <label for="group-facts" class="form-label">Group facts</label>
-    <div class="alert alert-info">Work in progress: this section is a mock-up.</div>
-
-	<table class="table" id="selected-personal">
-    <thead class="thead-light">
-      <tr><th>Field</th><th>Provide</th></tr>
-    </thead>
-    <tbody>
-% foreach my $field (qw/Name Department Email Phone Language Postal-Address Country/) {
-      <tr><td><%= $field %></td>
-          <td><select disabled><option>No<option>Optional<option>Please<option>Required</select></td></tr>
-% }
-    </tbody>
-    </table>
-  </div>
-
-  <div>
-    <label for="explain-group" class="form-label">Explain</label>
-    <textarea name="explain-group" type="text" id="explain-group" class="form-control"
-      aria-describedby="explgroup_explain" rows="7"><%= $service->explainGroup // '' %></textarea>
-    <div id="explgroup_explain" class="form-text">
-      Can you explain to the user why you need these facts?  Can you promise how you
-      will use these group facts?
-    </div>
-  </div>
-
-% end
-
-% my $group_explain = begin
-
-<p>Describe which group describing facts you wish for.  The more details
-you require, probably the fewer people will accept it.</p>
-
-% end
-
-% push @pages, [
-%    'service-group',
-%    'Group',
-%    $group_form,
-%    $group_explain,
+%    'service-assets',
+%    'Assets',
+%    $assets_form,
+%    $assets_explain,
 % ];
 
 <script src="/assets/config_form.js"></script>
-<script src="/assets/service_form.js"></script>
+<script src="/assets/service.js"></script>
 
 <form id="config-service" class="config-form service-form">
-  <input id="identifier" type="hidden" value="<%= $service->id %>" />
+  <input id="identifier" type="hidden" value="<%== $service->id %>" />
 
   <h1><i class="fa-solid fa-envelope-circle-check" aria-hidden="true"></i> Define a service</h1>
 

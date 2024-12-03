@@ -40,11 +40,10 @@ sub service(%)
 	  ? OpenConsole::Asset::Service->create({owner => $account->findOwner($self->param('owner'))})
 	  : $account->asset(services => $id);
 
-warn "PAGE EDIT SERVICE $id, $service.";
-
 	$self->render(
-		template  => 'services/service',
-		service   => $service,
+		template => 'services/service',
+		service  => $service,
+		facts    => OwnerConsole::Controller::Comply->listFacts,
 	);
 }
 
@@ -125,6 +124,15 @@ sub _acceptService()
 
 	my $group_only = $session->optionalParam('group-only') || 'off';
 
+	my %facts;
+	my $f = OwnerConsole::Controller::Comply->listFacts;
+	foreach my $fact (keys %$f)
+    {   my $conf = $f->{$fact};
+		$facts{$fact} = $session->optionalParam($fact) // 'no';
+        $facts{"$fact.proof"} = $session->optionalParam("$fact.proof") // 'no'
+            if $conf->{can_proof};
+    }
+
 	###!!! Keep in sync with OpenConsole::Asset::Service fields
 
 	$service->setData(   # accidentally in form order
@@ -140,6 +148,7 @@ sub _acceptService()
 		support       => $support,
 		payments      => $pay,
 		needs_assets  => \%assets,
+		needs_facts   => \%facts,
 		terms         => $terms,
 		license       => $license,
 		license_link  => $liclink,

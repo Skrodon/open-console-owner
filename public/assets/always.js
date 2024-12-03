@@ -1,9 +1,9 @@
+// This JavaScript is loaded for every single page.
+// Most common logic is in config_form.js, which applies only to forms
+// for users which are logged-in.
 
-
-$(document).ready(function() {
-
+function password_visibility_toggle() {
 	// Both on logged-in and unauth pages.  Standard input-group layout
-	
 	$('INPUT[type="password"]').each(function () {
 		var field  = $(this);
 		var toggle = $( $('.eye_toggle', field.parent()) );
@@ -21,19 +21,35 @@ $(document).ready(function() {
 			}
 		});
 	});
+}
 
+// https://select2.org
+function enable_select2_selectors() {
 	// Anywhere we can find select boxes which need search
-	$('.search-select').select2({theme: 'bootstrap-5'});
+	$('.search-select, .select2').each(function () {
+        var sel  = $(this);
+		var need = sel.data('need');
+        sel.val(sel.data('pickd'));
+		sel.select2({
+			theme: 'bootstrap-5',
+            minimumResultsForSearch: 20,
+            allowClear: need != 'required',
+		});
+	});
+}
 
-	// make alerts closeable
+function enable_bootstrap_alerts() {
 	$('.alert').each(function () {
 		var alert = $(this);
-		$('.close', alert).on('click', function () { alert.hide() });
+		$('.close', alert).on('click', function () { alert.hide() }); // make alerts closeable
 	});
+}
 
-	// enable tooltips
+function enable_bootstrap_tooltips() {
 	$('[data-bs-toggle="tooltip"]').tooltip();
+}
 
+function provide_copy_code() {
 	// copy-paste text blocks
 	$('PRE.copy-code').each(function () {
 		var pre = $(this);
@@ -47,8 +63,9 @@ $(document).ready(function() {
 			navigator.clipboard.writeText(code.text());
 		});
 	});
+}
 
-	// download text blocks
+function provide_download_code() {
 	$('PRE.download-code-inline').each(function () {
 		var pre = $(this);
 		pre.before('<i class="fa-solid fa-download downloader" aria-label="download" for="' + pre.attr('id') + '"></i>');
@@ -70,5 +87,13 @@ console.log("clicked");
 			$('#here').click();
 		});
 	});
+}
 
+$(document).ready(function() {
+	password_visibility_toggle();
+	enable_select2_selectors();
+	enable_bootstrap_alerts();
+	enable_bootstrap_tooltips();
+	provide_copy_code();
+	provide_download_code();
 });

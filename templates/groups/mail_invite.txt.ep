@@ -10,5 +10,5 @@ Together, you can monitor websites and more.
 You were invited by <%= $identity->nameInGroup %>
 The group is named '<%= $group->fullname %>'.
 
-Please visit <%= $vhost %>/invite/<%= $invite->token %>
+Please visit <%= $vhost %>/invite/<%== $invite->token %>
 to accept or reject this invitation.

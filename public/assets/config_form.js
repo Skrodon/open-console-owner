@@ -196,12 +196,12 @@ function add_required_to_placeholders(form) {
 function set_selections(form) {
 	$('DIV[data-radio]', form).each(function () {
 		var div = $(this);
-		$('[name=' + div.data('radio') + ']', div).val([div.data('pick')]);
+		$('[name="' + div.data('radio') + '"]', div).val([div.data('pick')]);
 	});
 
 	$('DIV[data-checkbox]', form).each(function () {
 		var div = $(this);
-		$('[name=' + div.data('checkbox') + ']', div).val([div.data('pick').split(",")]);
+		$('[name="' + div.data('checkbox') + '"]', div).val([div.data('pick').split(",")]);
 	});
 
 	$('SELECT[data-pick]', form).each(function () {
@@ -210,17 +210,16 @@ function set_selections(form) {
 	});
 }
 
-function install_config_form(form) {
-	add_required_to_placeholders(form);
-	activate_delete_button(form);
-	create_field_versioning(form);
-	cancel_without_saving(form);
-	save_validated_form(form);
-	accept_form_data(form, 'validate');
-	monitor_form_changes(form);
-	set_selections(form);
-};
-
 $(document).ready(function() {
-	$('form.config-form').each( function () { install_config_form($(this)) } );
+	$('form.config-form').each( function () {
+		var form = $(this);
+		add_required_to_placeholders(form);
+		activate_delete_button(form);
+		create_field_versioning(form);
+		cancel_without_saving(form);
+		save_validated_form(form);
+		accept_form_data(form, 'validate');
+		monitor_form_changes(form);
+		set_selections(form);
+	});
 });

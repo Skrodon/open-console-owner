@@ -14,7 +14,7 @@
         <option value="" selected>&mdash; any role &mdash;</option>
 % foreach my $identity ($account->identities) {
 %   my $idid  = $identity->id;
-        <option value="<%= $idid %>" disabled><%= $identity->role %></option>
+        <option value="<%== $idid %>" disabled><%= $identity->role %></option>
 % }
       </select>
     </li>
@@ -24,7 +24,7 @@
         <option value="" selected>&mdash; any owner &mdash;</option>
         <option value="myself" disabled>&mdash; mine</option>
 % foreach my $group ($account->groups) {
-        <option value="<%= $group->id %>" disabled>Group <%= $group->name %></option>
+        <option value="<%== $group->id %>" disabled>Group <%= $group->name %></option>
 % }
       </select>
     </li>

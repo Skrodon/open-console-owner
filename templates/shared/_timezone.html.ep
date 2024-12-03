@@ -1,8 +1,10 @@
 % use OwnerConsole::Tables qw(timezone_names);
 
-    <select name="timezone" id="timezone" class="form-select search-select" aria-describedby="timezone_explain">
-% $timezone //= 'Europe/Amsterdam';
+% $timezone //= '';   # data-pick does not work with select2 yet
+
+    <select name="timezone" id="timezone" class="form-select search-select" aria-describedby="timezone_explain" %>">
+    <option value="">&mdash; unspecified &mdash;</option>
 % foreach my $tz (@{timezone_names()}) {
-    <option <%= $tz eq $timezone ? ' selected' : ''%>><%= $tz %></option>
+    <option<%== $timezone eq $tz ? ' selected' : '' %>><%== $tz %></option>
 % }
     </select>

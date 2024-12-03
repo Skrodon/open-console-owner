@@ -9,11 +9,17 @@
 <p>The connection to the service you try to use cannot be established, for
 the following reason:</p>
 
-<div class="alert alert-danger">
+% my $alert
+%   = $error =~ m/^(C06|C09)$/ ? 'warning'
+%   : $error =~ m/^(C07|C08)$/ ? 'success'
+%   : 'danger';
+
+<div class="alert alert-<%== $alert %>">
 
 % if($error eq 'missing') {
 No error-code has been provided.
 
+%# Error codes from 'connect', OAuth2 protocol
 % } elsif($error eq 'A01') {
 The 'response_type=code' query parameter is required.
 % } elsif($error eq 'A02') {
@@ -29,10 +35,51 @@ The 'client_id' parameter does not contain a valid Open Console token.
 % } elsif($error eq 'A07') {
 The 'client_id' parameter contains a wrong token type, should be an AppSession token.
 
+%# Error codes from 'connect', application activity
 % } elsif($error eq 'U01') {
 The service provider did not connect itself recently.
 % } elsif($error eq 'U02') {
 The connection of the service provider has expired.
+
+%# Error codes from 'comply', use activity
+% } elsif($error eq 'C01') {
+The service is not specified with a valid token.
+% } elsif($error eq 'C02') {
+The service is not referenced with a service or contract token.
+% } elsif($error eq 'C03') {
+The service does not exist (anymore).
+% } elsif($error eq 'C04') {
+The service definition has expired, hence is not usable anymore.
+% } elsif($error eq 'C05') {
+You have no contract for this service yet.
+% } elsif($error eq 'C06') {
+<p>You have multiple contracts with the service.  Which one would you like to use?</p>
+<ul>
+%   foreach my $contract (@$contracts) {
+<li><%== $contract->owner->iconName %>;
+    <%= $contract->name %> <%== $c->badge($contract) %>;
+%      if($contract->isSigned) {
+    <a href="/dashboard/comply/<%== $contract->id %>">login</a>;
+%      } else {
+    <a href="<%== $contract->elemLink %>">revive contract</a>;
+%      }
+</li>
+%   }
+</ul>
+
+% } elsif($error eq 'C07') {
+<p>You have renewed your contract with the service since last visit.  Please
+inspect which facts and assets are now passed on to the service since.</p>
+
+% } elsif($error eq 'C08') {
+<p>The service description has seen changes since you logged-in to
+it last.  You need to revisit the contract, and accept the service
+changes.</p>
+
+<p><%== $contract->owner->iconName %>;
+<%= $contract->name %> <%== $c->badge($contract) %>;
+<a href="<%== $contract->elemLink %>" class="btn btn-primary">review contract</a>
+<a href="<%== $comply->elemLink %>" class="btn btn-danger">ignore changes</a>
 
 % } else {
 Unknown error code '[% $error %]'.
@@ -56,6 +103,16 @@ same time) on that page.</p>
 
 <p>When the problem persists, you may need to seek the help of the
 service provider.</p>
+% }
+
+% if($error =~ m/^C/) {
+<p>This is an <b>usability error or warning:</b> you may have been able
+to use this service login before, but the world has changed.  Probably,
+you have to take action to restore the access to the service yourself.</p>
+
+<a href="/dashboard/contract/new?service=<%== $service_id %>" class="btn btn-primary">
+  <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> create contract
+</a>
 % }
 
 </div>

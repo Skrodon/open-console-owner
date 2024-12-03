@@ -1,8 +1,6 @@
-%# requires parameter 'iflang', as the current setting
-
 % use OwnerConsole::Tables qw(language_name);
 % my $iflangs = $::app->config->{interface_languages};
 % foreach my $code (@$iflangs) {
-        <option value="<%= $code %>"<%= $code eq $iflang ? ' selected' : '' %> ><%= language_name($code) %></option>
+        <option value="<%== $code %>"><%= language_name($code) %></option>
 % }
 

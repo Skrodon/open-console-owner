@@ -73,6 +73,9 @@ sub startup
 
 	my $config = $self->config;
 
+	$self->users->upgrade;
+	$self->assets->upgrade;
+
 	### Configure the application
 	$self->renderer->cache->max_keys(0);  # the forms are never the same
 
@@ -82,7 +85,6 @@ sub startup
 
 	$self->{O_tasks} = OwnerConsole::Tasks->new(config => $config->{tasks});
     %admins = map +(lc($_) => 1), @{$config->{admins} || []};
-
 
 #$::app->users->db->collection('accounts')->remove({});  #XXX hack clean whole accounts table
 
@@ -166,6 +168,7 @@ sub startup
 	$dashboard->get('/viewport/:demo')->to('dashboard#demo');
 
 	$r->get('/comply/error')->to('comply#show_error');
+	$dashboard->get('/comply/:token')->to('comply#access');
 	$self;
 }
 

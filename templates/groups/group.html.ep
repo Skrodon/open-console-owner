@@ -3,7 +3,7 @@
 
 % my $is_new = $group->isNew;
 % if($c->user->isAdmin) {
-%#   <p class="admin">IdentID = <%= $group->id %></p>
+%#   <p class="admin">IdentID = <%== $group->id %></p>
 % }
 % my $account = $c->account;
 % my $is_group_admin = $is_new || $group->memberIsAdmin($account);
@@ -110,7 +110,7 @@
   <div>
 	<label for="email" class="form-label">Email</label>
     <input name="email" type="email" id="email" class="form-control" placeholder="Defaults to email-address of Account"
-	  value="<%= $group->email || '' %>" aria-describedby="email_explain" />
+	  value="<%== $group->email || '' %>" aria-describedby="email_explain" />
     <div id="email_explain" class="form-text">When you specify an email-address here, you will be asked to validate it.</div>
   </div>
 
@@ -270,9 +270,9 @@ which Identity that user will use for your group.</p>
 <script src="/assets/group.js"></script>
 
 <form id="config-group" class="config-form">
-  <input id="identifier"     type="hidden" value="<%= $group->id %>" />
-  <input id="object_version" type="hidden" value="<%= $group->schema %>"  />
-  <input id="is_group_admin" type="hidden" value="<%= $is_group_admin ? 1 : 0 %>" />
+  <input id="identifier"     type="hidden" value="<%== $group->id %>" />
+  <input id="object_version" type="hidden" value="<%== $group->schema %>"  />
+  <input id="is_group_admin" type="hidden" value="<%== $is_group_admin ? 1 : 0 %>" />
 
   <h1><%== $group->iconElem %></h1>
 

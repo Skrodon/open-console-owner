@@ -2,12 +2,12 @@
 %# Needs to be surrounded by <label for="lang"> and <div id="lang_explain">
 
 % use OwnerConsole::Tables qw(language_table);
-    <select name="language" id="lang" class="form-select" aria-describedby="lang_explain">
+    <select name="language" id="lang" class="form-select" aria-describedby="lang_explain" data-pick="<%== $language // '' %>">
 % unless($required) {
-    <option value=""<%= defined $language ? '': ' selected' %>>&mdash; unspecified &mdash;</option>
+    <option value="">&mdash; unspecified &mdash;</option>
 % }
 % foreach my $lang (@{language_table()}) {
 %   my ($code, $name) = @$lang;
-    <option value="<%= $code %>"<%= $language eq $code ? ' selected' : ''%>><%= $name %></option>
+    <option value="<%== $code %>"><%= $name %></option>
 % }
     </select>

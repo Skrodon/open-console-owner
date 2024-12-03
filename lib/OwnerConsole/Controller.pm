@@ -7,6 +7,7 @@ use Mojo::Base 'Mojolicious::Controller';
 use Log::Report 'open-console-owner';
 
 use List::Util    qw(first);
+use Mojo::Util    qw(xml_escape);
 
 use OpenConsole::Session::Ajax ();
 
@@ -41,77 +42,11 @@ OwnerConsole::Controller - base-class for Mojo C's
 =chapter METHODS
 
 =section Constructors
-
-=section Running the daemons
 =cut
 
-sub startup(@)
-{	my $self = shift;
-	$self->SUPER::startup(@_);
-
-	$self->users->upgrade;
-	$self->assets->upgrade;
-	$self;
-}
-
-=section Other
+#-------------
+=section Attributes
 =cut
-
-sub ajaxSession(%)
-{	my ($self, %args) = @_;
-	OpenConsole::Session::Ajax->create(\%args, controller => $self);
-}
-
-sub acceptFormData($$$)
-{	my ($self, $session, $object, $handler) = @_;
-
-	my $r = try {
-		$self->$handler($session, $object);
-	};
-
-	$session->notify(error => $_) for $@->exceptions;
-	$r;
-}
-
-sub acceptObject($$)
-{	my ($self, $session, $proof) = @_;
-	$self;
-}
-
-sub openObject($$$$)
-{	my ($self, $session, $objclass, $idlabel, $get) = @_;
-	my $objid = $session->about($idlabel) or panic $idlabel;
-
-	return $objclass->create($self->account)
-		if $objid eq 'new';
-
-	my $object = $get->($objid);
-	unless($object)
-	{	$session->internalError(__x"The object has disappeared.");
-		return undef;
-	}
-
-	$object;
-}
-
-sub openAsset($$)
-{	my ($self, $session, $objclass) = @_;
-	my $assetid = $session->about('assetid');
-
-	if($assetid eq 'new')
-	{	trace "Create new $objclass asset";
-		return $objclass->create({ owner => $self->account })
-	}
-
-	my $asset = $self->account->asset($objclass->set, $assetid);
-	unless($asset)
-	{	info "Asset $assetid of type $objclass has disappeared.";
-		$session->internalError(__x"Proof has disappeared.");
-		return undef;
-	}
-
-	$asset;
-}
 
 #-------------
 =section Generic code for Proofs
@@ -128,25 +63,28 @@ Not all assets support the same statusses: more important here, is a consequent 
 of colors.
 =cut
 
-my %asset_status = (    # translatable name, bg-color
+my %badges = (    # translatable name, bg-color
 	blocked  => [ __"Blocked",    'dark'    ],
 	disabled => [ __"Disabled",   'warning' ],
 	enabled  => [ __"Enabled",    'success' ],
 	expired  => [ __"Expired",    'dark'    ],
 	incomplete => [ __"Incomplete", 'warning' ],
+	optional => [ __"Optional",   'light'   ],
+	please   => [ __"Please",     'info'    ],
 	proven   => [ __"Proven",     'success' ],
 	public   => [ __"Public",     'success' ],
-	refresh  => [ __"Refreshing", 'info'    ],  # only when refreshing takes long
+	refresh  => [ __"Refreshing", 'info'    ],
+	required => [ __"Required",   'danger'  ],
 	signed   => [ __"Signed",     'success' ],
 	testing  => [ __"Testing",    'info'    ],
 	unproven => [ __"Unproven",   'warning' ],
-	verify   => [ __"Verifying",  'info'    ],  # only when verification takes long
+	verify   => [ __"Verifying",  'info'    ],
 );
 
 sub badge($)
 {	my ($self, $asset) = @_;
 	my $status = ref $asset ? $asset->status : $asset;
-	my $config = $asset_status{$status};
+	my $config = $badges{$status};
 	my $label  = $config ? $config->[0]->toString : "XX${status}XX";
 	my $color  = 'text-bg-' . ($config ? $config->[1] : 'danger');
 	qq{<span class="badge $color">$label</span>};
@@ -272,6 +210,73 @@ sub detectLanguage()
 
 	$self->session(iflang => $code);
 	$code;
+}
+
+sub ajaxSession(%)
+{	my ($self, %args) = @_;
+	OpenConsole::Session::Ajax->create(\%args, controller => $self);
+}
+
+sub acceptFormData($$$)
+{	my ($self, $session, $object, $handler) = @_;
+
+	my $r = try {
+		$self->$handler($session, $object);
+	};
+
+	$session->notify(error => $_) for $@->exceptions;
+	$r;
+}
+
+sub acceptObject($$)
+{	my ($self, $session, $proof) = @_;
+	$self;
+}
+
+sub openObject($$$$)
+{	my ($self, $session, $objclass, $idlabel, $get) = @_;
+	my $objid = $session->about($idlabel) or panic $idlabel;
+
+	return $objclass->create($self->account)
+		if $objid eq 'new';
+
+	my $object = $get->($objid);
+	unless($object)
+	{	$session->internalError(__x"The object has disappeared.");
+		return undef;
+	}
+
+	$object;
+}
+
+sub openAsset($$)
+{	my ($self, $session, $objclass) = @_;
+	my $assetid = $session->about('assetid');
+
+	if($assetid eq 'new')
+	{	trace "Create new $objclass asset";
+		return $objclass->create({ owner => $self->account })
+	}
+
+	my $asset = $self->account->asset($objclass->set, $assetid);
+	unless($asset)
+	{	info "Asset $assetid of type $objclass has disappeared.";
+		$session->internalError(__x"Proof has disappeared.");
+		return undef;
+	}
+
+	$asset;
+}
+
+=method plain2html $text
+Convert plain text to something which displays as html.  At the moment, this
+only preserves the paragraphs.
+=cut
+
+sub plain2html($)
+{	my ($self, $plain) = @_;
+	my @para = map xml_escape($_), split /\n{2,}/, $plain;
+	"<p>" . (join "</p>\n<p>", @para) . "</p>";
 }
 
 1;

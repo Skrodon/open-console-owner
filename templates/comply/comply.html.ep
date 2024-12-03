@@ -1,0 +1,221 @@
+% layout 'dashboard';
+% title 'Comply to a contract';
+% use List::Util qw/first/;
+
+% my $account  = $c->account;
+% my $is_new   = $comply->isNew;
+% my $service  = $comply->service;
+
+<pre><% warn "COMPLY=", Data::Dumper::Dumper($comply); %></pre>
+<style>.preferred { font-weight: bold } </style>
+
+% my $gives   = $comply->giveFacts;
+% my $factrow = begin
+%   my ($fact, %args) = @_;
+%   my $choice  = $choices->{$fact} or return;   # hide parameter
+%   my $proof   = ($gives->{proof} // 'no') eq 'yes';
+%   my $alts = $choice->{alts} || [];
+	&nbsp;<br />
+    <%= $choice->{label}->toString %>: <%== $c->badge($choice->{need}) %>
+%   my $sel     = first { $_->{selected} } @$alts;
+%   my $need    = $choice->{need};
+    <select id="<%== $fact %>" class="form-select select2"
+      data-pickd="<%= $sel ? $sel->{value} : '' %>"
+      data-need="<%== $need %>"
+%   if($need ne 'required') {
+      data-placeholder="&mdash; select when you want to pass a value &mdash;"><option></option>
+%   } else {
+    >
+%   }
+%   foreach my $alt (@$alts) {
+    <option<%== $alt->{preferred} ? ' class="preferred"' : ''%>><%= $alt->{value} %></option>
+%   }
+    </select>
+% end
+
+% my @pages;
+% my $personal_form = begin
+
+  <div>
+
+	<%== $service->iconName %>
+	  <a href="<%== $service->elemLink %>">
+        <i class="fa-solid fa-pen" aria-label="edit service"></i>
+      </a><br />
+
+	<%== $contract->iconName %>
+	  <a href="<%== $contract->elemLink %>">
+        <i class="fa-solid fa-pen" aria-label="edit contract"></i>
+      </a><br />
+
+% use Data::Dumper;
+% warn "CONTRACT=", Dumper $contract;
+    % my $owner = $contract->owner($account);
+	<%== $owner->iconName %>
+	  <a href="<%== $owner->elemLink %>">
+        <i class="fa-solid fa-pen" aria-label="edit owner"></i>
+      </a><br />
+
+  </div>
+
+  <div>
+&nbsp;
+    <h4>Shared personal facts</h4>
+%=  $factrow->('person.fullname');
+%=  $factrow->('person.nickname');
+%=  $factrow->('person.timezone');
+%=  $factrow->('person.email');
+%=  $factrow->('person.phone');
+%=  $factrow->('person.gender');
+%=  $factrow->('person.birthdate');
+
+  </div>
+
+% if(defined(my $explain = $service->explainUser)) {
+  <div id="explain-user">
+&nbsp;
+    <h4>The service provider explains:</h4>
+    <%== $c->plain2html($explain) %>
+  </div>
+% }
+
+% use Data::Dumper;
+<pre>GIVES <%= Dumper $gives %></pre>
+<pre>CHOICES <%= Dumper $choices; %></pre>
+
+% end
+
+% my $personal_explain = begin
+
+<p>Confirm which information is being passed on to the remote application, the
+service.</p>
+
+<p>By default, the data from your owning identity is selected, but you may
+want to present alternative settings.  The logical choice is shown in bold.</p>
+
+% end
+
+% push @pages, [
+%    'comply-personal',
+%    'Personal',
+%    $personal_form,
+%    $personal_explain,
+% ];
+
+% my $assets_form = begin
+
+% my $needs = $service->needsAssets;
+% my @sets  = qw/emailaddrs websites/;
+% my $any_assets = 0; $any_assets += $needs->{$_}{max} for @sets;
+
+% if($any_assets) {
+
+<p>The Services accepts the following assets.  You will pick them on
+the moment you use the service (for the first time).</p>
+
+%   foreach my $set (qw/emailaddrs websites/) {
+%     my $need = $needs->{$set} or next;
+%     my $max  = $need->{max}   or next;
+%     my $min  = $need->{min} // 0;
+
+<div id="<%== $set %>">
+  <label class="form-label"><%== OpenConsole::Assets->assetClass($set)->iconSet %></label>
+
+  <p>
+%     if($min==$max) {
+  Exactly <%== $min %> of these are required.
+%     } elsif($min==0) {
+  At most <%== $max %> of these can be passed on.
+%     } else {
+  From <%== $min %> up to <%== $max %> of these can be passed.
+%     }
+
+%     if($need->{state} eq 'proven') {
+  All which are passed must be proven.
+%     }
+
+  </p>
+
+  <div data-radio="<%== $set %>" data-pick="<%== $contract->presel($set)->{from} // 'owner' %>">
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="<%== $set %>" id="<%== $set %>-owner" value="owner" />
+      <label class="form-check-label" for="<%== $set %>-owner">From the selected personal identity only</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="<%== $set %>" id="<%== $set %>-personal" value="personal" />
+      <label class="form-check-label" for="<%== $set %>-personal">Combine all personal identities</label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="radio" name="<%== $set %>" id="<%== $set %>-group" value="group" />
+      <label class="form-check-label" for="<%== $set %>-group">All personal and group assets</label>
+    </div>
+  </div>
+</div>
+
+%   }
+
+% } else {
+
+  <div class="alert alert-info">The Service does not need any proofs or claims.</div>
+
+% }
+
+% end
+
+% my $assets_explain = begin
+
+<p><b>Assets</b> are the things you collect: proofs and other items
+which are owned.  For instance, email addresses and claimed websites.</p>
+
+<p>Some services require some assets, because otherwise they can not
+work properly.  Other services are only interested to know you better,
+but could very well do without these details.</p>
+
+% end
+
+% push @pages, [
+%    'comply-assets',
+%    'Assets',
+%    $assets_form,
+%    $assets_explain,
+% ];
+
+% my $status_form = begin
+
+<div class="alert alert-info">Work in progress: this section will appear later.</div>
+
+<p>This page will show when the contract was signed, and how it was changed
+over time.</p>
+
+<p><a href="/dashboard/comply/<%== $service->id %>">Comply to this contract.</a> <b>Link for development</b></p>
+
+% end
+
+% my $status_explain = begin
+
+&nbsp;
+
+% end
+
+% push @pages, [
+%    'comply-status',
+%    'Status',
+%    $status_form,
+%    $status_explain,
+% ];
+
+
+<script src="/assets/config_form.js"></script>
+<script src="/assets/comply.js"></script>
+
+<form id="config-comply" class="config-form">
+  <input type="hidden" id="identifier" value="<%== $comply->id %>" />
+  <input type="hidden" name="service" value="<%== $service->id %>" />
+
+  <h1><%== $comply->iconElem %></h1>
+
+% include 'dashboard/_tabbed';
+%= $::tabbed->('comply-tabs' => \@pages);
+
+</form>
+

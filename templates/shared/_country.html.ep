@@ -1,8 +1,8 @@
 % use OwnerConsole::Tables qw(country_table);
 
-    <select name="country" id="country" class="form-select" aria-describedby="country_explain">
+    <select name="country" id="country" class="form-select" aria-describedby="country_explain" data-pick="<%== $country %>">
 % my $c_table = country_table;
 % foreach my $code (sort { $c_table->{$a} cmp $c_table->{$b} } keys %$c_table) {
-    <option value="<%= $code %>"<%= $country eq $code ? ' selected' : '' %>><%= $c_table->{$code} %></option>
+    <option value="<%= $code %>"><%= $c_table->{$code} %></option>
 % }
     </select>

@@ -5,11 +5,11 @@
 <div>
    <label for="owner" class="form-label">Owner</label>
    <select name="owner" id="owner" class="form-select" aria-describedby="owner_explain">
-   <option value="<%= $account->id %>" <%= $mine ? 'selected' : '' %> > Owned by me</option>
+   <option value="<%== $account->id %>" <%== $mine ? 'selected' : '' %> > Owned by me</option>
 % foreach my $group (@groups) {
-   <option value="<%= $group->id %>"
-      <%= $group->id eq $asset->ownerId ? ' selected' : '' %>
-%#    <%= $mine || $group->memberIsAdmin($account) ? '' : 'disabled' %>
+   <option value="<%== $group->id %>"
+      <%== $group->id eq $asset->ownerId ? ' selected' : '' %>
+%#    <%== $mine || $group->memberIsAdmin($account) ? '' : 'disabled' %>
    ><%= $group->fullname %></option>
 % }
    </select>

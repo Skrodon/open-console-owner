@@ -9,7 +9,7 @@
   <div>
     <label for="website" class="form-label">Website address</label>
     <input name="website" type="text" id="website" class="form-control" placeholder="https://www.example.com/~user"
-      aria-describedby="url_explain" required value="<%= $proof->website %>" disabled />
+      aria-describedby="url_explain" required value="<%== $proof->website %>" disabled />
     <a href='#' id="check-url-info">website check details</a>
   </div>
 
@@ -47,7 +47,7 @@
 
   &nbsp;<br />
 
-%# <pre><%= Data::Dumper::Dumper($proof) %></pre>
+%# <pre><%== Data::Dumper::Dumper($proof) %></pre>
 
   <div id="proof-create">
 
@@ -112,10 +112,10 @@
 
 <pre id="proof-html-text" class="copy-code">
 &lt;meta name="open-console.website-owner"
-   content="<%= $proof->website %>"
+   content="<%== $proof->website %>"
    data-note="Website Ownership Proof"
-   data-version="website <%= $html_algo %>"
-   data-challenge="<%= $proof->challenge %>"
+   data-version="website <%== $html_algo %>"
+   data-challenge="<%== $proof->challenge %>"
    data-created="<%= $now %>"
  /&gt;
 </pre>
@@ -138,10 +138,10 @@
 <pre id="proof-file-text" class="copy-code xdownload-code-inline"
      data-ct="application/json" data-file="open-console.json">
 [ { "note": "Website Ownership Proof",
-    "version": "website <%= $file_algo %>",
-    "website": "<%= $proof->website %>",
+    "version": "website <%== $file_algo %>",
+    "website": "<%== $proof->website %>",
     "created": "<%= $now %>",
-    "challenge": "<%= $proof->challenge %>"
+    "challenge": "<%== $proof->challenge %>"
   }
 ]
 </pre>
@@ -150,7 +150,7 @@
 
         <p>The file must be readible for the outside world.  You may test this
         by directing your browser to
-        <a href="<%= $proof->website %><%= $well_known_path %>" target="_blank">the location</a>.</p>
+        <a href="<%== $proof->website %><%= $well_known_path %>" target="_blank">the location</a>.</p>
 
         <p>After you have created this file, start verification.</p>
       </div>
@@ -203,9 +203,9 @@
     <p>The proof has been delivered successfully.</p>
 
     <table class="table" name="proof-abstract">
-    <tr><td>Algorithm:</td><td><%= $proof->algorithm %> <%= $proof->algoVersion %></td></tr>
+    <tr><td>Algorithm:</td><td><%== $proof->algorithm %> <%== $proof->algoVersion %></td></tr>
     <tr><td>Verified:</td><td><%= $proof->verified %></td></tr>
-    <tr><td>Score:</td><td><%= $proof->score %></td></tr>
+    <tr><td>Score:</td><td><%== $proof->score %></td></tr>
     <tr><td>Expires:</td><td><%= $proof->expires // 'undetermined' %></td></tr>
     <tr><td>Details:</td><td><a href='#' id="show-proof-info">proof trace</a></td></tr>
     </table>
@@ -239,9 +239,9 @@
 <script src="/assets/proof_website.js"></script>
 
 <form id="config-website" class="config-form proof-form">
-  <input id="identifier" type="hidden" value="<%= $proof->id %>" />
-  <input type="hidden" name="selected-prover" id="selected-prover" value="<%= $prover %>" />
-  <input type="hidden" name="has-proof" id="has-proof" value="<%= $has_proof %>" />
+  <input id="identifier" type="hidden" value="<%== $proof->id %>" />
+  <input type="hidden" name="selected-prover" id="selected-prover" value="<%== $prover %>" />
+  <input type="hidden" name="has-proof" id="has-proof" value="<%== $has_proof %>" />
 
   <h1><%== $proof->iconElem %></h1>
 

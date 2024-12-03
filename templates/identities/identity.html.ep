@@ -3,7 +3,7 @@
 
 % my $is_new = $identity->isNew;
 % if($c->user->isAdmin) {
-%#   <p class="admin">IdentID = <%= $identity->id %></p>
+%#   <p class="admin">IdentID = <%== $identity->id %></p>
 % }
 % my $account = $c->account;
 
@@ -41,7 +41,7 @@
 % use OwnerConsole::Tables qw(language_name);
 % my $language = $identity->language;
 % foreach my $code ($account->languages) {
-    <option value="<%= $code %>"<%= $code eq $language ? ' selected' : '' %>><%= language_name($code) %></option>
+    <option value="<%== $code %>"<%== $code eq $language ? ' selected' : '' %>><%= language_name($code) %></option>
 % }
     </select>
 	<div id="language_explain" class="form-text">Which language (as pre-selected in your Account) do you prefer for this identity.</div>
@@ -84,7 +84,7 @@
   <div>
 	<label for="email" class="form-label">Email</label>
     <input name="email" type="email" id="email" class="form-control" placeholder="Defaults to email-address of Account"
-	  value="<%= $identity->email || '' %>" aria-describedby="email_explain" />
+	  value="<%== $identity->email || '' %>" aria-describedby="email_explain" />
     <div id="email_explain" class="form-text">When you specify a different email-address here, you will be asked to validate it.</div>
   </div>
 
@@ -180,7 +180,7 @@
     the following Groups, when you confirm deletion:
     <ul>
 %   foreach my $group (@groups) {
-    <li><a href="<%= $group->link %>"><%= $group->name %></a></li>
+    <li><a href="<%== $group->link %>"><%= $group->name %></a></li>
 %   }
     </ul>
   </div>
@@ -233,8 +233,8 @@
 <script src="/assets/config_form.js"></script>
 
 <form id="config-identity" class="config-form">
-  <input id="identifier"     type="hidden" value="<%= $identity->id %>" />
-  <input id="object_version" type="hidden" value="<%= $identity->schema %>" />
+  <input id="identifier"     type="hidden" value="<%== $identity->id %>" />
+  <input id="object_version" type="hidden" value="<%== $identity->schema %>" />
 
   <h1><%== $identity->iconElem %></h1>
 
