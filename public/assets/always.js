@@ -92,10 +92,8 @@ function provide_download_code() {
 				download: code.data('file'),
 				href: 'data:' + code.data('ct') + ';base64,' + window.btoa(code.text()), // only ascii
                 text: 'load' });
-console.log(node);
 			code.append(node);
 			node.click();
-console.log("clicked");
 			$('#here').click();
 		});
 	});
@@ -104,6 +102,7 @@ console.log("clicked");
 $(document).ready(function() {
 	password_visibility_toggle();
 	enable_select2_selectors();
+	set_selections();
 	enable_bootstrap_alerts();
 	enable_bootstrap_tooltips();
 	provide_copy_code();

@@ -48,8 +48,8 @@
         <i class="fa-solid fa-pen" aria-label="edit contract"></i>
       </a><br />
 
-% use Data::Dumper;
-% warn "CONTRACT=", Dumper $contract;
+%# use Data::Dumper;
+%# warn "CONTRACT=", Dumper $contract;
     % my $owner = $contract->owner($account);
 	<%== $owner->iconName %>
 	  <a href="<%== $owner->elemLink %>">
@@ -71,17 +71,9 @@
 
   </div>
 
-% if(defined(my $explain = $service->explainUser)) {
-  <div id="explain-user">
-&nbsp;
-    <h4>The service provider explains:</h4>
-    <%== $c->plain2html($explain) %>
-  </div>
-% }
-
-% use Data::Dumper;
-<pre>GIVES <%= Dumper $gives %></pre>
-<pre>CHOICES <%= Dumper $choices; %></pre>
+%# use Data::Dumper;
+%# <pre>GIVES <%= Dumper $gives %></pre>
+%# <pre>CHOICES <%= Dumper $choices; %></pre>
 
 % end
 
@@ -92,6 +84,15 @@ service.</p>
 
 <p>By default, the data from your owning identity is selected, but you may
 want to present alternative settings.  The logical choice is shown in bold.</p>
+
+% if(defined(my $explain = $service->explainUser)) {
+  <div id="explain-user">
+&nbsp;
+    <h4>The service provider explains:</h4>
+    <%== $c->plain2html($explain) %>
+  </div>
+% }
+
 
 % end
 
