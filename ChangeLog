@@ -12,8 +12,9 @@ version 0.04:
 	- move appSessions table to connect repo.
 	- move database logic for connect to its repo, with minimal integration.
 	- cleanup of login pages.
-	- Comply
-	- script rename to owner-console
+	- Comply.
+	- script rename to owner-console.
+	- ajax message level 'info'.
 
 version 0.03: Sat 28 Sep 13:06:29 CEST 2024
 

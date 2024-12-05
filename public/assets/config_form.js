@@ -37,6 +37,7 @@ function process_errors_and_warnings(form, answer) {
 	$('DIV.val-msg', form).remove(); 
 	answer.errors.forEach( function(error) { add_val_message(form, error.at(0), 'error', error.at(1)) });
 	answer.warnings.forEach(function(warn) { add_val_message(form, warn.at(0),  'warn',   warn.at(1)) });
+	answer.info.forEach(function(info) { add_val_message(form, info.at(0),  'info',   info.at(1)) });
 	answer.notifications.forEach(function(text) { alert(text) });
 }
 

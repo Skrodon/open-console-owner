@@ -16,6 +16,16 @@ DIV.val-warn {
 	&::before {
 		@extend %fa-icon;
 		@extend .fas;
-		content: fa-content($fa-var-warning) $hard-space;
+		content: fa-content($fa-var-circle-xmark) $hard-space;
+	}
+}
+
+DIV.val-info {
+	color: var(--bs-info);
+
+	&::before {
+		@extend %fa-icon;
+		@extend .fas;
+		content: fa-content($fa-var-bullhorn) $hard-space;
 	}
 }
