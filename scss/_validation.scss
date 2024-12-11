@@ -6,7 +6,7 @@ DIV.val-error {
 	&::before {
 		@extend %fa-icon;
 		@extend .fas;
-		content: fa-content($fa-var-warning) $hard-space;
+		content: fa-content($fa-var-circle-xmark) $hard-space;
 	}
 }
 
@@ -16,7 +16,7 @@ DIV.val-warn {
 	&::before {
 		@extend %fa-icon;
 		@extend .fas;
-		content: fa-content($fa-var-circle-xmark) $hard-space;
+		content: fa-content($fa-var-warning) $hard-space;
 	}
 }
 
@@ -27,5 +27,15 @@ DIV.val-info {
 		@extend %fa-icon;
 		@extend .fas;
 		content: fa-content($fa-var-bullhorn) $hard-space;
+	}
+}
+
+DIV.val-good {
+	color: var(--bs-success);
+
+	&::before {
+		@extend %fa-icon;
+		@extend .fas;
+		content: fa-content($fa-var-thumbs-up) $hard-space;
 	}
 }

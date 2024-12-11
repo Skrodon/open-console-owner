@@ -15,22 +15,25 @@
 %   my $choice  = $choices->{$fact} or return;   # hide parameter
 %   my $proof   = ($gives->{proof} // 'no') eq 'yes';
 %   my $alts = $choice->{alts} || [];
-	&nbsp;<br />
-    <%= $choice->{label}->toString %>: <%== $c->badge($choice->{need}) %>
+  <div>
+    <label class="form-label" for="<%== $fact %>"><%= $choice->{label}->toString %>:</label>&nbsp;&nbsp;<%== $c->badge($choice->{need}) %>
 %   my $sel     = first { $_->{selected} } @$alts;
 %   my $need    = $choice->{need};
-    <select id="<%== $fact %>" class="form-select select2"
+    <select name="<%== $fact %>" id="<%== $fact %>" class="form-select select2"
       data-pick="<%= $sel ? $sel->{value} : '' %>"
       data-need="<%== $need %>"
-%   if($need ne 'required') {
-      data-placeholder="&mdash; select when you want to pass a value &mdash;"><option></option>
-%   } else {
+%   if($need eq 'required') {
     >
+%   } elsif(@$alts==0) {
+      data-placeholder="&mdash; no values configured &mdash;"><option></option>
+%   } else {
+      data-placeholder="&mdash; select when you want to pass a value &mdash;"><option></option>
 %   }
 %   foreach my $alt (@$alts) {
     <option<%== $alt->{preferred} ? ' class="preferred"' : ''%>><%= $alt->{value} %></option>
 %   }
     </select>
+  </div>
 % end
 
 % my @pages;
@@ -58,9 +61,29 @@
 
   </div>
 
+  &nbsp;
   <div>
-&nbsp;
+
+% if($comply->status eq 'valid' || 1) {
+
+    <div class="alert alert-success" id="all-fine">
+      <img id="sign" src="/images/Stopsign.svg" style="width: 17%; margin-left: 16px; float:right" />
+      All seems to be fine: contract signed, data provided.  Within a few seconds, you will
+      be redirected to the service.
+    </div>
+
     <h4>Shared personal facts</h4>
+
+% } else {
+
+    <h4>Shared personal facts</h4>
+
+    <p>Please provide the values which are shared with the service provider.
+    Then press <span class="bg-success" style="color: white">&nbsp;<i class="fa-solid fa-floppy-disk"></i>&nbsp;Save&nbsp;</span>
+    </p>
+
+% }
+
 %=  $factrow->('person.fullname');
 %=  $factrow->('person.nickname');
 %=  $factrow->('person.timezone');
@@ -211,7 +234,8 @@ over time.</p>
 
 <form id="config-comply" class="config-form">
   <input type="hidden" id="identifier" value="<%== $comply->id %>" />
-  <input type="hidden" name="service" value="<%== $service->id %>" />
+  <input type="hidden" name="contract" value="<%== $contract->id %>" />
+  <input type="hidden" name="service"  value="<%== $service->id %>" />
 
   <h1><%== $comply->iconElem %></h1>
 

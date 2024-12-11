@@ -35,9 +35,10 @@ function add_val_message(form, input, level, message) {
 
 function process_errors_and_warnings(form, answer) {
 	$('DIV.val-msg', form).remove(); 
-	answer.errors.forEach( function(error) { add_val_message(form, error.at(0), 'error', error.at(1)) });
-	answer.warnings.forEach(function(warn) { add_val_message(form, warn.at(0),  'warn',   warn.at(1)) });
-	answer.info.forEach(function(info) { add_val_message(form, info.at(0),  'info',   info.at(1)) });
+	answer.errors.forEach(function(error) { add_val_message(form, error.at(0), 'error', error.at(1)) });
+	answer.warnings.forEach(function(warn) { add_val_message(form, warn.at(0), 'warn', warn.at(1)) });
+	answer.info.forEach(function(info) { add_val_message(form, info.at(0), 'info', info.at(1)) });
+	answer.good.forEach(function(good) { add_val_message(form, good.at(0), 'good', good.at(1)) });
 	answer.notifications.forEach(function(text) { alert(text) });
 }
 
@@ -80,7 +81,7 @@ function update_form_status(form) {
 		else { $(".show_errors", tab).css('display', 'none') }
 		sum_errors += errors;
 
-		var warns  = $('DIV.val-warn',  pane).length;
+		var warns  = $('DIV.val-warn', pane).length;
 		if(warns)
 		     { $(".show_warns",  tab).text(warns).css('display', 'inline-block') }
 		else { $(".show_warns",  tab).css('display', 'none') }
@@ -105,11 +106,13 @@ function update_form_status(form) {
 
 function monitor_form_changes(form) {
 	$('input, textarea, select', form).on('change', function () {
-		if($(this).attr('id') !== 'password') {
+		var elem = $(this);
+		if(elem.attr('id') !== 'password') {
 			// Browser changes password, gladly we trigger on confirm
-console.log("Changed by " + $(this).attr('id'));
+console.log("Changed by " + elem.attr('id'));
 			form.addClass('changed');
 	 		update_form_status(form);
+			$('DIV.val-msg',elem.parent()).remove();
 		}
 	});
 }
@@ -162,7 +165,7 @@ function save_validated_form(form) {
 		event.preventDefault();
 
 		var missing = 0;
-		$('[required]', form).each(function () {
+		$('[data-need="required"]', form).each(function () {
 			if($(this).val() === '') {
 				add_val_message(form, $(this).attr('id'), 'error', 'Field is required'); //XXX translation
 				missing++;

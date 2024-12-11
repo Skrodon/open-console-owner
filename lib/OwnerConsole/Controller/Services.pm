@@ -177,7 +177,6 @@ sub configService()
 		or $session->reply;
 
 	my $how      = $session->query;
-warn "HOW=$how";
 	if($how eq 'reown')
 	{	my $ownerid = $session->requiredParam('new_owner');
 		$service->changeOwner($session->account, $ownerid);

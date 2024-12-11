@@ -13,6 +13,7 @@
 .fa-classic,
 .fa-sharp,
 .fas,
+DIV.val-good::before,
 DIV.val-info::before,
 DIV.val-warn::before,
 DIV.val-error::before,
@@ -30,7 +31,7 @@ DIV.val-error::before,
   text-rendering: auto;
 }
 
-.fas, DIV.val-info::before, DIV.val-warn::before, DIV.val-error::before,
+.fas, DIV.val-good::before, DIV.val-info::before, DIV.val-warn::before, DIV.val-error::before,
 .fa-classic,
 .fa-solid,
 .far,
@@ -43,7 +44,7 @@ DIV.val-error::before,
   font-family: "Font Awesome 6 Brands";
 }
 
-DIV.val-info::before, DIV.val-warn::before, DIV.val-error::before {
+DIV.val-good::before, DIV.val-info::before, DIV.val-warn::before, DIV.val-error::before {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   display: inline-block;
@@ -8254,7 +8255,7 @@ readers do not read off random characters that represent icons */
   font-display: block;
   src: url("/fontawesome-free-6.5.1-web/webfonts/fa-solid-900.woff2") format("woff2"), url("/fontawesome-free-6.5.1-web/webfonts/fa-solid-900.ttf") format("truetype");
 }
-.fas, DIV.val-info::before, DIV.val-warn::before, DIV.val-error::before,
+.fas, DIV.val-good::before, DIV.val-info::before, DIV.val-warn::before, DIV.val-error::before,
 .fa-solid {
   font-weight: 900;
 }
@@ -20493,14 +20494,14 @@ DIV.val-error {
   color: var(--bs-danger);
 }
 DIV.val-error::before {
-  content: "\f071" " ";
+  content: "\f057" " ";
 }
 
 DIV.val-warn {
   color: var(--bs-warning);
 }
 DIV.val-warn::before {
-  content: "\f057" " ";
+  content: "\f071" " ";
 }
 
 DIV.val-info {
@@ -20508,6 +20509,13 @@ DIV.val-info {
 }
 DIV.val-info::before {
   content: "\f0a1" " ";
+}
+
+DIV.val-good {
+  color: var(--bs-success);
+}
+DIV.val-good::before {
+  content: "\f164" " ";
 }
 
 /*# sourceMappingURL=open-console.css.map */

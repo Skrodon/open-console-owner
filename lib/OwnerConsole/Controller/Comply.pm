@@ -7,7 +7,7 @@ use Mojo::Base 'OwnerConsole::Controller';
 use Log::Report 'open-console-owner';
 use List::Util              qw(first);
 
-use OpenConsole::Util       qw(:tokens);
+use OpenConsole::Util       qw(:tokens val_line);
 use OpenConsole::Comply     ();
 
 sub _from_id($$)
@@ -78,7 +78,7 @@ sub access()
 	my $account   = $self->account;
 	my $set       = token_set $token || '';
 
-	my ($invalid_token, $service, @contracts);
+	my ($invalid_token, $comply, $service, @contracts);
 	if($set eq 'contract')
 	{	if(my $contract = $::app->assets->contract($token))
 		{	$service = $contract->service;
@@ -89,6 +89,11 @@ sub access()
 	{	$service   = $::app->assets->service($token);
 		@contracts = $::app->assets->contractsForService($account, $service)
 			if $service;
+	}
+	elsif($set eq 'comply')
+	{	$comply    = $::app->connect->comply($token);
+		$service   = $comply->service;
+		@contracts = $comply->contract;
 	}
 	else
 	{	$invalid_token = 1;
@@ -112,8 +117,9 @@ sub access()
 
 	my $contract = $contracts[0];
 
-	my $comply   = $::app->connect->complyForContract(contract => $contract, account => $account)
-	  || OpenConsole::Comply->create({contract => $contract, account => $account});
+	$comply
+	  ||= $::app->connect->complyForContract(contract => $contract, account => $account)
+	  ||  OpenConsole::Comply->create({contract => $contract, account => $account});
 
 	my $updated  = $comply->updated;
 	$error
@@ -246,5 +252,108 @@ sub _verifyList($$$%)
 	$list;
 }
 
+sub _acceptComply($$)
+{	my ($self, $session, $comply) = @_;
+	my $account  = $self->account;
+	my $contract = $comply->contract;
+	my $service  = $comply->service;
+
+	$contract->updated >= $service->updated
+		or return $session->redirect('/dashboard/comply/error?error=C08&service='.$service->id);
+
+	# At the moment, the owner is always an personal identity
+
+	my $needs    = $service->needsFacts;
+	my $gives    = $comply->giveFacts;       # previously given
+use Data::Dumper;
+warn "VERIFY NEEDS=", Dumper $needs;
+warn "VERIFY OLDGIVE=", Dumper $gives;
+$session->params;
+
+	foreach my $fact (keys %facts)           # all fact definitions
+	{	my $conf = $facts{$fact};            # fact processing config
+		my $need = $needs->{$fact} // 'no';  # skip new fact options wrt service
+
+		my $give  = $gives->{$fact};
+		my @alts  = $conf->{collect}->($self, $account);
+		my %v     = map +($_->{value} => $_), @alts;
+
+		my $got   = val_line $session->optionalParam($fact);
+warn "FACT($fact) GOT($got) ", join ';', sort keys %v;
+# warn Dumper \@alts;
+
+		my $v;
+		if(! defined $got)
+		{	$need ne 'required'
+				or $session->addError($fact => __x"A value for this field is required.");
+			delete $gives->{$fact};
+		}
+		elsif(! keys %v)
+		{	$session->addWarning($fact, __"Chosen value disappeared.");
+		}
+		elsif(! defined($v = $v{$got}))
+		{	$session->addError($fact, __"Chosen value is not an option (anymore).");
+		}
+		elsif($v->{disabled})
+		{	$session->addError($fact, __"Chosen value is not selectable (anymore).");
+		}
+		elsif(defined $give && $give ne $got)
+		{	$session->addWarning($fact, __x"The value has changed, was '{old}'", old => $give);
+		}
+		else
+		{	unless(defined $give)
+			{	if(keys %v==1) { $session->addGood($fact, __"Set to the only available value.") }
+				else { $session->addInfo($fact, __"Picked a value, but there are alternatives.") }
+			}
+			$give->{$fact} = $got;
+		}
+	}
+
+	my (undef, $endpoint) = $service->useEndpoint($account);
+	if($endpoint)
+	{	# avoid login to require service and contract objects again.
+		$comply->setData(endpoint => $endpoint);
+warn "ENDPOINT = ", $endpoint;
+	}
+	else
+	{	$session->notify(error => "The service's endpoint proof has expired or disappeared.");
+	}
+
+warn "SUMMARY=", Dumper $gives, $session->trace;
+	$gives;
+}
+
+sub configComply($)
+{	my $self     = shift;
+	my $session  = $self->ajaxSession;
+	my $complyid = $session->about('complyid');
+warn "Config COMPLYID=$complyid";
+my $params = $session->params;
+	my $how      = $session->query || 'validate';
+warn "   HOW=$how";
+
+	my $servid   = $session->requiredParam('service');
+	my $contrid  = $session->requiredParam('contract');
+
+	my $comply  = $complyid eq 'new'
+	  ? OpenConsole::Comply->create({service => $servid, contract => $contrid})
+	  : $::app->connect->comply($complyid) || error __x"Comply has disappeared.";
+
+	if($how eq 'login')
+	{
+warn "   REDIR=", $comply->endpoint;
+	return $session->redirect($comply->endpoint);
+	}
+
+	$self->acceptFormData($session, $comply, '_acceptComply');
+	$comply->setData(status => ($session->hasErrors ? 'incomplete' : 'valid'));
+
+	if($how eq 'save')
+	{	$comply->save if $comply->isNew || $comply->hasChanged;
+		return $session->redirect('/dashboard/comply/'.$comply->id);
+	}
+
+	$session->checkParamsUsed->reply;
+}
 
 1;

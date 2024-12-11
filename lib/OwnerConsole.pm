@@ -169,6 +169,8 @@ sub startup
 
 	$r->get('/comply/error')->to('comply#show_error');
 	$dashboard->get('/comply/:token')->to('comply#access');
+	$dashboard->post('/config-comply/:complyid')->to('comply#configComply');
+
 	$self;
 }
 
