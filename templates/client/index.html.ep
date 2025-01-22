@@ -1,0 +1,80 @@
+% layout 'outsider';
+% title "Explain the service login button";
+
+<h1>Login via Open Console</h1>
+
+<div class="container">
+  <div class="card" id="login-card">
+    <h5 class="card-header">Context</h5>
+    <div class="card-body">
+
+<p>When you are the owner of a service, offered via the public web,
+and you wish to implement a "Login via Open Console" button, then this
+page will show you how.</p>
+
+<p>First some context:</p>
+<ul>
+<li>This page explains the "Open Console Client" which needs to become part of your application.  It is
+    all JSON communication, so very simple to process.</li>
+<li>The technical specification can be found at the
+    <a href="https://github.com/Skrodon/open-console-connect/wiki/">Open Console Connect wiki</a>.
+    Below, you only find an example of the global flow.</li>
+</ul>
+
+    </div>
+  </div>
+</div>
+
+&nbsp;
+
+<div class="container">
+  <div class="card" id="login-card">
+    <h5 class="card-header">Preparation</h5>
+    <div class="card-body">
+
+<p>You will need to take the following stepts to define your service inside Open Console:</p>
+<ol>
+<li>Create a personal account in Open Console;</li>
+<li>Create an identity in that account, which relates to your service;</li>
+<li>Create or join a group with that identity;</li>
+<li>Proof ownership to the website which runs your service;</li>
+<li>Create a service description in that group.</li>
+</ol>
+
+<p>This results in a service identifier (a token "*:S:*"), and a secret you have chosen
+(more like a password).</p>
+
+    </div>
+  </div>
+</div>
+
+&nbsp;
+
+<div class="container">
+  <div class="card" id="login-card">
+    <h5 class="card-header">Connect your instance</h5>
+    <div class="card-body">
+
+<p>When your application starts, it needs to register itself at
+Open Console.  Every instance (every host) should login separately.
+Returned is
+<a href="https://github.com/Skrodon/open-console-connect/wiki/Application-Session#logging-in-for-the-application">a
+complex session structure</a>, which you need to save in your database.
+
+<p>At the moment, there is only one reference implementation: for the
+Mojolicious framework for Perl.  You will probably understand it, even
+when you do not know any Perl.  Please, consider to release code which
+does the same for your framework on your programming language.
+<a href="https://metacpan.org/release/Mojolicious-Plugin-OpenConsole" target="blank">Mojolicious::Plugin::OpenConsole</a>.
+Please consider to publish your implementation, in the language of your choice.</p>
+
+% my $s = $c->OpenConsole->buttonSetup;
+<style>.oc-logo { height: 30px; width: 30px; background: white; padding: 3px; margin: 5px }</style>
+<button class="btn btn-primary oc_login_button"
+  onClick="window.location='/client/login?app=<%= $s->{client_id} %>'">
+   <span><%== $s->{logo_svg} %></span>
+   Login via OpenConsole
+</button>
+    </div>
+  </div>
+</div>

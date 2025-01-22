@@ -16,6 +16,7 @@ version 0.04:
 	- script rename to owner-console.
 	- ajax message level 'info'.
 	- reduced size by simplification of open-console.svg
+	- implement client example
 
 version 0.03: Sat 28 Sep 13:06:29 CEST 2024
 

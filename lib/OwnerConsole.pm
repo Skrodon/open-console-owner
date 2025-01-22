@@ -91,7 +91,7 @@ sub startup
 	#XXX does each controller create a new Account object?
 
 	# 'user' is the logged-in user, the admin can select to show a different 'account'
-	$self->helper(user      => sub {
+	$self->helper(user    => sub {
 		my $c = shift;
 		my $user;
 		unless($user = $c->stash('user'))
@@ -101,7 +101,7 @@ sub startup
 		$user;
 	});
 
-	$self->helper(account   => sub {
+	$self->helper(account => sub {
 		my $c = shift;
 		my $account;
 		unless($account = $c->stash('account'))
@@ -112,6 +112,15 @@ sub startup
 		$account;
 	});
 
+	my $oc_config = $config->{OpenConsole} || {};
+	if(keys %$oc_config)
+	{	$self->plugin('OpenConsole',
+			model    => $self->batch,       # implements db interface
+			%$oc_config,
+		);
+warn "STARTUP APPLOGIN";
+		$self->OpenConsole->appLogin;
+	}
 
 	### Routes
 
@@ -170,6 +179,11 @@ sub startup
 	$r->get('/comply/error')->to('comply#show_error');
 	$dashboard->get('/comply/:token')->to('comply#access');
 	$dashboard->post('/config-comply/:complyid')->to('comply#configComply');
+
+	if(keys %$oc_config)
+	{	$r->get('/client')->to('client#index');
+		$r->get('/client/login')->to('client#login');
+	}
 
 	$self;
 }
