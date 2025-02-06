@@ -1,57 +1,60 @@
 %# Demonstration implementation
 
 % my $account = $c->account;
-% $c->notify(error => "This is a mock-up: an example of what this page may become in the future.");
+% $c->notify(error => "This is a mock-up: an example of what this page may become in the future.  For now, there are only services which implement a 'login via Open Console' button.");
 
 <form id="service-selector">
   <nav class="navbar navbar-expand-lg">
-    <div class="container-fluid">
+    <div class="container-fluid" style="width: 100%">
 
     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
     <li class="nav-item">
       <label for="identity">for identity</label>
-      <select name="identity" id="identity" class="form-select">
-        <option value="" selected>&mdash; any role &mdash;</option>
+      <select name="identity" id="identity" class="form-select select2"
+        data-placeholder="&mdash; any role &mdash;">
 % foreach my $identity ($account->identities) {
 %   my $idid  = $identity->id;
-        <option value="<%== $idid %>" disabled><%= $identity->role %></option>
+        <option value="<%== $idid %>"><%= $identity->role %></option>
 % }
       </select>
     </li>
     <li class="nav-item">
       <label for="owner">contract owner</label>
-      <select name="owner" id="owner" class="form-select">
-        <option value="" selected>&mdash; any owner &mdash;</option>
-        <option value="myself" disabled>&mdash; mine</option>
+      <select name="owner" id="owner" class="form-select select2"
+        data-placeholder="&mdash; any owner &mdash;">
+        <option value="myself">&mdash; mine</option>
 % foreach my $group ($account->groups) {
-        <option value="<%== $group->id %>" disabled>Group <%= $group->name %></option>
+        <option value="<%== $group->id %>">Group <%= $group->name %></option>
 % }
       </select>
     </li>
     <li class="nav-item">
       <label for="set">information about</label>
-      <select name="set" id="set" class="form-select">
-      <option>&mdash; any category &mdash;</option>
-      <option disabled>email address</option>
-      <option disabled>website</option>
+      <select name="set" id="set" class="form-select select2"
+         data-placeholder="&mdash; any category &mdash;">
+      <option>email address</option>
+      <option>website</option>
       </select>
-      <select name="element" id="element" class="form-select">
-      <option value="">&mdash; any property &mdash;</option>
-      <option disabled>mark@overmeer.net</option>
-      <option disabled>http://open-console.eu</option>
+
+      <select name="element" id="element" class="form-select select2"
+        data-placeholder="&mdash; any property &mdash;">
+      <option>mark@overmeer.net</option>
+      <option>http://open-console.eu</option>
       </select>
     </li>
     <li class="nav-item">
       <label for="provider">service</label>
-      <select name="provider" id="provider" class="form-select">
-      <option value="">&mdash; any provider &mdash;</option>
+      <select name="provider" id="provider" class="form-select select2"
+         data-placeholder="&mdash; any provider &mdash;"
       <option selected>OpenWebSearch.EU</option>
       <option disabled>CommonCrawl</option>
       <option disabled>Cooperating Email Blacklist Organizations</option>
       <option disabled>Amnesty International</option>
       <option disabled>Cooperating Cyber Security Centers</option>
       </select>
-      <select name="service" id="service" class="form-select">
+
+      <select name="service" id="service" class="form-select select2"
+        data-pick="intro" data-need="required">
       <option value="intro">Introduction to Services</option>
       <option value="crawl_status">Crawl status</option>
       <option value="take_down">Take-down requests</option>

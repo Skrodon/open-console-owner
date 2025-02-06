@@ -20,7 +20,7 @@
 Identification:
 <ul class="nav flex-column">
 <li class="nav-item"><a class="nav-link" href="/dashboard/account"><%== OpenConsole::Account->iconElem %></a></li>
-<li class="nav-item"><a class="nav-link" href="/dashboard/identities"><%== OpenConsole::Identity->iconElem %>
+<li class="nav-item"><a class="nav-link" href="/dashboard/identities"><%== OpenConsole::Identity->iconSet %>
 % my $nrIds = $account->nrIdentities;
 % if($nrIds) {
   <span class="badge badge-pill"><%== $nrIds %></span>

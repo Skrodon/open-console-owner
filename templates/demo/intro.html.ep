@@ -4,7 +4,7 @@
 &nbsp;<br />
 
 <table class="table" width="100%">
-<tr><td style="width: 50%">
+<tr><td style="width: 50%; vertical-align: middle">
   <h1>Introduction to Services</h1>
 
   <p>This will lead you to a few example pages, which may get
@@ -12,9 +12,9 @@
   some mock-ups.</p>
 
   %= include 'shared/_devel_warning';
-   </td><td style="width: 50%; text-align: center">
+   </td><td style="width: 50%; text-align: center; vertical-align: middle">
      <div id="logo">
-        <img src="/images/open-console.svg" style="width: 80%; max-width: 400px" />
+        <img src="/images/open-console.svg" style="width: 80%; max-width: 350px" />
      </div>
    </td>
 </tr>
