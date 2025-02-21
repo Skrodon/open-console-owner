@@ -1,0 +1,42 @@
+@import 'variables';
+
+DIV.alert {
+	BUTTON.close {
+		float: right;
+		line-height: 1;
+		color: #000;
+		text-shadow: 0 1px 0 #fff;
+	}
+}
+
+DIV.alert-danger {
+	&::before {
+		@extend %fa-icon;
+		@extend .fas;
+		content: fa-content($fa-var-circle-xmark) $hard-space;
+	}
+}
+
+DIV.alert-warning {
+	&::before {
+		@extend %fa-icon;
+		@extend .fas;
+		content: fa-content($fa-var-warning) $hard-space;
+	}
+}
+
+DIV.alert-info {
+	&::before {
+		@extend %fa-icon;
+		@extend .fas;
+		content: fa-content($fa-var-bullhorn) $hard-space;
+	}
+}
+
+DIV.alert-success {
+	&::before {
+		@extend %fa-icon;
+		@extend .fas;
+		content: fa-content($fa-var-thumbs-up) $hard-space;
+	}
+}

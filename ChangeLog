@@ -17,6 +17,7 @@ version 0.04:
 	- ajax message level 'info'.
 	- reduced size by simplification of open-console.svg
 	- implement client example
+	- show icon at alerts for color-blinds
 
 version 0.03: Sat 28 Sep 13:06:29 CEST 2024
 
