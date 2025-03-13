@@ -6,7 +6,7 @@ DIV.val-error {
 	&::before {
 		@extend %fa-icon;
 		@extend .fas;
-		content: fa-content($fa-var-circle-xmark) $hard-space;
+		content: fa-content($fa-var-hand) $hard-space;
 	}
 }
 
@@ -25,8 +25,8 @@ DIV.val-info {
 
 	&::before {
 		@extend %fa-icon;
-		@extend .fas;
-		content: fa-content($fa-var-bullhorn) $hard-space;
+		@extend .fa;
+		content: fa-content($fa-var-message) $hard-space;
 	}
 }
 
@@ -36,6 +36,6 @@ DIV.val-good {
 	&::before {
 		@extend %fa-icon;
 		@extend .fas;
-		content: fa-content($fa-var-thumbs-up) $hard-space;
+		content: fa-content($fa-var-check) $hard-space;
 	}
 }

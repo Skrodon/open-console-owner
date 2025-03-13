@@ -36,6 +36,11 @@ sub service(%)
 {   my ($self, %args) = @_;
 	my $id       = $self->param('assetid');
 	my $account  = $self->account;
+warn "**** SERVICE $id";
+warn "OWNER PARAM=", $self->param('owner');
+my $owner = $account->findOwner($self->param('owner'));
+warn "FIND=", $owner;
+warn "FOUND=", $owner ? $owner->id : $owner;
 	my $service  = $id eq 'new'
 	  ? OpenConsole::Asset::Service->create({owner => $account->findOwner($self->param('owner'))})
 	  : $account->asset(services => $id);
@@ -52,13 +57,18 @@ sub _acceptService()
 
 	my $account  = $self->account;
 	my $is_admin = $self->user->isAdmin;
-	my $owner    = $service->owner($account);
-	my %emails   = map +($_->id => $_), $account->assetSearch('emailaddrs', min_score => 1, owner => $owner);
-	my %webaddrs = map +($_->id => $_), $account->assetSearch('websites',   min_score => 1, owner => $owner);
+
+	# By default new assets are produce on the Account... but we need to assign it
+	# immediately to a group.
+	$service->setData(ownerid => $session->requiredParam('owner'));
+
+	my %emails   = map +($_->id => $_), $account->assetSearch('emailaddrs', min_score => 1);
+	my %webaddrs = map +($_->id => $_), $account->assetSearch('websites', min_score => 1);
 
 	my $status   = $session->optionalParam('status') || 'testing';
 	$status =~ m/^(?:testing|public|disabled|blocked)$/
 		or $session->addError(status => __x"Incorrect service status.");
+
 	$status eq 'blocked' || $service->status ne 'blocked' || $is_admin
 		or $session->addError(status => __x"Illegal attempt to unblock this service reported.");
 
@@ -67,6 +77,8 @@ sub _acceptService()
 		or $session->addError(usability => __x"Incorrect usability setting.");
 
 	my $endws = $session->requiredParam('endpoint-website');
+#use Data::Dumper;
+#warn "ENDPOINT WEBSITE $endws, ", Dumper \%webaddrs;
 	$endws eq 'missing' || $webaddrs{$endws}
 		or $session->addError(endpoint => __x"Incorrect endpoint website.");
 
@@ -81,13 +93,16 @@ sub _acceptService()
 	$endpath !~ m/#/
 		or $session->addError(endpoint => __x"No fragment permitted in the path.");
 
+
 	my $contact  = $session->requiredParam('contact');
 	$contact eq 'missing' || $emails{$contact}
 		or $session->addError(contact => __x"Incorrect contact email.");
 
-	my $info_site = $session->optionalParam('info-site');
-	! $info_site || $webaddrs{$info_site}
+	my $infows   = $session->optionalParam('info-site');
+	! $infows || $webaddrs{$infows}
 		or $session->addError('info-site' => __x"Incorrect info website.");
+
+	my $infopath = val_line $session->optionalParam('info-path') || '/',
 
 	my $support  = $session->optionalParam('support') || '';
 	! $support   || $emails{$support}
@@ -98,7 +113,7 @@ sub _acceptService()
 		or $session->addError(status => __x"Incorrect service payment.");
 
 	my (%assets, @illegal);
-	foreach my $set (qw/emailaddrs websites/)
+	foreach my $set (OpenConsole::Assets->proofSets)
 	{   my $min   = $session->optionalParam("${set}_min") // 0;
 		my $max   = $session->optionalParam("${set}_max") // 100;
 	 	my $state = $session->optionalParam("${set}_status") // 'proven';
@@ -143,8 +158,8 @@ sub _acceptService()
 		endpoint_path => $endpath,
 		contact       => $contact,
 		description   => val_text $session->optionalParam('descr'),
-		info_ws       => $info_site,
-		info_path     => val_line $session->optionalParam('info-path') || '/',
+		info_ws       => $infows,
+		info_path     => $infopath,
 		support       => $support,
 		payments      => $pay,
 		needs_assets  => \%assets,

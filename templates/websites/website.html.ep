@@ -33,8 +33,8 @@
           <table class="table" id="check-trace">
           <tr><th colspan="2">Verification trace:</th></tr>
 
-  % my $trace = $c->showTrace($proof->verifyURLTrace);
-  % foreach my $line (@$trace) {
+  % my $trace1 = $c->showTrace($proof->verifyURLTrace);
+  % foreach my $line (@$trace1) {
           <tr class="trace"><td><%= $line->[0] %></td><td><%= $line->[1] %></td></tr>
   % }
 
@@ -187,8 +187,8 @@
           <tr><th colspan="2">Proof checking trace:</th></tr>
 
   %# Content can be added dynamically or staticly
-  % my $trace = $c->showTrace($proof->proofTrace);
-  % foreach my $line (@$trace) {
+  % my $trace2 = $c->showTrace($proof->proofTrace);
+  % foreach my $line (@$trace2) {
           <tr class="trace"><td><%= $line->[0] %></td><td><%= $line->[1] %></td></tr>
   % }
           </table>

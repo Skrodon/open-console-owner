@@ -6,13 +6,7 @@ use Mojo::Base 'OpenConsole::Mango::Object';
 
 use Log::Report 'open-console-owner';
 
-use Mango::BSON::Time   ();
-
-use OpenConsole::Util  qw(new_token);
-
-use constant
-{	CHALLENGE_SCHEMA => '20240216',
-};
+use OpenConsole::Util  qw(new_token :time);
 
 =chapter NAME
 OwnerConsole::Challenge - handles (email address) challenges
@@ -26,10 +20,7 @@ OwnerConsole::Challenge - handles (email address) challenges
 sub create($$%)
 {	my ($class, $account, $insert, %args) = @_;
 	$insert->{purpose} or panic;
-
-	$insert->{schema}  ||= CHALLENGE_SCHEMA;
 	$insert->{token}   ||= new_token 'H';
-	$insert->{created} ||= Mango::BSON::Time->new;
 	$insert->{userid}  ||= $account->id;
 
 	my $self = $class->SUPER::create($insert, %args);
@@ -46,6 +37,13 @@ sub create($$%)
 =section Attributes
 =cut
 
+sub schema()  { '20240216' }
+sub element() { 'challenge' }
+sub set()     { 'challanges' }
+sub iconFA()  { 'fa-solid fa-chess-night' }
+sub elemName(){ __"Challenge" }
+sub setName() { __"Challenges" }
+
 sub token()   { $_[0]->_data->{token} }
 sub userId()  { $_[0]->_data->{userid} }
 sub purpose() { $_[0]->_data->{purpose} }
@@ -56,36 +54,17 @@ sub isFor($)
 	$self->userId eq $account->id;
 }
 
-sub expires()
-{	my $self = shift;
-	return $self->{OC_exp} if exists $self->{OC_exp};
-
-	my $exp = $self->_data->{expires};
-	$self->{OC_exp} = $exp ? (bson2datetime $exp, $self->timezone) : undef;
-}
-
-sub hasExpired()
-{	my $self = shift;
-	return $self->{OC_dead} if exists $self->{OC_dead};
-	my $exp  = $self->expires;
-	$self->{OC_dead} = defined $exp ? $exp < DateTime->now : 0;
-}
-
-sub link()       { '/challenge/' . $_[0]->token }
+sub link()    { '/challenge/' . $_[0]->token }
 
 #-------------
 =section Action
 =cut
 
-sub save(%)
-{   my ($self, %args) = @_;
-	$self->_data->{changed} = Mango::BSON::Time->new;
-    $::app->batch->saveChallenge($self);
-}
+sub _save(%) { $::app->batch->saveChallenge($_[0]) }
 
 sub close()
 {	my $self = shift;
-	$self->_data->{closed} = Mango::BSON::Time->new;
+	$self->_data->{closed} = timestamp;
 	$self->save;
 }
 

@@ -2,9 +2,10 @@
 # SPDX-License-Identifier: EUPL-1.2-or-later
 
 package OwnerConsole::Model::Batch;
-use Mojo::Base -base;
+use Mojo::Base 'OpenConsole::Model';
 
 use Mango::BSON ':bson';
+use OpenConsole::Util           qw(:time);
 
 use OwnerConsole::Email         ();
 use OwnerConsole::Group::Invite ();
@@ -28,19 +29,15 @@ collections:
 =chapter METHODS
 =cut
 
-has db         => undef;
-has emails     => sub { $_[0]->{OMB_emails}  ||= $_[0]->db->collection('emails')};
-has invites    => sub { $_[0]->{OMB_invites} ||= $_[0]->db->collection('invites')};
-has challenges => sub { $_[0]->{OMB_chall}   ||= $_[0]->db->collection('challenges')};
+has db          => undef;
+has emails      => sub { $_[0]->{OMB_emails}  ||= $_[0]->db->collection('emails')};
+has invites     => sub { $_[0]->{OMB_invites} ||= $_[0]->db->collection('invites')};
+has challenges  => sub { $_[0]->{OMB_chall}   ||= $_[0]->db->collection('challenges')};
 
 sub upgrade
 {	my $self = shift;
-
-	$self->_upgrade_emails
-		->_upgrade_invites
-		->_upgrade_challenges;
-
-	$self;
+	$self->SUPER::upgrade(@_);
+	$self->_upgrade_emails->_upgrade_invites->_upgrade_challenges;
 }
 
 #---------------------
@@ -99,7 +96,7 @@ warn "RESULT ", Dumper $result;
 sub queueEmail($)
 {	my ($self, $email) = @_;
 
-#XXX this should move to a Minion task
+	# This may move to a task, for performance... but might also be more efficient directly.
 	$email->buildMessage($::app->config->{email})->send(to => $email->sendTo);
 }
  
@@ -118,8 +115,8 @@ sub _upgrade_invites()
 {	my $self = shift;
 	$self->invites->ensure_index({ token => 1 }, { unique => bson_true });
 
-	my $autoclean = $::app->config('groups')->{cleanup_invitation} || 30;
-	$self->invites->ensure_index({ expires => 1 }, { expireAfterSeconds => int($autoclean * 86400) } );
+	my $autoclean = $::app->config('groups')->{cleanup_invitation} || 'P30D';
+	$self->invites->ensure_index({ expires => 1 }, { expireAfterSeconds => to_secs $autoclean } );
 	$self;
 }
 

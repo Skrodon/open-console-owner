@@ -1,0 +1,45 @@
+% layout 'outsider';
+% title "You have successfully logged-in";
+
+<h1>Login via Open Console</h1>
+
+<div class="container">
+  <div class="card" id="login-card">
+    <h5 class="card-header">Login successfull</h5>
+    <div class="card-body">
+
+<div class="alert alert-success">
+   You have successfully logged-in to the <b>demo service</b>.
+</div>
+
+<p>This page itself represents the application which you are
+going to run.  Don't be fooled by the "Open Console" standard
+decoration.</p>
+
+<p>The access_token is <%== $access_token %>.  It will never
+change for the same user.  Under normal circumstances, you must
+not leak this token to a webpage.</p>
+
+<p>LOGOUT BUTTON.</p>
+
+    </div>
+  </div>
+</div>
+
+&nbsp;
+
+<div class="container">
+  <div class="card" id="login-card">
+    <h5 class="card-header">Grant</h5>
+    <div class="card-body">
+
+<p>The following information has been passed on to
+the "remote" service provider:</p>
+
+<pre>
+  JSON
+</pre>
+
+    </div>
+  </div>
+</div>

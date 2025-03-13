@@ -49,8 +49,8 @@
           <p>Group membership invitation:
           <table class="table">
           <tr><td>sent to</td><td><tt><%== $email %></tt></td></tr>
-          <tr><td>created</td><td><%= $invite->invited->stringify %></td></tr>
-          <tr><td>expires</td><td><%= $invite->expires->stringify %></td></tr>
+          <tr><td>created</td><td><%= $invite->createdDt->stringify %></td></tr>
+          <tr><td>expires</td><td><%= $invite->expiresDt->stringify %></td></tr>
           <tr><td>status </td><td><%= $invite->stateName %></td></tr>
 % if($c->user->isAdmin) {
           <tr class="admin"><td>token</td><td><%== $invite->token %></td></tr>

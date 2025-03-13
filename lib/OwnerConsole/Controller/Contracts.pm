@@ -20,15 +20,14 @@ sub index()
 sub contract(%)
 {   my ($self, %args) = @_;
 	my $contract_id = $self->param('assetid');
+	my $service_id  = $self->param('service');
 	my $account     = $self->account;
 
-	my $contract  = $contract_id eq 'new'
-	  ? OpenConsole::Asset::Contract->create({owner => $account, service => $self->param('service')})
+	my $contract    = $contract_id eq 'new'
+	  ? OpenConsole::Asset::Contract->create({owner => $account, service => $service_id})
 	  : $account->asset(contracts => $contract_id);
 
 	my $service     = $::app->assets->service($contract->serviceId) or panic;
-use Data::Dumper;
-warn "PAGE EDIT Contract $contract_id, ", Dumper $contract;
 
 	$self->render(
 		template  => 'contracts/contract',
@@ -55,7 +54,7 @@ sub _acceptContract()
 	my $license = ($session->optionalParam('license') // 'off') eq 'on';
 
 	my %presel;
-	foreach my $set (qw/emailaddrs websites/)
+	foreach my $set (OpenConsole::Assets->proofSets)
 	{	$presel{$set} = +{ from => $session->optionalParam($set) // 'owner' };
 		# this will get more complex
 	}
@@ -70,9 +69,14 @@ sub _acceptContract()
 	);
 	$contract->changeOwner($account, $session->requiredParam('owner'));
 
-	my $signing = $session->optionalParam('sign');
-	if($annex && $terms && $license)
-	{	$contract->sign($self->user) if $signing eq 'yes';
+	my $signing = $session->optionalParam('sign') // 'no';
+	if(	$signing eq 'yes'
+		&& $annex
+		&& ($terms   || !$service->termsLink)
+		&& ($license || !$service->licenseLink)
+	)
+	{	$contract->sign($self->user);
+#		$session->redirect("/dashboard/comply/$serviceid");
 	}
 	else
 	{	$contract->invalidate;

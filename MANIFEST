@@ -10,6 +10,7 @@ lib/OwnerConsole.pm
 lib/OwnerConsole/Challenge.pm
 lib/OwnerConsole/Controller.pm
 lib/OwnerConsole/Controller/Account.pm
+lib/OwnerConsole/Controller/Client.pm
 lib/OwnerConsole/Controller/Contracts.pm
 lib/OwnerConsole/Controller/Comply.pm
 lib/OwnerConsole/Controller/Dashboard.pm
@@ -23,6 +24,7 @@ lib/OwnerConsole/Controller/Websites.pm
 lib/OwnerConsole/Email.pm
 lib/OwnerConsole/Group/Invite.pm
 lib/OwnerConsole/Model/Batch.pm
+lib/OwnerConsole/Model/Client.pm
 lib/OwnerConsole/Tables.pm
 lib/OwnerConsole/Tasks.pm
 owner_console.conf
@@ -2186,9 +2188,11 @@ public/style/favicon.png
 public/style/open-console.png
 public/style/top3.jpg
 script/owner-console
+scss/_account.scss
 scss/_admin.scss
+scss/_alert.scss
 scss/_colophon.scss
-scss/_config_account.scss
+scss/_comply.scss
 scss/_config_form.scss
 scss/_contract.scss
 scss/_dashboard.scss

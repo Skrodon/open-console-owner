@@ -10,42 +10,50 @@
 % my @pages;
 % my $parties_form = begin
 
-  <div>
-    <label for="service" class="form-label">The Service</label>
-    <div class="alert alert-success">
-      <h5><%= $service->name %></h5>
-      <%== $c->plain2html($service->description) %>
+  <div class="card">
+    <div class="card-body">
+	  <h5 class="card-title"><%== $service->iconName %></h5>
+      <p class="card-text">
+         <%== $c->plain2html($service->description) %>
+      </p>
     </div>
   </div>
 
   <div>
-    <label for="provider" class="form-label">Its Provider</label>
-    <p>Provided by: <%= $provider->name %><br/>
-    Website:
+    <label for="provider" class="form-label">Provisions</label>
+    <ul>
+    <li>Provided by: <%= $provider->name %></li>
 % if(my ($ws, $wslink) = $service->useInfoWebsite) {
-%=   include 'assets/_show', asset => $ws, link => $wslink;
-% }
-    <br />
-    Support: 
-
-% if(my $support = $service->support) {
-%=   include 'assets/_show', asset => $support, link => sub { 'mailto:'.$_[1]->email };
+    <li><a href="<%== $wslink %>" target="_blank">Service documentation
+    <i class="fa-solid fa-up-right-from-square"></i></a>
+    on a <%== $c->badge($ws) %> website.</li>
 % } else {
-    <i>no support email address shared.</i>
+    <li>No documentation webpage listed.</li>
 % }
-    <br />
+%
+% if(my $support = $service->support) {
+%    my $proof = $::app->assets->asset($support);
+%    my $email = $proof->email;
+    <li>Mail to <a href="mailto:<%== $email %>">
+        <i class="fa-regular fa-envelope"></i> <%== $email %></a>
+        <%== $c->badge($proof) %> for support.</li>
+% } else {
+    <li>No support email address shared.</li>
+% }
+
 % my $pay = $service->payments;
 % if($pay eq 'free') {
-    This is a fully free service.
+    <li>This is a fully free of charge service.</li>
 % } elsif($pay eq 'extras') {
-    You can pay to get extra features.
+    <li>Basic functionality is free to use.  You can pay to get extra features.</li>
 % } elsif($pay eq 'demo') {
-    You will get access to a demonstration version only.
+    <li>You will get access to a demonstration version only.</li>
 % } elsif($pay eq 'always') {
-    You will need to pay before you access this service.
+    <li>You will need to pay before you can access this service.</li>
 % } else {
-    <i>Unknown payment status <%== $pay %>.</i>
+    <li><i>Unknown payment status <%== $pay %>.</i></li>
 % }
+    </ul>
   </div>
 
 % my @identities = $account->identities;
@@ -106,7 +114,7 @@
       </label>
     </div>
 
-% if(my $terms = $service->terms // 'link') {
+% if(my $terms = $service->termsLink) {
     <div class="form-check" data-checkbox="terms" data-pick="<%== $contract->agreedTerms ? 'on' : 'off' %>">
       <input class="form-check-input" type="checkbox" name="terms" id="terms" value="on" />
       <label class="form-check-label" for="terms">
@@ -115,7 +123,7 @@
     </div>
 % }
 
-% if(my $license = $service->licenseLink // 'link') {
+% if(my $license = $service->licenseLink) {
 %   my $licname = $service->license;
     <div class="form-check" data-checkbox="license" data-pick="<%== $contract->acceptedLicense ? 'on' : 'off' %>">
       <input class="form-check-input" type="checkbox" name="license" id="license" value="on" />
@@ -221,15 +229,15 @@ page is informational only.</p>
 % my $assets_form = begin
 
 % my $needs = $service->needsAssets;
-% my @sets  = qw/emailaddrs websites/;
+% my @sets  = OpenConsole::Assets->proofSets;
 % my $any_assets = 0; $any_assets += $needs->{$_}{max} for @sets;
 
 % if($any_assets) {
 
-<p>The Services accepts the following assets.  You will pick them on
+<p>The Service accepts the following assets.  You will pick them on
 the moment you use the service (for the first time).</p>
 
-%   foreach my $set (qw/emailaddrs websites/) {
+%   foreach my $set (@sets) {
 %     my $need = $needs->{$set} or next;
 %     my $max  = $need->{max}   or next;
 %     my $min  = $need->{min} // 0;

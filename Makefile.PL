@@ -63,5 +63,5 @@ EXTENDS         =
 WEBSITE         = http://perl.overmeer.net/open-console
 
 css:
-	sass scss/main.scss public/assets/open-console.css
+	sass --silence-deprecation mixed-decls scss/main.scss public/assets/open-console.css
 __POSTAMBLE

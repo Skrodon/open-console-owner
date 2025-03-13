@@ -17,7 +17,7 @@ sub index()
 {	my $self = shift;
 
 	return $self->redirect_to('/dashboard')
-		if $self->session('is_auth') && $self->account;
+		if $self->sessionCookie('is_auth') && $self->account;
 
 	$self->render(template => 'login/index');
 }
@@ -34,24 +34,21 @@ sub tryLogin()
 	}
 
 	$self->login($account);
-	$self->redirect_to($self->session('after_login') // '/dashboard');
+	$self->redirect_to($self->sessionCookie('after_login') // '/dashboard');
 }
 
 sub login($)
 {	my ($self, $account) = @_;
-
-	# Create session cookie
-	$self->session(is_auth    => 1);
-	$self->session(userid     => $account->id);
-	$self->session(expiration => $self->config->{sessions}{expire} || 600);
+warn "LOGGING IN ".$account->id;
+	$self->sessionCookie(is_auth => 1, userid  => $account->id);
 }
 
 sub mustBeLoggedIn($)
 {	my $self = shift;
-	return 1 if $self->session('is_auth');
+	return 1 if $self->sessionCookie('is_auth');
 
 	my $target = $self->req->url;
-	$self->session(after_login => "$target")
+	$self->sessionCookie(after_login => "$target")
 		unless $target =~ m!/login*!;
 
 	$self->redirect_to('/login');
@@ -62,7 +59,7 @@ sub mustBeLoggedIn($)
 
 sub logout()
 {	my $self = shift;
-	$self->session(is_auth => 0, expires => 1);  # Kill the Session cookie
+	$self->sessionCookie(is_auth => 0, expires => 1);  # Kill cookie
 	$self->redirect_to('/');
 }
 
@@ -71,7 +68,7 @@ sub logout()
 sub startResetPassword()
 {	my $self   = shift;
 	my $random = int(rand 1000);
-	$self->session(human_check => $random);
+	$self->sessionCookie(human_check => $random);
     $self->render(template => 'login/reset', human_check => num2en($random));
 }
 
@@ -80,7 +77,7 @@ sub submitResetPassword()
 	my $email = val_line($self->param('email'));
 	my $check = val_line($self->param('human-check')) // '';
 
-	if($check ne $self->session('human_check'))
+	if($check ne $self->sessionCookie('human_check'))
 	{	$self->notify(error => __x"Incorrect value in challenge");
 		return $self->startResetPassword;
 	}
@@ -126,7 +123,7 @@ sub runReset($)
 	my $victim = $::app->users->accountByEmail($email);
 	unless($victim)
 	{	$self->notify(error => __x"Cannot find account `{email}` for reset", email => $email);
-	    $self->session(is_auth => 0, expires => 1);   # was accidentally still logged-in
+	    $self->sessionCookie(is_auth => 0, expires => 1);   # was accidentally still logged-in
 		return $self->index;
 	}
 
@@ -144,7 +141,7 @@ sub runReset($)
 sub register()
 {	my $self = shift;
 	my $random  = int(rand 1000);
-	$self->session(human_check => $random);
+	$self->sessionCookie(human_check => $random);
 	$self->render(template => 'login/register', human_check => num2en($random));
 }
 
@@ -156,7 +153,7 @@ sub tryRegister()
 
 	# I do not care what the value of the "confirm password" is.
 
-	if($check ne $self->session('human_check'))
+	if($check ne $self->sessionCookie('human_check'))
 	{	$self->notify(error => __x"Incorrect value in challenge");
 		return $self->register;
 	}

@@ -39,13 +39,13 @@
     <div>
       <div class="form-check">
         <input class="form-check-input" name="status" type="radio" value="testing" id="vis-testing" />
-        <label class="form-check-label" for="vis-testing"><%== $c->badge('testing') %> cannot be found by users.</label>
+        <label class="form-check-label" for="vis-testing"><%== $c->badge('testing') %> service not listed to others.</label>
       </div>
     </div>
     <div>
       <div class="form-check">
         <input class="form-check-input" name="status" type="radio" value="disabled" id="vis-disabled" />
-        <label class="form-check-label" for="vis-disabled"><%== $c->badge('disabled') %> currently not to be used.</label>
+        <label class="form-check-label" for="vis-disabled"><%== $c->badge('disabled') %> service currently not to be used.</label>
       </div>
     </div>
     <div>
@@ -83,9 +83,9 @@
   <div>
     <label for="endpoint" class="form-label">Endpoint</label>
     <select name="endpoint-website" id="endpoint-websites" class="form-select"
-      data-pick="<%== $service->endpointWebsite || $websites[0] %>"
+      data-pick="<%== $service->endpointWebsite || (@websites ? $websites[0]->id : undef) %>"
+      data-need="required"
       data-placeholder="&mdash; one of the websites you own &mdash;">
-    <option></option>
 % foreach my $website (@websites) {
     <option value="<%== $website->id %>"><%== $website->website %></option>
 % }
@@ -100,9 +100,9 @@
 
   <div>
     <label for="contact" class="form-label">Contact email</label>
-    <select name="contact" id="contact" class="form-select" data-pick="<%== $service->contact // $emails[0] %>"
-       data-placeholder="&mdash; one of your email addresses &mdash;">
-    <option></option>
+    <select name="contact" id="contact" class="form-select" data-pick="<%== $service->contact || (@emails ? $emails[0]->id : undef) %>"
+      data-need="required"
+      data-placeholder="&mdash; one of your email addresses &mdash;">
 % foreach my $email (@emails) {
     <option value="<%== $email->id %>"><%== $email->email %></option>
 % }
@@ -127,9 +127,9 @@
   </div>
 
   <div>
-    <label for="serviceid" class="form-label">Service Identitier</label>
+    <label for="serviceid" class="form-label">Service Identitier (token)</label>
 % if($is_new) {
-    <p>This identifier will be assigned on the moment this service is saved for the first
+    <p>This token will be assigned on the moment this service is saved for the first
     time.</p>
 % } else {
     <input name="serviceid" type="text" id="serviceid" class="form-control"
@@ -137,8 +137,8 @@
       aria-describedby="service_explain"
     />
 % }
-    <div id="service_explain" class="form-text">Your secret and this identitier are required
-       by your instance to "connect".</div>
+    <div id="service_explain" class="form-text">Your secret and this identitier are
+       required inside each of your service instances to "connect".</div>
   </div>
 
 
@@ -172,8 +172,9 @@ within that website.</p>
 you about events which affect your service.  For instance, down-time,
 technical issues, or protocol extensions.
 
-<p>Your <b>Secret</b> cannot be displayed, because it is stored encrypted internally.
-Like a password.  Fill-in this field to reset its value.</p>
+<p>After setting, <b>your secret</b> cannot be displayed, because it is
+stored encrypted internally.  Like a password.  Fill-in this field again to
+reset its value.</p>
 
 <p><b>Please,</b> add additional information to this service on the other pages for this
 form, to improve the communication with the (potential) users.</p>
@@ -219,7 +220,7 @@ form, to improve the communication with the (potential) users.</p>
     <label for="support" class="form-label">Support email</label>
     <select name="support" id="support" class="form-select" aria-describedby="support_explain"
       data-pick="<%== $service->support || '' %>"
-      data-placeholder="p&mdash; support offered">
+      data-placeholder="&mdash; no support offered">
     <option></option>
 % foreach my $email (@emails) {
     <option value="<%== $email->id %>"><%== $email->email %></option>
@@ -297,7 +298,7 @@ Console, to support the project.</p>
   <div>
     <label for="terms" class="form-label">Terms &amp; Conditions</label>
     <input type="text" name="terms" id="terms" aria-describedby="terms_explain"
-       class="form-control" placeholder="https://" value="<%== $service->terms || '' %>" />
+       class="form-control" placeholder="https://" value="<%== $service->termsLink || '' %>" />
     <div id="terms_explain" class="form-text">
        The user needs to confirm to agree with these terms.
     </div>
@@ -477,6 +478,7 @@ application may not care about proofs.</p>
 
 <form id="config-service" class="config-form service-form">
   <input id="identifier" type="hidden" value="<%== $service->id %>" />
+  <input name="owner" type="hidden" value="<%== $owner->id %>" />
 
   <h1><i class="fa-solid fa-envelope-circle-check" aria-hidden="true"></i> Define a service</h1>
 

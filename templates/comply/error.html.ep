@@ -1,17 +1,22 @@
 % layout 'outsider';
 % title 'Service login error';
-% my $error = $c->param('error') || 'missing';
 
-<div class="container" style="width: 70%">
+%# Sources:
+%#   A - from 'connect', OAuth2 protocol       ConnectConsole/Controller/User.pm
+%#   C - from 'comply', user activity          OwnerConsole/Controller/Comply.pm
+%#   E - from the OAuth client                 Mojolicious/Plugin/OpenConsole.pm
+%#   U - from 'connect', application activity  ConnectConsole/Controller/User.pm
 
-<h1>Service login error</h1>
+<div class="container">
+  <div class="card" id="login-card">
+    <h5 class="card-header">Service login error</h5>
+    <div class="card-body">
 
 <p>The connection to the service you try to use cannot be established, for
 the following reason:</p>
 
 % my $alert
-%   = $error =~ m/^(C06|C09)$/ ? 'warning'
-%   : $error =~ m/^(C07|C08)$/ ? 'success'
+%   = $error =~ m/^(C06)$/ ? 'warning'
 %   : 'danger';
 
 <div class="alert alert-<%== $alert %>">
@@ -41,7 +46,7 @@ The service provider did not connect itself recently.
 % } elsif($error eq 'U02') {
 The connection of the service provider has expired.
 
-%# Error codes from 'comply', use activity
+%# Error codes from 'comply', user activity
 % } elsif($error eq 'C01') {
 The service is not specified with a valid token.
 % } elsif($error eq 'C02') {
@@ -67,19 +72,29 @@ You have no contract for this service yet.
 %   }
 </ul>
 
-% } elsif($error eq 'C07') {
-<p>You have renewed your contract with the service since last visit.  Please
-inspect which facts and assets are now passed on to the service since.</p>
+% } elsif($error eq 'E00') {
+<p><%= $c->param('message') || 'missing' %></p>
 
-% } elsif($error eq 'C08') {
-<p>The service description has seen changes since you logged-in to
-it last.  You need to revisit the contract, and accept the service
-changes.</p>
+% } elsif($error eq 'E01') {
+<p>User login misses the application identifier.</p>
 
-<p><%== $contract->owner->iconName %>;
-<%= $contract->name %> <%== $c->badge($contract) %>;
-<a href="<%== $contract->elemLink %>" class="btn btn-primary">review contract</a>
-<a href="<%== $comply->elemLink %>" class="btn btn-danger">ignore changes</a>
+% } elsif($error eq 'E02') {
+<p>The server does not known about the application (anymore).</p>
+
+% } elsif($error eq 'E03') {
+<p>User login misses the state value.</p>
+
+% } elsif($error eq 'E04') {
+<p>Incorrect state value, replay attempt?</p>
+
+% } elsif($error eq 'E05') {
+<p>User login misses the user identifying token.</p>
+
+% } elsif($error eq 'E10') {
+<p>Login button does not pass the application session id.</p>
+
+% } elsif($error eq 'E11') {
+<p>Login button application session id not found.</p>
 
 % } else {
 Unknown error code '[% $error %]'.
@@ -94,6 +109,22 @@ not implement the login button correctly.</p>
 <p>Probably, this login button has never worked: incomplete development.</p>
 % }
 
+% if($error =~ m/^C/) {
+<p>This is an <b>usability error or warning:</b> you may have been able
+to use this service login before, but the world has changed.  Probably,
+you have to take action to restore the access to the service yourself.</p>
+
+%# XXX
+%# <a href="/dashboard/contract/new?service=<%== $service_id %>" class="btn btn-primary">
+%#   <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> create contract
+%# </a>
+% }
+
+% if($error =~ m/^E/) {
+<p>This error means that there is confusion between the application and
+Open Console, which can not be hidden for you.</p>
+% }
+
 % if($error =~ m/^U/) {
 <p>This is a <b>processing error,</b> which may be resolved when you
 reload the page which contains the button you pressed.  Go back to the
@@ -105,14 +136,6 @@ same time) on that page.</p>
 service provider.</p>
 % }
 
-% if($error =~ m/^C/) {
-<p>This is an <b>usability error or warning:</b> you may have been able
-to use this service login before, but the world has changed.  Probably,
-you have to take action to restore the access to the service yourself.</p>
-
-<a href="/dashboard/contract/new?service=<%== $service_id %>" class="btn btn-primary">
-  <i class="fa-solid fa-circle-plus" aria-hidden="true"></i> create contract
-</a>
-% }
-
+    </div>
+  </div>
 </div>

@@ -14,6 +14,7 @@ use List::Util  qw(first);
 
 use OpenConsole::Util           qw(reseed_tokens);
 use OwnerConsole::Model::Batch  ();
+use OwnerConsole::Model::Client ();
 use OwnerConsole::Tasks         ();
 use OwnerConsole::Controller    ();
 
@@ -48,6 +49,16 @@ for expensive protection.
 sub batch()
 {	my $self = shift;
 	state $u = $self->_mango('OwnerConsole::Model::Batch' => 'batchdb');
+}
+
+=method client
+The C<client> database (M<OwnerConsole::Model::Client>) contains all
+all facts on the client demo implementation.
+=cut
+
+sub client()
+{	my $self = shift;
+	state $u = $self->_mango('OwnerConsole::Model::Client' => 'clientdb');
 }
 
 #----------------
@@ -86,8 +97,6 @@ sub startup
 	$self->{O_tasks} = OwnerConsole::Tasks->new(config => $config->{tasks});
     %admins = map +(lc($_) => 1), @{$config->{admins} || []};
 
-#$::app->users->db->collection('accounts')->remove({});  #XXX hack clean whole accounts table
-
 	#XXX does each controller create a new Account object?
 
 	# 'user' is the logged-in user, the admin can select to show a different 'account'
@@ -95,7 +104,7 @@ sub startup
 		my $c = shift;
 		my $user;
 		unless($user = $c->stash('user'))
-		{	$user = $self->users->account($c->session('userid'));
+		{	$user = $self->users->account($c->sessionCookie('userid'));
 			$c->stash(user => $user);
 		}
 		$user;
@@ -105,22 +114,12 @@ sub startup
 		my $c = shift;
 		my $account;
 		unless($account = $c->stash('account'))
-		{	my $aid = $c->session('account');
+		{	my $aid = $c->sessionCookie('account');
 			$account = defined $aid ? $self->users->account($aid) : $c->user;
 			$c->stash(account => $account);
 		}
 		$account;
 	});
-
-	my $oc_config = $config->{OpenConsole} || {};
-	if(keys %$oc_config)
-	{	$self->plugin('OpenConsole',
-			model    => $self->batch,       # implements db interface
-			%$oc_config,
-		);
-warn "STARTUP APPLOGIN";
-		$self->OpenConsole->appLogin;
-	}
 
 	### Routes
 
@@ -180,9 +179,26 @@ warn "STARTUP APPLOGIN";
 	$dashboard->get('/comply/:token')->to('comply#access');
 	$dashboard->post('/config-comply/:complyid')->to('comply#configComply');
 
-	if(keys %$oc_config)
-	{	$r->get('/client')->to('client#index');
+	### OpenConsole Demo client
+	#   I would have liked to put this in Client.pm, for clean separation, but
+	#   Controller objects are transient objects which cannot be called in a
+	#   global initiation phase.
+
+	my $oc = $config->{OpenConsole};
+	if($oc && %$oc)
+	{	$self->app->plugin('OpenConsole', %$oc, model => $self->client);
+
+		# Front page of the website.  This could also be the service page.
+		$r->get('/client')->to('client#index');
+
+		# The callback from pressing the "login via OC" button.
 		$r->get('/client/login')->to('client#login');
+
+		# This is the empty client service.
+		$r->get('/client/service')->to('client#service');
+
+		# Need to do this, to get an application session token.
+		$self->OpenConsole->appLogin;
 	}
 
 	$self;

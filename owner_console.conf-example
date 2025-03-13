@@ -5,16 +5,12 @@
 	# as prefix in userid's.  [a-z0-9]{5,8}
 	instance => 'oc001',
 
+	# Multiple sets of Open Console may be active on the same server.
+	# This name is (also) used as name for the cookie.
+	squad    => 'production',
+
 	# Overrule the automatic detection of the virtual-host of the website
 	vhost    => 'https://open-console.eu',
-
-	# Secrets are used to encrypt cookies.  Multiple secrets can be active
-	# at the same time, for seemless changes.
-	# You may decide you use https://metacpan.org/pod/Mojolicious::Command::secret
-	# to bake your cookie secrets.
-
-	#       XXXvvvv replace this one, with any hex string vvvXXX
-	secrets  => [ '9ed5714761d3c28ee83f2fb20d2991a3fe282b93' ],
 
 	# The email addresses of the administrators: they get more pages in the
 	# dashboard.
@@ -31,7 +27,13 @@
 		# The amount of time until some-one is logged-out automatically.  If this
 		# is too short, people cannot submit the forms the filled-in.  Time in
 		# seconds.
-		expire => 4 * 3600,
+		expiration    => 'PT1D',
+		cookie_domain => 'open-console.eu',
+
+		# Keep this is sync with the secrets of the related ownerwebsite and connect
+		# instances, where we share cookies.
+		#       XXXvvvv replace this one, with any hex string vvvXXX
+		secrets  => [ '9ed5714761d3c28ee83f2fb20d2991a3fe282b93' ],
 	},
 
 	#### Group management
@@ -46,8 +48,8 @@
 	#### Email
 
 	email    => {
-		sender      => 'Open Console <>',         # 'From' line
-		overrule_to => '@',                       # in test setup, keep emails local
+		sender         => 'Open Console <>',      # 'From' line
+		overrule_to    => '@',                    # in test setup, keep emails local
 		subject_prefix => '[Open Console XXXX] ',
 	},
 
@@ -56,7 +58,7 @@
 	proofs   => {
 		# When the challenge has been used, it will still stay this long in
 		# the database, to be able to distinguish between "already used" and "invalid".
-		expire_challenge => 30,               #  days, float
+		expire_challenge => 'P30D',
 	},
 
 	#### Databases
@@ -104,5 +106,12 @@
 	connectdb => {
 		server => 'mongodb://localhost:27017',
 		dbname => 'connect',
+	},
+
+	#### Client demonstration components
+
+	clientdb => {
+		server => 'mongodb://localhost:27017',
+		dbname => 'batch',
 	},
 }

@@ -6,7 +6,7 @@
 <div class="container">
   <form method="post" id="login">
     <div class="col-8">
-      <h1>Welcome back to Open Console</h1>
+      <h1 style="color: white">Welcome back to Open Console</h1>
       <p>When you are new to Open Console, please register first.  When you do not
       remember your password, use the password reset procedure.  You will get an
       email with instructions.</p>

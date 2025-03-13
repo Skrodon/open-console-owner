@@ -12,7 +12,7 @@ sub frontpage()
 sub set()
 {	my $self = shift;
 	if(my $lang = $self->param('language'))
-	{	$self->session('iflang', $lang);
+	{	$self->sessionCookie(iflang => $lang);
 	}
 	$self->frontpage;
 }

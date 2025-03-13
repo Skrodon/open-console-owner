@@ -4,21 +4,24 @@
  * License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License)
  * Copyright 2023 Fonticons, Inc.
  */
-.fa {
+.fa, DIV.val-info::before {
   font-family: var(--fa-style-family, "Font Awesome 6 Free");
   font-weight: var(--fa-style, 900);
 }
 
-.fa,
+.fa, DIV.val-info::before,
 .fa-classic,
 .fa-sharp,
 .fas,
 DIV.val-good::before,
-DIV.val-info::before,
 DIV.val-warn::before,
 DIV.val-error::before,
+DIV.alert-success::before,
+DIV.alert-warning::before,
+DIV.alert-danger::before,
 .fa-solid,
 .far,
+DIV.alert-info::before,
 .fa-regular,
 .fab,
 .fa-brands {
@@ -31,10 +34,11 @@ DIV.val-error::before,
   text-rendering: auto;
 }
 
-.fas, DIV.val-good::before, DIV.val-info::before, DIV.val-warn::before, DIV.val-error::before,
+.fas, DIV.val-good::before, DIV.val-warn::before, DIV.val-error::before, DIV.alert-success::before, DIV.alert-warning::before, DIV.alert-danger::before,
 .fa-classic,
 .fa-solid,
 .far,
+DIV.alert-info::before,
 .fa-regular {
   font-family: "Font Awesome 6 Free";
 }
@@ -44,7 +48,7 @@ DIV.val-error::before,
   font-family: "Font Awesome 6 Brands";
 }
 
-DIV.val-good::before, DIV.val-info::before, DIV.val-warn::before, DIV.val-error::before {
+DIV.val-good::before, DIV.val-info::before, DIV.val-warn::before, DIV.val-error::before, DIV.alert-success::before, DIV.alert-info::before, DIV.alert-warning::before, DIV.alert-danger::before {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   display: inline-block;
@@ -8255,7 +8259,7 @@ readers do not read off random characters that represent icons */
   font-display: block;
   src: url("/fontawesome-free-6.5.1-web/webfonts/fa-solid-900.woff2") format("woff2"), url("/fontawesome-free-6.5.1-web/webfonts/fa-solid-900.ttf") format("truetype");
 }
-.fas, DIV.val-good::before, DIV.val-info::before, DIV.val-warn::before, DIV.val-error::before,
+.fas, DIV.val-good::before, DIV.val-warn::before, DIV.val-error::before, DIV.alert-success::before, DIV.alert-warning::before, DIV.alert-danger::before,
 .fa-solid {
   font-weight: 900;
 }
@@ -20105,8 +20109,35 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+FORM#config-account TABLE#langtab.table-hover TBODY TR:hover {
+  background-color: #e0e0e0;
+}
+
 .admin {
   background: #CCFFCC !important;
+}
+
+DIV.alert BUTTON.close {
+  float: right;
+  line-height: 1;
+  color: #000;
+  text-shadow: 0 1px 0 #fff;
+}
+
+DIV.alert-danger::before {
+  content: "\f256" " ";
+}
+
+DIV.alert-warning::before {
+  content: "\f071" " ";
+}
+
+DIV.alert-info::before {
+  content: "\f27a" " ";
+}
+
+DIV.alert-success::before {
+  content: "\f00c" " ";
 }
 
 SECTION#colophon {
@@ -20127,8 +20158,10 @@ SECTION#colophon #OWSimg {
   padding: 10px;
 }
 
-FORM#config-account TABLE#langtab.table-hover TBODY TR:hover {
-  background-color: #e0e0e0;
+DIV#progress IMG.go, DIV#progress IMG.stop {
+  width: 17%;
+  margin-left: 16px;
+  float: right;
 }
 
 FORM.config-form {
@@ -20360,16 +20393,6 @@ DIV.modal .modal-header .close {
 }
 
 /*
- * Any alert (notification)
- */
-DIV.alert BUTTON.close {
-  float: right;
-  line-height: 1;
-  color: #000;
-  text-shadow: 0 1px 0 #fff;
-}
-
-/*
  * Any block PRE block which can be copied
  */
 I.copier {
@@ -20494,7 +20517,7 @@ DIV.val-error {
   color: var(--bs-danger);
 }
 DIV.val-error::before {
-  content: "\f057" " ";
+  content: "\f256" " ";
 }
 
 DIV.val-warn {
@@ -20508,14 +20531,14 @@ DIV.val-info {
   color: var(--bs-info);
 }
 DIV.val-info::before {
-  content: "\f0a1" " ";
+  content: "\f27a" " ";
 }
 
 DIV.val-good {
   color: var(--bs-success);
 }
 DIV.val-good::before {
-  content: "\f164" " ";
+  content: "\f00c" " ";
 }
 
 /*# sourceMappingURL=open-console.css.map */

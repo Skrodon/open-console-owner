@@ -179,7 +179,7 @@
     the following Groups, when you confirm deletion:
     <ul>
 %   foreach my $group (@groups) {
-    <li><a href="<%== $group->link %>"><%= $group->name %></a></li>
+    <li><a href="<%== $group->elemLink %>"><%= $group->name %></a></li>
 %   }
     </ul>
   </div>

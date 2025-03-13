@@ -13,7 +13,7 @@ DIV.alert-danger {
 	&::before {
 		@extend %fa-icon;
 		@extend .fas;
-		content: fa-content($fa-var-circle-xmark) $hard-space;
+		content: fa-content($fa-var-hand) $hard-space;
 	}
 }
 
@@ -28,8 +28,8 @@ DIV.alert-warning {
 DIV.alert-info {
 	&::before {
 		@extend %fa-icon;
-		@extend .fas;
-		content: fa-content($fa-var-bullhorn) $hard-space;
+		@extend .far;
+		content: fa-content($fa-var-message) $hard-space;
 	}
 }
 
@@ -37,6 +37,6 @@ DIV.alert-success {
 	&::before {
 		@extend %fa-icon;
 		@extend .fas;
-		content: fa-content($fa-var-thumbs-up) $hard-space;
+		content: fa-content($fa-var-check) $hard-space;
 	}
 }

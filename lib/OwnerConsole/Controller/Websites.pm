@@ -140,12 +140,15 @@ sub _proofDNSStart($$$)
 sub _dnsRecord($)
 {	my ($self, $proof) = @_;
 
-	my ($host, $registered, $suffix) = domain_suffix(lc $proof->hostUTF8);
+	my ($path, $registered, $suffix) = domain_suffix(lc $proof->hostUTF8);
 	my $zone = $registered ? "$registered.$suffix" : $suffix;  # will we see suffix owners?
-warn "($host, $registered, $suffix) = ", $proof->hostUTF8;
 
-	$host
+	$path
 		or return ("open-console-challenge", $zone);
+
+	# Host can still contain a sub-domain
+	my ($host, $rest) = split /\./, $path, 2;
+	$zone = "$rest.$zone" if defined $rest;
 
 	my $opt1  = "-open-console-challenge";
 	my $opt2  = "-open-console";
@@ -155,12 +158,11 @@ warn "($host, $registered, $suffix) = ", $proof->hostUTF8;
 	# too much utf8 may be chopped off... I do not care.
 	my $hostp = (split /\./, $proof->hostPunicode, 2)[0];
 	my $name
-	  = length $hostp + length $opt1 <= MAX_DNS_LABEL ? "$host$opt1"
-	  : length $hostp + length $opt2 <= MAX_DNS_LABEL ? "$host$opt2"
-	  : length $hostp + length $opt3 <= MAX_DNS_LABEL ? "$host$opt3"
-	  :   substr($host, 0, MAX_DNS_LABEL - length $opt3) . $opt3;
+	  = length($hostp) + length($opt1) <= MAX_DNS_LABEL ? "$host$opt1"
+	  : length($hostp) + length($opt2) <= MAX_DNS_LABEL ? "$host$opt2"
+	  : length($hostp) + length($opt3) <= MAX_DNS_LABEL ? "$host$opt3"
+	  :     substr($host, 0, MAX_DNS_LABEL - length($opt3)) . $opt3;
 
-warn "WITH HOST ($name, $zone)";
 	($name, $zone);
 }
 

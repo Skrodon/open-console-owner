@@ -37,8 +37,8 @@ function process_errors_and_warnings(form, answer) {
 	$('DIV.val-msg', form).remove(); 
 	answer.errors.forEach(function(error) { add_val_message(form, error.at(0), 'error', error.at(1)) });
 	answer.warnings.forEach(function(warn) { add_val_message(form, warn.at(0), 'warn', warn.at(1)) });
-	answer.info.forEach(function(info) { add_val_message(form, info.at(0), 'info', info.at(1)) });
-	answer.good.forEach(function(good) { add_val_message(form, good.at(0), 'good', good.at(1)) });
+	answer.infos.forEach(function(info) { add_val_message(form, info.at(0), 'info', info.at(1)) });
+	answer.goods.forEach(function(good) { add_val_message(form, good.at(0), 'good', good.at(1)) });
 	answer.notifications.forEach(function(text) { alert(text) });
 }
 
@@ -134,7 +134,7 @@ function cancel_without_saving(form) {
 	$('#cancel-confirm', modal).on('click', function () { modal.hide(); window.location.href = '/dashboard/' });
 };
 
-function accept_form_data(form, how, param, success) {
+function accept_form_data(form, how, param, callback) {
 	var data   = form.serialize();
 	if(param) { data += '&' + $.param(param) }
 
@@ -148,13 +148,16 @@ function accept_form_data(form, how, param, success) {
 		success: function (response) {
  			process_errors_and_warnings(form, response);
 			update_form_status(form);
-			if(success) { success(form, response) }
+			if(callback) { callback(form, response) }
 			if(response.redirect) { window.location = response.redirect }
 		},
 		error: function (response) {
-console.log("FORM SUBMIT ERROR");
+console.log("FORM SUBMIT FAILED (session expired?)");
 console.log(response);
-			alert('Form ' + form.attr('id') + ', the server could not be reached: ' + response.status);  //XXX translation
+			if(response.redirect) { window.location = response.redirect }
+			else {
+				alert('Form ' + form.attr('id') + ', the server could not be reached: ' + response.status);  //XXX translation
+			}
 		},
 	});
 }

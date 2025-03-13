@@ -71,8 +71,9 @@ Please consider to publish your implementation, in the language of your choice.<
 % my $s = $c->OpenConsole->buttonSetup;
 <style>.oc-logo { height: 30px; width: 30px; background: white; padding: 3px; margin: 5px }</style>
 <button class="btn btn-primary oc_login_button"
-  onClick="window.location='/client/login?app=<%= $s->{client_id} %>'">
-   <span><%== $s->{logo_svg} %></span>
+  onClick="window.location='/client/login?session=<%= $s->{session} %>'">
+   <img src="/style/favicon.png" class="btn" style="height: 40px; background: white; padding: 2px 5px; margin-left: -7px; margin-right: 4px" />
+%#   <span><%== $s->{logo_svg} %></span>
    Login via OpenConsole
 </button>
     </div>

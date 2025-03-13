@@ -9,44 +9,35 @@ use Log::Report 'open-console-owner';
 use List::Util   qw(first);
 use DateTime     ();
 
-use OpenConsole::Util  qw(bson2datetime new_token);
-
-use constant
-{	INVITE_SCHEMA => '20240122',
-	SECS_IN_DAY   => 24 * 60 * 60,
-};
+use OpenConsole::Util  qw(:time new_token);
 
 =chapter NAME
 OwnerConsole::Group::Invite - handle group invites
 
 =chapter DESCRIPTION
+A group administrator can invite new members to the group.
 
 =chapter METHODS
+
 =section Constructors
 =cut
 
-
-sub fromDB($)
-{	my ($class, $data) = @_;
-	$data->{invited} ||= $data->{expires};   #XXX remove after restart DB
-	$class->SUPER::fromDB($data);
-}
+#sub fromDB($)
+#{	my ($class, $data) = @_;
+#	$class->SUPER::fromDB($data);
+#}
 
 sub create($$$)
 {	my ($class, $identity, $group, $email) = @_;
 	my $config  = $::app->config->{groups} || {};
-	my $start   = time;
-    my $expires = $start + ($config->{invite_expiration} || 7) * SECS_IN_DAY;
 
 	$class->SUPER::create({
-		schema    => INVITE_SCHEMA,
-        state     => 'start',
-		token     => (new_token 'N'),
-        invited   => Mango::BSON::Time->new($start * 1000),
-        expires   => Mango::BSON::Time->new($expires * 1000),
-        email     => $email,
-        identid   => $identity->id,
-        groupid   => $group->id,
+        state      => 'start',
+		token      => (new_token 'N'),
+        expiration => $config->{invite_expiration} || 'P7D',
+        email      => $email,
+        identid    => $identity->id,
+        groupid    => $group->id,
 	});
 }
 
@@ -57,7 +48,13 @@ sub create($$$)
 # Keep these attributes in sync with the OwnerConsole/Controller/Groups.pm
 # method submit_group()
 
-sub schema()     { $_[0]->_data->{schema} }
+sub schema()     { '20240122' }
+sub element()    { 'invite' }
+sub set()        { 'invites' }
+sub iconFA()     { 'fa-solid fa-users-viewfinder' }
+sub elemName()   { __"Group invite" }
+sub setName()    { __"Group invites" }
+
 sub token()      { $_[0]->_data->{token} }
 sub groupId()    { $_[0]->_data->{groupid} }
 sub identityId() { $_[0]->_data->{identid} }
@@ -66,9 +63,6 @@ sub state()      { $_[0]->_data->{state} }
 
 sub link()       { '/invite/' . $_[0]->token }
 
-sub invited()    { $_[0]->{OGI_inv} ||= bson2datetime $_[0]->_data->{invited}, $_[0]->timezone }
-sub expires()    { $_[0]->{OGI_exp} ||= bson2datetime $_[0]->_data->{expires}, $_[0]->timezone }
-sub hasExpired   { $_[0]->{OGI_dead}//= $_[0]->expires < DateTime->now // 0 }
 sub invitedBy    { $_[0]->{OGI_iid} ||= $::app->users->identity($_[0]->identityId) }
 sub invitedTo    { $_[0]->{OGI_gid} ||= $::app->users->group($_[0]->groupId) }
 sub timezone     { $_[0]->{OGI_tz}  ||= $_[0]->invitedTo->timezone }
@@ -79,7 +73,7 @@ sub timezone     { $_[0]->{OGI_tz}  ||= $_[0]->invitedTo->timezone }
 
 sub changeState($)
 {	my ($self, $state) = @_;
-	$self->_data->{state} = $state;
+	$self->setData(state => $state);
 	$self->save;
 }
 
@@ -95,25 +89,20 @@ sub stateName() { $state_names{$_[0]->state} || 'UNKNOWN STATE' }
 
 #-------------
 =section Actions
+
+=method extend
+Extend the invitation with the pre-configured amount of time
 =cut
 
 sub extend()
-{	my $self    = shift;
-	my $config  = $::app->config->{groups} || {};
-    my $expires = time + ($config->{extend_invitation} || 14) * SECS_IN_DAY;
-    $self->_data->{expires} = Mango::BSON::Time->new($expires * 1000);
+{	my $self   = shift;
+	my $config = $::app->config->{groups} || {};
+	my $extra  = $self->{OGI_extend} ||= duration($config->{extend_invitation} || 'P14D');
+    $self->setData(expires => timestamp(now + $extra));
 	$self;
 }
 
-sub remove()
-{	my $self = shift;
-	$::app->batch->removeInvite($self);
-}
-
-sub save(%)
-{	my $self = shift;
-	$::app->batch->saveInvite($self);
-	$self;
-}
+sub _remove() { $::app->batch->removeInvite($_[0]) }
+sub _save()   { $::app->batch->saveInvite($_[0]) }
 
 1;

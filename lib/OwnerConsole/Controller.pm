@@ -25,6 +25,7 @@ sub challengeHandler($$)
 
 # When missing, the controllers get autoloaded.
 use OwnerConsole::Controller::Account;
+use OwnerConsole::Controller::Client;     # demo client
 use OwnerConsole::Controller::Comply;
 use OwnerConsole::Controller::Contracts;
 use OwnerConsole::Controller::Dashboard;
@@ -37,7 +38,7 @@ use OwnerConsole::Controller::Services;
 use OwnerConsole::Controller::Websites;
 
 =chapter NAME
-OwnerConsole::Controller - base-class for Mojo C's
+OwnerConsole::Controller - base class for Mojo Controllers
 
 =chapter METHODS
 
@@ -192,10 +193,9 @@ choice.  Defaults from the user's browser settings.
 my ($iflangs, $langs);
 sub detectLanguage()
 {	my $self  = shift;
-	if(my $if = $self->session('iflang')) { return $if }
+	if(my $if = $self->sessionCookie('iflang')) { return $if }
 
 	$iflangs ||= $self->config->{interface_languages};
-#warn "IFLANGS=@$iflangs";
 	$langs   ||= +{ map +($_ => 1), @$iflangs };
 
 	my @wants = $self->browser_languages;
@@ -208,7 +208,7 @@ sub detectLanguage()
 		$code = $iflangs->[0];
 	}
 
-	$self->session(iflang => $code);
+	$self->sessionCookie(iflang => $code);
 	$code;
 }
 
@@ -261,7 +261,7 @@ sub openAsset($$)
 	my $asset = $self->account->asset($objclass->set, $assetid);
 	unless($asset)
 	{	info "Asset $assetid of type $objclass has disappeared.";
-		$session->internalError(__x"Proof has disappeared.");
+		$session->internalError(__x"Asset has disappeared.");
 		return undef;
 	}
 
@@ -278,5 +278,12 @@ sub plain2html($)
 	my @para = map xml_escape($_), split /\n{2,}/, $plain;
 	"<p>" . (join "</p>\n<p>", @para) . "</p>";
 }
+
+=method sessionCookie
+Use this instead of 'session' for clarity.
+=cut
+
+sub sessionCookie(@) { shift->SUPER::session(@_) }
+sub session { panic }
 
 1;

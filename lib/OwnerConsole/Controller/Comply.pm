@@ -7,7 +7,7 @@ use Mojo::Base 'OwnerConsole::Controller';
 use Log::Report 'open-console-owner';
 use List::Util              qw(first);
 
-use OpenConsole::Util       qw(:tokens val_line);
+use OpenConsole::Util       qw(:tokens val_line url);
 use OpenConsole::Comply     ();
 
 sub _from_id($$)
@@ -65,10 +65,16 @@ sub listFacts() { \%facts }
 sub show_error()   # function name error() used by Log::Report
 {   my $self = shift;
 	my $req  = $self->req;
+
+	my $appsession;
+	if(my $session_id = $req->param('session'))
+	{	$appsession = $::app->batch->appSession($session_id);
+	}
+
 	$self->render(
 		template => 'comply/error',
-		error    => $req->param('error'),
-		service  => $req->param('service'),
+		error    => $req->param('error') || 'missing',
+		app      => $appsession,
 	);
 }
 
@@ -77,8 +83,9 @@ sub access()
 	my $token     = $self->param('token');
 	my $account   = $self->account;
 	my $set       = token_set $token || '';
+warn "COMPLY ACCESS($token) is a $set";
 
-	my ($invalid_token, $comply, $service, @contracts);
+	my ($invalid_token, $comply, $service, @contracts, $app);
 	if($set eq 'contract')
 	{	if(my $contract = $::app->assets->contract($token))
 		{	$service = $contract->service;
@@ -94,6 +101,12 @@ sub access()
 	{	$comply    = $::app->connect->comply($token);
 		$service   = $comply->service;
 		@contracts = $comply->contract;
+	}
+	elsif($set eq 'appsession')
+	{	if(my $ses = $::app->connect->appSession($token))
+		{	$service   = $ses->service;
+			push @contracts, $::app->assets->contractsForService($account, $service);
+		}
 	}
 	else
 	{	$invalid_token = 1;
@@ -113,6 +126,7 @@ sub access()
 		error     => $error,
 		service   => $service,
 		contracts => \@contracts,
+		app       => $app,
 	);
 
 	my $contract = $contracts[0];
@@ -120,19 +134,6 @@ sub access()
 	$comply
 	  ||= $::app->connect->complyForContract(contract => $contract, account => $account)
 	  ||  OpenConsole::Comply->create({contract => $contract, account => $account});
-
-	my $updated  = $comply->updated;
-	$error
-	  = $updated && $updated < $contract->updated ? 'C07'
-	  : $updated && $updated < $service->updated  ? 'C08'
-	  : undef;
-
-	! $error or return $self->render(
-		template  => 'comply/error',
-		error     => $error,
-		service   => $service,
-		contracts => \@contracts,
-	);
 
 	$self->render(
 		template   => 'comply/comply',
@@ -258,17 +259,13 @@ sub _acceptComply($$)
 	my $contract = $comply->contract;
 	my $service  = $comply->service;
 
-	$contract->updated >= $service->updated
-		or return $session->redirect('/dashboard/comply/error?error=C08&service='.$service->id);
-
 	# At the moment, the owner is always an personal identity
 
 	my $needs    = $service->needsFacts;
 	my $gives    = $comply->giveFacts;       # previously given
-use Data::Dumper;
-warn "VERIFY NEEDS=", Dumper $needs;
-warn "VERIFY OLDGIVE=", Dumper $gives;
-$session->params;
+#use Data::Dumper;
+#warn "VERIFY NEEDS=", Dumper $needs;
+#warn "VERIFY OLDGIVE=", Dumper $gives;
 
 	foreach my $fact (keys %facts)           # all fact definitions
 	{	my $conf = $facts{$fact};            # fact processing config
@@ -279,7 +276,7 @@ $session->params;
 		my %v     = map +($_->{value} => $_), @alts;
 
 		my $got   = val_line $session->optionalParam($fact);
-warn "FACT($fact) GOT($got) ", join ';', sort keys %v;
+#warn "FACT($fact) GOT($got) ", join ';', sort keys %v;
 # warn Dumper \@alts;
 
 		my $v;
@@ -309,18 +306,29 @@ warn "FACT($fact) GOT($got) ", join ';', sort keys %v;
 		}
 	}
 
-	my (undef, $endpoint) = $service->useEndpoint($account);
+	foreach my $set (OpenConsole::Assets->proofSets)
+	{
+	}
+use Data::Dumper;
+warn "SUMMARY=", Dumper $gives;
+
+	$gives;
+}
+
+sub _computeEndpoint($$)
+{	my ($self, $session, $comply) = @_;
+
+	my (undef, $endpoint) = $comply->service->useEndpoint($self->account);
 	if($endpoint)
-	{	# avoid login to require service and contract objects again.
+	{	# Avoid login to require service and contract objects again.
+		# when the endpoint changes, then the comply will be reworked anyway.
 		$comply->setData(endpoint => $endpoint);
-warn "ENDPOINT = ", $endpoint;
 	}
 	else
 	{	$session->notify(error => "The service's endpoint proof has expired or disappeared.");
 	}
 
-warn "SUMMARY=", Dumper $gives, $session->trace;
-	$gives;
+	$endpoint;
 }
 
 sub configComply($)
@@ -339,21 +347,93 @@ warn "   HOW=$how";
 	  ? OpenConsole::Comply->create({service => $servid, contract => $contrid})
 	  : $::app->connect->comply($complyid) || error __x"Comply has disappeared.";
 
-	if($how eq 'login')
-	{
-warn "   REDIR=", $comply->endpoint;
-	return $session->redirect($comply->endpoint);
-	}
-
 	$self->acceptFormData($session, $comply, '_acceptComply');
+
+	my $endpoint = $self->_computeEndpoint($session, $comply);
+	my $grant    = $self->_prepareGrant($comply, $self->account);
 	$comply->setData(status => ($session->hasErrors ? 'incomplete' : 'valid'));
 
-	if($how eq 'save')
+use Data::Dumper;
+warn "TRACE=", Dumper $endpoint, $grant, $session->trace;
+
+	if($how eq 'save' || $how eq 'login')
 	{	$comply->save if $comply->isNew || $comply->hasChanged;
-		return $session->redirect('/dashboard/comply/'.$comply->id);
+	}
+
+	if($how eq 'login')
+	{	my $login = url($endpoint)->query(
+			access_token => $comply->id,
+			state        => $self->sessionCookie('oauth2_state'),
+			token_type   => 'bearer',
+			expires_in   => 3600,   #XXX
+		);
+warn "LOGIN = $login";
+		$session->redirect($login);
+	}
+	else
+	{
+#	$session->redirect('/dashboard/comply/'.$comply->id);
 	}
 
 	$session->checkParamsUsed->reply;
+}
+
+# $self->_factsForGrant($comply);
+# Collect the select facts.  They are not bound to specific
+# objects, so need to do it here.
+
+sub _factsForGrant($)
+{	my ($self, $comply) = @_;
+
+	my $facts = $comply->giveFacts;
+
+	my %proofs;
+
+	### Collect personal info
+
+	my %person = map +( s/^person\.//r => $facts->{$_} ),
+		grep /^person\./, keys %facts;
+
+	if(my $email = $person{email})
+	{	$proofs{emailaddrs}{$email}++;
+	}
+
+	### Collect group info
+
+	my %group  = map +( s/^group\.//r => $facts->{$_} ),
+		grep /^group\./, keys %facts;
+
+	### Collect assets info
+
+	my %assets;   #XXX
+	foreach my $set (OpenConsole::Assets->proofSets)
+	{
+	}
+
+	(\%person, \%group, \%assets, \%proofs);
+}
+
+# $self->_prepareGrant($comply, $account, %options);
+# Collect most information for the grant, to be wrapped in
+# M<OpenConsole::Comply::createGrant()> with some last moment details.
+
+sub _prepareGrant($$%)
+{	my ($self, $comply, $account, %args) = @_;
+	my ($person, $group, $assets, $proofs) = $self->_factsForGrant($comply);
+
+	my %grant = (
+		id      => $comply->id,
+#		expires => ...,
+		account => $account->forGrant,
+		person  => $person,
+		group   => $group,
+		assets  => $assets,
+ 		proofs  => $proofs,
+		contract => $comply->contract->forGrant,
+	);
+
+	$comply->setData(grant => \%grant);
+	\%grant;
 }
 
 1;

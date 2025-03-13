@@ -62,27 +62,62 @@
   </div>
 
   &nbsp;
-  <div>
+  <div id="progress">
 
-% if($comply->status eq 'valid' || 1) {
+<%= $comply->status %>
+% if($comply->isNew) {
 
-    <div class="alert alert-success" id="all-fine">
-      <img id="sign" src="/images/Stopsign.svg" style="width: 17%; margin-left: 16px; float:right" />
+    <div class="alert alert-info" id="progress-new">
+      <img class="go" src="/images/Go_sign.svg" />
+      You are using this contract for the first time.
+      Please select the values which are to be shared with the service provider, and press "Go".
+      <br clear="all" />
+    </div>
+
+% } elsif($comply->updated gt $service->updated) {
+
+   <div class="alert alert-warning" id="progress-upd-service">
+      The service description has changed, which means you shoould
+      revisit your contract to see whether you still agree with all the
+      facts it requires.<br />
+      <br />
+      Review <a class="btn btn-primary" href="<%== $contract->elemLink %>"><%== $contract->iconName %></a>
+   </div>
+
+% } elsif($comply->updated gt $contract->updated) {
+
+   <div class="alert alert-info" id="progress-upd-contract">
+      <img class="go" src="/images/Go_sign.svg" />
+      You have renewed your contract with the service since last visit.  Please
+      inspect which facts and assets are now passed on to the service.
+      <br clear="all" />
+   </div>
+
+% } elsif($comply->status eq 'valid') {
+
+    <div class="alert alert-success" id="progress-fine">
+      <img class="stop" src="/images/Stopsign.svg" />
       All seems to be fine: contract signed, data provided.  Within a few seconds, you will
       be redirected to the service.
+      <br clear="all" />
+    </div>
+
+% }
+
+    <div class="alert alert-success" id="progress-stopped" style="display: none">
+      <img class="go" src="/images/Go_sign.svg" />
+      Read through the pages, and when you are okay, then press "Go" to continue to the service.
+      The changes will get recorded.
+      <br clear="all" />
+    </div>
+
+    <div class="alert alert-warning" id="progress-incomplete" style="display: none">
+      <img class="go" src="/images/Go_sign.svg" />
+      Press "Go" to continue to the service.  Changes will get recorded.
+      <br clear="all" />
     </div>
 
     <h4>Shared personal facts</h4>
-
-% } else {
-
-    <h4>Shared personal facts</h4>
-
-    <p>Please provide the values which are shared with the service provider.
-    Then press <span class="bg-success" style="color: white">&nbsp;<i class="fa-solid fa-floppy-disk"></i>&nbsp;Save&nbsp;</span>
-    </p>
-
-% }
 
 %=  $factrow->('person.fullname');
 %=  $factrow->('person.nickname');
@@ -129,7 +164,7 @@ want to present alternative settings.  The logical choice is shown in bold.</p>
 % my $assets_form = begin
 
 % my $needs = $service->needsAssets;
-% my @sets  = qw/emailaddrs websites/;
+% my @sets  = OpenConsole::Assets->proofSets;
 % my $any_assets = 0; $any_assets += $needs->{$_}{max} for @sets;
 
 % if($any_assets) {
@@ -137,7 +172,7 @@ want to present alternative settings.  The logical choice is shown in bold.</p>
 <p>The Services accepts the following assets.  You will pick them on
 the moment you use the service (for the first time).</p>
 
-%   foreach my $set (qw/emailaddrs websites/) {
+%   foreach my $set (@sets) {
 %     my $need = $needs->{$set} or next;
 %     my $max  = $need->{max}   or next;
 %     my $min  = $need->{min} // 0;
